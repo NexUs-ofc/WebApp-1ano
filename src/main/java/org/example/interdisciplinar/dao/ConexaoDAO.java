@@ -2,8 +2,6 @@ package org.example.interdisciplinar.dao;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import java.sql.*;
-import java.util.logging.Logger;
-
 
 public class ConexaoDAO {
 
@@ -35,7 +33,7 @@ public class ConexaoDAO {
                 System.out.println("Erro ao se conectar cnf");
                 return null;
             }
-
         }
+
     }
 }
