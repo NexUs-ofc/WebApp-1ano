@@ -6,18 +6,17 @@ public class Categoria {
 
     private int id;
     private String nome;
+    private String descricao;
 
-    // Construtores
+    // Construtor
 
-    public Categoria(){}
-
-    public Categoria(int id, String nome) {
+    public Categoria(int id, String nome, String descricao) {
         this.id = id;
         this.nome = nome;
+        this.descricao = descricao;
     }
 
-    // Getters e Setters
-
+    // Getters e setters
 
     public int getId() {
         return id;
@@ -35,12 +34,22 @@ public class Categoria {
         this.nome = nome;
     }
 
-    // toString()
+    public String getDescricao() {
+        return descricao;
+    }
 
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    // Método toString
 
     @Override
     public String toString() {
-        return "Id: " + this.id + "\n" +
-                "Nome: " + this.nome;
+        return "==========CATEGORIA==========" +
+                "Id: " + id + "\n" +
+                "Nome: " + nome + "\n" +
+                "Descricao: " + descricao + "\n" +
+                "=============================";
     }
 }
