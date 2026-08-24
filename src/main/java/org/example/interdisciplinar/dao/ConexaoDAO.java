@@ -28,12 +28,22 @@ public class ConexaoDAO {
                 sqle.printStackTrace();
                 System.out.println("Erro ao se conectar sql");
                 return null;
+
             } catch (ClassNotFoundException cnfe) {
                 cnfe.printStackTrace();
                 System.out.println("Erro ao se conectar cnf");
                 return null;
             }
         }
+        // Método para fechar a conexão
+        public void closeConnection(Connection conn){
+            if(conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException sqle){
+                    sqle.printStackTrace();
+                }
+            }
+        }
 
-    }
 }
