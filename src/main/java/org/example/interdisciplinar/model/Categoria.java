@@ -8,7 +8,11 @@ public class Categoria {
     private String nome;
     private String descricao;
 
-    // Construtor
+    // Construtores
+
+    public Categoria(){
+
+    }
 
     public Categoria(int id, String nome, String descricao) {
         this.id = id;
@@ -42,14 +46,14 @@ public class Categoria {
         this.descricao = descricao;
     }
 
-    // Método toString
+    // Método toString()
 
     @Override
     public String toString() {
         return "==========CATEGORIA==========" +
-                "Id: " + id + "\n" +
-                "Nome: " + nome + "\n" +
-                "Descricao: " + descricao + "\n" +
-                "=============================";
+                "Id: " + this.id + "\n" +
+                "Nome: " + this.nome + "\n" +
+                "Descrição: " + this.descricao + "\n" +
+                "============================";
     }
 }
