@@ -1,9 +1,9 @@
-package org.example.interdisciplinar.dao;
+package org.example.interdisciplinar.conexao;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import java.sql.*;
 
-public class ConexaoDAO {
+public class Conexao {
 
         private static Dotenv dotenv = Dotenv.configure()
                 .ignoreIfMissing()
@@ -22,6 +22,7 @@ public class ConexaoDAO {
                 String password = dotenv.get("DB_PASSWORD", System.getenv("DB_PASSWORD"));
 
                 System.out.println("Você se conectou ao banco do Ceris!");
+
                 return DriverManager.getConnection(url, user, password);
 
             } catch (SQLException sqle) {
@@ -35,7 +36,9 @@ public class ConexaoDAO {
                 return null;
             }
         }
+
         // Método para fechar a conexão
+
         public void closeConnection(Connection conn){
             if(conn != null) {
                 try {
