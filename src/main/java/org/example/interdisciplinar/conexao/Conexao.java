@@ -21,8 +21,6 @@ public class Conexao {
                 String user = dotenv.get("DB_USER", System.getenv("DB_USER"));
                 String password = dotenv.get("DB_PASSWORD", System.getenv("DB_PASSWORD"));
 
-                System.out.println("Você se conectou ao banco do Ceris!");
-
                 return DriverManager.getConnection(url, user, password);
 
             } catch (SQLException sqle) {

@@ -18,8 +18,8 @@ public class ItemDispensa {
 
     }
 
-    public ItemDispensa(int id, int idCasa, int idAlimento, int quantidade, LocalDate validade) {
-        this.id = id;
+    public ItemDispensa(int idCasa, int idAlimento, int quantidade, LocalDate validade) {
+
         this.idCasa = idCasa;
         this.idAlimento = idAlimento;
         this.quantidade = quantidade;

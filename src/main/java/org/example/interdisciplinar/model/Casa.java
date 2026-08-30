@@ -14,8 +14,7 @@ public class Casa {
     public Casa(){
     }
 
-    public Casa(int id, String nome, int idUsuario, int idEndereco) {
-        this.id = id;
+    public Casa(String nome, int idUsuario, int idEndereco) {
         this.nome = nome;
         this.idUsuario = idUsuario;
         this.idEndereco = idEndereco;
