@@ -16,8 +16,8 @@ public class Usuario {
 
     }
 
-    public Usuario(int id, String nome, String email, String preferenciasCosnumo, String configuracaoAlerta) {
-        this.id = id;
+    public Usuario(String nome, String email, String preferenciasCosnumo, String configuracaoAlerta) {
+
         this.nome = nome;
         this.email = email;
         this.preferenciasCosnumo = preferenciasCosnumo;

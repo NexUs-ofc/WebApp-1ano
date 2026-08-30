@@ -12,7 +12,7 @@ public class GerenteConexao {
 
         try {
 
-            if(conn.isClosed() || conn == null){
+            if(conn == null || conn.isClosed()){
 
                 Conexao conexao = new Conexao();
                 conn = conexao.getConnection();
@@ -28,7 +28,7 @@ public class GerenteConexao {
 
     public static void desconectar(){
         try {
-            if (! conn.isClosed() || conn != null){
+            if (conn != null && !conn.isClosed()){
 
                 conn.close();
 
