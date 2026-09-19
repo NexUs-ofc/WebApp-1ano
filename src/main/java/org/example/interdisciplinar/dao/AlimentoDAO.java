@@ -34,7 +34,7 @@ public class AlimentoDAO {
     }
 
     public boolean delete(Alimento alimento){
-        String sqlDelete = "DELETE FROM tb_alimento WHERE id=?";
+        String sqlDelete = "DELETE FROM tb_alimento WHERE id_alimento=?";
         int linhasAfetadas = 0;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sqlDelete)){
@@ -48,12 +48,13 @@ public class AlimentoDAO {
             return false;
         }
     }
-    public List<Alimento> select (Alimento alimento){
+    public List<Alimento> select (){
         String sqlSelect = "SELECT * FROM tb_alimento";
         List<Alimento> alimentos = new ArrayList<>();
 
-        try(Statement stmt = conn.prepareStatement(sqlSelect)) {
-            ResultSet rs  = stmt.executeQuery(sqlSelect);
+        try(PreparedStatement pstmt = conn.prepareStatement(sqlSelect)) {
+
+            ResultSet rs  = pstmt.executeQuery();
 
             while(rs.next()){
                 Alimento alimentoTemporario = new Alimento();
@@ -74,7 +75,7 @@ public class AlimentoDAO {
     }
 
     public boolean updateNome(Alimento alimento){
-        String sqlUpdateName = "UPDATE tb_alimento SET nome=? WHERE id=?";
+        String sqlUpdateName = "UPDATE tb_alimento SET nome=? WHERE id_alimento=?";
         int linhasAfetadas = 0;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateName)){
@@ -90,7 +91,7 @@ public class AlimentoDAO {
     }
 
     public boolean updateCodigo(Alimento alimento){
-        String sqlUpdateCod = "UPDATE tb_alimento SET codigo_barras=? WHERE id=?";
+        String sqlUpdateCod = "UPDATE tb_alimento SET codigo_barras=? WHERE id_alimento=?";
         int linhasAfetadas = 0;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateCod)){
@@ -105,7 +106,7 @@ public class AlimentoDAO {
         }
     }
     public boolean updateMarca(Alimento alimento){
-        String sqlUpdateMarca = "UPDATE tb_alimento SET marca=? WHERE id=?";
+        String sqlUpdateMarca = "UPDATE tb_alimento SET marca=? WHERE id_alimento=?";
         int linhasAfetadas = 0;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateMarca)){

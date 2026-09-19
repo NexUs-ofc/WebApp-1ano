@@ -33,7 +33,7 @@ public class EnderecoDAO {
     }
 
     public boolean delete(Endereco endereco){
-        String sqlDelete = "DELETE FROM tb_endereco WHERE id=?";
+        String sqlDelete = "DELETE FROM tb_endereco WHERE id_endereco=?";
         int linhasAfetadas = 0;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sqlDelete)){
@@ -48,12 +48,12 @@ public class EnderecoDAO {
         }
     }
 
-    public List<Endereco> select (Endereco endereco){
+    public List<Endereco> select (){
         String sqlSelect = "SELECT * FROM tb_endereco";
         List<Endereco> enderecos = new ArrayList<>();
 
-        try (Statement stmt = conn.prepareStatement(sqlSelect)){
-            ResultSet rs  = stmt.executeQuery(sqlSelect);
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlSelect)) {
+            ResultSet rs  = pstmt.executeQuery();
 
             while (rs.next()){
                 Endereco enderecoTemporario = new Endereco();
@@ -76,7 +76,7 @@ public class EnderecoDAO {
     }
 
     public boolean updateRua(Endereco endereco){
-        String sqlUpdateRua = "UPDATE tb_endereco SET rua=? WHERE id=?";
+        String sqlUpdateRua = "UPDATE tb_endereco SET rua=? WHERE id_endereco=?";
         int linhasAfetadas = 0;
         try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateRua)){
             pstmt.setString(1, endereco.getRua());
@@ -92,7 +92,7 @@ public class EnderecoDAO {
     }
 
     public boolean updateNumero(Endereco endereco){
-        String sqlUpdateNumero = "UPDATE tb_endereco SET numero=? WHERE id=?";
+        String sqlUpdateNumero = "UPDATE tb_endereco SET numero=? WHERE id_endereco=?";
         int linhasAfetadas = 0;
         try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateNumero)){
             pstmt.setString(1, endereco.getNumero());
@@ -108,7 +108,7 @@ public class EnderecoDAO {
     }
 
     public boolean updateBairro(Endereco endereco){
-        String sqlUpdatebairro = "UPDATE tb_endereco SET bairro=? WHERE id=?";
+        String sqlUpdatebairro = "UPDATE tb_endereco SET bairro=? WHERE id_endereco=?";
         int linhasAfetadas = 0;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdatebairro)){
@@ -124,7 +124,7 @@ public class EnderecoDAO {
     }
 
     public boolean updateCidade(Endereco endereco){
-        String sqlUpdateCidade = "UPDATE tb_endereco SET cidade=? WHERE id=?";
+        String sqlUpdateCidade = "UPDATE tb_endereco SET cidade=? WHERE id_endereco=?";
         int linhasAfetadas = 0;
         try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateCidade)){
             pstmt.setString(1, endereco.getCidade());
@@ -139,7 +139,7 @@ public class EnderecoDAO {
         }
     }
     public boolean updateEstado(Endereco endereco){
-        String sqlUpdateEstado = "UPDATE tb_endereco SET estado=? WHERE id=?";
+        String sqlUpdateEstado = "UPDATE tb_endereco SET estado=? WHERE id_endereco=?";
         int linhasAfetadas = 0;
         try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateEstado)){
             pstmt.setString(1, endereco.getEstado());
@@ -155,7 +155,7 @@ public class EnderecoDAO {
     }
 
     public boolean updateCep(Endereco endereco){
-        String sqlUpdateCep = "UPDATE tb_endereco SET cep=? WHERE id=?";
+        String sqlUpdateCep = "UPDATE tb_endereco SET cep=? WHERE id_endereco=?";
         int linhasAfetadas = 0;
         try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateCep)){
             pstmt.setString(1, endereco.getCep());

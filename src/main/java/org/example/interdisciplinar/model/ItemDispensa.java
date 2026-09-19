@@ -72,7 +72,7 @@ public class ItemDispensa {
 
     @Override
     public String toString() {
-        return "==========ITEM DISPENSA==========" +
+        return "==========ITEM DISPENSA==========" + "\n" +
                 "Id: " + this.id + "\n" +
                 "Id da casa: " + this.idCasa + "\n" +
                 "Id do alimento: " + this.idAlimento + "\n" +

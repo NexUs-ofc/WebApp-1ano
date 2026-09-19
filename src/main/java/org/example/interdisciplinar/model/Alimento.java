@@ -69,7 +69,7 @@ public class Alimento {
 
     @Override
     public String toString() {
-        return "==========ALIMENTO==========" +
+        return "==========ALIMENTO========="+ "\n" +
                 "Id: " + this.id + "\n" +
                 "Código de barras: " + this.codigoBarras + "\n" +
                 "Nome: " + this.nome + "\n" +
