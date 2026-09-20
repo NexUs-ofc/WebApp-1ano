@@ -11,7 +11,7 @@ public class UsuarioDAO {
     private final static Connection conn = GerenteConexao.conectar();
 
     public boolean insert(Usuario usuario){
-        String sqlInsert = "INSERT INTO tb_usuario (nome, email, preferencias_consumo, alerta) VALUES (?, ?, ?, ?)";
+        String sqlInsert = "INSERT INTO tb_usuario (nome, email, preferencias_consumo, configuracao_alerta) VALUES (?, ?, ?, ?)";
         int linhasAfetadas = 0;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sqlInsert)){
@@ -47,12 +47,12 @@ public class UsuarioDAO {
         }
     }
 
-    public List<Usuario> select(Usuario usuario){
-        String sqlSelect = "SELECT * FROM usuario";
+    public List<Usuario> select(){
+        String sqlSelect = "SELECT * FROM tb_usuario";
         List<Usuario> usuarios = new ArrayList<>();
 
-        try (Statement stmt = conn.prepareStatement(sqlSelect)){
-            ResultSet rs = stmt.executeQuery(sqlSelect);
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlSelect);
+             ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()){
                 Usuario usuarioTemporario = new Usuario();
@@ -61,12 +61,10 @@ public class UsuarioDAO {
                 usuarioTemporario.setEmail(rs.getString(3));
                 usuarioTemporario.setPreferenciasCosnumo(rs.getString(4));
                 usuarioTemporario.setConfiguracaoAlerta(rs.getString(5));
-
                 usuarios.add(usuarioTemporario);
             }
             return usuarios;
-
-        }catch (SQLException sqle){
+        } catch (SQLException sqle){
             sqle.printStackTrace();
             return usuarios;
         }
@@ -77,7 +75,7 @@ public class UsuarioDAO {
 
         try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateEmail)){
             pstmt.setString(1, usuario.getEmail());
-            pstmt.setInt(1, usuario.getId());
+            pstmt.setInt(2, usuario.getId());
 
             linhasAfetadas = pstmt.executeUpdate();
             return linhasAfetadas > 0;
@@ -94,7 +92,7 @@ public class UsuarioDAO {
 
         try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdatePreferencias)){
             pstmt.setString(1, usuario.getPreferenciasCosnumo());
-            pstmt.setInt(1, usuario.getId());
+            pstmt.setInt(2, usuario.getId());
 
             linhasAfetadas = pstmt.executeUpdate();
             return linhasAfetadas > 0;
@@ -111,7 +109,7 @@ public class UsuarioDAO {
 
         try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateConfiguracao)){
             pstmt.setString(1, usuario.getConfiguracaoAlerta());
-            pstmt.setInt(1, usuario.getId());
+            pstmt.setInt(2, usuario.getId());
 
             linhasAfetadas = pstmt.executeUpdate();
             return linhasAfetadas > 0;

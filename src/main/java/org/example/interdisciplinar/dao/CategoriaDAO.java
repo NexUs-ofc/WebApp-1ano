@@ -29,7 +29,7 @@ public class CategoriaDAO {
     }
 
     public boolean delete(Categoria categoria){
-        String sqlDelete = "DELETE FROM tb_categoria WHERE id=?";
+        String sqlDelete = "DELETE FROM tb_categoria WHERE id_categoria=?";
         int linhasAfetadas = 0;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sqlDelete)){
@@ -44,14 +44,14 @@ public class CategoriaDAO {
         }
     }
 
-    public List<Categoria> select (Categoria categoria){
+    public List<Categoria> select (){
         String sqlSelect = "SELECT * FROM tb_categoria";
         List<Categoria> categorias = new ArrayList<>();
 
-        try (Statement stmt = conn.prepareStatement(sqlSelect)){
-            ResultSet rs = stmt.executeQuery(sqlSelect);
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlSelect)) {
+            ResultSet rs = pstmt.executeQuery();
 
-            while(rs.next()){
+            while (rs.next()) {
                 Categoria categoriaTemporaria = new Categoria();
                 categoriaTemporaria.setId(rs.getInt(1));
                 categoriaTemporaria.setNome(rs.getString(2));
@@ -67,7 +67,7 @@ public class CategoriaDAO {
     }
 
     public boolean updateName(Categoria categoria){
-        String sqlUpdateName = "UPDATE tb_categoria SET nome=? WHERE id=?";
+        String sqlUpdateName = "UPDATE tb_categoria SET nome=? WHERE id_categoria=?";
         int linhasAfetadas = 0;
         try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateName)){
             pstmt.setString(1, categoria.getNome());
@@ -83,7 +83,7 @@ public class CategoriaDAO {
     }
 
     public boolean updateDescription(Categoria categoria){
-        String sqlUpdateDescription = "UPDATE tb_categoria SET descricao=? WHERE id=?";
+        String sqlUpdateDescription = "UPDATE tb_categoria SET descricao=? WHERE id_categoria=?";
         int linhasAfetadas = 0;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateDescription)){

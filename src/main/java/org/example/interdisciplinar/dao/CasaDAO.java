@@ -8,9 +8,8 @@ import java.util.List;
 
 public class CasaDAO {
     private final Connection conn = GerenteConexao.conectar();
-
     public boolean inserir(Casa casa){
-        String sqlInsert = "INSERT INTO tb_casa(nome, id_usuario, id_endereco) VALUES (?, ?, ?, ?)";
+        String sqlInsert = "INSERT INTO tb_casa(nome, id_usuario, id_endereco) VALUES (?, ?, ?)";
         int linhasAfetadas = 0;
 
         try(PreparedStatement pstmt = conn.prepareStatement(sqlInsert)) {
@@ -29,7 +28,7 @@ public class CasaDAO {
     }
 
     public boolean delete(Casa casa){
-        String sqlDelete = "DELETE FROM tb_casa WHERE id=?";
+        String sqlDelete = "DELETE FROM tb_casa WHERE id_casa=?";
         int linhasAfetadas = 0;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sqlDelete)){
@@ -44,13 +43,11 @@ public class CasaDAO {
         }
     }
 
-    public List<Casa> select(Casa casa){
-
+    public List<Casa> select(){
         String sqlSelect = "SELECT * FROM tb_casa";
         List <Casa> casas = new ArrayList<>();
 
-        try (Statement stmt = conn.prepareStatement(sqlSelect)){
-
+        try (Statement stmt = conn.createStatement()){
             ResultSet rs = stmt.executeQuery(sqlSelect);
 
             while(rs.next()){
@@ -71,7 +68,7 @@ public class CasaDAO {
     }
 
     public boolean updateNome(Casa casa){
-        String sqlUpdateName = "UPDATE tb_casa SET nome=? WHERE id=?";
+        String sqlUpdateName = "UPDATE tb_casa SET nome=? WHERE id_casa=?";
         int linhasAfetadas = 0;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateName)){
