@@ -7,7 +7,7 @@ public class ItemDispensa {
     // Atributos
 
     private int id;
-    private int idCasa;
+    private int idUsuario;
     private int idAlimento;
     private int quantidade;
     private LocalDate validade;
@@ -18,9 +18,9 @@ public class ItemDispensa {
 
     }
 
-    public ItemDispensa(int idCasa, int idAlimento, int quantidade, LocalDate validade) {
+    public ItemDispensa(int idUsuario, int idAlimento, int quantidade, LocalDate validade) {
 
-        this.idCasa = idCasa;
+        this.idUsuario = idUsuario;
         this.idAlimento = idAlimento;
         this.quantidade = quantidade;
         this.validade = validade;
@@ -37,11 +37,11 @@ public class ItemDispensa {
     }
 
     public int getIdCasa() {
-        return idCasa;
+        return idUsuario;
     }
 
     public void setIdCasa(int idCasa) {
-        this.idCasa = idCasa;
+        this.idUsuario = idUsuario;
     }
 
     public int getIdAlimento() {
@@ -74,7 +74,7 @@ public class ItemDispensa {
     public String toString() {
         return "==========ITEM DISPENSA==========" + "\n" +
                 "Id: " + this.id + "\n" +
-                "Id da casa: " + this.idCasa + "\n" +
+                "Id do Usuário: " + this.idUsuario + "\n" +
                 "Id do alimento: " + this.idAlimento + "\n" +
                 "Quantidade: " + this.quantidade + "\n" +
                 "Validade: " + this.validade +

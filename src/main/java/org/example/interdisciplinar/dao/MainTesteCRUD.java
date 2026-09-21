@@ -13,7 +13,7 @@ public class MainTesteCRUD {
         Connection conn = GerenteConexao.conectar();
 
         try {
-            CasaDAO casaDAO = new CasaDAO();
+//            CasaDAO casaDAO = new CasaDAO();
             CategoriaDAO categoriaDAO = new CategoriaDAO();
             EnderecoDAO enderecoDAO = new EnderecoDAO();
             AlimentoDAO alimentoDAO = new AlimentoDAO();
@@ -25,7 +25,7 @@ public class MainTesteCRUD {
 
             Usuario usuario = new Usuario("Maria Silva", "maria@email.com", "Sem lactose", "SMS");
 
-            Casa casa = new Casa("Casa do Victor Schiavon", 1, 1);
+//            Casa casa = new Casa("Casa do Victor Schiavon", 1, 1);
 
             Alimento alimento = new Alimento("7777 5678 345678 7890", "Norgets", "Seara", 1);
 
@@ -33,7 +33,7 @@ public class MainTesteCRUD {
 
             System.out.println(categoriaDAO.insert(categoria));
             System.out.println(enderecoDAO.insert(endereco));
-            System.out.println(casaDAO.inserir(casa));
+//            System.out.println(casaDAO.inserir(casa));
 
             List<Alimento> alimentos = alimentoDAO.select();
             for (Alimento alimento1 : alimentos) {
@@ -77,24 +77,24 @@ public class MainTesteCRUD {
             for (Categoria categoria1 : categoriaDAO.select()) {
                 System.out.println(categoria1);
             }
-            List<Casa> casas = casaDAO.select();
-            for (Casa casa1 : casas) {
-                System.out.println(casa1);
-            }
-            Casa updCasa = casas.get(0);
-            updCasa.setNome("Casa do ruanito batatex");
-            System.out.println("id: " + updCasa.getId());
-            System.out.println("Nome: " + casaDAO.updateNome(updCasa));
-            List<Casa> casasDepoisUpdate = casaDAO.select();
-            for (Casa casa1 : casasDepoisUpdate) {
-                System.out.println(casa1);
-            }
-            Casa delCasa = casasDepoisUpdate.get(casasDepoisUpdate.size() - 1);
-            System.out.println("id: " + delCasa.getId());
-            System.out.println("delete: " + casaDAO.delete(delCasa));
-            for (Casa casa1 : casaDAO.select()) {
-                System.out.println(casa1);
-            }
+//            List<Casa> casas = casaDAO.select();
+//            for (Casa casa1 : casas) {
+//                System.out.println(casa1);
+//            }
+//            Casa updCasa = casas.get(0);
+//            updCasa.setNome("Casa do ruanito batatex");
+//            System.out.println("id: " + updCasa.getId());
+//            System.out.println("Nome: " + casaDAO.updateNome(updCasa));
+//            List<Casa> casasDepoisUpdate = casaDAO.select();
+//            for (Casa casa1 : casasDepoisUpdate) {
+//                System.out.println(casa1);
+//            }
+//            Casa delCasa = casasDepoisUpdate.get(casasDepoisUpdate.size() - 1);
+//            System.out.println("id: " + delCasa.getId());
+//            System.out.println("delete: " + casaDAO.delete(delCasa));
+//            for (Casa casa1 : casaDAO.select()) {
+//                System.out.println(casa1);
+//            }
             List<Endereco> enderecos = enderecoDAO.select();
             for (Endereco endereco1 : enderecos) {
                 System.out.println(endereco1);
