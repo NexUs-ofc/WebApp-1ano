@@ -3,7 +3,6 @@ package org.example.interdisciplinar.model;
 public class Usuario {
 
     // Atributos
-
     private int id;
     private String nome;
     private String email;

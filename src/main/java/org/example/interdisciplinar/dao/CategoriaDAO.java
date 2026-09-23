@@ -6,51 +6,115 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// Abertura da classe
 public class CategoriaDAO {
 
-    private final static Connection conn = GerenteConexao.conectar();
+    // Método para inserir categoria no banco de dados
+    public boolean inserir(Categoria categoria){
 
-    public boolean insert(Categoria categoria){
+        //Abrindo e armazenando conexão com o banco
+        Connection conn = GerenteConexao.conectar();
+
+        //Comando de inserir em SQL
         String sqlInsert = "INSERT INTO tb_categoria(nome, descricao) VALUES (?, ?)";
+
+        //Controle de linhas afetadas
         int linhasAfetadas = 0;
 
+        //Iniciando executor que vai adicionar valores no comando SQL e executará o comando
         try (PreparedStatement pstmt = conn.prepareStatement(sqlInsert)){
 
+            //Seta valores nos '?' do comando SQL
             pstmt.setString(1, categoria.getNome());
             pstmt.setString(2, categoria.getDescricao());
 
-            linhasAfetadas = pstmt.executeUpdate();
-            return linhasAfetadas > 0;
+            //Se ação tiver dados certo commita e retorna true
+            if (linhasAfetadas > 0) {
+                GerenteConexao.commit();
+                return true;
+            }
 
-        } catch (SQLException sqle){
+            //Se não desfaz a ação e retorna false
+            GerenteConexao.rollback();
+            return false;
+
+
+        //Em casos de erros no banco de dados desfaz a ação
+        } catch (SQLException sqle) {
+
+            //Lista todos os erros
             sqle.printStackTrace();
+
+            //Desfaz a ação
+            GerenteConexao.rollback();
+
+            //Retorna false
             return false;
         }
+
     }
 
-    public boolean delete(Categoria categoria){
+    // Método para deletar uma categoria do BD
+    public boolean deletar(int id){
+
+        //Abrindo e armazenando conexão com o banco
+        Connection conn = GerenteConexao.conectar();
+
+        //Comando de deletar em SQL
         String sqlDelete = "DELETE FROM tb_categoria WHERE id_categoria=?";
+
+        //Controle de linhas afetadas
         int linhasAfetadas = 0;
 
+        //Iniciando executor que vai atribuir valor ao comando SQL e executará ele
         try (PreparedStatement pstmt = conn.prepareStatement(sqlDelete)){
-            pstmt.setInt(1, categoria.getId());
 
-            linhasAfetadas = pstmt.executeUpdate();
-            return linhasAfetadas > 0;
+            //Seta valor no '?' do comando SQL
+            pstmt.setInt(1, id);
 
-        } catch (SQLException sqle){
+            //Se ação tiver dados certo commita e retorna true
+            if (linhasAfetadas > 0) {
+                GerenteConexao.commit();
+                return true;
+            }
+
+            //Se não desfaz a ação e retorna false
+            GerenteConexao.rollback();
+            return false;
+
+
+        //Em casos de erros no banco de dados desfaz a ação
+        } catch (SQLException sqle) {
+
+            //Lista todos os erros
             sqle.printStackTrace();
+
+            //Desfaz a ação
+            GerenteConexao.rollback();
+
+            //Retorna false
             return false;
         }
+
     }
 
-    public List<Categoria> select (){
+    // Método para listar todas as categorias do BD
+    public List<Categoria> listar(){
+
+        //Abrindo e armazenando conexão com o banco
+        Connection conn = GerenteConexao.conectar();
+
+        //Comando de listar em SQL
         String sqlSelect = "SELECT * FROM tb_categoria";
+
+        //Criando uma lista que vai armazenar os registros das categorias
         List<Categoria> categorias = new ArrayList<>();
 
+        //Cria executor que receberá comando e executará ele
         try (PreparedStatement pstmt = conn.prepareStatement(sqlSelect)) {
             ResultSet rs = pstmt.executeQuery();
 
+            //Enquanto tiver mais registros cria novos objetos e adiciona à lista
             while (rs.next()) {
                 Categoria categoriaTemporaria = new Categoria();
                 categoriaTemporaria.setId(rs.getInt(1));
@@ -59,22 +123,55 @@ public class CategoriaDAO {
 
                 categorias.add(categoriaTemporaria);
             }
+
+            // Commita a ação no banco de dados
+            GerenteConexao.commit();
+
+            // Retrona a lista de administradores
             return categorias;
-        } catch(SQLException sqle){
+
+        //Em casos de erros no banco de dados desfaz a ação
+        } catch (SQLException sqle) {
+
+            //Lista todos os erros
             sqle.printStackTrace();
+
+            //Desfaz a ação
+            GerenteConexao.rollback();
+
+            //Retorna a lista
             return categorias;
         }
     }
 
-    public boolean updateName(Categoria categoria){
-        String sqlUpdateName = "UPDATE tb_categoria SET nome=? WHERE id_categoria=?";
-        int linhasAfetadas = 0;
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateName)){
-            pstmt.setString(1, categoria.getNome());
-            pstmt.setInt(2, categoria.getId());
+    // Método para atualizar o nome da categoria
+    public boolean atualizarNome(String nomeNovo, int idCategoria){
 
-            linhasAfetadas = pstmt.executeUpdate();
-            return linhasAfetadas > 0;
+        //Abrindo e armazenando conexão com o banco
+        Connection conn = GerenteConexao.conectar();
+
+        //Comando de atualizar em SQL
+        String sqlUpdateName = "UPDATE tb_categoria SET nome=? WHERE id_categoria=?";
+
+        //Controle de linhas afetadas
+        int linhasAfetadas = 0;
+
+        //Iniciando executor que vai atribuir valores ao comando SQL e executará ele
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateName)){
+
+            //Seta valores nos '?' do comando SQL
+            pstmt.setString(1, nomeNovo);
+            pstmt.setInt(2, idCategoria);
+
+            //Se ação tiver dados certo commita e retorna true
+            if (linhasAfetadas > 0) {
+                GerenteConexao.commit();
+                return true;
+            }
+
+            //Se não desfaz a ação e retorna false
+            GerenteConexao.rollback();
+            return false;
 
         } catch (SQLException sqle){
             sqle.printStackTrace();
@@ -82,19 +179,49 @@ public class CategoriaDAO {
         }
     }
 
-    public boolean updateDescription(Categoria categoria){
+    // Método para atualizar a descrição da categoria
+    public boolean atualizarDescricao(String descricaoNova, int idCategoria){
+
+        //Abrindo e armazenando conexão com o banco
+        Connection conn = GerenteConexao.conectar();
+
+        //Comando de atualizar em SQL
         String sqlUpdateDescription = "UPDATE tb_categoria SET descricao=? WHERE id_categoria=?";
+
+        //Controle de linhas afetadas
         int linhasAfetadas = 0;
 
+        //Iniciando executor que vai atribuir valores ao comando SQL e executará ele
         try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateDescription)){
-            pstmt.setString(1, categoria.getDescricao());
-            pstmt.setInt(2, categoria.getId());
-            linhasAfetadas = pstmt.executeUpdate();
-            return linhasAfetadas > 0;
 
+            //Seta valores nos '?' do comando SQL
+            pstmt.setString(1, descricaoNova);
+            pstmt.setInt(2, idCategoria);
+
+            //Se ação tiver dados certo commita e retorna true
+            if (linhasAfetadas > 0) {
+                GerenteConexao.commit();
+                return true;
+            }
+
+            //Se não desfaz a ação e retorna false
+            GerenteConexao.rollback();
+            return false;
+
+
+
+        //Em casos de erros no banco de dados desfaz a ação
         } catch (SQLException sqle) {
+
+            //Lista todos os erros
             sqle.printStackTrace();
+
+            //Desfaz a ação
+            GerenteConexao.rollback();
+
+            //Retorna false
             return false;
         }
+
     }
 }
