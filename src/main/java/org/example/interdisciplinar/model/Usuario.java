@@ -6,7 +6,7 @@ public class Usuario {
     private int id;
     private String nome;
     private String email;
-    private String preferenciasCosnumo;
+    private String preferenciasConsumo;
     private String configuracaoAlerta;
 
     // Construtores
@@ -19,7 +19,7 @@ public class Usuario {
 
         this.nome = nome;
         this.email = email;
-        this.preferenciasCosnumo = preferenciasCosnumo;
+        this.preferenciasConsumo = preferenciasCosnumo;
         this.configuracaoAlerta = configuracaoAlerta;
     }
 
@@ -49,12 +49,12 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getPreferenciasCosnumo() {
-        return preferenciasCosnumo;
+    public String getPreferenciasConsumo() {
+        return preferenciasConsumo;
     }
 
-    public void setPreferenciasCosnumo(String preferenciasCosnumo) {
-        this.preferenciasCosnumo = preferenciasCosnumo;
+    public void setPreferenciasConsumo(String preferenciasCosnumo) {
+        this.preferenciasConsumo = preferenciasCosnumo;
     }
 
     public String getConfiguracaoAlerta() {
@@ -73,7 +73,7 @@ public class Usuario {
                 "Id: " + this.id + "\n" +
                 "Nome: " + this.nome + "\n" +
                 "Email: " + this.email + "\n" +
-                "Preferências de consumo: " + this.preferenciasCosnumo + "\n" +
+                "Preferências de consumo: " + this.preferenciasConsumo + "\n" +
                 "Configuração do alerta: " + this.configuracaoAlerta + "\n" +
                 "============================";
     }

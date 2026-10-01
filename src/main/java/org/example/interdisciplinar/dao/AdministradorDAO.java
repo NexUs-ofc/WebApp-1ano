@@ -61,6 +61,7 @@ public class AdministradorDAO {
         //Comando de listar tudo em SQL
         String sqlSelect = "SELECT * FROM tb_administrador";
 
+        // Criando a lista para armazenar os registros da consulta
         List<Administrador> administradores = new ArrayList<>();
 
         //Abrindo e armazenando conexão com o banco
@@ -99,6 +100,56 @@ public class AdministradorDAO {
             return administradores;
         }
     }
+    // Método para buscar Administrador por id
+    public Administrador listarPorId(int idAdm){
+
+        //Comando de listar pelo id em SQL
+        String sqlSelect = "SELECT * FROM tb_administrador WHERE id_admin=?";
+
+        //Abrindo e armazenando conexão com o banco
+        Connection conn = GerenteConexao.conectar();
+
+        //Iniciando executor que: Atribuirá valores ao comando sql e executará ele
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlSelect)){
+
+            //Seta valores nos '?' do comando SQL
+            pstmt.setInt(1, idAdm);
+
+            //Executa a consulta e atribui o valor retornado a variável de resultSet
+            ResultSet rs = pstmt.executeQuery();
+
+            //Enquanto tiver mais registros cria novos objetos e adiciona à lista
+            if (rs.next()) {
+                Administrador admTemporario = new Administrador();
+                admTemporario.setId(rs.getInt(1));
+                admTemporario.setNome(rs.getString(2));
+                admTemporario.setEmail(rs.getString(3));
+                admTemporario.setSenha(rs.getString(4));
+
+                // Commita a ação no banco de dados e retorna o Admin encontrado
+                GerenteConexao.commit();
+                return admTemporario;
+            }
+            // Commita a ação no banco de dados e retorna nulo
+            GerenteConexao.commit();
+            return null;
+
+
+
+        //Em casos de erros no banco de dados desfaz a ação
+        } catch (SQLException sqle) {
+
+            //Lista todos os erros
+            sqle.printStackTrace();
+
+            //Desfaz a ação
+            GerenteConexao.rollback();
+
+            //Retorna nulo
+            return null;
+        }
+
+    }
 
     /* Método para atualizar nome do administrador
           requisitando a senha para fazer a mudança */
@@ -107,7 +158,7 @@ public class AdministradorDAO {
         //Controle de linhas afetadas
         int linhasAfetadas = 0;
 
-        //Comando de "Ação tal" em SQL
+        //Comando de atualizar em SQL
         String sqlUpdate = "UPDATE tb_administrador SET nome=? WHERE senha=?";
 
         //Abrindo e armazenando conexão com o banco

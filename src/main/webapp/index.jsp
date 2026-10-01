@@ -43,12 +43,12 @@
 <body>
     <div class="sidebar">
         <h1>Ceris</h1>
-        <a href="webapp/endereco.jsp">Endereço</a>
-        <a href="webapp/usuario.jsp">Usuário</a>
-        <a href="webapp/categoria.jsp">Categoria</a>
-        <a href="webapp/administrador.jsp">Administrador</a>
-        <a href="webapp/alimento.jsp">Alimento</a>
-        <a href="webapp/itemdispensa.jsp">Item Dispensa</a>
+        <a href="${pageContext.request.contextPath}/enderecos">Endereço</a>
+        <a href="${pageContext.request.contextPath}/usuarios">Usuário</a>
+        <a href="${pageContext.request.contextPath}/categorias">Categoria</a>
+        <a href="${pageContext.request.contextPath}/administradores">Administrador</a>
+        <a href="${pageContext.request.contextPath}/alimentos">Alimento</a>
+        <a href="${pageContext.request.contextPath}/itensDispensa">Item Dispensa</a>
     </div>
     <div class="conteudo">
         <h1>Área Restrita!</h1>

@@ -27,7 +27,7 @@ public class UsuarioDAO {
             //Seta valores nos '?' do comando SQL
             pstmt.setString(1, usuario.getNome());
             pstmt.setString(2, usuario.getEmail());
-            pstmt.setString(3, usuario.getPreferenciasCosnumo());
+            pstmt.setString(3, usuario.getPreferenciasConsumo());
             pstmt.setString(4, usuario.getConfiguracaoAlerta());
 
             //Se ação tiver dados certo commita e retorna true
@@ -117,7 +117,7 @@ public class UsuarioDAO {
                 usuarioTemporario.setId(rs.getInt(1));
                 usuarioTemporario.setNome(rs.getString(2));
                 usuarioTemporario.setEmail(rs.getString(3));
-                usuarioTemporario.setPreferenciasCosnumo(rs.getString(4));
+                usuarioTemporario.setPreferenciasConsumo(rs.getString(4));
                 usuarioTemporario.setConfiguracaoAlerta(rs.getString(5));
                 usuarios.add(usuarioTemporario);
             }
