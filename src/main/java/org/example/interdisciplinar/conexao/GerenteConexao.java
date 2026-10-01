@@ -16,6 +16,10 @@ public class GerenteConexao {
 
                 Conexao conexao = new Conexao();
                 conn = conexao.getConnection();
+                // Desativa o AutoCommit
+                if (conn != null) {
+                    conn.setAutoCommit(false);
+                }
 
             }
         } catch (SQLException sqle) {
