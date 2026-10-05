@@ -49,7 +49,7 @@
       <c:forEach var="itemDispensa" items="${itensDispensa}">
         <tr>
           <td><c:out value="${itemDispensa.id}"/></td>
-          <td><c:out value="${itemDispensa.idUsuario}"/></td>
+          <td><c:out value="${itemDispensa.idCasa}"/></td>
           <td><c:out value="${itemDispensa.idAlimento}"/></td>
           <td><c:out value="${itemDispensa.quantidade}"/></td>
           <td><c:out value="${itemDispensa.validade}"/></td>

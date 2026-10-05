@@ -31,6 +31,8 @@ public class ItemDispensaDAO {
             pstmt.setInt(3, itemDispensa.getQuantidade());
             pstmt.setDate(4, Date.valueOf(itemDispensa.getValidade()));
 
+            linhasAfetadas = pstmt.executeUpdate();
+
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
                 GerenteConexao.commit();
@@ -41,7 +43,7 @@ public class ItemDispensaDAO {
             GerenteConexao.rollback();
             return false;
 
-        //Em casos de erros no banco de dados desfaz a ação
+            //Em casos de erros no banco de dados desfaz a ação
         } catch (SQLException sqle) {
 
             //Lista todos os erros
@@ -73,6 +75,8 @@ public class ItemDispensaDAO {
             //Seta valor no '?' do comando SQL
             pstmt.setInt(1, idItem);
 
+            linhasAfetadas = pstmt.executeUpdate();
+
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
                 GerenteConexao.commit();
@@ -84,7 +88,7 @@ public class ItemDispensaDAO {
             return false;
 
 
-        //Em casos de erros no banco de dados desfaz a ação
+            //Em casos de erros no banco de dados desfaz a ação
         } catch (SQLException sqle) {
 
             //Lista todos os erros
@@ -112,7 +116,7 @@ public class ItemDispensaDAO {
 
         //Cria executor que receberá comando e executará ele
         try (PreparedStatement pstmt = conn.prepareStatement(sqlSelect)){
-             ResultSet rs = pstmt.executeQuery();
+            ResultSet rs = pstmt.executeQuery();
 
             //Enquanto tiver mais registros cria novos objetos e adiciona à lista
             while (rs.next()) {
@@ -125,6 +129,7 @@ public class ItemDispensaDAO {
                 if (rs.getDate(5) != null) {
                     itemdispensa.setValidade(rs.getDate(5).toLocalDate());
                 }
+                itensDispensa.add(itemdispensa);
             }
 
             // Commita a ação no banco de dados
@@ -133,7 +138,7 @@ public class ItemDispensaDAO {
             // Retrona a lista de itens da dispensa
             return itensDispensa;
 
-        //Em casos de erros no banco de dados desfaz a ação
+            //Em casos de erros no banco de dados desfaz a ação
         } catch (SQLException sqle) {
             //Lista todos os erros
             sqle.printStackTrace();
@@ -166,6 +171,8 @@ public class ItemDispensaDAO {
             pstmt.setInt(1, qtdNova);
             pstmt.setInt(2, idItem);
 
+            linhasAfetadas = pstmt.executeUpdate();
+
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
                 GerenteConexao.commit();
@@ -176,7 +183,7 @@ public class ItemDispensaDAO {
             GerenteConexao.rollback();
             return false;
 
-        //Em casos de erros no banco de dados desfaz a ação
+            //Em casos de erros no banco de dados desfaz a ação
         } catch (SQLException sqle) {
             //Lista todos os erros
             sqle.printStackTrace();
@@ -201,12 +208,14 @@ public class ItemDispensaDAO {
         //Controle de linhas afetadas
         int linhasAfetadas = 0;
 
-        //Iniciando executor que vai atribuir valores ao comando SQL e executará ele
+        //Iniciando executor que vai atribuir valores ao comando SQL
         try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateValidade)){
 
             //Seta valores nos '?' do comando SQL
             pstmt.setDate(1, Date.valueOf(dataNova));
             pstmt.setInt(2, idItem);
+
+            linhasAfetadas = pstmt.executeUpdate();
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
@@ -218,7 +227,7 @@ public class ItemDispensaDAO {
             GerenteConexao.rollback();
             return false;
 
-        //Em casos de erros no banco de dados desfaz a ação
+            //Em casos de erros no banco de dados desfaz a ação
         } catch (SQLException sqle) {
 
             //Lista todos os erros
