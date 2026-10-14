@@ -39,7 +39,28 @@
           <button type="submit">Pesquisar</button>
         </form>
       </div>
-
+        <div class="Botaocriar">
+            <button type="button" onclick="document.getElementById('popupUsuario').showModal()">Adicionar usuário</button>
+        </div>
+        <div class="popupCriar">
+            <dialog id="popupUsuario">
+                <h2>Novo usuário</h2>
+                <form action="${pageContext.request.contextPath}/usuarios" method="post">
+                    <label for="nome">Nome</label>
+                    <input id="nome" name="nome" type="text" required>
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" required>
+                    <label for="preferenciasConsumo">Preferências de consumo</label>
+                    <input id="preferenciasConsumo" name="preferenciasConsumo" type="text">
+                    <label for="configuracaoAlerta">configurações de alerta</label>
+                    <input id="configuracaoAlerta" name="configuracaoAlerta" type="text">
+                     <div class="botoes-popup">
+                                <button type="submit">Salvar</button>
+                                <button type="button" onclick="document.getElementById('popupUsuario').close()">Cancelar</button>
+                            </div>
+                        </form>
+                    </dialog>
+        </div>
       <div class="cartao">
         <table>
           <thead>
