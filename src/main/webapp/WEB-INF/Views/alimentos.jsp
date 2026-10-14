@@ -40,6 +40,30 @@
         </form>
       </div>
 
+    <div class="Botaocriar">
+                <button type="button" onclick="document.getElementById('popupAlimento').showModal()">Adicionar alimento</button>
+            </div>
+
+            <div class="popupCriar">
+                <dialog id="popupAlimento">
+                    <h2>Novo alimento</h2>
+                    <form action="${pageContext.request.contextPath}/alimentos" method="post">
+                        <label for="codigoBarras">Código de barras</label>
+                        <input id="codigoBarras" name="codigoBarras" type="text" required>
+                        <label for="nome">Nome</label>
+                        <input id="nome" name="nome" type="text" required>
+                        <label for="marcaAlimento">Marca</label>
+                        <input id="marcaAlimento" name="marca" type="text" required>
+                        <label for="idCategoria">ID da categoria</label>
+                        <input id="idCategoria" name="idCategoria" type="number" required>
+                        <div class="botoes-popup">
+                            <button type="submit">Salvar</button>
+                            <button type="button" onclick="document.getElementById('popupAlimento').close()">Cancelar</button>
+                        </div>
+                    </form>
+                </dialog>
+            </div>
+
       <div class="cartao">
         <table>
           <thead>
@@ -68,5 +92,15 @@
       </div>
     </c:if>
   </main>
+
+    <script>
+        function abrirPopupAlimento() {
+            document.getElementById("popupAlimento").showModal();
+        }
+        function fecharPopupUsuario() {
+            document.getElementById("popupAlimento").close();
+        }
+    </script>
+
 </body>
 </html>

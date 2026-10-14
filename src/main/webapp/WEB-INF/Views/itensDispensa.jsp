@@ -35,31 +35,49 @@
     <c:if test="${not empty itensDispensa}">
       <div class="pesquisa">
         <form action="${pageContext.request.contextPath}/itensDispensa" method="get">
-          <input type="text" name="pesquisa" placeholder="procurar" value="${param.pesquisa}">
+          <input type="text" name="pesquisa" placeholder="Pesquisar item..." value="${param.pesquisa}">
           <button type="submit">Pesquisar</button>
         </form>
       </div>
+    <button type="button" onclick="abrirPopupItemDispensa()">Adicionar item</button>
+    <dialog id="popupItemDispensa">
+      <h2>Novo item da dispensa</h2>
+      <form action="${pageContext.request.contextPath}/itensDispensa" method="post">
+        <label for="idCasa">ID da casa</label>
+        <input id="idCasa" name="idCasa" type="number" required>
+        <label for="idAlimento">ID do alimento</label>
+        <input id="idAlimento" name="idAlimento" type="number" required>
+        <label for="quantidade">Quantidade</label>
+        <input id="quantidade" name="quantidade" type="number" min="1" required>
+        <label for="validade">Validade</label>
+        <input id="validade" name="validade" type="date" required>
+        <div class="botoes-popup">
+          <button type="submit">Salvar</button>
+          <button type="button" onclick="fecharPopupItemDispensa()">Cancelar</button>
+        </div>
+      </form>
+    </dialog>
 
       <div class="cartao">
         <table>
           <thead>
             <tr>
               <th>ID</th>
-              <th>ID do Usuário</th>
-              <th>ID do Alimento</th>
+              <th>ID da casa</th>
+              <th>ID do alimento</th>
               <th>Quantidade</th>
               <th>Validade</th>
             </tr>
           </thead>
           <tbody>
             <c:forEach var="itemDispensa" items="${itensDispensa}">
-              <c:if test="${empty param.pesquisa or fn:contains(fn:toLowerCase(itemDispensa.id), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(itemDispensa.idCasa), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(itemDispensa.idAlimento), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(itemDispensa.quantidade), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(itemDispensa.validade), fn:toLowerCase(param.pesquisa))}">
+              <c:if test="${empty param.pesquisa or itemDispensa.id.toString() == param.pesquisa or itemDispensa.idCasa.toString() == param.pesquisa or itemDispensa.idAlimento.toString() == param.pesquisa or fn:contains(itemDispensa.validade.toString(), param.pesquisa)}">
                 <tr>
-                <td><c:out value="${itemDispensa.id}"/></td>
-                <td><c:out value="${itemDispensa.idCasa}"/></td>
-                <td><c:out value="${itemDispensa.idAlimento}"/></td>
-                <td><c:out value="${itemDispensa.quantidade}"/></td>
-                <td><c:out value="${itemDispensa.validade}"/></td>
+                  <td><c:out value="${itemDispensa.id}"/></td>
+                  <td><c:out value="${itemDispensa.idCasa}"/></td>
+                  <td><c:out value="${itemDispensa.idAlimento}"/></td>
+                  <td><c:out value="${itemDispensa.quantidade}"/></td>
+                  <td><c:out value="${itemDispensa.validade}"/></td>
                 </tr>
               </c:if>
             </c:forEach>
@@ -68,5 +86,16 @@
       </div>
     </c:if>
   </main>
+
+  <script>
+    function abrirPopupItemDispensa() {
+      document.getElementById("popupItemDispensa").showModal();
+    }
+
+    function fecharPopupItemDispensa() {
+      document.getElementById("popupItemDispensa").close();
+    }
+  </script>
+
 </body>
 </html>
