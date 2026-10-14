@@ -54,12 +54,12 @@
                     <input id="preferenciasConsumo" name="preferenciasConsumo" type="text">
                     <label for="configuracaoAlerta">configurações de alerta</label>
                     <input id="configuracaoAlerta" name="configuracaoAlerta" type="text">
-                     <div class="botoes-popup">
-                                <button type="submit">Salvar</button>
-                                <button type="button" onclick="document.getElementById('popupUsuario').close()">Cancelar</button>
-                            </div>
-                        </form>
-                    </dialog>
+                    <div class="botoes-popup">
+                        <button type="submit">Salvar</button>
+                        <button type="button" onclick="document.getElementById('popupUsuario').close()">Cancelar</button>
+                    </div>
+                </form>
+            </dialog>
         </div>
       <div class="cartao">
         <table>
@@ -89,5 +89,13 @@
       </div>
     </c:if>
   </main>
+  <script>
+      function abrirPopupUsuario() {
+          document.getElementById("popupUsuario").showModal();
+      }
+      function fecharPopupUsuario() {
+          document.getElementById("popupUsuario").close();
+      }
+  </script>
 </body>
 </html>
