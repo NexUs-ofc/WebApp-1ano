@@ -31,20 +31,42 @@
     <c:if test="${empty enderecos}">
       <p class="vazio">Nenhum endereço cadastrado</p>
     </c:if>
-
     <c:if test="${not empty enderecos}">
       <div class="pesquisa">
         <form action="${pageContext.request.contextPath}/enderecos" method="get">
-          <input type="text" name="pesquisa" placeholder="Procurar" value="${param.pesquisa}">
+          <input type="text" name="pesquisa" placeholder="Pesquisar endereço..." value="${param.pesquisa}">
           <button type="submit">Pesquisar</button>
         </form>
       </div>
+
+      <button type="button" onclick="abrirPopupEndereco()">Adicionar endereço</button>
+      <dialog id="popupEndereco">
+        <h2>Novo endereço</h2>
+        <form action="${pageContext.request.contextPath}/enderecos" method="post">
+            <label for="ruaEndereco">Rua</label>
+            <input id="ruaEndereco" name="rua" type="text" required>
+            <label for="numeroEndereco">Número</label>
+            <input id="numeroEndereco" name="numero" type="number" required>
+            <label for="bairroEndereco">Bairro</label>
+            <input id="bairroEndereco" name="bairro" type="text" required>
+            <label for="cidadeEndereco">Cidade</label>
+            <input id="cidadeEndereco" name="cidade" type="text" required>
+            <label for="estadoEndereco">Estado</label>
+            <input id="estadoEndereco" name="estado" type="text" maxlength="2" required>
+            <label for="cepEndereco">CEP</label>
+            <input id="cepEndereco" name="cep" type="text" required>
+            <div class="botoes-popup">
+                <button type="submit">Salvar</button>
+                <button type="button" onclick="fecharPopupEndereco()">Cancelar</button>
+            </div>
+        </form>
+      </dialog>
 
       <div class="cartao">
         <table>
           <thead>
             <tr>
-              <th>ID Endereço</th>
+              <th>ID</th>
               <th>Rua</th>
               <th>Número</th>
               <th>Bairro</th>
@@ -55,15 +77,15 @@
           </thead>
           <tbody>
             <c:forEach var="endereco" items="${enderecos}">
-              <c:if test="${empty param.pesquisa or fn:contains(fn:toLowerCase(endereco.id), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(endereco.rua), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(endereco.numero), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(endereco.bairro), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(endereco.cidade), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(endereco.estado), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(endereco.cep), fn:toLowerCase(param.pesquisa))}">
+              <c:if test="${empty param.pesquisa or fn:contains(fn:toLowerCase(endereco.rua), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(endereco.bairro), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(endereco.cidade), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(endereco.estado), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(endereco.cep), fn:toLowerCase(param.pesquisa)) or endereco.id.toString() == param.pesquisa}">
                 <tr>
-                <td><c:out value="${endereco.id}"/></td>
-                <td><c:out value="${endereco.rua}"/></td>
-                <td><c:out value="${endereco.numero}"/></td>
-                <td><c:out value="${endereco.bairro}"/></td>
-                <td><c:out value="${endereco.cidade}"/></td>
-                <td><c:out value="${endereco.estado}"/></td>
-                <td><c:out value="${endereco.cep}"/></td>
+                  <td><c:out value="${endereco.id}"/></td>
+                  <td><c:out value="${endereco.rua}"/></td>
+                  <td><c:out value="${endereco.numero}"/></td>
+                  <td><c:out value="${endereco.bairro}"/></td>
+                  <td><c:out value="${endereco.cidade}"/></td>
+                  <td><c:out value="${endereco.estado}"/></td>
+                  <td><c:out value="${endereco.cep}"/></td>
                 </tr>
               </c:if>
             </c:forEach>
@@ -72,5 +94,14 @@
       </div>
     </c:if>
   </main>
+
+  <script>
+    function abrirPopupEndereco() {
+      document.getElementById("popupEndereco").showModal();
+    }
+    function fecharPopupEndereco() {
+      document.getElementById("popupEndereco").close();
+    }
+  </script>
 </body>
 </html>

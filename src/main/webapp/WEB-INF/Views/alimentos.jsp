@@ -39,9 +39,11 @@
           <button type="submit">Pesquisar</button>
         </form>
       </div>
+
     <div class="Botaocriar">
                 <button type="button" onclick="document.getElementById('popupAlimento').showModal()">Adicionar alimento</button>
             </div>
+
             <div class="popupCriar">
                 <dialog id="popupAlimento">
                     <h2>Novo alimento</h2>
@@ -61,6 +63,7 @@
                     </form>
                 </dialog>
             </div>
+
       <div class="cartao">
         <table>
           <thead>
@@ -89,6 +92,7 @@
       </div>
     </c:if>
   </main>
+
     <script>
         function abrirPopupAlimento() {
             document.getElementById("popupAlimento").showModal();
@@ -97,5 +101,6 @@
             document.getElementById("popupAlimento").close();
         }
     </script>
+
 </body>
 </html>

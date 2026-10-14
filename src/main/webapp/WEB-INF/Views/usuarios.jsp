@@ -89,6 +89,7 @@
       </div>
     </c:if>
   </main>
+
   <script>
       function abrirPopupUsuario() {
           document.getElementById("popupUsuario").showModal();
@@ -97,5 +98,6 @@
           document.getElementById("popupUsuario").close();
       }
   </script>
+
 </body>
 </html>

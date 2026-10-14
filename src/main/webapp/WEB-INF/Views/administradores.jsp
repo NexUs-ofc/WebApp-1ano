@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/views.css">
 </head>
 <body>
-
   <nav class="sidebar">
     <h2>Ceris</h2>
     <a href="${pageContext.request.contextPath}/index.jsp">Análise</a>
