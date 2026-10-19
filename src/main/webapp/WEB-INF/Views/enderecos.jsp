@@ -42,7 +42,7 @@
       <button type="button" onclick="abrirPopupEndereco()">Adicionar endereço</button>
       <dialog id="popupEndereco">
         <h2>Novo endereço</h2>
-        <form action="${pageContext.request.contextPath}/enderecos" method="post">
+        <form action="${pageContext.request.contextPath}/enderecos/insert" method="post">
             <label for="ruaEndereco">Rua</label>
             <input id="ruaEndereco" name="rua" type="text" required>
             <label for="numeroEndereco">Número</label>

@@ -47,7 +47,7 @@
             <div class="popupCriar">
                 <dialog id="popupAlimento">
                     <h2>Novo alimento</h2>
-                    <form action="${pageContext.request.contextPath}/alimentos" method="post">
+                    <form action="${pageContext.request.contextPath}/alimentos/insert" method="post">
                         <label for="codigoBarras">Código de barras</label>
                         <input id="codigoBarras" name="codigoBarras" type="text" required>
                         <label for="nome">Nome</label>

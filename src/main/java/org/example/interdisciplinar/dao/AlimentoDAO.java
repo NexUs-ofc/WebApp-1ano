@@ -32,6 +32,9 @@ public class AlimentoDAO {
             pstmt.setString(3, alimento.getMarca());
             pstmt.setInt(4, alimento.getIdCategoria());
 
+            // Executa o comando e recebe a quantidade de linhas afetadas
+            linhasAfetadas = pstmt.executeUpdate();
+
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
                 GerenteConexao.commit();

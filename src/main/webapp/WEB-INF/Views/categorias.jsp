@@ -41,11 +41,11 @@
       <button type="button" onclick="abrirPopupCategoria()">Adicionar categoria</button>
       <dialog id="popupCategoria">
         <h2>Nova categoria</h2>
-        <form action="${pageContext.request.contextPath}/categorias" method="post">
+        <form action="${pageContext.request.contextPath}/categorias/insert" method="post">
         <label for="nomeCategoria">Nome</label>
-        <input id="nomeCategoria" name="nome" type="text" required>
+        <input id="nomeCategoria" name="nomeCategoria" type="text" required>
         <label for="descricaoCategoria">Descrição</label>
-        <input id="descricaoCategoria" name="descricao" type="text" required>
+        <input id="descricaoCategoria" name="descricaoCategoria" type="text" required>
         <div class="botoes-popup">
         <button type="submit">Salvar</button>
         <button type="button" onclick="fecharPopupCategoria()">Cancelar</button>

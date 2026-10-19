@@ -29,6 +29,7 @@ public class CategoriaDAO {
             pstmt.setString(2, categoria.getDescricao());
 
             //Se ação tiver dados certo commita e retorna true
+            linhasAfetadas = pstmt.executeUpdate();
             if (linhasAfetadas > 0) {
                 GerenteConexao.commit();
                 return true;

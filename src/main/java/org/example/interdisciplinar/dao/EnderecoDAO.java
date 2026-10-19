@@ -145,6 +145,8 @@ public class EnderecoDAO {
         }
     }
 
+
+
     // Método de atualizar a rua do endereço
     public boolean atualizarRua(String ruaNova, int idEndereco){
 
