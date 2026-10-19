@@ -1,4 +1,4 @@
-package org.example.interdisciplinar.controller.Alimento;
+package org.example.interdisciplinar.controller.ItemDispensa;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -7,23 +7,23 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.AlimentoDAO;
-import org.example.interdisciplinar.model.Alimento;
+import org.example.interdisciplinar.dao.ItemDispensaDAO;
+import org.example.interdisciplinar.model.ItemDispensa;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 
 // Definindo um nome interno para o servlet e a url que ativa ele
-@WebServlet(name = "CriarAlimentos", value = "/alimentos/insert")
+@WebServlet(name = "CriarItem", value = "/itens/insert")
 
 
-public class ServletCriarAlimento extends HttpServlet {
-    private AlimentoDAO alimentoDAO;
+public class ServletCriarItem extends HttpServlet {
+    private ItemDispensaDAO itemDispensaDAO;
 
     @Override
     public void init(){
-        alimentoDAO = new AlimentoDAO();
+        itemDispensaDAO = new ItemDispensaDAO();
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ServletCriarAlimento extends HttpServlet {
             throws ServletException, IOException {
 
         request.getRequestDispatcher(
-                "/WEB-INF/Views/alimentos.jsp"
+                "/WEB-INF/Views/itensDespensa.jsp"
         ).forward(request, response);
     }
 
@@ -51,7 +51,7 @@ public class ServletCriarAlimento extends HttpServlet {
         int idCasa;
         int idAlimento;
         int quantidade;
-        Date validade;
+        LocalDate validade;
 
         try {
             idCasa = Integer.parseInt(idCasaTexto);
@@ -85,25 +85,33 @@ public class ServletCriarAlimento extends HttpServlet {
             return;
         }
 
+        try {
+            validade = LocalDate.parse(validadeTexto);
+        } catch (Exception e){
+            response.sendError(
+                    HttpServletResponse.SC_BAD_REQUEST, "A data precisa ser em formato de data."
+            );
+            return;
+        }
+
 
 
         // Cria o objeto Alimento
-        Alimento alimento = new Alimento();
-
-        alimento.setCodigoBarras(codigoBarras);
-        alimento.setNome(nome);
-        alimento.setMarca(marca);
-        alimento.setIdCategoria(idCategoria);
+        ItemDispensa itemDispensa = new ItemDispensa();
+        itemDispensa.setIdCasa(idCasa);
+        itemDispensa.setIdAlimento(idAlimento);
+        itemDispensa.setQuantidade(quantidade);
+        itemDispensa.setValidade(validade);
 
         // Chama o DAO para inserir no banco
 
-        boolean inserido = alimentoDAO.inserir(alimento);
+        boolean inserido = itemDispensaDAO.inserir(itemDispensa);
 
         if (inserido) {
 
             // Redireciona para a listagem
             response.sendRedirect(
-                    request.getContextPath() + "/alimentos"
+                    request.getContextPath() + "/itens"
             );
 
         } else {

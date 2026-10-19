@@ -12,6 +12,6 @@ public class Constantes {
     public static final String regexCpf = "^(?:[0-9]{11}|[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}-[0-9]{2})$";
 
     // Caminho da página de erro
-    public static final String paginaErro = ""
+    public static final String paginaErro = "/WEB-INF/erro.jsp";
 
 }
