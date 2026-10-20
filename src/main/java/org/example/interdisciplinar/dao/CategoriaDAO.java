@@ -1,6 +1,7 @@
 package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
+import org.example.interdisciplinar.model.Alimento;
 import org.example.interdisciplinar.model.Categoria;
 import java.sql.*;
 import java.util.ArrayList;
@@ -142,6 +143,24 @@ public class CategoriaDAO {
 
             //Retorna a lista
             return categorias;
+        }
+    }
+
+    public boolean atualizar(Categoria categoria){
+        String sql = "UPDATE tb_categoria SET nome=?, descricao=? WHERE id_categoria=?";
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
+            pstmt.setString(1, categoria.getNome());
+            pstmt.setString(2, categoria.getDescricao());
+            pstmt.setInt(3, categoria.getId());
+            int linhasAfetadas = pstmt.executeUpdate();
+            return linhasAfetadas > 0;
+
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+            return false;
         }
     }
 

@@ -7,7 +7,7 @@ public class Usuario {
     private String nome;
     private String email;
     private String preferenciasConsumo;
-    private String configuracaoAlerta;
+    private ConfiguracaoAlerta configuracaoAlerta;
 
     // Construtores
 
@@ -15,11 +15,11 @@ public class Usuario {
 
     }
 
-    public Usuario(String nome, String email, String preferenciasCosnumo, String configuracaoAlerta) {
+    public Usuario(String nome, String email, String preferenciasConsumo, ConfiguracaoAlerta configuracaoAlerta) {
 
         this.nome = nome;
         this.email = email;
-        this.preferenciasConsumo = preferenciasCosnumo;
+        this.preferenciasConsumo = preferenciasConsumo;
         this.configuracaoAlerta = configuracaoAlerta;
     }
 
@@ -57,11 +57,11 @@ public class Usuario {
         this.preferenciasConsumo = preferenciasCosnumo;
     }
 
-    public String getConfiguracaoAlerta() {
+    public ConfiguracaoAlerta getConfiguracaoAlerta() {
         return configuracaoAlerta;
     }
 
-    public void setConfiguracaoAlerta(String configuracaoAlerta) {
+    public void setConfiguracaoAlerta(ConfiguracaoAlerta configuracaoAlerta) {
         this.configuracaoAlerta = configuracaoAlerta;
     }
 

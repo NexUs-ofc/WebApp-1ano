@@ -1,17 +1,17 @@
 package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
-import org.example.interdisciplinar.model.ItemDispensa;
+import org.example.interdisciplinar.model.ItemDespensa;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 // Abertura da classe
-public class ItemDispensaDAO {
+public class ItemDespensaDAO {
 
     // Método de inserir um item na dispensa do usuário
-    public boolean inserir(ItemDispensa itemDispensa){
+    public boolean inserir(ItemDespensa itemDespensa){
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
@@ -26,10 +26,10 @@ public class ItemDispensaDAO {
         try (PreparedStatement pstmt = conn.prepareStatement(sqlInsert)) {
 
             //Seta valores nos '?' do comando SQL
-            pstmt.setInt(1, itemDispensa.getIdCasa());
-            pstmt.setInt(2, itemDispensa.getIdAlimento());
-            pstmt.setInt(3, itemDispensa.getQuantidade());
-            pstmt.setDate(4, Date.valueOf(itemDispensa.getValidade()));
+            pstmt.setInt(1, itemDespensa.getIdCasa());
+            pstmt.setInt(2, itemDespensa.getIdAlimento());
+            pstmt.setInt(3, itemDespensa.getQuantidade());
+            pstmt.setDate(4, Date.valueOf(itemDespensa.getValidade()));
 
             linhasAfetadas = pstmt.executeUpdate();
 
@@ -103,7 +103,7 @@ public class ItemDispensaDAO {
     }
 
     // Método para listar todos os itens da dispensa
-    public List<ItemDispensa> listar(){
+    public List<ItemDespensa> listar(){
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
@@ -112,7 +112,7 @@ public class ItemDispensaDAO {
         String sqlSelect = "SELECT * FROM tb_item_dispensa";
 
         // Criando lista que irá armazenar os registros dos itens da dispensa
-        List<ItemDispensa> itensDispensa = new ArrayList<>();
+        List<ItemDespensa> itensDespensa = new ArrayList<>();
 
         //Cria executor que receberá comando e executará ele
         try (PreparedStatement pstmt = conn.prepareStatement(sqlSelect)){
@@ -120,35 +120,147 @@ public class ItemDispensaDAO {
 
             //Enquanto tiver mais registros cria novos objetos e adiciona à lista
             while (rs.next()) {
-                ItemDispensa itemdispensa = new ItemDispensa();
-                itemdispensa.setId(rs.getInt(1));
-                itemdispensa.setIdCasa(rs.getInt(2));
-                itemdispensa.setIdAlimento(rs.getInt(3));
-                itemdispensa.setQuantidade(rs.getInt(4));
+                ItemDespensa itemDespensa = new ItemDespensa();
+                itemDespensa.setId(rs.getInt(1));
+                itemDespensa.setIdCasa(rs.getInt(2));
+                itemDespensa.setIdAlimento(rs.getInt(3));
+                itemDespensa.setQuantidade(rs.getInt(4));
 
                 if (rs.getDate(5) != null) {
-                    itemdispensa.setValidade(rs.getDate(5).toLocalDate());
+                    itemDespensa.setValidade(rs.getDate(5).toLocalDate());
                 }
-                itensDispensa.add(itemdispensa);
+                itensDespensa.add(itemDespensa);
             }
 
-            // Commita a ação no banco de dados
-            GerenteConexao.commit();
-
             // Retrona a lista de itens da dispensa
-            return itensDispensa;
+            return itensDespensa;
 
-            //Em casos de erros no banco de dados desfaz a ação
         } catch (SQLException sqle) {
             //Lista todos os erros
             sqle.printStackTrace();
 
-            //Desfaz a ação
-            GerenteConexao.rollback();
 
             //Retorna a lista
-            return itensDispensa;
+            return itensDespensa;
         }
+
+    }
+
+    public boolean atualizar(ItemDespensa itemDespensa){
+        String sql = "UPDATE tb_item_dispensa SET id_casa=?, id_alimento=?, quantidade=?, data_validade=? WHERE id_item=?";
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
+            pstmt.setInt(1, itemDespensa.getIdCasa());
+            pstmt.setInt(2, itemDespensa.getIdAlimento());
+            pstmt.setInt(3, itemDespensa.getQuantidade());
+
+            if(itemDespensa.getValidade() != null){
+                pstmt.setDate(4, Date.valueOf(itemDespensa.getValidade()));
+            } else {
+                pstmt.setNull(4, Types.DATE);
+            }
+
+            pstmt.setInt(5, itemDespensa.getId());
+            int linhasAfetadas = pstmt.executeUpdate();
+            return linhasAfetadas > 0;
+
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<ItemDespensa> listarFiltrado(
+            Integer idItemInicio,
+            Integer idItemFim,
+            Integer qtdMinima,
+            Integer qtdMaxima,
+            LocalDate dataInicio,
+            LocalDate dataFim,
+            String ordenar
+    ){
+        StringBuilder sql = new StringBuilder("SELECT * FROM tb_item_dispensa WHERE 1=1");
+        List<Object> parametrosDoFiltro = new ArrayList<>();
+        List<ItemDespensa> itensDespensa = new ArrayList<>();
+
+        if(idItemInicio != null){
+            sql.append(" AND id_item >=?");
+            parametrosDoFiltro.add(idItemInicio);
+        }
+        if(idItemFim != null){
+            sql.append(" AND id_item <=?");
+            parametrosDoFiltro.add(idItemFim);
+        }
+        if(qtdMinima != null){
+            sql.append(" AND quantidade >=?");
+            parametrosDoFiltro.add(qtdMinima);
+        }
+        if(qtdMaxima != null){
+            sql.append(" AND quantidade <=?");
+            parametrosDoFiltro.add(qtdMaxima);
+        }
+        if(dataInicio != null){
+            sql.append(" AND validade >=?");
+            parametrosDoFiltro.add(dataInicio);
+        }
+        if(dataFim != null){
+            sql.append(" AND validade <=?");
+            parametrosDoFiltro.add(dataFim);
+        }
+
+        switch (ordenar){
+            case "id":
+                sql.append(" ORDER BY id_item");
+                break;
+
+            case "quantidade":
+                sql.append(" ORDER BY quantidade");
+                break;
+
+            case "validade":
+                sql.append(" ORDER BY validade");
+                break;
+
+            default:
+                sql.append(" ORDER BY id_item");
+                break;
+        }
+
+        //Cria executor que receberá comando e executará ele
+        try (   Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql.toString())
+        ){
+
+            for(int i = 0; i < parametrosDoFiltro.size(); i++){
+                pstmt.setObject(i+1, parametrosDoFiltro.get(i));
+            }
+
+            try (ResultSet rs = pstmt.executeQuery()){
+                //Enquanto tiver mais registros cria novos objetos e adiciona à lista
+                while (rs.next()) {
+                    ItemDespensa itemDespensa = new ItemDespensa();
+                    itemDespensa.setId(rs.getInt(1));
+                    itemDespensa.setIdCasa(rs.getInt(2));
+                    itemDespensa.setIdAlimento(rs.getInt(3));
+                    itemDespensa.setQuantidade(rs.getInt(4));
+
+                    if (rs.getDate(5) != null) {
+                        itemDespensa.setValidade(rs.getDate(5).toLocalDate());
+                    }
+                    itensDespensa.add(itemDespensa);
+                }
+
+                // Retrona a lista de itens da dispensa
+                return itensDespensa;
+            }
+
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+            return itensDespensa;
+        }
+
 
     }
 

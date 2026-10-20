@@ -6,24 +6,22 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.interdisciplinar.conexao.GerenteConexao;
-import org.example.interdisciplinar.dao.AlimentoDAO;
-import org.example.interdisciplinar.dao.ItemDispensaDAO;
-import org.example.interdisciplinar.model.ItemDispensa;
+import org.example.interdisciplinar.dao.ItemDespensaDAO;
+import org.example.interdisciplinar.model.ItemDespensa;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Date;
 
 // Definindo um nome interno para o servlet e a url que ativa ele
 @WebServlet(name = "CriarItem", value = "/itens/insert")
 
 
 public class ServletCriarItem extends HttpServlet {
-    private ItemDispensaDAO itemDispensaDAO;
+    private ItemDespensaDAO itemDespensaDAO;
 
     @Override
     public void init(){
-        itemDispensaDAO = new ItemDispensaDAO();
+        itemDespensaDAO = new ItemDespensaDAO();
     }
 
     @Override
@@ -51,7 +49,7 @@ public class ServletCriarItem extends HttpServlet {
         int idCasa;
         int idAlimento;
         int quantidade;
-        LocalDate validade;
+        LocalDate validade = null;
 
         try {
             idCasa = Integer.parseInt(idCasaTexto);
@@ -87,9 +85,10 @@ public class ServletCriarItem extends HttpServlet {
 
         try {
             validade = LocalDate.parse(validadeTexto);
-        } catch (Exception e){
+        } catch (Exception e) {
             response.sendError(
-                    HttpServletResponse.SC_BAD_REQUEST, "A data precisa ser em formato de data."
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    "A data inserida é invalida."
             );
             return;
         }
@@ -97,15 +96,15 @@ public class ServletCriarItem extends HttpServlet {
 
 
         // Cria o objeto Alimento
-        ItemDispensa itemDispensa = new ItemDispensa();
-        itemDispensa.setIdCasa(idCasa);
-        itemDispensa.setIdAlimento(idAlimento);
-        itemDispensa.setQuantidade(quantidade);
-        itemDispensa.setValidade(validade);
+        ItemDespensa itemDespensa = new ItemDespensa();
+        itemDespensa.setIdCasa(idCasa);
+        itemDespensa.setIdAlimento(idAlimento);
+        itemDespensa.setQuantidade(quantidade);
+        itemDespensa.setValidade(validade);
 
         // Chama o DAO para inserir no banco
 
-        boolean inserido = itemDispensaDAO.inserir(itemDispensa);
+        boolean inserido = itemDespensaDAO.inserir(itemDespensa);
 
         if (inserido) {
 
@@ -113,13 +112,13 @@ public class ServletCriarItem extends HttpServlet {
             response.sendRedirect(
                     request.getContextPath() + "/itens"
             );
-
         } else {
 
             response.sendError(
                     HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "Não foi possível inserir o alimento."
             );
+
         }
 
     }

@@ -1,6 +1,7 @@
 package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
+import org.example.interdisciplinar.model.Categoria;
 import org.example.interdisciplinar.model.Endereco;
 import java.sql.*;
 import java.util.ArrayList;
@@ -145,6 +146,27 @@ public class EnderecoDAO {
         }
     }
 
+    public boolean atualizar(Endereco endereco){
+        String sql = "UPDATE tb_endereco SET rua=?, numero=?, bairro=?, cidade=?, estado=?, cep=? WHERE id_endereco=?";
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
+            pstmt.setString(1, endereco.getRua());
+            pstmt.setString(2, endereco.getNumero());
+            pstmt.setString(3, endereco.getBairro());
+            pstmt.setString(4, endereco.getCidade());
+            pstmt.setString(5, endereco.getEstado());
+            pstmt.setString(6, endereco.getCep());
+            pstmt.setInt(7, endereco.getId());
+            int linhasAfetadas = pstmt.executeUpdate();
+            return linhasAfetadas > 0;
+
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+            return false;
+        }
+    }
 
 
     // Método de atualizar a rua do endereço

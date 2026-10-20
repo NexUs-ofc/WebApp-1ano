@@ -2,6 +2,7 @@ package org.example.interdisciplinar.dao;
 
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
+import org.example.interdisciplinar.model.Administrador;
 import org.example.interdisciplinar.model.Alimento;
 import java.sql.*;
 import java.sql.PreparedStatement;
@@ -140,6 +141,25 @@ public class AlimentoDAO {
 
             // Retorna a lista
             return alimentos;
+        }
+    }
+    public boolean atualizar(Alimento alimento){
+        String sql = "UPDATE tb_alimento SET codigo_barras=?, nome=?, marca=?, id_categoria=? WHERE id_alimento=?";
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
+            pstmt.setString(1, alimento.getCodigoBarras());
+            pstmt.setString(2, alimento.getNome());
+            pstmt.setString(3, alimento.getMarca());
+            pstmt.setInt(4, alimento.getIdCategoria());
+            pstmt.setInt(5, alimento.getId());
+            int linhasAfetadas = pstmt.executeUpdate();
+            return linhasAfetadas > 0;
+
+        } catch (SQLException sqle){
+            sqle.printStackTrace();
+            return false;
         }
     }
 

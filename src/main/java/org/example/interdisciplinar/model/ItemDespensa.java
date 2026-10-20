@@ -2,7 +2,7 @@ package org.example.interdisciplinar.model;
 
 import java.time.LocalDate;
 
-public class ItemDispensa {
+public class ItemDespensa {
 
     // Atributos
 
@@ -14,11 +14,11 @@ public class ItemDispensa {
 
     // Construtores
 
-    public ItemDispensa(){
+    public ItemDespensa(){
 
     }
 
-    public ItemDispensa(int idCasa, int idAlimento, int quantidade, LocalDate validade) {
+    public ItemDespensa(int idCasa, int idAlimento, int quantidade, LocalDate validade) {
 
         this.idCasa = idCasa;
         this.idAlimento = idAlimento;
