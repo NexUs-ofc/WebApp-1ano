@@ -2,6 +2,9 @@ package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.model.Administrador;
+import org.example.interdisciplinar.model.ConfiguracaoAlerta;
+import org.example.interdisciplinar.model.ItemDespensa;
+import org.example.interdisciplinar.model.Usuario;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -100,145 +103,26 @@ public class AdministradorDAO {
             return administradores;
         }
     }
-    // Método para buscar Administrador por id
-    public Administrador listarPorId(int idAdm){
 
-        //Comando de listar pelo id em SQL
-        String sqlSelect = "SELECT * FROM tb_administrador WHERE id_admin=?";
+    public boolean atualizar(Administrador administrador){
+        String sql = "UPDATE tb_administrador SET nome=?, email=?, senha=? WHERE id_admin=?";
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
+            pstmt.setString(1, administrador.getNome());
+            pstmt.setString(2, administrador.getEmail());
+            pstmt.setString(3, administrador.getSenha());
+            pstmt.setInt(4, administrador.getId());
+            int linhasAfetadas = pstmt.executeUpdate();
+            return linhasAfetadas > 0;
 
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
-
-        //Iniciando executor que: Atribuirá valores ao comando sql e executará ele
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlSelect)){
-
-            //Seta valores nos '?' do comando SQL
-            pstmt.setInt(1, idAdm);
-
-            //Executa a consulta e atribui o valor retornado a variável de resultSet
-            ResultSet rs = pstmt.executeQuery();
-
-            //Enquanto tiver mais registros cria novos objetos e adiciona à lista
-            if (rs.next()) {
-                Administrador admTemporario = new Administrador();
-                admTemporario.setId(rs.getInt(1));
-                admTemporario.setNome(rs.getString(2));
-                admTemporario.setEmail(rs.getString(3));
-                admTemporario.setSenha(rs.getString(4));
-
-                // Commita a ação no banco de dados e retorna o Admin encontrado
-                GerenteConexao.commit();
-                return admTemporario;
-            }
-            // Commita a ação no banco de dados e retorna nulo
-            GerenteConexao.commit();
-            return null;
-
-
-
-        //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
-
-            //Lista todos os erros
+        } catch (SQLException sqle){
             sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna nulo
-            return null;
-        }
-
-    }
-
-    /* Método para atualizar nome do administrador
-          requisitando a senha para fazer a mudança */
-    public boolean atualizarNome(String senha, String nomeNovo){
-
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
-
-        //Comando de atualizar em SQL
-        String sqlUpdate = "UPDATE tb_administrador SET nome=? WHERE senha=?";
-
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdate)){
-
-            //Seta valores nos '?' do comando SQL
-            pstmt.setString(1, nomeNovo);
-            pstmt.setString(2, senha);
-
-            //Se ação tiver dados certo commita e retorna true
-            if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
-                return true;
-            }
-
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
-            return false;
-
-
-        //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
-
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
             return false;
         }
     }
 
-    /* Método para atualizar email do administrador
-          requisitando a senha para fazer a mudança */
-
-    public boolean atualizarEmail(String senha, String emailNovo){
-
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
-
-        //Comando de atualizar em SQL
-        String sql = "UPDATE tb_administrador SET email=? WHERE senha=?";
-
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)){
-
-            //Seta valores nos '?' do comando SQL
-            pstmt.setString(1, emailNovo);
-            pstmt.setString(2, senha);
-            GerenteConexao.commit();
-
-            //Se ação tiver dados certo commita e retorna true
-            if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
-                return true;
-            }
-
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
-            return false;
-
-        //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
-
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
-        }
-    }
 
     /* Método para deletar um administrador do banco de dados
         requisitando a senha para deletar */
@@ -279,5 +163,107 @@ public class AdministradorDAO {
             //Retorna false
             return false;
         }
+    }
+    public List<Administrador> listarFiltrado(
+            Integer idAdminInicio,
+            Integer idAdminFim,
+            String nome,
+            String email,
+            String ordenar
+    ){
+        StringBuilder sql = new StringBuilder("SELECT * FROM tb_administrador WHERE 1=1");
+        List<Object> parametrosDoFiltro = new ArrayList<>();
+        List<Administrador> administradores = new ArrayList<>();
+
+        if (idAdminInicio != null) {
+            sql.append(" AND id_admin >=?");
+            parametrosDoFiltro.add(idAdminInicio);
+        }
+        if (idAdminFim != null) {
+            sql.append(" AND id_admin <=?");
+            parametrosDoFiltro.add(idAdminFim);
+        }
+        if (nome != null && !nome.isBlank()) {
+            sql.append(" AND nome ILIKE ?");
+            parametrosDoFiltro.add("%" + nome + "%");
+        }
+
+        if (email != null && !email.isBlank()) {
+            sql.append(" AND email ILIKE ?");
+            parametrosDoFiltro.add("%" + email + "%");
+        }
+
+        switch (ordenar) {
+            case "id":
+                sql.append(" ORDER BY id_admin");
+                break;
+
+            case "nome":
+                sql.append(" ORDER BY nome");
+                break;
+
+            case "email":
+                sql.append(" ORDER BY email");
+                break;
+
+            default:
+                sql.append(" ORDER BY id_admin");
+                break;
+        }
+
+        //Cria executor que receberá comando e executará ele
+        try (Connection conn = GerenteConexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql.toString())
+        ) {
+
+            for (int i = 0; i < parametrosDoFiltro.size(); i++) {
+                pstmt.setObject(i + 1, parametrosDoFiltro.get(i));
+            }
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                //Enquanto tiver mais registros cria novos objetos e adiciona à lista
+                while(rs.next()){
+                    Administrador admTemporario = new Administrador();
+                    admTemporario.setId(rs.getInt(1));
+                    admTemporario.setNome(rs.getString(2));
+                    admTemporario.setEmail(rs.getString(3));
+                    admTemporario.setSenha(rs.getString(4));
+                    administradores.add(admTemporario);
+                }
+
+                // Retrona a lista de administradores
+                return administradores;
+
+            }
+
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            return administradores;
+        }
+    }
+
+    public Administrador buscarporId(int id){
+        String sql = "SELECT * FROM tb_administrador WHERE id=?";
+        try(
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
+            pstmt.setInt(1, id);
+
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    Administrador administrador = new Administrador(
+                            rs.getString("nome"),
+                            rs.getString("email"),
+                            rs.getString("senha")
+                    );
+                    return administrador;
+                }
+            }
+
+        } catch (SQLException sqle){
+            System.out.println("Erro de SQL: " + sqle.getMessage());
+        }
+        return null;
     }
 }

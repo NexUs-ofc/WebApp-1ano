@@ -1,6 +1,8 @@
 package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
+import org.example.interdisciplinar.model.Alimento;
+import org.example.interdisciplinar.model.Categoria;
 import org.example.interdisciplinar.model.Endereco;
 import java.sql.*;
 import java.util.ArrayList;
@@ -145,261 +147,136 @@ public class EnderecoDAO {
         }
     }
 
-    // Método de atualizar a rua do endereço
-    public boolean atualizarRua(String ruaNova, int idEndereco){
+    public boolean atualizar(Endereco endereco){
+        String sql = "UPDATE tb_endereco SET rua=?, numero=?, bairro=?, cidade=?, estado=?, cep=? WHERE id_endereco=?";
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
+            pstmt.setString(1, endereco.getRua());
+            pstmt.setString(2, endereco.getNumero());
+            pstmt.setString(3, endereco.getBairro());
+            pstmt.setString(4, endereco.getCidade());
+            pstmt.setString(5, endereco.getEstado());
+            pstmt.setString(6, endereco.getCep());
+            pstmt.setInt(7, endereco.getId());
+            int linhasAfetadas = pstmt.executeUpdate();
+            return linhasAfetadas > 0;
 
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
-
-        //Comando de atualizar em SQL
-        String sqlUpdateRua = "UPDATE tb_endereco SET rua=? WHERE id_endereco=?";
-
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
-
-        //Iniciando executor que vai atribuir valores ao comando SQL e executará ele
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateRua)){
-
-            //Seta valores nos '?' do comando SQL
-            pstmt.setString(1, ruaNova);
-            pstmt.setInt(2, idEndereco);
-
-            //Se ação tiver dados certo commita e retorna true
-            if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
-                return true;
-            }
-
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
-            return false;
-
-        //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
-
-            //Lista todos os erros
+        } catch (SQLException sqle){
             sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
-        }
-
-    }
-
-    // Método de atualizar o número da casa do endereço
-    public boolean atualizarNumero(String numeroNovo, int idEndereco){
-
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
-
-        //Comando de atualizar em SQL
-        String sqlUpdateNumero = "UPDATE tb_endereco SET numero=? WHERE id_endereco=?";
-
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
-
-        //Iniciando executor que vai atribuir valores ao comando SQL e executará ele
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateNumero)){
-
-            //Seta valores nos '?' do comando SQL
-            pstmt.setString(1, numeroNovo);
-            pstmt.setInt(2, idEndereco);
-
-            //Se ação tiver dados certo commita e retorna true
-            if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
-                return true;
-            }
-
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
-            return false;
-
-        //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
-
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
             return false;
         }
     }
 
-    // Método de atualizar o bairro do endereço
-    public boolean atualizarBairro(String bairroNovo, int idEndereco){
+    public List<Endereco> listarFiltrado(
+            Integer idEnderecoInicio,
+            Integer idEnderecoFim,
+            String cidade,
+            String estado,
+            String ordenar
+    ) {
+        StringBuilder sql = new StringBuilder("SELECT * FROM tb_endereco WHERE 1=1");
+        List<Object> parametrosDoFiltro = new ArrayList<>();
+        List<Endereco> enderecos = new ArrayList<>();
 
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
+        if (idEnderecoInicio != null) {
+            sql.append(" AND id_endereco >=?");
+            parametrosDoFiltro.add(idEnderecoInicio);
+        }
+        if (idEnderecoFim != null) {
+            sql.append(" AND id_endereco <=?");
+            parametrosDoFiltro.add(idEnderecoFim);
+        }
+        if (cidade != null && !cidade.isBlank()) {
+            sql.append(" AND cidade ILIKE ?");
+            parametrosDoFiltro.add("%" + cidade + "%");
+        }
 
-        //Comando de atualizar em SQL
-        String sqlUpdatebairro = "UPDATE tb_endereco SET bairro=? WHERE id_endereco=?";
+        if (estado != null && !estado.isBlank()) {
+            sql.append(" AND estado ILIKE ?");
+            parametrosDoFiltro.add("%" + cidade + "%");
+        }
 
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
+        switch (ordenar) {
+            case "id":
+                sql.append(" ORDER BY id_endereco");
+                break;
 
-        //Iniciando executor que vai atribuir valores ao comando SQL e executará ele
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdatebairro)){
+            case "cidade":
+                sql.append(" ORDER BY cidade");
+                break;
 
-            //Seta valores nos '?' do comando SQL
-            pstmt.setString(1, bairroNovo);
-            pstmt.setInt(2, idEndereco);
+            case "estado":
+                sql.append(" ORDER BY estado");
+                break;
 
-            //Se ação tiver dados certo commita e retorna true
-            if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
-                return true;
+            default:
+                sql.append(" ORDER BY id_endereco");
+                break;
+        }
+
+        //Cria executor que receberá comando e executará ele
+        try (Connection conn = GerenteConexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql.toString())
+        ) {
+
+            for (int i = 0; i < parametrosDoFiltro.size(); i++) {
+                pstmt.setObject(i + 1, parametrosDoFiltro.get(i));
             }
 
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
-            return false;
+            try (ResultSet rs = pstmt.executeQuery()) {
+                //Enquanto tiver mais registros cria novos objetos e adiciona à lista
+                while (rs.next()){
+                    Endereco enderecoTemporario = new Endereco();
+                    enderecoTemporario.setId(rs.getInt(1));
+                    enderecoTemporario.setRua(rs.getString(2));
+                    enderecoTemporario.setNumero(rs.getString(3));
+                    enderecoTemporario.setBairro(rs.getString(4));
+                    enderecoTemporario.setCidade(rs.getString(5));
+                    enderecoTemporario.setEstado(rs.getString(6));
+                    enderecoTemporario.setCep(rs.getString(7));
+                    enderecos.add(enderecoTemporario);
+                }
+                // Commita a ação no banco de dados
+                GerenteConexao.commit();
 
-        //Em casos de erros no banco de dados desfaz a ação
+                // Retrona a lista de administradores
+                return enderecos;
+            }
+
         } catch (SQLException sqle) {
-
-            //Lista todos os erros
             sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            return enderecos;
         }
     }
 
-    // Método de atualizar a cidade do endereço
-    public boolean atualizarCidade(String cidadeNova, int idEndereco){
+    public Endereco buscarporId(int id){
+        String sql = "SELECT * FROM tb_endereco WHERE id=?";
+        try(
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
+            pstmt.setInt(1, id);
 
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
-
-        //Comando de atualizar em SQL
-        String sqlUpdateCidade = "UPDATE tb_endereco SET cidade=? WHERE id_endereco=?";
-
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateCidade)){
-
-            //Seta valores nos '?' do comando SQL
-            pstmt.setString(1, cidadeNova);
-            pstmt.setInt(2, idEndereco);
-
-            //Se ação tiver dados certo commita e retorna true
-            if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
-                return true;
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    Endereco endereco = new Endereco(
+                            rs.getString("rua"),
+                            rs.getString("numero"),
+                            rs.getString("bairro"),
+                            rs.getString("cidade"),
+                            rs.getString("estado"),
+                            rs.getString("cep")
+                    );
+                    return endereco;
+                }
             }
 
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
-            return false;
-
-        //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
-
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+        } catch (SQLException sqle){
+            System.out.println("Erro de SQL: " + sqle.getMessage());
         }
-    }
-
-    // Método de atualizar o estado do endereço
-    public boolean atualizarEstado(String estadoNovo, int idEndereco){
-
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
-
-        //Comando de atualizar em SQL
-        String sqlUpdateEstado = "UPDATE tb_endereco SET estado=? WHERE id_endereco=?";
-
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
-
-        //Iniciando executor que vai atribuir valores ao comando SQL e executará ele
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateEstado)){
-
-            //Seta valores nos '?' do comando SQL
-            pstmt.setString(1, estadoNovo);
-            pstmt.setInt(2, idEndereco);
-
-            //Se ação tiver dados certo commita e retorna true
-            if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
-                return true;
-            }
-
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
-            return false;
-
-        //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
-
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
-        }
-    }
-
-    // Método de atualizar o cep do endereço
-    public boolean atualizarCep(String cepNovo, int idEndereco){
-
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
-
-        //Comando de atualizar em SQL
-        String sqlUpdateCep = "UPDATE tb_endereco SET cep=? WHERE id_endereco=?";
-
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
-
-        //Iniciando executor que vai atribuir valores ao comando SQL e executará ele
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateCep)){
-
-            //Seta valores nos '?' do comando SQL
-            pstmt.setString(1, cepNovo);
-            pstmt.setInt(2, idEndereco);
-
-            //Se ação tiver dados certo commita e retorna true
-            if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
-                return true;
-            }
-
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
-            return false;
-
-        //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
-
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
-        }
+        return null;
     }
 
 }
