@@ -1,6 +1,7 @@
 package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
+import org.example.interdisciplinar.model.Alimento;
 import org.example.interdisciplinar.model.ConfiguracaoAlerta;
 import org.example.interdisciplinar.model.Endereco;
 import org.example.interdisciplinar.model.Usuario;
@@ -161,6 +162,111 @@ public class UsuarioDAO {
             sqle.printStackTrace();
             return false;
         }
+    }
+
+    public List<Usuario> listarFiltrado(
+          Integer idUsuarioInicio,
+          Integer idUsuarioFim,
+          String nome,
+          String email,
+          String ordenar
+    ){
+        StringBuilder sql = new StringBuilder("SELECT * FROM tb_usuario WHERE 1=1");
+        List<Object> parametrosDoFiltro = new ArrayList<>();
+        List<Usuario> usuarios = new ArrayList<>();
+
+        if (idUsuarioInicio != null) {
+            sql.append(" AND id_usuario >=?");
+            parametrosDoFiltro.add(idUsuarioInicio);
+        }
+        if (idUsuarioFim != null) {
+            sql.append(" AND id_usuario <=?");
+            parametrosDoFiltro.add(idUsuarioFim);
+        }
+        if (nome != null && !nome.isBlank()) {
+            sql.append(" AND nome ILIKE ?");
+            parametrosDoFiltro.add("%" + nome + "%");
+        }
+
+        if (email != null && !email.isBlank()) {
+            sql.append(" AND email ILIKE ?");
+            parametrosDoFiltro.add("%" + email + "%");
+        }
+
+        switch (ordenar) {
+            case "id":
+                sql.append(" ORDER BY id_usuario");
+                break;
+
+            case "nome":
+                sql.append(" ORDER BY nome");
+                break;
+
+            case "email":
+                sql.append(" ORDER BY email");
+                break;
+
+            default:
+                sql.append(" ORDER BY id_usuario");
+                break;
+        }
+
+        //Cria executor que receberá comando e executará ele
+        try (Connection conn = GerenteConexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql.toString())
+        ) {
+
+            for (int i = 0; i < parametrosDoFiltro.size(); i++) {
+                pstmt.setObject(i + 1, parametrosDoFiltro.get(i));
+            }
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                //Enquanto tiver mais registros cria novos objetos e adiciona à lista
+                while (rs.next()){
+                    Usuario usuarioTemporario = new Usuario();
+                    usuarioTemporario.setId(rs.getInt(1));
+                    usuarioTemporario.setNome(rs.getString(2));
+                    usuarioTemporario.setEmail(rs.getString(3));
+                    usuarioTemporario.setPreferenciasConsumo(rs.getString(4));
+                    usuarioTemporario.setConfiguracaoAlerta(ConfiguracaoAlerta.valueOf(rs.getString(5)));
+                    usuarios.add(usuarioTemporario);
+                }
+
+                // Retrona a lista de administradores
+                return usuarios;
+            }
+
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            return usuarios;
+        }
+    }
+
+    public Usuario buscarporId(int id){
+        String sql = "SELECT * FROM tb_usuario WHERE id=?";
+        try(
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
+            pstmt.setInt(1, id);
+
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    Usuario usuario = new Usuario(
+                            rs.getString("nome"),
+                            rs.getString("email"),
+                            rs.getString("preferencias_consumo"),
+                            ConfiguracaoAlerta.valueOf(rs.getString("configuracao_alerta"))
+                    );
+                    return usuario;
+                }
+            }
+
+        } catch (SQLException sqle){
+            System.out.println("Erro de SQL: " + sqle.getMessage());
+        }
+        return null;
     }
 
 }

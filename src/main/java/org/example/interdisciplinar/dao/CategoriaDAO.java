@@ -164,84 +164,94 @@ public class CategoriaDAO {
         }
     }
 
-    // Método para atualizar o nome da categoria
-    public boolean atualizarNome(String nomeNovo, int idCategoria){
+    public List<Categoria> listarFiltrado(
+            Integer idCategoriaInicio,
+            Integer idCategoriaFim,
+            String nome,
+            String ordenar
+    ) {
+        StringBuilder sql = new StringBuilder("SELECT * FROM tb_categoria WHERE 1=1");
+        List<Object> parametrosDoFiltro = new ArrayList<>();
+        List<Categoria> categorias = new ArrayList<>();
 
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
+        if (idCategoriaInicio != null) {
+            sql.append(" AND id_categoria >=?");
+            parametrosDoFiltro.add(idCategoriaInicio);
+        }
+        if (idCategoriaFim != null) {
+            sql.append(" AND id_categoria <=?");
+            parametrosDoFiltro.add(idCategoriaFim);
+        }
+        if (nome != null && !nome.isBlank()) {
+            sql.append(" AND nome ILIKE ?");
+            parametrosDoFiltro.add("%" + nome + "%");
+        }
 
-        //Comando de atualizar em SQL
-        String sqlUpdateName = "UPDATE tb_categoria SET nome=? WHERE id_categoria=?";
+        switch (ordenar) {
+            case "id":
+                sql.append(" ORDER BY id_categoria");
+                break;
 
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
+            case "nome":
+                sql.append(" ORDER BY nome");
+                break;
 
-        //Iniciando executor que vai atribuir valores ao comando SQL e executará ele
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateName)){
+            default:
+                sql.append(" ORDER BY id_categoria");
+                break;
+        }
 
-            //Seta valores nos '?' do comando SQL
-            pstmt.setString(1, nomeNovo);
-            pstmt.setInt(2, idCategoria);
+        //Cria executor que receberá comando e executará ele
+        try (Connection conn = GerenteConexao.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql.toString())
+        ) {
 
-            //Se ação tiver dados certo commita e retorna true
-            if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
-                return true;
+            for (int i = 0; i < parametrosDoFiltro.size(); i++) {
+                pstmt.setObject(i + 1, parametrosDoFiltro.get(i));
             }
 
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
-            return false;
+            try (ResultSet rs = pstmt.executeQuery()) {
+                //Enquanto tiver mais registros cria novos objetos e adiciona à lista
+                while (rs.next()) {
+                    Categoria categoriaTemporaria = new Categoria();
+                    categoriaTemporaria.setId(rs.getInt(1));
+                    categoriaTemporaria.setNome(rs.getString(2));
+                    categoriaTemporaria.setDescricao(rs.getString(3));
 
-        } catch (SQLException sqle){
+                    categorias.add(categoriaTemporaria);
+                }
+
+                // Retrona a lista de administradores
+                return categorias;
+            }
+
+        } catch (SQLException sqle) {
             sqle.printStackTrace();
-            return false;
+            return categorias;
         }
     }
 
-    // Método para atualizar a descrição da categoria
-    public boolean atualizarDescricao(String descricaoNova, int idCategoria){
+    public Categoria buscarporId(int id){
+        String sql = "SELECT * FROM tb_categoria WHERE id=?";
+        try(
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
+            pstmt.setInt(1, id);
 
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
-
-        //Comando de atualizar em SQL
-        String sqlUpdateDescription = "UPDATE tb_categoria SET descricao=? WHERE id_categoria=?";
-
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
-
-        //Iniciando executor que vai atribuir valores ao comando SQL e executará ele
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateDescription)){
-
-            //Seta valores nos '?' do comando SQL
-            pstmt.setString(1, descricaoNova);
-            pstmt.setInt(2, idCategoria);
-
-            //Se ação tiver dados certo commita e retorna true
-            if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
-                return true;
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    Categoria categoria = new Categoria(
+                            rs.getString("nome"),
+                            rs.getString("descricao")
+                    );
+                    return categoria;
+                }
             }
 
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
-            return false;
-
-
-
-        //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
-
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+        } catch (SQLException sqle){
+            System.out.println("Erro de SQL: " + sqle.getMessage());
         }
-
+        return null;
     }
 }

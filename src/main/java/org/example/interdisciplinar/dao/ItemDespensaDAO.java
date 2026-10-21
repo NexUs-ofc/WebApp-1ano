@@ -109,7 +109,7 @@ public class ItemDespensaDAO {
         Connection conn = GerenteConexao.conectar();
 
         //Comando de listar em SQL
-        String sqlSelect = "SELECT * FROM tb_item_dispensa";
+        String sqlSelect = "SELECT * FROM view_item_dispensa";
 
         // Criando lista que irá armazenar os registros dos itens da dispensa
         List<ItemDespensa> itensDespensa = new ArrayList<>();
@@ -260,96 +260,31 @@ public class ItemDespensaDAO {
             sqle.printStackTrace();
             return itensDespensa;
         }
-
-
     }
+    public ItemDespensa buscarporId(int id){
+        String sql = "SELECT * FROM tb_item_despensa WHERE id=?";
+        try(
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
+            pstmt.setInt(1, id);
 
-    // Método para atualizar a quantidade de itens da dispensa
-    public boolean atualizarQuantidade(int qtdNova, int idItem){
-
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
-
-        //Comando de atualizar em SQL
-        String sqlUpdateQtd = "UPDATE tb_item_dispensa SET quantidade=? WHERE id_item=?";
-
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
-
-        //Iniciando executor que vai atribuir valores ao comando SQL e executará ele
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateQtd)){
-
-            //Seta valores nos '?' do comando SQL
-            pstmt.setInt(1, qtdNova);
-            pstmt.setInt(2, idItem);
-
-            linhasAfetadas = pstmt.executeUpdate();
-
-            //Se ação tiver dados certo commita e retorna true
-            if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
-                return true;
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    ItemDespensa itemDespensa = new ItemDespensa(
+                            rs.getInt("id_usuario"),
+                            rs.getInt("id_alimento"),
+                            rs.getInt("quantidade"),
+                            rs.getDate("validade").toLocalDate()
+                    );
+                    return itemDespensa;
+                }
             }
 
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
-            return false;
-
-            //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+        } catch (SQLException sqle){
+            System.out.println("Erro de SQL: " + sqle.getMessage());
         }
+        return null;
     }
 
-    // Método para atualizar a validade do item da dispensa
-    public boolean atualizarValidade(LocalDate dataNova, int idItem){
-
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
-
-        //Comando de atualizar em SQL
-        String sqlUpdateValidade = "UPDATE tb_item_dispensa SET data_validade=? WHERE id_item=?";
-
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
-
-        //Iniciando executor que vai atribuir valores ao comando SQL
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateValidade)){
-
-            //Seta valores nos '?' do comando SQL
-            pstmt.setDate(1, Date.valueOf(dataNova));
-            pstmt.setInt(2, idItem);
-
-            linhasAfetadas = pstmt.executeUpdate();
-
-            //Se ação tiver dados certo commita e retorna true
-            if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
-                return true;
-            }
-
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
-            return false;
-
-            //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
-
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
-        }
-    }
 }
