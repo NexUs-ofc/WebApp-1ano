@@ -5,5 +5,4 @@ public record AlimentoView(
         String alimento,
         String marca,
         String nomeCategoria
-) {
-}
+) {}
