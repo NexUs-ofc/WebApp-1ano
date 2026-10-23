@@ -2,7 +2,7 @@ package org.example.interdisciplinar.model;
 
 import java.time.LocalDate;
 
-public class ItemDispensa {
+public class ItemDespensa {
 
     // Atributos
 
@@ -14,11 +14,11 @@ public class ItemDispensa {
 
     // Construtores
 
-    public ItemDispensa(){
+    public ItemDespensa(){
 
     }
 
-    public ItemDispensa(int idCasa, int idAlimento, int quantidade, LocalDate validade) {
+    public ItemDespensa(int idCasa, int idAlimento, int quantidade, LocalDate validade) {
 
         this.idCasa = idCasa;
         this.idAlimento = idAlimento;
@@ -72,7 +72,7 @@ public class ItemDispensa {
 
     @Override
     public String toString() {
-        return "==========ITEM DISPENSA==========" + "\n" +
+        return "==========ITEM DESPENSA==========" + "\n" +
                 "Id: " + this.id + "\n" +
                 "Id da casa: " + this.idCasa+ "\n" +
                 "Id do alimento: " + this.idAlimento + "\n" +

@@ -20,7 +20,7 @@
         <a href="${pageContext.request.contextPath}/categorias">Categoria</a>
         <a href="${pageContext.request.contextPath}/administradores">Administrador</a>
         <a href="${pageContext.request.contextPath}/alimentos">Alimento</a>
-        <a href="${pageContext.request.contextPath}/itensDispensa">Item Dispensa</a>
+        <a href="${pageContext.request.contextPath}/itensDespensa">Item Despensa</a>
     </div>
     <main class = "conteudo">
     <div class="conteudo">

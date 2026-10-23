@@ -108,7 +108,7 @@ public class AlimentoDAO {
 
         //Iniciando executor que: adicionará valores no comando SQL e executará o comando
         try(PreparedStatement pstmt = conn.prepareStatement(sqlSelect)) {
-            ResultSet rs  = pstmt.executeQuery();
+            ResultSet rs = pstmt.executeQuery();
 
             //Enquanto tiver mais registros cria novos objetos e adiciona à lista
             while(rs.next()){

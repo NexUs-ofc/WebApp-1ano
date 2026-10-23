@@ -19,7 +19,7 @@
     <a href="${pageContext.request.contextPath}/categorias">Categoria</a>
     <a class="ativo" href="${pageContext.request.contextPath}/administradores">Administrador</a>
     <a href="${pageContext.request.contextPath}/alimentos">Alimento</a>
-    <a href="${pageContext.request.contextPath}/itensDispensa">Item Dispensa</a>
+    <a href="${pageContext.request.contextPath}/itensDespensa">Item Despensa</a>
   </nav>
 
   <main class="conteudo">
@@ -36,7 +36,15 @@
       <div class="pesquisa">
         <form action="${pageContext.request.contextPath}/administradores" method="get">
           <input type="text" name="pesquisa" placeholder="Procurar" value="${param.pesquisa}">
-          <button type="submit">Pesquisar</button>
+          <button type="submit" class="botaoPesquisar">Pesquisar</button>
+          <button type="submit" class="botaoFiltro" aria-label="Aplicar filtro de pesquisa">
+            <span>Filtro</span>
+            <span class="iconeFiltro" aria-hidden="true">
+              <img src="<c:url value='/assets/filter-line-a.svg'/>" alt="">
+              <img src="<c:url value='/assets/filter-line-b.svg'/>" alt="">
+              <img src="<c:url value='/assets/filter-line-a.svg'/>" alt="">
+            </span>
+          </button>
         </form>
       </div>
 

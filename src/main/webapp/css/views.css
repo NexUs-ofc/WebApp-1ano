@@ -4,37 +4,36 @@
     padding: 0;
 }
 
+/* Layout fluido para desktop */
 body {
     min-height: 100vh; /*100% de viewport, o tamanho da tela no navegador*/
     display: flex;
     gap: 44px; /*o espaço entre a sidebar e o conteúdo*/
     padding: 12px;
-    background-color: #fdfdfe;
+    background-color: #fcfcfc;
     color: #1a1a1a;
     font-family: 'Huninn', sans-serif;
 }
 
 .sidebar {
     width: 268px;
-    calc(100vh - 24px); /*esse calc subtrai o tamanho da tela do padding, deixando a sidebar do tamanho que cabe na tela*/
+    height: calc(100vh - 24px); /*esse calc subtrai o tamanho da tela do padding, deixando a sidebar do tamanho que cabe na tela*/
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     gap: 9px;
     padding: 18px 14px;
-    border: 1px solid rgba(255, 255, 255, 0.02);
     border-radius: 14px;
     background: linear-gradient(#4a1d78, #6f2fa8);
-    box-shadow: 0 4px 4px rgba(255, 255, 255, 0.10) inset;
     filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
 }
 
 .sidebar h2 {
-    margin-top: 29.53px;
-    margin-bottom: 221.58px;
+    margin-top: 30px;
+    margin-bottom: 222px;
     padding: 0 12px;
     color: white;
-    font-size: 35.42px;
+    font-size: 35px;
     font-weight: normal;
 }
 
@@ -59,26 +58,36 @@ a.ativo {
 }
 
 .conteudo {
-    flex: 1;
+    width: auto;
+    max-width: none;
+    height: calc(100vh - 24px);
     min-width: 0;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
     padding: 20px 8px 0 0;
 }
 
 .titulo {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
+    height: 54px;
+    position: relative;
 }
 
 .titulo h1 {
-    font-size: 36px;
-    font-weight: normal;
+    width: 238px;
     font-family: 'Poppins', sans-serif;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 54px;
 }
 
 .titulo small {
+    position: absolute;
+    top: 26px;
+    left: 246px;
     color: #8a8a8a;
-    font-size: 15.2px;
+    font-size: 15px;
 }
 
 .vazio {
@@ -88,49 +97,129 @@ a.ativo {
 }
 
 .pesquisa {
-    margin-top: 8px;
+    width: calc(100% - 134px);
+    height: 39px;
+    margin-top: 4px;
 }
 
 .pesquisa form {
-    width: 558px;
-    height:39px;
-    display: flex;
-    gap: 8px;
+    width: 100%;
+    height: 39px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 117px 96px 87px;
+    column-gap: 11px;
+}
+
+.campoPesquisa {
+    width: auto;
+    height: 39px;
 }
 
 .pesquisa input {
-    flex: 1;
+    width: 100%;
+    height: 100%;
     min-width: 0;
-    padding: 12px 14px;
-    border: 1px solid #c9b3f0;
-    border-radius: 12.757px;
+    padding: 0 14px;
+    border: 0.5px solid #4f2078;
+    border-radius: 13px;
+    background-color: rgba(242, 226, 255, 0.2);
     font: inherit;
     font-size: 14px;
 }
 
-.pesquisa button {
-    padding: 12px 18px;
+.botaoPesquisar {
+    width: 117px;
+    height: 39px;
     border: none;
-    border-radius: 8px;
-    background-color: #4a1d78;
+    border-radius: 13px;
+    background-color: #4f2078;
     color: white;
     font: inherit;
-    font-size: 13px;
+    font-size: 14px;
+    box-shadow: 2px 2px 3px rgba(79, 32, 120, 0.23);
     cursor: pointer;
 }
 
-.pesquisa button:hover {
+.botaoPesquisar:hover {
     background-color: #6f2fa8;
 }
 
+.botaoFiltro {
+    width: 87px;
+    height: 33px;
+    grid-column: 4;
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 0;
+    border: 0.3px solid #4f2078;
+    border-radius: 12.76px;
+    background-color: rgba(242, 226, 255, 0.2);
+    color: #4f2078;
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.botaoFiltro > span:first-child {
+    line-height: 15px;
+}
+
+.iconeFiltro {
+    width: 19.125px;
+    height: 16.5px;
+    display: flex;
+    flex: 0 0 19.125px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.iconeFiltro img {
+    width: 19.125px;
+    height: 5.363px;
+    display: block;
+    flex: 0 0 5.363px;
+}
+
+.botaoFiltro:hover {
+    background-color: rgba(242, 226, 255, 0.45);
+}
+
+.botaoCriar {
+    width: 117px;
+    height: 33px;
+    position: absolute;
+    top: 79px;
+    right: 0;
+}
+
+.botaoCriar:not(div),
+.botaoCriar > button {
+    width: 117px;
+    height: 33px;
+    border: none;
+    border-radius: 13px;
+    background-color: #4f2078;
+    color: white;
+    font: inherit;
+    font-size: 14px;
+    white-space: nowrap;
+    box-shadow: 2px 2px 3px rgba(79, 32, 120, 0.23);
+    cursor: pointer;
+}
+
 .cartao {
-    margin-top: 60px;
-    padding-bottom: 36px;
-    max-height: calc(100vh - 200px);
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    flex: 1 1 auto;
+    margin-top: 61px;
     overflow: auto;
-    border-radius: 12px;
+    border-radius: 13px;
     background-color: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0 22px rgba(0, 0, 0, 0.07);
 }
 
 table {
@@ -139,31 +228,197 @@ table {
     border-collapse: collapse;
 }
 
-th {
-    height: 50px;
+th, td {
     padding: 0 12px;
+    text-align: center;
+}
+
+th {
+    height: 49px;
     position: sticky;
     top: 0;
     background-color: #4a1d78;
     color: white;
     font-size: 13px;
     font-weight: normal;
-    text-align: center;
 }
 
 th:first-child {
-    border-top-left-radius: 12px;
+    border-top-left-radius: 11px;
 }
 /*O first child e last child só vão deixar arredondado nas bordas extremas,
 se fosse colocado diretamente no th, iam ficar varias partições*/
 th:last-child {
-    border-top-right-radius: 12px;
+    border-top-right-radius: 11px;
 }
+
 td {
     height: 55px;
-    padding: 0 12px;
     border-bottom: 1px solid #c9b3f0;
     font-size: 14px;
+}
+
+.acoes {
     text-align: center;
 }
 
+.botaoExcluir {
+    width: 17px;
+    height: 17px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    appearance: none;
+    background: none;
+    box-shadow: none;
+    line-height: 0;
+    cursor: pointer;
+}
+
+.botaoExcluir img {
+    width: 17px;
+    height: 17px;
+    display: block;
+}
+
+.popupExclusao {
+    width: 515px;
+    max-width: 90%;
+    height: 207px;
+    margin: auto;
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: white;
+}
+
+.popupExclusao::backdrop {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.barraPopupExclusao {
+    height: 8px;
+    background-color: #E11D48;
+}
+
+.conteudoPopupExclusao {
+    padding: 33px 0 34px;
+    text-align: center;
+}
+
+.conteudoPopupExclusao h2 {
+    margin-bottom: 16px;
+    color: #272032;
+    font-family: 'Huninn', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 31px;
+}
+
+.conteudoPopupExclusao h2 span,
+.conteudoPopupExclusao p strong {
+    color: #E11D48;
+}
+
+.conteudoPopupExclusao p {
+    width: 414px;
+    height: 34px;
+    margin: 0 auto;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    line-height: 17px;
+}
+
+.conteudoPopupExclusao p strong {
+    font-weight: 400;
+}
+
+.acoesPopupExclusao {
+    display: flex;
+    justify-content: center;
+    gap: 13px;
+    margin-top: 20px;
+}
+
+.acoesPopupExclusao button {
+    width: 121px;
+    height: 31px;
+    border-radius: 13px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.botaoCancelarExclusao,
+.botaoConfirmarExclusao {
+    border: 2px solid #E11D48;
+}
+
+.botaoCancelarExclusao {
+    color: #968D9E;
+    background-color: white;
+}
+
+.botaoConfirmarExclusao {
+    color: white;
+    background-color: #E11D48;
+}
+
+.botaoSalvar,
+.botaoCancelar {
+    border-radius: 13px;
+}
+
+@media (max-width: 1360px) {
+    body {
+        gap: 24px;
+        padding-left: 12px;
+    }
+
+    .conteudo {
+        max-width: none;
+    }
+
+    .pesquisa {
+        width: calc(100% - 134px);
+    }
+
+    .pesquisa form {
+        grid-template-columns: minmax(0, 1fr) 117px;
+    }
+
+    .campoPesquisa {
+        width: auto;
+    }
+
+    .botaoFiltro {
+        display: none;
+    }
+}
+
+@media (max-width: 650px) {
+    .conteudoPopupExclusao {
+        padding: 40px 20px;
+    }
+
+    .conteudoPopupExclusao h2 {
+        font-size: 32px;
+    }
+
+    .conteudoPopupExclusao p {
+        font-size: 18px;
+    }
+
+    .acoesPopupExclusao {
+        flex-direction: column;
+    }
+
+    .acoesPopupExclusao button {
+        width: 100%;
+    }
+}

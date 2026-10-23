@@ -19,7 +19,7 @@
     <a href="${pageContext.request.contextPath}/categorias">Categoria</a>
     <a href="${pageContext.request.contextPath}/administradores">Administrador</a>
     <a class="ativo" href="${pageContext.request.contextPath}/alimentos">Alimento</a>
-    <a href="${pageContext.request.contextPath}/itensDispensa">Item Dispensa</a>
+    <a href="${pageContext.request.contextPath}/itensDespensa">Item Despensa</a>
   </nav>
 
   <main class="conteudo">
@@ -36,12 +36,20 @@
       <div class="pesquisa">
         <form action="${pageContext.request.contextPath}/alimentos" method="get">
           <input type="text" name="pesquisa" placeholder="Procurar" value="${param.pesquisa}">
-          <button type="submit">Pesquisar</button>
+          <button type="submit" class="botaoPesquisar">Pesquisar</button>
+          <button type="submit" class="botaoFiltro" aria-label="Aplicar filtro de pesquisa">
+            <span>Filtro</span>
+            <span class="iconeFiltro" aria-hidden="true">
+              <img src="<c:url value='/assets/filter-line-a.svg'/>" alt="">
+              <img src="<c:url value='/assets/filter-line-b.svg'/>" alt="">
+              <img src="<c:url value='/assets/filter-line-a.svg'/>" alt="">
+            </span>
+          </button>
         </form>
       </div>
 
-    <div class="Botaocriar">
-                <button type="button" onclick="document.getElementById('popupAlimento').showModal()">Adicionar alimento</button>
+    <div class="botaoCriar">
+                <button type="button" onclick="document.getElementById('popupAlimento').showModal()">Adicionar</button>
             </div>
 
             <div class="popupCriar">
@@ -56,7 +64,7 @@
                         <input id="marcaAlimento" name="marca" type="text" required>
                         <label for="idCategoria">ID da categoria</label>
                         <input id="idCategoria" name="idCategoria" type="number" required>
-                        <div class="botoes-popup">
+                        <div class="botoesPopup">
                             <button type="submit">Salvar</button>
                             <button type="button" onclick="document.getElementById('popupAlimento').close()">Cancelar</button>
                         </div>
@@ -73,6 +81,7 @@
               <th>Nome</th>
               <th>Marca</th>
               <th>ID da Categoria</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -84,6 +93,11 @@
                 <td><c:out value="${alimento.nome}"/></td>
                 <td><c:out value="${alimento.marca}"/></td>
                 <td><c:out value="${alimento.idCategoria}"/></td>
+                <td class="acoes">
+                  <button type="button" class="botaoExcluir" title="Excluir alimento" aria-label="Excluir alimento" onclick="abrirPopupExclusao('${alimento.id}')">
+                    <img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="" aria-hidden="true">
+                  </button>
+                </td>
                 </tr>
               </c:if>
             </c:forEach>
@@ -93,12 +107,35 @@
     </c:if>
   </main>
 
+  <dialog id="popupExclusao" class="popupExclusao">
+    <div class="barraPopupExclusao"></div>
+    <div class="conteudoPopupExclusao">
+      <h2><span>Excluir</span> alimento</h2>
+      <p>Tem certeza de que deseja <strong>excluir</strong> este item?
+      <br>Essa ação não poderá ser desfeita.</p>
+      <form action="${pageContext.request.contextPath}/alimentos/deletar" method="post">
+        <input type="hidden" id="idAlimentoExclusao" name="id">
+        <div class="acoesPopupExclusao">
+          <button type="button" class="botaoCancelarExclusao" onclick="fecharPopupExclusao()">cancelar</button>
+          <button type="submit" class="botaoConfirmarExclusao">confirmar</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
     <script>
         function abrirPopupAlimento() {
             document.getElementById("popupAlimento").showModal();
         }
-        function fecharPopupUsuario() {
+        function fecharPopupAlimento() {
             document.getElementById("popupAlimento").close();
+        }
+        function abrirPopupExclusao(idAlimento) {
+            document.getElementById("idAlimentoExclusao").value = idAlimento;
+            document.getElementById("popupExclusao").showModal();
+        }
+        function fecharPopupExclusao() {
+            document.getElementById("popupExclusao").close();
         }
     </script>
 

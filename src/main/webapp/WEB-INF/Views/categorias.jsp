@@ -18,7 +18,7 @@
     <a class="ativo" href="${pageContext.request.contextPath}/categorias">Categoria</a>
     <a href="${pageContext.request.contextPath}/administradores">Administrador</a>
     <a href="${pageContext.request.contextPath}/alimentos">Alimento</a>
-    <a href="${pageContext.request.contextPath}/itensDispensa">Item Dispensa</a>
+    <a href="${pageContext.request.contextPath}/itensDespensa">Item Despensa</a>
   </nav>
 
   <main class="conteudo">
@@ -34,11 +34,19 @@
       <div class="pesquisa">
         <form action="${pageContext.request.contextPath}/categorias" method="get">
           <input type="text" name="pesquisa" placeholder="Pesquisar categoria..." value="${param.pesquisa}">
-          <button type="submit">Pesquisar</button>
+          <button type="submit" class="botaoPesquisar">Pesquisar</button>
+          <button type="submit" class="botaoFiltro" aria-label="Aplicar filtro de pesquisa">
+            <span>Filtro</span>
+            <span class="iconeFiltro" aria-hidden="true">
+              <img src="<c:url value='/assets/filter-line-a.svg'/>" alt="">
+              <img src="<c:url value='/assets/filter-line-b.svg'/>" alt="">
+              <img src="<c:url value='/assets/filter-line-a.svg'/>" alt="">
+            </span>
+          </button>
         </form>
       </div>
 
-      <button type="button" onclick="abrirPopupCategoria()">Adicionar categoria</button>
+      <button type="button" class="botaoCriar" onclick="abrirPopupCategoria()">Adicionar</button>
       <dialog id="popupCategoria">
         <h2>Nova categoria</h2>
         <form action="${pageContext.request.contextPath}/categorias" method="post">
@@ -46,7 +54,7 @@
         <input id="nomeCategoria" name="nome" type="text" required>
         <label for="descricaoCategoria">Descrição</label>
         <input id="descricaoCategoria" name="descricao" type="text" required>
-        <div class="botoes-popup">
+        <div class="botoesPopup">
         <button type="submit">Salvar</button>
         <button type="button" onclick="fecharPopupCategoria()">Cancelar</button>
             </div>
@@ -60,6 +68,7 @@
               <th>ID</th>
               <th>Nome</th>
               <th>Descrição</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -69,6 +78,11 @@
                   <td><c:out value="${categoria.id}"/></td>
                   <td><c:out value="${categoria.nome}"/></td>
                   <td><c:out value="${categoria.descricao}"/></td>
+                  <td class="acoes">
+                    <button type="button" class="botaoExcluir" title="Excluir categoria" aria-label="Excluir categoria" onclick="abrirPopupExclusao('${categoria.id}')">
+                      <img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="" aria-hidden="true">
+                    </button>
+                  </td>
                 </tr>
               </c:if>
             </c:forEach>
@@ -78,12 +92,35 @@
     </c:if>
   </main>
 
+  <dialog id="popupExclusao" class="popupExclusao">
+    <div class="barraPopupExclusao"></div>
+    <div class="conteudoPopupExclusao">
+      <h2><span>Excluir</span> categoria</h2>
+      <p>Tem certeza de que deseja <strong>excluir</strong> este item?
+      <br>Essa ação não poderá ser desfeita.</p>
+      <form action="${pageContext.request.contextPath}/categorias/deletar" method="post">
+        <input type="hidden" id="idCategoriaExclusao" name="id">
+        <div class="acoesPopupExclusao">
+          <button type="button" class="botaoCancelarExclusao" onclick="fecharPopupExclusao()">cancelar</button>
+          <button type="submit" class="botaoConfirmarExclusao">confirmar</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
   <script>
     function abrirPopupCategoria() {
       document.getElementById("popupCategoria").showModal();
     }
     function fecharPopupCategoria() {
       document.getElementById("popupCategoria").close();
+    }
+    function abrirPopupExclusao(idCategoria) {
+      document.getElementById("idCategoriaExclusao").value = idCategoria;
+      document.getElementById("popupExclusao").showModal();
+    }
+    function fecharPopupExclusao() {
+      document.getElementById("popupExclusao").close();
     }
   </script>
 

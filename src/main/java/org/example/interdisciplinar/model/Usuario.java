@@ -15,11 +15,11 @@ public class Usuario {
 
     }
 
-    public Usuario(String nome, String email, String preferenciasCosnumo, String configuracaoAlerta) {
+    public Usuario(String nome, String email, String preferenciasConsumo, String configuracaoAlerta) {
 
         this.nome = nome;
         this.email = email;
-        this.preferenciasConsumo = preferenciasCosnumo;
+        this.preferenciasConsumo = preferenciasConsumo;
         this.configuracaoAlerta = configuracaoAlerta;
     }
 
@@ -53,8 +53,8 @@ public class Usuario {
         return preferenciasConsumo;
     }
 
-    public void setPreferenciasConsumo(String preferenciasCosnumo) {
-        this.preferenciasConsumo = preferenciasCosnumo;
+    public void setPreferenciasConsumo(String preferenciasConsumo) {
+        this.preferenciasConsumo = preferenciasConsumo;
     }
 
     public String getConfiguracaoAlerta() {
