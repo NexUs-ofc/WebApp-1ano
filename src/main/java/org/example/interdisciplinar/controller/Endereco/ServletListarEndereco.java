@@ -23,36 +23,45 @@ public class ServletListarEndereco extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        Integer idInicio = null;
-        Integer idFim = null;
+        try {
+            Integer idInicio = null;
+            Integer idFim = null;
 
-        String idInicioTexto = request.getParameter("idInicio");
-        String idFimTexto = request.getParameter("idFim");
-        String cidade = request.getParameter("cidade");
-        String estado = request.getParameter("estado");
-        String ordenar = request.getParameter("ordenar");
+            String idInicioTexto = request.getParameter("idInicio");
+            String idFimTexto = request.getParameter("idFim");
+            String cidade = request.getParameter("cidade");
+            String estado = request.getParameter("estado");
+            String ordenar = request.getParameter("ordenar");
 
-        if(idInicioTexto != null && !idInicioTexto.isBlank()){
-            idInicio = Integer.parseInt(idInicioTexto);
+            if(idInicioTexto != null && !idInicioTexto.isBlank()){
+                idInicio = Integer.parseInt(idInicioTexto);
+            }
+
+            if(idFimTexto != null && !idFimTexto.isBlank()){
+                idFim = Integer.parseInt(idFimTexto);
+            }
+
+            if (idInicio != null && idFim != null && idInicio > idFim) {
+                response.sendError(
+                        HttpServletResponse.SC_BAD_REQUEST,
+                        "O ID inicial não pode ser maior que o ID final."
+                );
+                return;
+            }
+
+            request.getRequestDispatcher("/WEB-INF/Views/enderecos.jsp").forward(request, response);
+
+            List<Endereco> enderecos = enderecoDAO.listarFiltrado(idInicio, idFim, cidade, estado, ordenar);
+            request.setAttribute("enderecos", enderecos);
+            request.getRequestDispatcher("/WEB-INF/Views/categorias.jsp").forward(request,response);
+        } catch (NumberFormatException nfe){
+            request.setAttribute("erro", "O ID dos endereços precisa ser um número inteiro");
+            request.getRequestDispatcher("/WEB-INF/Views/ErrorPage.jsp").forward(request, response);
+
+        } catch (RuntimeException re) {
+                request.setAttribute("erro", "Não foi possível carregar os Endereços. Tente novamente.");
+                request.getRequestDispatcher("/WEB-INF/Views/ErrorPage.jsp").forward(request, response);
         }
-
-        if(idFimTexto != null && !idFimTexto.isBlank()){
-            idFim = Integer.parseInt(idFimTexto);
-        }
-
-        if (idInicio != null && idFim != null && idInicio > idFim) {
-            response.sendError(
-                    HttpServletResponse.SC_BAD_REQUEST,
-                    "O ID inicial não pode ser maior que o ID final."
-            );
-            return;
-        }
-
-        request.getRequestDispatcher("/WEB-INF/Views/enderecos.jsp").forward(request, response);
-
-        List<Endereco> enderecos = enderecoDAO.listarFiltrado(idInicio, idFim, cidade, estado, ordenar);
-        request.setAttribute("enderecos", enderecos);
-        request.getRequestDispatcher("/WEB-INF/Views/categorias.jsp").forward(request,response);
     }
 
     public void destroy(){
