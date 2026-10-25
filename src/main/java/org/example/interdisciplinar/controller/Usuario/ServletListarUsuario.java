@@ -48,6 +48,10 @@ public class ServletListarUsuario extends HttpServlet {
             return;
         }
 
+        List<Usuario> usuarios = usuarioDAO.listarFiltrado(idInicio, idFim, nome, email, ordenar);
+        request.setAttribute("usuarios", usuarios);
+        request.getRequestDispatcher("/WEB-INF/Views/usuarios.jsp").forward(request, response);
+
     }
 
     public void destroy(){
