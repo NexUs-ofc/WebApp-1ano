@@ -55,6 +55,30 @@ public class ServletListarItem extends HttpServlet {
         if(dataFimTexto != null && !dataFimTexto.isBlank()){
             dataFim = LocalDate.parse(dataFimTexto);
         }
+
+        if (idInicio != null && idFim != null && idInicio > idFim) {
+            response.sendError(
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    "O ID inicial não pode ser maior que o ID final."
+            );
+            return;
+        }
+
+        if (qtdMinima != null && qtdMaxima != null && qtdMinima > qtdMaxima) {
+            response.sendError(
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    "A quantidade mínima não pode ser maior que a máxima."
+            );
+            return;
+        }
+
+        if (dataInicio != null && dataFim != null && dataInicio.isAfter(dataFim)) {
+            response.sendError(
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    "A data de início não pode ser maior que a data de fim"
+            );
+            return;
+        }
     }
 
     public void destroy(){
