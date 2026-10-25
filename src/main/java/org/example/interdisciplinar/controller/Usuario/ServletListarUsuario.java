@@ -23,9 +23,15 @@ public class ServletListarUsuario extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Usuario> usuarios = usuarioDAO.listar();
-        request.setAttribute("usuarios", usuarios);
-        request.getRequestDispatcher("/WEB-INF/Views/usuarios.jsp").forward(request, response);
+        Integer idInicio = null;
+        Integer idFim = null;
+
+        String idInicioTexto = request.getParameter("idInicio");
+        String idFimTexto = request.getParameter("idFim");
+        String nome = request.getParameter("nome");
+        String email = request.getParameter("email");
+        String ordenar = request.getParameter("ordenar");
+
     }
 
     public void destroy(){
