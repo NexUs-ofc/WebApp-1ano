@@ -23,8 +23,14 @@ public class ServletListarEndereco extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        List<Endereco> enderecos = enderecoDAO.listar();
-        request.setAttribute("enderecos", enderecos);
+
+        String rua = request.getParameter("rua");
+        String numero = request.getParameter("numero");
+        String bairro = request.getParameter("bairro");
+        String cidade = request.getParameter("cidade");
+        String estado = request.getParameter("estado");
+        String cep = request.getParameter("cep");
+
         request.getRequestDispatcher("/WEB-INF/Views/enderecos.jsp").forward(request, response);
     }
 
