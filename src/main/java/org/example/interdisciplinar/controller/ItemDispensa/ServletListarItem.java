@@ -9,6 +9,7 @@ import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.ItemDespensaDAO;
 import org.example.interdisciplinar.model.ItemDespensa;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @WebServlet(name = "ListarItens", value = "/itensDispensa")
@@ -22,9 +23,19 @@ public class ServletListarItem extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        List<ItemDespensa> itensDispensa = itemDispensaDAO.listar();
-        request.setAttribute("itensDispensa", itensDispensa);
-        request.getRequestDispatcher("/WEB-INF/Views/itensDispensa.jsp").forward(request, response);
+        Integer idInicio = null;
+        Integer idFim = null;
+        Integer qtdMinima = null;
+        Integer qtdMaxima = null;
+        LocalDate dataInicio = null;
+        LocalDate dataFim = null;
+
+        String idInicioTexto = request.getParameter("idInicio");
+        String idFimTexto = request.getParameter("idFim");
+        String qtdMinimaTexto = request.getParameter("qtdMinima");
+        String qtdMaximaTexto = request.getParameter("qtdMaxima");
+        String dataInicioTexto = request.getParameter("dataInicio");
+        String dataFimTexto = request.getParameter("dataFim");
     }
 
     public void destroy(){
