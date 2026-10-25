@@ -36,6 +36,7 @@ public class ServletListarItem extends HttpServlet {
         String qtdMaximaTexto = request.getParameter("qtdMaxima");
         String dataInicioTexto = request.getParameter("dataInicio");
         String dataFimTexto = request.getParameter("dataFim");
+        String ordenar = request.getParameter("ordenar");
 
         if(idInicioTexto != null && !idInicioTexto.isBlank()){
             idInicio = Integer.parseInt(idInicioTexto);
@@ -79,6 +80,10 @@ public class ServletListarItem extends HttpServlet {
             );
             return;
         }
+
+        List<ItemDespensa> itens = itemDispensaDAO.listarFiltrado(idInicio, idFim, qtdMinima, qtdMaxima, dataInicio, dataFim, ordenar);
+        request.setAttribute("itens", itens);
+        request.getRequestDispatcher("/WEB-INF/Views/itensDespensa.jsp").forward(request, response);
     }
 
     public void destroy(){
