@@ -36,6 +36,25 @@ public class ServletListarItem extends HttpServlet {
         String qtdMaximaTexto = request.getParameter("qtdMaxima");
         String dataInicioTexto = request.getParameter("dataInicio");
         String dataFimTexto = request.getParameter("dataFim");
+
+        if(idInicioTexto != null && !idInicioTexto.isBlank()){
+            idInicio = Integer.parseInt(idInicioTexto);
+        }
+        if(idFimTexto != null && !idFimTexto.isBlank()){
+            idFim = Integer.parseInt(idFimTexto);
+        }
+        if(qtdMinimaTexto != null && !qtdMinimaTexto.isBlank()){
+            qtdMinima = Integer.parseInt(qtdMinimaTexto);
+        }
+        if(qtdMaximaTexto != null && !qtdMaximaTexto.isBlank()){
+            qtdMaxima = Integer.parseInt(qtdMaximaTexto);
+        }
+        if(dataInicioTexto != null && !dataInicioTexto.isBlank()){
+            dataInicio = LocalDate.parse(dataInicioTexto);
+        }
+        if(dataFimTexto != null && !dataFimTexto.isBlank()){
+            dataFim = LocalDate.parse(dataFimTexto);
+        }
     }
 
     public void destroy(){
