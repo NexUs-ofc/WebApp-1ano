@@ -53,7 +53,7 @@ public class ServletListarEndereco extends HttpServlet {
 
             List<Endereco> enderecos = enderecoDAO.listarFiltrado(idInicio, idFim, cidade, estado, ordenar);
             request.setAttribute("enderecos", enderecos);
-            request.getRequestDispatcher("/WEB-INF/Views/categorias.jsp").forward(request,response);
+            request.getRequestDispatcher("/WEB-INF/Views/enderecos.jsp").forward(request,response);
         } catch (NumberFormatException nfe){
             request.setAttribute("erro", "O ID dos endereços precisa ser um número inteiro");
             request.getRequestDispatcher("/WEB-INF/Views/ErrorPage.jsp").forward(request, response);
