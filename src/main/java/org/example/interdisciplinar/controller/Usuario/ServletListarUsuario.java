@@ -26,31 +26,42 @@ public class ServletListarUsuario extends HttpServlet {
         Integer idInicio = null;
         Integer idFim = null;
 
-        String idInicioTexto = request.getParameter("idInicio");
-        String idFimTexto = request.getParameter("idFim");
-        String nome = request.getParameter("nome");
-        String email = request.getParameter("email");
-        String ordenar = request.getParameter("ordenar");
+        try {
+            String idInicioTexto = request.getParameter("idInicio");
+            String idFimTexto = request.getParameter("idFim");
+            String nome = request.getParameter("nome");
+            String email = request.getParameter("email");
+            String ordenar = request.getParameter("ordenar");
 
-        if(idInicioTexto != null && !idInicioTexto.isBlank()){
-            idInicio = Integer.parseInt(idInicioTexto);
+            if(idInicioTexto != null && !idInicioTexto.isBlank()){
+                idInicio = Integer.parseInt(idInicioTexto);
+            }
+
+            if(idFimTexto != null && !idFimTexto.isBlank()){
+                idFim = Integer.parseInt(idFimTexto);
+            }
+
+            if (idInicio != null && idFim != null && idInicio > idFim) {
+                response.sendError(
+                        HttpServletResponse.SC_BAD_REQUEST,
+                        "O ID inicial não pode ser maior que o ID final."
+                );
+                return;
+            }
+
+            List<Usuario> usuarios = usuarioDAO.listarFiltrado(idInicio, idFim, nome, email, ordenar);
+            request.setAttribute("usuarios", usuarios);
+            request.getRequestDispatcher("/WEB-INF/Views/usuarios.jsp").forward(request, response);
+
+        } catch (NumberFormatException nfe){
+            request.setAttribute("erro", "O ID dos usuários precisa ser um número inteiro");
+            request.getRequestDispatcher("/WEB-INF/Views/ErrorPage.jsp").forward(request, response);
+
+        } catch (RuntimeException re) {
+            request.setAttribute("erro", "Não foi possível carregar os usuários. Tente novamente.");
+            request.getRequestDispatcher("/WEB-INF/Views/ErrorPage.jsp").forward(request, response);
         }
 
-        if(idFimTexto != null && !idFimTexto.isBlank()){
-            idFim = Integer.parseInt(idFimTexto);
-        }
-
-        if (idInicio != null && idFim != null && idInicio > idFim) {
-            response.sendError(
-                    HttpServletResponse.SC_BAD_REQUEST,
-                    "O ID inicial não pode ser maior que o ID final."
-            );
-            return;
-        }
-
-        List<Usuario> usuarios = usuarioDAO.listarFiltrado(idInicio, idFim, nome, email, ordenar);
-        request.setAttribute("usuarios", usuarios);
-        request.getRequestDispatcher("/WEB-INF/Views/usuarios.jsp").forward(request, response);
 
     }
 
