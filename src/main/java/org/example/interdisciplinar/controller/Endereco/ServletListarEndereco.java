@@ -49,6 +49,10 @@ public class ServletListarEndereco extends HttpServlet {
         }
 
         request.getRequestDispatcher("/WEB-INF/Views/enderecos.jsp").forward(request, response);
+
+        List<Endereco> enderecos = enderecoDAO.listarFiltrado(idInicio, idFim, cidade, estado, ordenar);
+        request.setAttribute("enderecos", enderecos);
+        request.getRequestDispatcher("/WEB-INF/Views/categorias.jsp").forward(request,response);
     }
 
     public void destroy(){
