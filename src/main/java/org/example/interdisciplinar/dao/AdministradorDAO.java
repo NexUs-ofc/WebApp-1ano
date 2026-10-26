@@ -17,7 +17,7 @@ public class AdministradorDAO {
         int linhasAfetadas = 0;
 
         //Comando de inserir em SQL
-        String sqlInsert = "INSERT INTO tb_administrador(nome, email, senha) VALUES (?, ?, ?)";
+        String sqlInsert = "INSERT INTO tb_administrador(nome, email, senha, telefone, url_foto) VALUES (?, ?, ?, ?, ?)";
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
@@ -30,6 +30,8 @@ public class AdministradorDAO {
             pstmt.setString(1, administrador.getNome());
             pstmt.setString(2, administrador.getEmail());
             pstmt.setString(3, administrador.getSenha());
+            pstmt.setString(4, administrador.getTelefone());
+            pstmt.setString(5, administrador.getFotoPerfil());
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
@@ -78,6 +80,8 @@ public class AdministradorDAO {
                 admTemporario.setNome(rs.getString(2));
                 admTemporario.setEmail(rs.getString(3));
                 admTemporario.setSenha(rs.getString(4));
+                admTemporario.setTelefone(rs.getString("telefone"));
+                admTemporario.setFotoPerfil(rs.getString("url_foto"));
                 administradores.add(admTemporario);
             }
 
@@ -125,6 +129,8 @@ public class AdministradorDAO {
                 admTemporario.setNome(rs.getString(2));
                 admTemporario.setEmail(rs.getString(3));
                 admTemporario.setSenha(rs.getString(4));
+                admTemporario.setTelefone(rs.getString("telefone"));
+                admTemporario.setFotoPerfil(rs.getString("url_foto"));
 
                 // Commita a ação no banco de dados e retorna o Admin encontrado
                 GerenteConexao.commit();
@@ -215,6 +221,92 @@ public class AdministradorDAO {
             pstmt.setString(1, emailNovo);
             pstmt.setString(2, senha);
             GerenteConexao.commit();
+
+            //Se ação tiver dados certo commita e retorna true
+            if (linhasAfetadas > 0) {
+                GerenteConexao.commit();
+                return true;
+            }
+
+            //Se não desfaz a ação e retorna false
+            GerenteConexao.rollback();
+            return false;
+
+        //Em casos de erros no banco de dados desfaz a ação
+        } catch (SQLException sqle) {
+
+            //Lista todos os erros
+            sqle.printStackTrace();
+
+            //Desfaz a ação
+            GerenteConexao.rollback();
+
+            //Retorna false
+            return false;
+        }
+    }
+
+    /* Método para atualizar telefone do administrador
+          requisitando a senha para fazer a mudança */
+    public boolean atualizarTelefone(String senha, String telefoneNovo){
+
+        //Controle de linhas afetadas
+        int linhasAfetadas = 0;
+
+        //Comando de atualizar em SQL
+        String sql = "UPDATE tb_administrador SET telefone=? WHERE senha=?";
+
+        //Abrindo e armazenando conexão com o banco
+        Connection conn = GerenteConexao.conectar();
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            //Seta valores nos '?' do comando SQL
+            pstmt.setString(1, telefoneNovo);
+            pstmt.setString(2, senha);
+
+            //Se ação tiver dados certo commita e retorna true
+            if (linhasAfetadas > 0) {
+                GerenteConexao.commit();
+                return true;
+            }
+
+            //Se não desfaz a ação e retorna false
+            GerenteConexao.rollback();
+            return false;
+
+        //Em casos de erros no banco de dados desfaz a ação
+        } catch (SQLException sqle) {
+
+            //Lista todos os erros
+            sqle.printStackTrace();
+
+            //Desfaz a ação
+            GerenteConexao.rollback();
+
+            //Retorna false
+            return false;
+        }
+    }
+
+    /* Método para atualizar foto de perfil do administrador
+          requisitando a senha para fazer a mudança */
+    public boolean atualizarFotoPerfil(String senha, String fotoPerfilNova){
+
+        //Controle de linhas afetadas
+        int linhasAfetadas = 0;
+
+        //Comando de atualizar em SQL
+        String sql = "UPDATE tb_administrador SET url_foto=? WHERE senha=?";
+
+        //Abrindo e armazenando conexão com o banco
+        Connection conn = GerenteConexao.conectar();
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            //Seta valores nos '?' do comando SQL
+            pstmt.setString(1, fotoPerfilNova);
+            pstmt.setString(2, senha);
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {

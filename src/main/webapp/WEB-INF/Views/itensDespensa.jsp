@@ -51,6 +51,17 @@
               <img src="<c:url value='/assets/filter-line-a.svg'/>" alt="">
             </span>
           </button>
+          <select class="ordenacaoTabela" name="ordenacao" aria-label="Ordenar itens da despensa">
+            <option value="">Ordenar por</option>
+            <option value="validade_proxima">Validade mais próxima</option>
+            <option value="validade_distante">Validade mais distante</option>
+            <option value="quantidade_menor">Menor quantidade</option>
+            <option value="quantidade_maior">Maior quantidade</option>
+            <option value="alimento_asc">Alimento: A-Z</option>
+            <option value="usuario_asc">Usuário: A-Z</option>
+            <option value="id_asc">Menor ID</option>
+            <option value="id_desc">Maior ID</option>
+          </select>
         </form>
       </div>
     <button type="button" class="botaoCriar" onclick="abrirPopupItemDespensa()">Adicionar<img class="iconeAdicionar" src="${pageContext.request.contextPath}/assets/fi-br-add.svg" alt="" aria-hidden="true"></button>

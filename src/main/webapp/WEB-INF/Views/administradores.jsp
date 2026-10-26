@@ -51,6 +51,14 @@
               <img src="<c:url value='/assets/filter-line-a.svg'/>" alt="">
             </span>
           </button>
+          <select class="ordenacaoTabela" name="ordenacao" aria-label="Ordenar administradores">
+            <option value="">Ordenar por</option>
+            <option value="nome_asc">Nome: A-Z</option>
+            <option value="nome_desc">Nome: Z-A</option>
+            <option value="email_asc">E-mail: A-Z</option>
+            <option value="id_asc">Menor ID</option>
+            <option value="id_desc">Maior ID</option>
+          </select>
         </form>
       </div>
 
@@ -69,7 +77,19 @@
             <c:forEach var="administrador" items="${administradores}">
               <c:if test="${empty param.pesquisa or fn:contains(fn:toLowerCase(administrador.id), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(administrador.nome), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(administrador.email), fn:toLowerCase(param.pesquisa))}">
                 <tr>
-                <td><c:out value="${administrador.id}"/></td>
+                <td>
+                  <div class="identificacaoAdministrador">
+                    <c:choose>
+                      <c:when test="${not empty administrador.fotoPerfil}">
+                        <img class="fotoPerfil" src="${fn:escapeXml(administrador.fotoPerfil)}" alt="Foto de ${fn:escapeXml(administrador.nome)}">
+                      </c:when>
+                      <c:otherwise>
+                        <span class="fotoPerfil fotoPerfilVazia" aria-hidden="true"></span>
+                      </c:otherwise>
+                    </c:choose>
+                    <span><c:out value="${administrador.id}"/></span>
+                  </div>
+                </td>
                 <td><c:out value="${administrador.nome}"/></td>
                 <td><c:out value="${administrador.email}"/></td>
                 <td><c:out value="${administrador.senha}"/></td>

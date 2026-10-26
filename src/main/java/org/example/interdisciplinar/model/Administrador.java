@@ -8,6 +8,8 @@ public class Administrador {
     private String nome;
     private String email;
     private String senha;
+    private String telefone;
+    private String fotoPerfil;
 
     // Construtores
 
@@ -16,6 +18,14 @@ public class Administrador {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
+    }
+    public Administrador(int id, String nome, String email, String senha, String telefone, String fotoPerfil) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.telefone = telefone;
+        this.fotoPerfil = fotoPerfil;
     }
     public Administrador(){
 
@@ -55,6 +65,22 @@ public class Administrador {
         this.senha = senha;
     }
 
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getFotoPerfil() {
+        return fotoPerfil;
+    }
+
+    public void setFotoPerfil(String fotoPerfil) {
+        this.fotoPerfil = fotoPerfil;
+    }
+
     // Método toString()
 
     @Override
@@ -64,6 +90,8 @@ public class Administrador {
                 "Nome: " + this.nome + "\n" +
                 "Email: " + this.email + "\n" +
                 "Senha: " + this.senha + "\n" +
+                "Telefone: " + this.telefone + "\n" +
+                "Foto de perfil: " + this.fotoPerfil + "\n" +
                 "=================================";
     }
 }

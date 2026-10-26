@@ -50,6 +50,16 @@
               <img src="<c:url value='/assets/filter-line-a.svg'/>" alt="">
             </span>
           </button>
+          <select class="ordenacaoTabela" name="ordenacao" aria-label="Ordenar endereços">
+            <option value="">Ordenar por</option>
+            <option value="cidade_asc">Cidade: A-Z</option>
+            <option value="estado_asc">Estado: A-Z</option>
+            <option value="bairro_asc">Bairro: A-Z</option>
+            <option value="rua_asc">Rua: A-Z</option>
+            <option value="cep_asc">CEP crescente</option>
+            <option value="id_asc">Menor ID</option>
+            <option value="id_desc">Maior ID</option>
+          </select>
         </form>
       </div>
 
