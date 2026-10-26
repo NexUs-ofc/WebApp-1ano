@@ -32,6 +32,21 @@ public class ServletListarAlimento extends HttpServlet {
         String marca = request.getParameter("marca");
         String categoria = request.getParameter("categoria");
 
+        if(idInicioTexto != null && !idInicioTexto.isBlank()){
+            idInicio = Integer.parseInt(idInicioTexto);
+        }
+
+        if(idFimTexto != null && !idFimTexto.isBlank()){
+            idFim = Integer.parseInt(idFimTexto);
+        }
+
+        if (idInicio != null && idFim != null && idInicio > idFim) {
+            response.sendError(
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    "O ID inicial não pode ser maior que o ID final."
+            );
+            return;
+        }
 
     }
     public void destroy(){
