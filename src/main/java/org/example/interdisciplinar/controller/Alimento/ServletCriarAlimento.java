@@ -55,13 +55,19 @@ public class ServletCriarAlimento extends HttpServlet {
 
         if(idCategoriaTexto != null && !idCategoriaTexto.isBlank()){
             idCategoria = Integer.parseInt(idCategoriaTexto);
-        }
-        else {
+        } else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "O id da categoria deve ser um número inteiro!");
         }
 
+        Alimento alimento = new Alimento(codigoBarras, nome, marca, idCategoria);
+        boolean inserido = alimentoDAO.inserir(alimento);
 
-
+        if(inserido){
+            // Redireciona para a listagem
+            response.sendRedirect(
+                    request.getContextPath() + "/alimentos"
+            );
+        }
     }
 
     @Override
