@@ -38,10 +38,18 @@ public class ServletCriarAlimento extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+        Integer idCategoria = null;
         String codigoBarras = request.getParameter("codigoBarras");
         String nome = request.getParameter("nome");
         String marca = request.getParameter("marca");
         String idCategoriaTexto = request.getParameter("idCategoria");
+
+        if(idCategoriaTexto != null && !idCategoriaTexto.isBlank()){
+            idCategoria = Integer.parseInt(idCategoriaTexto);
+        }
+        else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "O id da categoria deve ser um número inteiro!");
+        }
 
     }
 
