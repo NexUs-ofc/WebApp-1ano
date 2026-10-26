@@ -54,7 +54,7 @@
         </form>
       </div>
     <button type="button" class="botaoCriar" onclick="abrirPopupItemDespensa()">Adicionar<img class="iconeAdicionar" src="${pageContext.request.contextPath}/assets/fi-br-add.svg" alt="" aria-hidden="true"></button>
-    <dialog id="popupItemDespensa" class="popupFormulario popupFormularioGrande">
+    <dialog id="popupItemDespensa" class="popupFormulario popupFormularioMedio">
       <div class="barraPopupFormulario"></div>
       <div class="conteudoPopupFormulario">
       <h2><span>Criar</span> item_despensa</h2>
@@ -115,7 +115,7 @@
     </c:if>
   </main>
 
-  <dialog id="popupEdicao" class="popupFormulario popupFormularioGrande">
+  <dialog id="popupEdicao" class="popupFormulario popupFormularioMedio">
     <div class="barraPopupFormulario"></div>
     <div class="conteudoPopupFormulario">
       <h2><span>Editar</span> item_despensa</h2>
