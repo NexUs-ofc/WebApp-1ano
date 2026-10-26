@@ -6,6 +6,8 @@ public class Usuario {
     private int id;
     private String nome;
     private String email;
+    private String senha;
+    private String telefone;
     private String preferenciasConsumo;
     private ConfiguracaoAlerta configuracaoAlerta;
 
@@ -15,10 +17,12 @@ public class Usuario {
 
     }
 
-    public Usuario(String nome, String email, String preferenciasConsumo, ConfiguracaoAlerta configuracaoAlerta) {
+    public Usuario(String nome, String email, String senha, String telefone, String preferenciasConsumo, ConfiguracaoAlerta configuracaoAlerta) {
 
         this.nome = nome;
         this.email = email;
+        this.senha = senha;
+        this.telefone = telefone;
         this.preferenciasConsumo = preferenciasConsumo;
         this.configuracaoAlerta = configuracaoAlerta;
     }
@@ -45,6 +49,22 @@ public class Usuario {
         return email;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -69,10 +89,12 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "==========USUARIO==========" +
+        return "==========USUARIO==========" + "\n" +
                 "Id: " + this.id + "\n" +
                 "Nome: " + this.nome + "\n" +
                 "Email: " + this.email + "\n" +
+                "Senha: " + this.senha + "\n" +
+                "Telefone: " + this.telefone + "\n" +
                 "Preferências de consumo: " + this.preferenciasConsumo + "\n" +
                 "Configuração do alerta: " + this.configuracaoAlerta + "\n" +
                 "============================";
