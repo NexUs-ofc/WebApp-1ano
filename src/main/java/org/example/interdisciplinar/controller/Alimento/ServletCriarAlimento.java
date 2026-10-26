@@ -67,6 +67,12 @@ public class ServletCriarAlimento extends HttpServlet {
             response.sendRedirect(
                     request.getContextPath() + "/alimentos"
             );
+
+        } else {
+            response.sendError(
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Não foi possível inserir o alimento."
+            );
         }
     }
 
