@@ -44,12 +44,23 @@ public class ServletCriarAlimento extends HttpServlet {
         String marca = request.getParameter("marca");
         String idCategoriaTexto = request.getParameter("idCategoria");
 
+        if (codigoBarras == null || codigoBarras.isBlank()
+                || nome == null || nome.isBlank()
+                || marca == null || marca.isBlank()){
+
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Todos os campos precisam ser preenchidos!");
+            request.getRequestDispatcher("/alimentos").forward(request, response);
+            return;
+        }
+
         if(idCategoriaTexto != null && !idCategoriaTexto.isBlank()){
             idCategoria = Integer.parseInt(idCategoriaTexto);
         }
         else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "O id da categoria deve ser um número inteiro!");
         }
+
+
 
     }
 
