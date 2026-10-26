@@ -3,7 +3,6 @@
     margin: 0;
     padding: 0;
 }
-
 /* Layout fluido para desktop */
 body {
     min-height: 100vh; /*100% de viewport, o tamanho da tela no navegador*/
@@ -27,39 +26,60 @@ body {
     background: linear-gradient(#4a1d78, #6f2fa8);
     filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
 }
-
-.sidebar h2 {
-    margin-top: 30px;
-    margin-bottom: 222px;
-    padding: 0 12px;
-    color: white;
-    font-size: 35px;
-    font-weight: normal;
+.logoSidebar {
+    width: 165px;
+    height: 49px;
+    position: relative;
+    flex-shrink: 0;
+    margin: 4px 0 204px 13px;
 }
-
+.simboloLogo {
+    width: 54.345px;
+    height: 49px;
+    position: absolute;
+    background-color: white;
+    border-radius: 12.871px;
+}
+.simboloLogo img { position: absolute; top: 10.57px; left: 13.08px; }
+.nomeLogo {
+    position: absolute;
+    top: 7.526px;
+    left: 78.658px;
+    color: white;
+    font-size: 35.415px;
+    line-height: normal;
+    white-space: nowrap;
+}
+.linhaLogo { position: absolute; top: 48.5px; left: 76.5px; }
 .sidebar a {
     width: 239px;
     height: 48px;
     display: flex;
     align-items: center;
+    gap: 22px;
     padding: 0 16px;
     border-radius: 13px;
     color: white;
     font-size: 14px;
+    text-decoration: none;
 }
-
+.iconeSidebar {
+    width: 24px;
+    height: 24px;
+    display: block;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+.sidebar a:not(.ativo) .iconeSidebar { filter: brightness(0) invert(1); }
+.sidebar a.ativo .iconeSidebar {
+    filter: brightness(0) saturate(100%) invert(18%) sepia(33%) saturate(3529%) hue-rotate(250deg) brightness(87%) contrast(96%);
+}
 .sidebar a:not(.ativo):hover { /*ele NÃO vai aplicar bg color se a classe do botão for ativo*/
     background-color: rgba(255, 255, 255, 0.12);
 }
-
-a.ativo {
-    background-color: white;
-    color: #4a1d78;
-}
+a.ativo { background-color: white; color: #4a1d78; }
 
 .conteudo {
-    width: auto;
-    max-width: none;
     height: calc(100vh - 24px);
     min-width: 0;
     flex: 1 1 auto;
@@ -68,53 +88,32 @@ a.ativo {
     position: relative;
     padding: 20px 8px 0 0;
 }
-
-.titulo {
-    height: 54px;
-    position: relative;
-}
-
+.titulo { height: 54px; position: relative; }
 .titulo h1 {
     width: 238px;
     font-family: 'Poppins', sans-serif;
     font-size: 36px;
     font-weight: 600;
     line-height: 54px;
+    color: #2a1e34;
 }
-
 .titulo small {
     position: absolute;
     top: 26px;
     left: 246px;
-    color: #8a8a8a;
-    font-size: 15px;
+    color: #968d9e;
+    font-size: 15.2px;
+    font-weight: 400;
 }
+.vazio { margin-top: 36px; color: #8a8a8a; font-size: 14px; }
 
-.vazio {
-    margin-top: 36px;
-    color: #8a8a8a;
-    font-size: 14px;
-}
-
-.pesquisa {
-    width: calc(100% - 134px);
-    height: 39px;
-    margin-top: 4px;
-}
-
+.pesquisa { width: calc(100% - 134px); margin-top: 4px; }
 .pesquisa form {
     width: 100%;
-    height: 39px;
     display: grid;
     grid-template-columns: minmax(0, 1fr) 117px 96px 87px;
     column-gap: 11px;
 }
-
-.campoPesquisa {
-    width: auto;
-    height: 39px;
-}
-
 .pesquisa input {
     width: 100%;
     height: 100%;
@@ -126,47 +125,36 @@ a.ativo {
     font: inherit;
     font-size: 14px;
 }
-
-.botaoPesquisar {
-    width: 117px;
-    height: 39px;
-    border: none;
+.pesquisa input::placeholder { color: #acacac; opacity: 1; }
+.pesquisa, .pesquisa form, .botaoPesquisar { height: 39px; }
+.botaoFiltro, .botaoCriar, .botaoCriar > button { height: 33px; }
+.botaoPesquisar, .botaoCriar, .botaoCriar > button { width: 117px; }
+.botaoPesquisar, .botaoFiltro, button.botaoCriar, .botaoCriar > button { font: inherit; font-size: 14px; cursor: pointer; }
+.botaoPesquisar, button.botaoCriar, .botaoCriar > button {
+    border: 0;
     border-radius: 13px;
     background-color: #4f2078;
     color: white;
-    font: inherit;
-    font-size: 14px;
     box-shadow: 2px 2px 3px rgba(79, 32, 120, 0.23);
-    cursor: pointer;
 }
-
-.botaoPesquisar:hover {
-    background-color: #6f2fa8;
-}
-
-.botaoFiltro {
-    width: 87px;
-    height: 33px;
-    grid-column: 4;
-    align-self: center;
+.botaoFiltro, button.botaoCriar, .botaoCriar > button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
+}
+.botaoPesquisar:hover { background-color: #6f2fa8; }
+.botaoFiltro {
+    width: 87px;
+    grid-column: 4;
+    align-self: center;
     padding: 0;
     border: 0.3px solid #4f2078;
     border-radius: 12.76px;
     background-color: rgba(242, 226, 255, 0.2);
     color: #4f2078;
-    font: inherit;
-    font-size: 14px;
-    cursor: pointer;
 }
-
-.botaoFiltro > span:first-child {
-    line-height: 15px;
-}
-
+.botaoFiltro > span:first-child { line-height: 15px; }
 .iconeFiltro {
     width: 19.125px;
     height: 16.5px;
@@ -175,46 +163,20 @@ a.ativo {
     flex-direction: column;
     justify-content: space-between;
 }
-
 .iconeFiltro img {
     width: 19.125px;
     height: 5.363px;
     display: block;
     flex: 0 0 5.363px;
 }
-
-.botaoFiltro:hover {
-    background-color: rgba(242, 226, 255, 0.45);
-}
-
-.botaoCriar {
-    width: 117px;
-    height: 33px;
-    position: absolute;
-    top: 79px;
-    right: 0;
-}
-
-.botaoCriar:not(div),
-.botaoCriar > button {
-    width: 117px;
-    height: 33px;
-    border: none;
-    border-radius: 13px;
-    background-color: #4f2078;
-    color: white;
-    font: inherit;
-    font-size: 14px;
-    white-space: nowrap;
-    box-shadow: 2px 2px 3px rgba(79, 32, 120, 0.23);
-    cursor: pointer;
-}
+.botaoFiltro:hover { background-color: rgba(242, 226, 255, 0.45); }
+.botaoCriar { position: absolute; top: 79px; right: 0; }
+button.botaoCriar, .botaoCriar > button { white-space: nowrap; }
 
 .cartao {
     width: 100%;
-    height: auto;
+    max-height: min(819px, calc(100vh - 202px));
     min-height: 0;
-    flex: 1 1 auto;
     margin-top: 61px;
     overflow: auto;
     border-radius: 13px;
@@ -222,53 +184,39 @@ a.ativo {
     box-shadow: 0 0 22px rgba(0, 0, 0, 0.07);
 }
 
-table {
-    width: 100%;
-    min-width: 640px;
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 0 12px;
-    text-align: center;
-}
-
+table { width: 100%; min-width: 640px; border-collapse: collapse; }
+th, td { padding: 0 12px; text-align: center; font-weight: 400; }
 th {
     height: 49px;
     position: sticky;
     top: 0;
+    z-index: 1;
     background-color: #4a1d78;
     color: white;
-    font-size: 13px;
-    font-weight: normal;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
 }
-
-th:first-child {
-    border-top-left-radius: 11px;
-}
+th:first-child { border-top-left-radius: 11px; }
 /*O first child e last child só vão deixar arredondado nas bordas extremas,
 se fosse colocado diretamente no th, iam ficar varias partições*/
-th:last-child {
-    border-top-right-radius: 11px;
-}
-
+th:last-child { border-top-right-radius: 11px; }
 td {
     height: 55px;
     border-bottom: 1px solid #c9b3f0;
+    color: #2a1e34;
     font-size: 14px;
 }
-
-.acoes {
-    text-align: center;
-}
-
-.botaoExcluir {
-    width: 17px;
-    height: 17px;
+.botaoEditar, .botaoEditar img, .botaoExcluir, .botaoExcluir img { width: 17px; height: 17px; }
+.acoes { white-space: nowrap; font-size: 0; }
+.botaoExcluir, .botaoEditar, .botaoBloquear {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin: 0;
+    vertical-align: middle;
+}
+.acoes > .botaoEditar, .acoes > .botaoExcluir { margin-left: 21px; }
+.botaoExcluir, .botaoEditar, .botaoBloquear { cursor: pointer; }
+.botaoExcluir, .botaoEditar {
     padding: 0;
     border: 0;
     outline: 0;
@@ -276,149 +224,223 @@ td {
     background: none;
     box-shadow: none;
     line-height: 0;
+}
+.botaoExcluir img, .botaoEditar img, .botaoBloquear img { display: block; }
+.botaoBloquear { position: relative; width: 21px; height: 21px; }
+.bloqueioLinha {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
     cursor: pointer;
 }
-
-.botaoExcluir img {
-    width: 17px;
-    height: 17px;
-    display: block;
+.botaoBloquear:has(.bloqueioLinha:focus-visible) { outline: 2px solid #4f2078; outline-offset: 2px; }
+tbody tr:has(.bloqueioLinha:checked) td:not(.acoes) { position: relative; color: transparent; user-select: none; }
+tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
+    content: "********";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1a1a1a;
 }
 
-.popupExclusao {
-    width: 515px;
-    max-width: 90%;
-    height: 207px;
-    margin: auto;
-    border: none;
-    border-radius: 8px;
+.popupFormulario, .popupExclusao {
+    padding: 0;
+    border: 0;
     overflow: hidden;
     background-color: white;
 }
-
-.popupExclusao::backdrop {
-    background-color: rgba(0, 0, 0, 0.3);
+.popupFormulario {
+    width: 835px;
+    max-width: calc(100% - 32px);
+    margin: auto;
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(79, 32, 120, 0.13);
 }
-
-.barraPopupExclusao {
+.popupFormularioGrande { height: 466px; }
+.popupFormularioMedio { height: 337px; }
+.popupFormularioPequeno { height: 224px; }
+.popupFormularioAdmin { width: 515px; height: 316px; }
+.popupFormulario::backdrop, .popupExclusao::backdrop { background-color: rgba(0, 0, 0, 0.3); }
+.barraPopupFormulario {
+    width: 100%;
     height: 8px;
-    background-color: #E11D48;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #4f2078;
 }
-
-.conteudoPopupExclusao {
-    padding: 33px 0 34px;
+.conteudoPopupFormulario { height: 100%; position: relative; padding: 28px 23px 0; }
+.conteudoPopupFormulario h2 {
+    color: #2a1e34;
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 33px;
     text-align: center;
 }
-
-.conteudoPopupExclusao h2 {
-    margin-bottom: 16px;
-    color: #272032;
-    font-family: 'Huninn', sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 31px;
+.conteudoPopupFormulario h2 span { color: #4f2078; }
+.gradeCamposPopup {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 21px;
+    row-gap: 39px;
+    margin-top: 21px;
 }
+.popupFormularioGrande .campoPopup:nth-child(n + 5) { transform: translateY(3px); }
 
-.conteudoPopupExclusao h2 span,
-.conteudoPopupExclusao p strong {
-    color: #E11D48;
-}
-
-.conteudoPopupExclusao p {
-    width: 414px;
-    height: 34px;
-    margin: 0 auto;
-    font-family: 'Poppins', sans-serif;
-    font-size: 15px;
-    line-height: 17px;
-}
-
-.conteudoPopupExclusao p strong {
-    font-weight: 400;
-}
-
-.acoesPopupExclusao {
+.campoPopup {
     display: flex;
-    justify-content: center;
-    gap: 13px;
-    margin-top: 20px;
+    flex-direction: column;
+    gap: 5px;
+    color: #4f2078;
+    font-family: 'Poppins', sans-serif;
+    font-size: 10.6px;
+    font-weight: 600;
+    line-height: 16px;
 }
-
-.acoesPopupExclusao button {
+.campoPopup input {
+    width: 100%;
+    height: 41px;
+    padding: 0 12px;
+    border: 1px solid #e6d8f0;
+    border-radius: 12.36px;
+    color: #291f33;
+    background-color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 11.48px;
+    font-weight: 400;
+    outline: none;
+}
+.campoPopup input:focus { border-color: #4f2078; }
+.campoPopup .textoHuninn { color: #2a1e34; font-family: 'Huninn', sans-serif; font-size: 14px; }
+.ajudaCampoPopup {
+    margin-top: -1px;
+    color: #968d9e;
+    font-size: 9.71px;
+    font-weight: 400;
+    line-height: normal;
+}
+.acoesPopupFormulario {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    display: flex;
+    gap: 13px;
+    transform: translateX(-50%);
+}
+.popupFormularioGrande .acoesPopupFormulario { bottom: 24px; }
+.acoesPopupFormulario button, .acoesPopupExclusao button {
     width: 121px;
     height: 31px;
-    border-radius: 13px;
+    border-radius: 5.18px;
     font-family: 'Poppins', sans-serif;
-    font-size: 13px;
+    font-size: 11.77px;
     font-weight: 600;
     cursor: pointer;
 }
-
-.botaoCancelarExclusao,
-.botaoConfirmarExclusao {
-    border: 2px solid #E11D48;
+.botaoCancelarPopup, .botaoConfirmarPopup { border: 0.65px solid #4f2078; }
+.botaoCancelarPopup { color: #968d9e; background-color: white; }
+.botaoConfirmarPopup { color: white; background-color: #4f2078; }
+.camposPopupAdmin { height: 145px; position: relative; margin-top: 21px; }
+.campoPopupAdmin {
+    width: 100%;
+    height: 40px;
+    position: absolute;
+    left: 0;
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    column-gap: 16px;
+    color: #4f2078;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
 }
-
-.botaoCancelarExclusao {
-    color: #968D9E;
-    background-color: white;
+.campoPopupAdmin:nth-child(1) { top: 0; }
+.campoPopupAdmin:nth-child(2) { top: 52px; }
+.campoPopupAdmin:nth-child(3) { top: 105px; }
+.campoPopupAdmin span { margin-top: 12px; }
+.campoPopupAdmin input {
+    width: 100%;
+    height: 35px;
+    padding: 0 12px;
+    border: 1px solid #d0bdf2;
+    border-radius: 10px;
+    color: #291f33;
+    font: 400 11.48px 'Poppins', sans-serif;
+    outline: none;
 }
+.campoPopupAdmin:nth-child(1) input { margin-top: 6px; }
+.campoPopupAdmin:nth-child(2) input { margin-top: 4px; }
+.campoPopupAdmin:nth-child(3) input { margin-top: 2px; }
+.popupFormularioAdmin .conteudoPopupFormulario { padding: 27px 24px 0; }
+.popupFormularioAdmin .acoesPopupFormulario { bottom: 27px; }
 
-.botaoConfirmarExclusao {
-    color: white;
-    background-color: #E11D48;
+.popupExclusao {
+    width: 515px;
+    max-width: calc(100% - 32px);
+    height: 207.3px;
+    margin: auto;
+    border-radius: 8.42px;
 }
-
-.botaoSalvar,
-.botaoCancelar {
-    border-radius: 13px;
+.barraPopupExclusao {
+    width: 100%;
+    height: 7.77px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #e11d48;
 }
+.conteudoPopupExclusao { height: 100%; position: relative; text-align: center; }
+.conteudoPopupExclusao h2 {
+    width: 100%;
+    position: absolute;
+    top: 34.98px;
+    color: #2a1e34;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20.73px;
+    font-weight: 600;
+    line-height: normal;
+}
+.conteudoPopupExclusao h2 span, .conteudoPopupExclusao p strong { color: #e11d48; }
+.conteudoPopupExclusao p {
+    width: 414px;
+    max-width: calc(100% - 32px);
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    color: #2a1e34;
+    font-family: 'Huninn', sans-serif;
+    font-size: 15.55px;
+    line-height: normal;
+    transform: translateX(-50%);
+}
+.conteudoPopupExclusao p strong { font-weight: 400; }
+.acoesPopupExclusao {
+    position: absolute;
+    top: 142.52px;
+    left: 50%;
+    display: flex;
+    gap: 13px;
+    transform: translateX(-50%);
+}
+.botaoCancelarExclusao, .botaoConfirmarExclusao { border: 0.65px solid #e11d48; }
+.botaoCancelarExclusao { color: #968D9E; background-color: white; }
+.botaoConfirmarExclusao { color: white; background-color: #e11d48; }
 
 @media (max-width: 1360px) {
-    body {
-        gap: 24px;
-        padding-left: 12px;
-    }
-
-    .conteudo {
-        max-width: none;
-    }
-
-    .pesquisa {
-        width: calc(100% - 134px);
-    }
-
-    .pesquisa form {
-        grid-template-columns: minmax(0, 1fr) 117px;
-    }
-
-    .campoPesquisa {
-        width: auto;
-    }
-
-    .botaoFiltro {
-        display: none;
-    }
+    body { gap: 24px; }
+    .pesquisa form { grid-template-columns: minmax(0, 1fr) 117px; }
+    .botaoFiltro { display: none; }
 }
 
 @media (max-width: 650px) {
-    .conteudoPopupExclusao {
-        padding: 40px 20px;
-    }
-
-    .conteudoPopupExclusao h2 {
-        font-size: 32px;
-    }
-
-    .conteudoPopupExclusao p {
-        font-size: 18px;
-    }
-
-    .acoesPopupExclusao {
-        flex-direction: column;
-    }
-
-    .acoesPopupExclusao button {
-        width: 100%;
-    }
+    .popupFormulario:not(.popupFormularioAdmin) { height: auto; min-height: 337px; }
+    .conteudoPopupFormulario { padding-bottom: 82px; }
+    .gradeCamposPopup { grid-template-columns: 1fr; row-gap: 18px; }
+    .acoesPopupFormulario { bottom: 24px; }
 }

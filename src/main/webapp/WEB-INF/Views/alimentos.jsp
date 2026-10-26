@@ -7,25 +7,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ceris · Alimentos</title>
   <link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/views.css">
 </head>
 <body>
   <nav class="sidebar">
-    <h2>Ceris</h2>
-    <a href="${pageContext.request.contextPath}/index.jsp">Análise</a>
-    <a href="${pageContext.request.contextPath}/enderecos">Endereço</a>
-    <a href="${pageContext.request.contextPath}/usuarios">Usuário</a>
-    <a href="${pageContext.request.contextPath}/categorias">Categoria</a>
-    <a href="${pageContext.request.contextPath}/administradores">Administrador</a>
-    <a class="ativo" href="${pageContext.request.contextPath}/alimentos">Alimento</a>
-    <a href="${pageContext.request.contextPath}/itensDespensa">Item Despensa</a>
+    <div class="logoSidebar">
+      <div class="simboloLogo">
+        <img src="${pageContext.request.contextPath}/assets/logo-ceris.svg" alt="">
+      </div>
+      <span class="nomeLogo">Ceris</span>
+      <img class="linhaLogo" src="${pageContext.request.contextPath}/assets/logo-underline.svg" alt="">
+    </div>
+    <a href="${pageContext.request.contextPath}/index.jsp"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-chart-histogram.svg" alt="">Análise</a>
+    <a href="${pageContext.request.contextPath}/enderecos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-marker.svg" alt="">Endereço</a>
+    <a href="${pageContext.request.contextPath}/usuarios"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="">Usuário</a>
+    <a class="ativo" href="${pageContext.request.contextPath}/alimentos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-utensils.svg" alt="">Alimento</a>
+    <a href="${pageContext.request.contextPath}/categorias"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-apps.svg" alt="">Categoria</a>
+    <a href="${pageContext.request.contextPath}/itensDespensa"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-bread-slice.svg" alt="">Item_dispensa</a>
+    <a href="${pageContext.request.contextPath}/administradores"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-shield-check.svg" alt="">Administrador</a>
   </nav>
 
   <main class="conteudo">
     <div class="titulo">
       <h1>Área Restrita</h1>
-      <small>Alimentos</small>
+      <small>Alimento</small>
     </div>
 
     <c:if test="${empty alimentos}">
@@ -37,7 +43,7 @@
         <form action="${pageContext.request.contextPath}/alimentos" method="get">
           <input type="text" name="pesquisa" placeholder="Procurar" value="${param.pesquisa}">
           <button type="submit" class="botaoPesquisar">Pesquisar</button>
-          <button type="submit" class="botaoFiltro" aria-label="Aplicar filtro de pesquisa">
+          <button type="button" class="botaoFiltro" aria-label="Aplicar filtro de pesquisa">
             <span>Filtro</span>
             <span class="iconeFiltro" aria-hidden="true">
               <img src="<c:url value='/assets/filter-line-a.svg'/>" alt="">
@@ -49,26 +55,27 @@
       </div>
 
     <div class="botaoCriar">
-                <button type="button" onclick="document.getElementById('popupAlimento').showModal()">Adicionar</button>
+                <button type="button" onclick="document.getElementById('popupAlimento').showModal()">Adicionar<img class="iconeAdicionar" src="${pageContext.request.contextPath}/assets/fi-br-add.svg" alt="" aria-hidden="true"></button>
             </div>
 
             <div class="popupCriar">
-                <dialog id="popupAlimento">
-                    <h2>Novo alimento</h2>
+                <dialog id="popupAlimento" class="popupFormulario popupFormularioMedio">
+                    <div class="barraPopupFormulario"></div>
+                    <div class="conteudoPopupFormulario">
+                    <h2><span>Criar</span> alimento</h2>
                     <form action="${pageContext.request.contextPath}/alimentos" method="post">
-                        <label for="codigoBarras">Código de barras</label>
-                        <input id="codigoBarras" name="codigoBarras" type="text" required>
-                        <label for="nome">Nome</label>
-                        <input id="nome" name="nome" type="text" required>
-                        <label for="marcaAlimento">Marca</label>
-                        <input id="marcaAlimento" name="marca" type="text" required>
-                        <label for="idCategoria">ID da categoria</label>
-                        <input id="idCategoria" name="idCategoria" type="number" required>
-                        <div class="botoesPopup">
-                            <button type="submit">Salvar</button>
-                            <button type="button" onclick="document.getElementById('popupAlimento').close()">Cancelar</button>
+                        <div class="gradeCamposPopup">
+                            <label class="campoPopup" for="codigoBarras">Cod_barras<input id="codigoBarras" name="codigoBarras" type="text" required></label>
+                            <label class="campoPopup" for="marcaAlimento">Marca<input id="marcaAlimento" name="marca" type="text" required></label>
+                            <label class="campoPopup" for="nome">Nome<input id="nome" name="nome" type="text" required></label>
+                            <label class="campoPopup" for="idCategoria">Categoria<input id="idCategoria" name="idCategoria" type="number" required></label>
+                        </div>
+                        <div class="acoesPopupFormulario">
+                            <button type="button" class="botaoCancelarPopup" onclick="fecharPopupAlimento()">cancelar</button>
+                            <button type="submit" class="botaoConfirmarPopup">confirmar</button>
                         </div>
                     </form>
+                    </div>
                 </dialog>
             </div>
 
@@ -76,12 +83,12 @@
         <table>
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Cód. de Barras</th>
-              <th>Nome</th>
-              <th>Marca</th>
-              <th>ID da Categoria</th>
-              <th>Ações</th>
+              <th>id_alimento</th>
+              <th>cod_barras</th>
+              <th>nome</th>
+              <th>marca</th>
+              <th>categoria</th>
+              <th aria-label="Ações"></th>
             </tr>
           </thead>
           <tbody>
@@ -94,6 +101,13 @@
                 <td><c:out value="${alimento.marca}"/></td>
                 <td><c:out value="${alimento.idCategoria}"/></td>
                 <td class="acoes">
+                  <label class="botaoBloquear" title="Ocultar dados da linha">
+                    <input type="checkbox" class="bloqueioLinha" aria-label="Ocultar dados da linha">
+                    <img src="<c:url value='/assets/fi-br-eye.svg'/>" alt="" aria-hidden="true">
+                  </label>
+                  <button type="button" class="botaoEditar" title="Editar alimento" aria-label="Editar alimento" data-id="${alimento.id}" data-codigo-barras="${fn:escapeXml(alimento.codigoBarras)}" data-nome="${fn:escapeXml(alimento.nome)}" data-marca="${fn:escapeXml(alimento.marca)}" data-categoria="${alimento.idCategoria}" onclick="abrirPopupEdicao(this)">
+                    <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
+                  </button>
                   <button type="button" class="botaoExcluir" title="Excluir alimento" aria-label="Excluir alimento" onclick="abrirPopupExclusao('${alimento.id}')">
                     <img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="" aria-hidden="true">
                   </button>
@@ -106,6 +120,26 @@
       </div>
     </c:if>
   </main>
+
+  <dialog id="popupEdicao" class="popupFormulario popupFormularioMedio">
+    <div class="barraPopupFormulario"></div>
+    <div class="conteudoPopupFormulario">
+      <h2><span>Editar</span> alimento</h2>
+      <form action="${pageContext.request.contextPath}/alimentos/atualizar" method="post">
+        <input type="hidden" id="idAlimentoEdicao" name="id">
+        <div class="gradeCamposPopup">
+          <label class="campoPopup" for="codigoBarrasEdicao">Cod_barras<input id="codigoBarrasEdicao" name="codigoBarras" type="text" required></label>
+          <label class="campoPopup" for="marcaAlimentoEdicao">Marca<input id="marcaAlimentoEdicao" name="marca" type="text" required></label>
+          <label class="campoPopup" for="nomeAlimentoEdicao">Nome<input id="nomeAlimentoEdicao" name="nome" type="text" required></label>
+          <label class="campoPopup" for="categoriaAlimentoEdicao">Categoria<input id="categoriaAlimentoEdicao" name="idCategoria" type="number" required></label>
+        </div>
+        <div class="acoesPopupFormulario">
+          <button type="button" class="botaoCancelarPopup" onclick="fecharPopupEdicao()">cancelar</button>
+          <button type="submit" class="botaoConfirmarPopup">confirmar</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
 
   <dialog id="popupExclusao" class="popupExclusao">
     <div class="barraPopupExclusao"></div>
@@ -129,6 +163,17 @@
         }
         function fecharPopupAlimento() {
             document.getElementById("popupAlimento").close();
+        }
+        function abrirPopupEdicao(botao) {
+            document.getElementById("idAlimentoEdicao").value = botao.dataset.id;
+            document.getElementById("codigoBarrasEdicao").value = botao.dataset.codigoBarras;
+            document.getElementById("marcaAlimentoEdicao").value = botao.dataset.marca;
+            document.getElementById("nomeAlimentoEdicao").value = botao.dataset.nome;
+            document.getElementById("categoriaAlimentoEdicao").value = botao.dataset.categoria;
+            document.getElementById("popupEdicao").showModal();
+        }
+        function fecharPopupEdicao() {
+            document.getElementById("popupEdicao").close();
         }
         function abrirPopupExclusao(idAlimento) {
             document.getElementById("idAlimentoExclusao").value = idAlimento;
