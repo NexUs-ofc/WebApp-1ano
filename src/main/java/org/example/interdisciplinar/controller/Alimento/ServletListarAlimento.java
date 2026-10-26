@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.AlimentoDAO;
 import org.example.interdisciplinar.dao.UsuarioDAO;
+import org.example.interdisciplinar.model.Alimento;
 import org.example.interdisciplinar.model.Usuario;
 
 import java.io.IOException;
@@ -31,6 +32,7 @@ public class ServletListarAlimento extends HttpServlet {
         String nome = request.getParameter("nome");
         String marca = request.getParameter("marca");
         String categoria = request.getParameter("categoria");
+        String ordenar = request.getParameter("ordenar");
 
         if(idInicioTexto != null && !idInicioTexto.isBlank()){
             idInicio = Integer.parseInt(idInicioTexto);
@@ -47,6 +49,10 @@ public class ServletListarAlimento extends HttpServlet {
             );
             return;
         }
+
+        List<Alimento> alimentos = alimentoDAO.listarFiltrado(idInicio, idFim, nome, categoria, marca, ordenar);
+        request.setAttribute("alimentos", alimentos);
+        request.getRequestDispatcher("/WEB-INF/Views/alimentos.jsp").forward(request, response);
 
     }
     public void destroy(){
