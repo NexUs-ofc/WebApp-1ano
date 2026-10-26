@@ -1,4 +1,12 @@
 package org.example.interdisciplinar.dto;
 
-public record UsuarioView() {
-}
+import org.example.interdisciplinar.model.ConfiguracaoAlerta;
+
+public record UsuarioView(
+   int id,
+   String nome,
+   String telefone,
+   String email,
+   String senha,
+   ConfiguracaoAlerta configuracaoAlerta
+) {}

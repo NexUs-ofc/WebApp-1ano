@@ -32,6 +32,7 @@ public class UsuarioDAO {
             pstmt.setString(2, usuario.getEmail());
             pstmt.setString(3, usuario.getPreferenciasConsumo());
             pstmt.setString(4, usuario.getConfiguracaoAlerta().name());
+            pstmt.setString(5, );
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
