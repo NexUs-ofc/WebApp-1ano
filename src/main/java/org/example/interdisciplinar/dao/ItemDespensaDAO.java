@@ -10,14 +10,14 @@ import java.util.List;
 // Abertura da classe
 public class ItemDespensaDAO {
 
-    // Método de inserir um item na despensa do usuário
+    // Método de inserir um item na dispensa do usuário
     public boolean inserir(ItemDespensa itemDespensa){
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
 
         //Comando de inserir em SQL
-        String sqlInsert = "INSERT INTO tb_item_despensa (id_casa, id_alimento, quantidade, data_validade) VALUES (?, ?, ?, ?)";
+        String sqlInsert = "INSERT INTO tb_item_dispensa (id_casa, id_alimento, quantidade, data_validade) VALUES (?, ?, ?, ?)";
 
         //Controle de linhas afetadas
         int linhasAfetadas = 0;
@@ -57,14 +57,14 @@ public class ItemDespensaDAO {
         }
     }
 
-    // Método para deletar um item da despensa do usuário
+    // Método para deletar um item da dispensa do usuário
     public boolean deletar(int idItem){
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
 
         //Comando de deletar em SQL
-        String sqlDelete = "DELETE FROM tb_item_despensa WHERE id_item=?";
+        String sqlDelete = "DELETE FROM tb_item_dispensa WHERE id_item=?";
 
         //Controle de linhas afetadas
         int linhasAfetadas = 0;
@@ -102,16 +102,16 @@ public class ItemDespensaDAO {
         }
     }
 
-    // Método para listar todos os itens da despensa
+    // Método para listar todos os itens da dispensa
     public List<ItemDespensa> listar(){
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
 
         //Comando de listar em SQL
-        String sqlSelect = "SELECT * FROM tb_item_despensa";
+        String sqlSelect = "SELECT * FROM view_item_dispensa";
 
-        // Criando lista que irá armazenar os registros dos itens da despensa
+        // Criando lista que irá armazenar os registros dos itens da dispensa
         List<ItemDespensa> itensDespensa = new ArrayList<>();
 
         //Cria executor que receberá comando e executará ele
@@ -132,19 +132,13 @@ public class ItemDespensaDAO {
                 itensDespensa.add(itemDespensa);
             }
 
-            // Commita a ação no banco de dados
-            GerenteConexao.commit();
-
-            // Retrona a lista de itens da despensa
+            // Retrona a lista de itens da dispensa
             return itensDespensa;
 
-            //Em casos de erros no banco de dados desfaz a ação
         } catch (SQLException sqle) {
             //Lista todos os erros
             sqle.printStackTrace();
 
-            //Desfaz a ação
-            GerenteConexao.rollback();
 
             //Retorna a lista
             return itensDespensa;
@@ -152,92 +146,134 @@ public class ItemDespensaDAO {
 
     }
 
-    // Método para atualizar a quantidade de itens da despensa
-    public boolean atualizarQuantidade(int qtdNova, int idItem){
+    public boolean atualizar(ItemDespensa itemDespensa){
+        String sql = "UPDATE tb_item_dispensa SET id_casa=?, id_alimento=?, quantidade=?, data_validade=? WHERE id_item=?";
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
+            pstmt.setInt(1, itemDespensa.getIdCasa());
+            pstmt.setInt(2, itemDespensa.getIdAlimento());
+            pstmt.setInt(3, itemDespensa.getQuantidade());
 
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
-
-        //Comando de atualizar em SQL
-        String sqlUpdateQtd = "UPDATE tb_item_despensa SET quantidade=? WHERE id_item=?";
-
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
-
-        //Iniciando executor que vai atribuir valores ao comando SQL e executará ele
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateQtd)){
-
-            //Seta valores nos '?' do comando SQL
-            pstmt.setInt(1, qtdNova);
-            pstmt.setInt(2, idItem);
-
-            linhasAfetadas = pstmt.executeUpdate();
-
-            //Se ação tiver dados certo commita e retorna true
-            if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
-                return true;
+            if(itemDespensa.getValidade() != null){
+                pstmt.setDate(4, Date.valueOf(itemDespensa.getValidade()));
+            } else {
+                pstmt.setNull(4, Types.DATE);
             }
 
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
-            return false;
+            pstmt.setInt(5, itemDespensa.getId());
+            int linhasAfetadas = pstmt.executeUpdate();
+            return linhasAfetadas > 0;
 
-            //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
-            //Lista todos os erros
+        } catch (SQLException sqle){
             sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
             return false;
         }
     }
 
-    // Método para atualizar a validade do item da despensa
-    public boolean atualizarValidade(LocalDate dataNova, int idItem){
+    public List<ItemDespensa> listarFiltrado(
+            Integer idItemInicio,
+            Integer idItemFim,
+            Integer qtdMinima,
+            Integer qtdMaxima,
+            LocalDate dataInicio,
+            LocalDate dataFim,
+            String ordenar
+    ){
+        StringBuilder sql = new StringBuilder("SELECT * FROM tb_item_dispensa WHERE 1=1");
+        List<Object> parametrosDoFiltro = new ArrayList<>();
+        List<ItemDespensa> itensDespensa = new ArrayList<>();
 
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
+        if(idItemInicio != null){
+            sql.append(" AND id_item >=?");
+            parametrosDoFiltro.add(idItemInicio);
+        }
+        if(idItemFim != null){
+            sql.append(" AND id_item <=?");
+            parametrosDoFiltro.add(idItemFim);
+        }
+        if(qtdMinima != null){
+            sql.append(" AND quantidade >=?");
+            parametrosDoFiltro.add(qtdMinima);
+        }
+        if(qtdMaxima != null){
+            sql.append(" AND quantidade <=?");
+            parametrosDoFiltro.add(qtdMaxima);
+        }
+        if(dataInicio != null){
+            sql.append(" AND validade >=?");
+            parametrosDoFiltro.add(dataInicio);
+        }
+        if(dataFim != null){
+            sql.append(" AND validade <=?");
+            parametrosDoFiltro.add(dataFim);
+        }
 
-        //Comando de atualizar em SQL
-        String sqlUpdateValidade = "UPDATE tb_item_despensa SET data_validade=? WHERE id_item=?";
+        switch (ordenar){
+            case "id":
+                sql.append(" ORDER BY id_item");
+                break;
 
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
+            case "quantidade":
+                sql.append(" ORDER BY quantidade");
+                break;
 
-        //Iniciando executor que vai atribuir valores ao comando SQL
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdateValidade)){
+            case "validade":
+                sql.append(" ORDER BY validade");
+                break;
 
-            //Seta valores nos '?' do comando SQL
-            pstmt.setDate(1, Date.valueOf(dataNova));
-            pstmt.setInt(2, idItem);
+            default:
+                sql.append(" ORDER BY id_item");
+                break;
+        }
 
-            linhasAfetadas = pstmt.executeUpdate();
+        //Cria executor que receberá comando e executará ele
+        try (   Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql.toString())
+        ){
 
-            //Se ação tiver dados certo commita e retorna true
-            if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
-                return true;
+            for(int i = 0; i < parametrosDoFiltro.size(); i++){
+                pstmt.setObject(i+1, parametrosDoFiltro.get(i));
             }
 
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
-            return false;
+            try (ResultSet rs = pstmt.executeQuery()){
+                //Enquanto tiver mais registros cria novos objetos e adiciona à lista
+                while (rs.next()) {
+                    ItemDespensa itemDespensa = new ItemDespensa();
+                    itemDespensa.setId(rs.getInt(1));
+                    itemDespensa.setIdCasa(rs.getInt(2));
+                    itemDespensa.setIdAlimento(rs.getInt(3));
+                    itemDespensa.setQuantidade(rs.getInt(4));
 
-            //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
+                    if (rs.getDate(5) != null) {
+                        itemDespensa.setValidade(rs.getDate(5).toLocalDate());
+                    }
+                    itensDespensa.add(itemDespensa);
+                }
 
-            //Lista todos os erros
+                // Retrona a lista de itens da dispensa
+                return itensDespensa;
+            }
+
+        } catch (SQLException sqle){
             sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            return itensDespensa;
         }
     }
+    public ItemDespensa buscarporId(int id){
+        String sql = "SELECT * FROM tb_item_despensa WHERE id=?";
+        try(
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
+            pstmt.setInt(1, id);
+
+            }
+        catch (SQLException sqle){
+            System.out.println("Erro de SQL: " + sqle.getMessage());
+        }
+        return null;
+    }
+
 }

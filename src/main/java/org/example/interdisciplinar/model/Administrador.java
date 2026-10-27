@@ -13,8 +13,8 @@ public class Administrador {
 
     // Construtores
 
-    public Administrador(int id, String nome, String email, String senha) {
-        this.id = id;
+    public Administrador(String nome, String email, String senha) {
+
         this.nome = nome;
         this.email = email;
         this.senha = senha;
