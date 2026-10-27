@@ -164,7 +164,7 @@ public class UsuarioDAO {
             pstmt.setString(3, usuario.getPreferenciasConsumo());
             pstmt.setString(4, usuario.getConfiguracaoAlerta().name());
             pstmt.setString(5, usuario.getTelefone());
-            pstmt.setString(6, usuario.getEmail());
+            pstmt.setString(6, usuario.getSenha());
             pstmt.setInt(7, usuario.getId());
             int linhasAfetadas = pstmt.executeUpdate();
             return linhasAfetadas > 0;
