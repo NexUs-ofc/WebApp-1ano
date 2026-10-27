@@ -70,9 +70,9 @@
       <div class="barraPopupFormulario"></div>
       <div class="conteudoPopupFormulario">
       <h2><span>Criar</span> item_despensa</h2>
-      <form action="${pageContext.request.contextPath}/itensDespensa" method="post">
+      <form action="${pageContext.request.contextPath}/itensDespensa/inserir" method="post">
         <div class="gradeCamposPopup">
-          <label class="campoPopup" for="idCasa">ID do usuário<input id="idCasa" name="idCasa" type="number" required></label>
+          <label class="campoPopup" for="idUsuario">ID do usuário<input id="idUsuario" name="idUsuario" type="number" required></label>
           <label class="campoPopup" for="idAlimento">ID do alimento<input id="idAlimento" name="idAlimento" type="number" required></label>
           <label class="campoPopup" for="quantidade">Quantidade<input id="quantidade" name="quantidade" type="number" min="1" required></label>
           <label class="campoPopup" for="validade">Data de validade<input id="validade" name="validade" type="date" required></label>
@@ -99,10 +99,10 @@
           </thead>
           <tbody>
             <c:forEach var="itemDaDespensa" items="${itensDespensa}">
-              <c:if test="${empty param.pesquisa or itemDaDespensa.id.toString() == param.pesquisa or itemDaDespensa.idCasa.toString() == param.pesquisa or itemDaDespensa.idAlimento.toString() == param.pesquisa or fn:contains(itemDaDespensa.validade.toString(), param.pesquisa)}">
+              <c:if test="${empty param.pesquisa or itemDaDespensa.id.toString() == param.pesquisa or itemDaDespensa.idUsuario.toString() == param.pesquisa or itemDaDespensa.idAlimento.toString() == param.pesquisa or fn:contains(itemDaDespensa.validade.toString(), param.pesquisa)}">
                 <tr>
                   <td><c:out value="${itemDaDespensa.id}"/></td>
-                  <td><c:out value="${itemDaDespensa.idCasa}"/></td>
+                  <td><c:out value="${itemDaDespensa.idUsuario}"/></td>
                   <td><c:out value="${itemDaDespensa.idAlimento}"/></td>
                   <td><c:out value="${itemDaDespensa.quantidade}"/></td>
                   <td><c:out value="${itemDaDespensa.validade}"/></td>
@@ -111,7 +111,7 @@
                       <input type="checkbox" class="bloqueioLinha" aria-label="Ocultar dados da linha">
                       <img src="<c:url value='/assets/fi-br-eye.svg'/>" alt="" aria-hidden="true">
                     </label>
-                    <button type="button" class="botaoEditar" title="Editar item" aria-label="Editar item" data-id="${itemDaDespensa.id}" data-usuario="${itemDaDespensa.idCasa}" data-alimento="${itemDaDespensa.idAlimento}" data-quantidade="${itemDaDespensa.quantidade}" data-validade="${itemDaDespensa.validade}" onclick="abrirPopupEdicao(this)">
+                    <button type="button" class="botaoEditar" title="Editar item" aria-label="Editar item" data-id="${itemDaDespensa.id}" data-usuario="${itemDaDespensa.idUsuario}" data-alimento="${itemDaDespensa.idAlimento}" data-quantidade="${itemDaDespensa.quantidade}" data-validade="${itemDaDespensa.validade}" onclick="abrirPopupEdicao(this)">
                       <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                     </button>
                     <button type="button" class="botaoExcluir" title="Excluir item" aria-label="Excluir item" onclick="abrirPopupExclusao('${itemDaDespensa.id}')">
@@ -134,7 +134,7 @@
       <form action="${pageContext.request.contextPath}/itensDespensa/atualizar" method="post">
         <input type="hidden" id="idItemEdicao" name="id">
         <div class="gradeCamposPopup">
-          <label class="campoPopup" for="usuarioItemEdicao">ID do usuário<input id="usuarioItemEdicao" name="idCasa" type="number" required></label>
+          <label class="campoPopup" for="usuarioItemEdicao">ID do usuário<input id="usuarioItemEdicao" name="idUsuario" type="number" required></label>
           <label class="campoPopup" for="alimentoItemEdicao">ID do alimento<input id="alimentoItemEdicao" name="idAlimento" type="number" required></label>
           <label class="campoPopup" for="quantidadeItemEdicao">Quantidade<input id="quantidadeItemEdicao" name="quantidade" type="number" min="1" required></label>
           <label class="campoPopup" for="validadeItemEdicao">Data de validade<input id="validadeItemEdicao" name="validade" type="date" required></label>

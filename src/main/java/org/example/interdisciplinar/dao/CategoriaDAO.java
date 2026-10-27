@@ -74,6 +74,8 @@ public class CategoriaDAO {
             //Seta valor no '?' do comando SQL
             pstmt.setInt(1, id);
 
+            linhasAfetadas = pstmt.executeUpdate();
+
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
                 GerenteConexao.commit();
@@ -148,18 +150,25 @@ public class CategoriaDAO {
 
     public boolean atualizar(Categoria categoria){
         String sql = "UPDATE tb_categoria SET nome=?, descricao=? WHERE id_categoria=?";
-        try (
-                Connection conn = GerenteConexao.conectar();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
-        ){
+        Connection conn = GerenteConexao.conectar();
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, categoria.getNome());
             pstmt.setString(2, categoria.getDescricao());
             pstmt.setInt(3, categoria.getId());
             int linhasAfetadas = pstmt.executeUpdate();
-            return linhasAfetadas > 0;
+
+            if (linhasAfetadas > 0) {
+                GerenteConexao.commit();
+                return true;
+            }
+
+            GerenteConexao.rollback();
+            return false;
 
         } catch (SQLException sqle){
             sqle.printStackTrace();
+            GerenteConexao.rollback();
             return false;
         }
     }

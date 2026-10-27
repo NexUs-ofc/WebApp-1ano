@@ -1,9 +1,7 @@
 package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
-import org.example.interdisciplinar.model.Alimento;
 import org.example.interdisciplinar.model.ConfiguracaoAlerta;
-import org.example.interdisciplinar.model.Endereco;
 import org.example.interdisciplinar.model.Usuario;
 import java.sql.*;
 import java.util.ArrayList;
@@ -32,6 +30,8 @@ public class UsuarioDAO {
             pstmt.setString(2, usuario.getEmail());
             pstmt.setString(3, usuario.getPreferenciasConsumo());
             pstmt.setString(4, usuario.getConfiguracaoAlerta().name());
+
+            linhasAfetadas = pstmt.executeUpdate();
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
@@ -65,7 +65,7 @@ public class UsuarioDAO {
         Connection conn = GerenteConexao.conectar();
 
         //Comando de deletar em SQL
-        String sqlDelete = "DELETE FROM tb_usuario WHERE id=?";
+        String sqlDelete = "DELETE FROM tb_usuario WHERE id_usuario=?";
 
         //Controle de linhas afetadas
         int linhasAfetadas = 0;
@@ -75,6 +75,8 @@ public class UsuarioDAO {
 
             //Seta valor no '?' do comando SQL
             pstmt.setInt(1, idUsuario);
+
+            linhasAfetadas = pstmt.executeUpdate();
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
@@ -121,7 +123,7 @@ public class UsuarioDAO {
                 usuarioTemporario.setNome(rs.getString(2));
                 usuarioTemporario.setEmail(rs.getString(3));
                 usuarioTemporario.setPreferenciasConsumo(rs.getString(4));
-                usuarioTemporario.setConfiguracaoAlerta(rs.getString(5));
+                usuarioTemporario.setConfiguracaoAlerta(converterConfiguracaoAlerta(rs.getString(5)));
                 usuarios.add(usuarioTemporario);
             }
             // Commita a ação no banco de dados
@@ -146,20 +148,27 @@ public class UsuarioDAO {
 
     public boolean atualizar(Usuario usuario){
         String sql = "UPDATE tb_usuario SET nome=?, email=?, preferencias_consumo=?, configuracao_alerta=? WHERE id_usuario=?";
-        try (
-                Connection conn = GerenteConexao.conectar();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
-        ){
+        Connection conn = GerenteConexao.conectar();
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, usuario.getNome());
             pstmt.setString(2, usuario.getEmail());
             pstmt.setString(3, usuario.getPreferenciasConsumo());
             pstmt.setString(4, usuario.getConfiguracaoAlerta().name());
             pstmt.setInt(5, usuario.getId());
             int linhasAfetadas = pstmt.executeUpdate();
-            return linhasAfetadas > 0;
+
+            if (linhasAfetadas > 0) {
+                GerenteConexao.commit();
+                return true;
+            }
+
+            GerenteConexao.rollback();
+            return false;
 
         } catch (SQLException sqle){
             sqle.printStackTrace();
+            GerenteConexao.rollback();
             return false;
         }
     }
@@ -229,7 +238,7 @@ public class UsuarioDAO {
                     usuarioTemporario.setNome(rs.getString(2));
                     usuarioTemporario.setEmail(rs.getString(3));
                     usuarioTemporario.setPreferenciasConsumo(rs.getString(4));
-                    usuarioTemporario.setConfiguracaoAlerta(ConfiguracaoAlerta.valueOf(rs.getString(5)));
+                    usuarioTemporario.setConfiguracaoAlerta(converterConfiguracaoAlerta(rs.getString(5)));
                     usuarios.add(usuarioTemporario);
                 }
 
@@ -257,7 +266,7 @@ public class UsuarioDAO {
                             rs.getString("nome"),
                             rs.getString("email"),
                             rs.getString("preferencias_consumo"),
-                            ConfiguracaoAlerta.valueOf(rs.getString("configuracao_alerta"))
+                            converterConfiguracaoAlerta(rs.getString("configuracao_alerta"))
                     );
                     return usuario;
                 }
@@ -267,6 +276,11 @@ public class UsuarioDAO {
             System.out.println("Erro de SQL: " + sqle.getMessage());
         }
         return null;
+    }
+
+    // Converte o texto salvo no banco para o enum usado pelo model
+    private ConfiguracaoAlerta converterConfiguracaoAlerta(String configuracaoAlerta) {
+        return ConfiguracaoAlerta.valueOf(configuracaoAlerta.toUpperCase());
     }
 
 }
