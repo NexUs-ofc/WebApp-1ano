@@ -20,7 +20,7 @@ public class AdministradorDAO {
         int linhasAfetadas = 0;
 
         //Comando de inserir em SQL
-        String sqlInsert = "INSERT INTO tb_administrador(nome, email, senha) VALUES (?, ?, ?)";
+        String sqlInsert = "INSERT INTO tb_administrador(nome, email, senha, telefone) VALUES (?, ?, ?, ?)";
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
@@ -33,6 +33,7 @@ public class AdministradorDAO {
             pstmt.setString(1, administrador.getNome());
             pstmt.setString(2, administrador.getEmail());
             pstmt.setString(3, administrador.getSenha());
+            pstmt.setString(3, administrador.getTelefone());
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
