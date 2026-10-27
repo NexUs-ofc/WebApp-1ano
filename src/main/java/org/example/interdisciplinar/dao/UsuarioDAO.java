@@ -240,8 +240,7 @@ public class UsuarioDAO {
                             rs.getString(2),
                             rs.getString(3),
                             rs.getString(4),
-                            rs.getString(5),
-                            ConfiguracaoAlerta.valueOf(rs.getString(6))
+                            ConfiguracaoAlerta.valueOf(rs.getString(5))
                     );
                     view.add(usuarioTemporario);
                 }
