@@ -5,10 +5,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ceris · Administradores</title>
+  <title>administradores</title>
+  <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/views.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/views.css?v=20261027-2">
 </head>
 <body>
   <nav class="sidebar">
@@ -98,7 +99,7 @@
                     <input type="checkbox" class="bloqueioLinha" aria-label="Ocultar dados da linha">
                     <img src="<c:url value='/assets/fi-br-eye.svg'/>" alt="" aria-hidden="true">
                   </label>
-                  <button type="button" class="botaoEditar" title="Editar administrador" aria-label="Editar administrador" data-id="${administrador.id}" data-nome="${fn:escapeXml(administrador.nome)}" data-email="${fn:escapeXml(administrador.email)}" data-senha="${fn:escapeXml(administrador.senha)}" onclick="abrirPopupEdicao(this)">
+                  <button type="button" class="botaoEditar" title="Editar administrador" aria-label="Editar administrador" data-id="${administrador.id}" data-nome="${fn:escapeXml(administrador.nome)}" data-telefone="${fn:escapeXml(administrador.telefone)}" data-email="${fn:escapeXml(administrador.email)}" data-senha="${fn:escapeXml(administrador.senha)}" data-foto="${fn:escapeXml(administrador.fotoPerfil)}" onclick="abrirPopupEdicao(this)">
                     <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                   </button>
                   <button type="button" class="botaoExcluir" title="Excluir administrador" aria-label="Excluir administrador" onclick="abrirPopupExclusao('${administrador.id}')">
@@ -120,10 +121,34 @@
       <h2><span>Editar</span> administrador</h2>
       <form action="${pageContext.request.contextPath}/administradores/atualizar" method="post">
         <input type="hidden" id="idAdministradorEdicao" name="id">
+        <input type="hidden" id="fotoAtualAdministrador" name="fotoPerfil">
+        <div class="edicaoFotoAdministrador">
+          <label for="arquivoFotoAdministrador">
+            <img id="previewFotoAdministrador" class="fotoPopupAdministrador" alt="Foto do administrador">
+            <span>editar foto</span>
+          </label>
+          <input type="file" id="arquivoFotoAdministrador" accept="image/png, image/jpeg, image/webp" hidden>
+        </div>
         <div class="camposPopupAdmin">
           <label class="campoPopupAdmin" for="nomeAdministradorEdicao"><span>nome</span><input id="nomeAdministradorEdicao" name="nome" type="text" required></label>
+          <div class="campoPopupAdmin campoTelefoneAdministrador">
+            <span>telefone</span>
+            <div>
+              <input id="dddAdministradorEdicao" name="ddd" type="text" inputmode="numeric" maxlength="2" aria-label="DDD">
+              <input id="telefoneAdministradorEdicao" name="telefone" type="tel" aria-label="Telefone">
+            </div>
+          </div>
           <label class="campoPopupAdmin" for="emailAdministradorEdicao"><span>e-mail</span><input id="emailAdministradorEdicao" name="email" type="email" required></label>
-          <label class="campoPopupAdmin" for="senhaAdministradorEdicao"><span>senha</span><input id="senhaAdministradorEdicao" name="senha" type="text" required></label>
+          <div class="campoPopupAdmin campoSenhaAdministrador">
+            <label for="senhaAdministradorEdicao">senha</label>
+            <span class="entradaSenhaAdministrador">
+              <input id="senhaAdministradorEdicao" name="senha" type="text" required>
+              <label class="botaoMostrarSenha" aria-label="Mostrar senha">
+                <input type="checkbox" id="mostrarSenhaAdministrador" class="controleSenhaAdministrador">
+                <img src="<c:url value='/assets/fi-br-eye-crossed.svg'/>" alt="" aria-hidden="true">
+              </label>
+            </span>
+          </div>
         </div>
         <div class="acoesPopupFormulario">
           <button type="button" class="botaoCancelarPopup" onclick="fecharPopupEdicao()">cancelar</button>
@@ -151,12 +176,40 @@
 
   <script>
     function abrirPopupEdicao(botao) {
+      const telefone = (botao.dataset.telefone || "").replace(/\D/g, "");
+      const foto = botao.dataset.foto || "";
+      const previewFoto = document.getElementById("previewFotoAdministrador");
+
       document.getElementById("idAdministradorEdicao").value = botao.dataset.id;
       document.getElementById("nomeAdministradorEdicao").value = botao.dataset.nome;
+      document.getElementById("dddAdministradorEdicao").value = telefone.length > 10 ? telefone.slice(0, 2) : "";
+      document.getElementById("telefoneAdministradorEdicao").value = telefone.length > 10 ? telefone.slice(2) : telefone;
       document.getElementById("emailAdministradorEdicao").value = botao.dataset.email;
       document.getElementById("senhaAdministradorEdicao").value = botao.dataset.senha;
+      document.getElementById("fotoAtualAdministrador").value = foto;
+      document.getElementById("arquivoFotoAdministrador").value = "";
+
+      if (foto) {
+        previewFoto.src = foto;
+        previewFoto.classList.remove("fotoPopupAdministradorVazia");
+      } else {
+        previewFoto.removeAttribute("src");
+        previewFoto.classList.add("fotoPopupAdministradorVazia");
+      }
+
       document.getElementById("popupEdicao").showModal();
     }
+
+    document.getElementById("arquivoFotoAdministrador").addEventListener("change", function () {
+      const arquivo = this.files[0];
+
+      if (arquivo) {
+        const previewFoto = document.getElementById("previewFotoAdministrador");
+        previewFoto.src = URL.createObjectURL(arquivo);
+        previewFoto.classList.remove("fotoPopupAdministradorVazia");
+      }
+    });
+
     function fecharPopupEdicao() {
       document.getElementById("popupEdicao").close();
     }

@@ -1,4 +1,4 @@
-* { /*vale para TUDO, O * é o nosso querido seletor universal*/
+* { /*vale para TUDO, O * é o nosso querido seletor universal, remove margens e espaçamentos padrões do navegador e faz as medidas incluírem padding e borda. */
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -34,30 +34,30 @@ body {
     margin: 4px 0 204px 13px;
 }
 .simboloLogo {
-    width: 54.345px;
+    width: 54px;
     height: 49px;
     position: absolute;
     background-color: white;
-    border-radius: 12.871px;
+    border-radius: 13px;
 }
 .simboloLogo img {
     position: absolute;
-    top: 10.57px;
-    left: 13.08px;
+    top: 11px;
+    left: 13px;
 }
 .nomeLogo {
     position: absolute;
-    top: 7.526px;
-    left: 78.658px;
+    top: 8px;
+    left: 79px;
     color: white;
-    font-size: 35.415px;
+    font-size: 35px;
     line-height: normal;
     white-space: nowrap;
 }
 .linhaLogo {
     position: absolute;
-    top: 48.5px;
-    left: 76.5px;
+    top: 49px;
+    left: 77px;
 }
 .sidebar a {
     width: 239px;
@@ -95,7 +95,7 @@ a.ativo {
 .conteudo {
     height: calc(100vh - 24px);
     min-width: 0;
-    flex: 1 1 auto;
+    flex: 1;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -118,7 +118,7 @@ a.ativo {
     top: 26px;
     left: 246px;
     color: #968d9e;
-    font-size: 15.2px;
+    font-size: 15px;
     font-weight: 400;
 }
 .vazio {
@@ -134,7 +134,7 @@ a.ativo {
 .pesquisa form {
     width: 100%;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 117px 96px 87px;
+    grid-template-columns: 1fr 117px 96px 87px;
     column-gap: 11px;
 }
 .pesquisa input {
@@ -142,7 +142,7 @@ a.ativo {
     height: 100%;
     min-width: 0;
     padding: 0 14px;
-    border: 0.5px solid #4f2078;
+    border: 1px solid #4f2078;
     border-radius: 13px;
     background-color: rgba(242, 226, 255, 0.2);
     font: inherit;
@@ -155,10 +155,10 @@ a.ativo {
 .pesquisa, .pesquisa form, .botaoPesquisar {
     height: 39px;
 }
-.botaoFiltro, .botaoCriar, .botaoCriar > button {
+.botaoFiltro, button.botaoCriar, .botaoCriar > button {
     height: 33px;
 }
-.botaoPesquisar, .botaoCriar, .botaoCriar > button {
+.botaoPesquisar, button.botaoCriar, .botaoCriar > button {
     width: 117px;
 }
 .botaoPesquisar, .botaoFiltro, button.botaoCriar, .botaoCriar > button {
@@ -187,8 +187,8 @@ a.ativo {
     grid-column: 4;
     align-self: center;
     padding: 0;
-    border: 0.3px solid #4f2078;
-    border-radius: 12.76px;
+    border: 1px solid #4f2078;
+    border-radius: 13px;
     background-color: rgba(242, 226, 255, 0.2);
     color: #4f2078;
 }
@@ -196,18 +196,18 @@ a.ativo {
     line-height: 15px;
 }
 .iconeFiltro {
-    width: 19.125px;
-    height: 16.5px;
+    width: 19px;
+    height: 17px;
     display: flex;
-    flex: 0 0 19.125px;
+    flex-shrink: 0;
     flex-direction: column;
     justify-content: space-between;
 }
 .iconeFiltro img {
-    width: 19.125px;
-    height: 5.363px;
+    width: 19px;
+    height: 5px;
     display: block;
-    flex: 0 0 5.363px;
+    flex-shrink: 0;
 }
 .botaoFiltro:hover {
     background-color: rgba(242, 226, 255, 0.45);
@@ -353,12 +353,12 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     padding: 0;
     margin: auto;
     border: 0;
+    border-radius: 12px;
     overflow: hidden;
     background-color: white;
 }
 .popupFormulario {
     width: 835px;
-    border-radius: 12px;
     box-shadow: 0 12px 32px rgba(79, 32, 120, 0.13);
 }
 .popupFormularioGrande {
@@ -372,7 +372,7 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
 }
 .popupFormularioAdmin {
     width: 515px;
-    height: 316px;
+    height: 530px;
 }
 .popupFormulario::backdrop, .popupExclusao::backdrop {
     background-color: rgba(0, 0, 0, 0.3);
@@ -409,7 +409,7 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
 }
 .gradeCamposPopup {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr 1fr;
     column-gap: 21px;
     row-gap: 39px;
     margin-top: 21px;
@@ -424,7 +424,7 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     gap: 5px;
     color: #4f2078;
     font-family: 'Poppins', sans-serif;
-    font-size: 10.6px;
+    font-size: 11px;
     font-weight: 600;
     line-height: 16px;
 }
@@ -433,15 +433,16 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     height: 41px;
     padding: 0 12px;
     border: 1px solid #e6d8f0;
-    border-radius: 12.36px;
+    border-radius: 12px;
     color: #291f33;
     background-color: white;
     font-family: 'Poppins', sans-serif;
-    font-size: 11.48px;
+    font-size: 11px;
     font-weight: 400;
     outline: none;
 }
-.campoPopup input:focus {
+.campoPopup input:focus,
+.campoPopupAdmin input:focus {
     border-color: #4f2078;
 }
 .campoPopup .textoHuninn {
@@ -452,7 +453,7 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
 .ajudaCampoPopup {
     margin-top: -1px;
     color: #968d9e;
-    font-size: 9.71px;
+    font-size: 10px;
     font-weight: 400;
     line-height: normal;
 }
@@ -472,14 +473,14 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
 .acoesPopupFormulario button, .acoesPopupExclusao button {
     width: 121px;
     height: 31px;
-    border-radius: 5.18px;
+    border-radius: 5px;
     font-family: 'Poppins', sans-serif;
-    font-size: 11.77px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
 }
 .botaoCancelarPopup, .botaoConfirmarPopup {
-    border: 0.65px solid #4f2078;
+    border: 1px solid #4f2078;
 }
 .botaoCancelarPopup, .botaoCancelarExclusao {
     color: #968d9e;
@@ -492,9 +493,11 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     background-color: #4f2078;
 }
 .camposPopupAdmin {
-    height: 145px;
-    position: relative;
-    margin-top: 21px;
+    height: 223px;
+    position: absolute;
+    top: 221px;
+    right: 24px;
+    left: 24px;
 }
 .campoPopupAdmin {
     width: 100%;
@@ -507,18 +510,21 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     color: #4f2078;
     font-family: 'Poppins', sans-serif;
     font-size: 13px;
-    font-weight: 400;
+    font-weight: 500;
 }
 .campoPopupAdmin:nth-child(1) {
     top: 0;
 }
 .campoPopupAdmin:nth-child(2) {
-    top: 52px;
+    top: 61px;
 }
 .campoPopupAdmin:nth-child(3) {
-    top: 105px;
+    top: 122px;
 }
-.campoPopupAdmin span {
+.campoPopupAdmin:nth-child(4) {
+    top: 183px;
+}
+.campoPopupAdmin > span:first-child, .campoPopupAdmin > label:first-child {
     margin-top: 12px;
 }
 .campoPopupAdmin input {
@@ -528,32 +534,137 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     border: 1px solid #d0bdf2;
     border-radius: 10px;
     color: #291f33;
-    font: 400 11.48px 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
     outline: none;
 }
-.campoPopupAdmin:nth-child(1) input {
+.campoPopupAdmin:nth-child(1) input, .campoPopupAdmin:nth-child(2) input {
     margin-top: 6px;
 }
-.campoPopupAdmin:nth-child(2) input {
+.campoPopupAdmin:nth-child(3) input {
     margin-top: 4px;
 }
-.campoPopupAdmin:nth-child(3) input {
+.campoTelefoneAdministrador > div {
+    display: grid;
+    grid-template-columns: 65px 1fr;
+    gap: 10px;
+}
+.entradaSenhaAdministrador {
+    position: relative;
+    display: block;
     margin-top: 2px;
 }
+.entradaSenhaAdministrador::after {
+    content: "********";
+    position: absolute;
+    top: 9px;
+    left: 12px;
+    color: #291f33;
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    pointer-events: none;
+}
+.entradaSenhaAdministrador:has(.controleSenhaAdministrador:checked)::after {
+    display: none;
+}
+.entradaSenhaAdministrador:not(:has(.controleSenhaAdministrador:checked)) > #senhaAdministradorEdicao {
+    color: transparent;
+    caret-color: transparent;
+}
+.entradaSenhaAdministrador input {
+    margin: 0;
+    padding-right: 40px;
+}
+.botaoMostrarSenha {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+.botaoMostrarSenha .controleSenhaAdministrador {
+    display: none;
+}
+.botaoMostrarSenha img {
+    width: 15px;
+    height: 15px;
+}
+.edicaoFotoAdministrador {
+    width: 111px;
+    height: 136px;
+    position: absolute;
+    top: 79px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.edicaoFotoAdministrador label {
+    width: 111px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 6px;
+    color: #4f2078;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 20px;
+    cursor: pointer;
+}
+.popupFormularioAdmin .fotoPopupAdministrador {
+    width: 111px;
+    height: 110px;
+    display: block;
+    border-radius: 50%;
+    background-color: #d9d9d9;
+    object-fit: cover;
+}
+.fotoPopupAdministradorVazia {
+    color: transparent;
+}
+.popupFormularioAdmin .barraPopupFormulario {
+    height: 8px;
+}
 .popupFormularioAdmin .conteudoPopupFormulario {
-    padding: 27px 24px 0;
+    height: 100%;
+    padding: 0;
+}
+.popupFormularioAdmin .conteudoPopupFormulario h2 {
+    width: 234px;
+    position: absolute;
+    top: 27px;
+    left: 50%;
+    color: black;
+    font-size: 22px;
+    line-height: 33px;
+    transform: translateX(-50%);
 }
 .popupFormularioAdmin .acoesPopupFormulario {
-    bottom: 27px;
+    top: 472px;
+    bottom: auto;
+    gap: 13px;
+    margin: 0;
+}
+.popupFormularioAdmin .acoesPopupFormulario button {
+    width: 121px;
+    height: 31px;
+    border-radius: 5px;
+    font-size: 12px;
 }
 
 .popupExclusao {
     width: 515px;
-    height: 207.3px;
-    border-radius: 8.42px;
+    height: 207px;
 }
 .barraPopupExclusao {
-    height: 7.77px;
+    height: 8px;
     background-color: #e11d48;
 }
 .conteudoPopupExclusao {
@@ -562,8 +673,8 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
 .conteudoPopupExclusao h2 {
     width: 100%;
     position: absolute;
-    top: 34.98px;
-    font-size: 20.73px;
+    top: 35px;
+    font-size: 21px;
     line-height: normal;
 }
 .conteudoPopupExclusao h2 span, .conteudoPopupExclusao p strong {
@@ -577,7 +688,7 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     left: 50%;
     color: #2a1e34;
     font-family: 'Huninn', sans-serif;
-    font-size: 15.55px;
+    font-size: 16px;
     line-height: normal;
     transform: translateX(-50%);
 }
@@ -585,15 +696,14 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     font-weight: 400;
 }
 .acoesPopupExclusao {
-    top: 142.52px;
+    top: 143px;
 }
 .botaoCancelarExclusao, .botaoConfirmarExclusao {
-    border: 0.65px solid #e11d48;
+    border: 1px solid #e11d48;
 }
 .botaoConfirmarExclusao {
     background-color: #e11d48;
 }
-
 @media (max-width: 1360px) {
     body {
         gap: 24px;
@@ -608,16 +718,15 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
 
 @media (max-width: 650px) {
     .popupFormulario:not(.popupFormularioAdmin) {
-        height: auto;
-        min-height: 337px;
+        height: auto; min-height: 337px;
     }
     .conteudoPopupFormulario {
         padding-bottom: 82px;
     }
     .gradeCamposPopup {
-        grid-template-columns: 1fr;
-        row-gap: 18px;
+        grid-template-columns: 1fr; row-gap: 18px;
     }
     .acoesPopupFormulario {
         bottom: 24px;
     }
+}
