@@ -81,6 +81,8 @@ public class UsuarioDAO {
             //Seta valor no '?' do comando SQL
             pstmt.setInt(1, idUsuario);
 
+            linhasAfetadas = pstmt.executeUpdate();
+
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
                 GerenteConexao.commit();
