@@ -261,7 +261,8 @@ public class AdministradorDAO {
                     Administrador administrador = new Administrador(
                             rs.getString("nome"),
                             rs.getString("email"),
-                            rs.getString("senha")
+                            rs.getString("senha"),
+                            rs.getString("telefone")
                     );
                     return administrador;
                 }
