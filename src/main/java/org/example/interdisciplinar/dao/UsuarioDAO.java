@@ -33,8 +33,8 @@ public class UsuarioDAO {
             pstmt.setString(2, usuario.getEmail());
             pstmt.setString(3, usuario.getPreferenciasConsumo());
             pstmt.setString(4, usuario.getConfiguracaoAlerta().name());
-            pstmt.setString(5, usuario.getSenha());
-            pstmt.setString(6, usuario.getTelefone());
+            pstmt.setString(5, usuario.getTelefone());
+            pstmt.setString(6, usuario.getSenha());
 
             //Se ação tiver dados certo commita e retorna true
             linhasAfetadas = pstmt.executeUpdate();
