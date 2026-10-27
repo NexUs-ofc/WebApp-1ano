@@ -17,7 +17,7 @@ body {
 .sidebar {
     width: 268px;
     height: calc(100vh - 24px); /*esse calc subtrai o tamanho da tela do padding, deixando a sidebar do tamanho que cabe na tela*/
-    flex-shrink: 0;
+    flex-shrink: 0; /*impede a sidebar de ser espremida quando o conteúdo precisa de mais espaço*/
     display: flex;
     flex-direction: column;
     gap: 9px;
@@ -29,7 +29,7 @@ body {
 .logoSidebar {
     width: 165px;
     height: 49px;
-    position: relative;
+    position: relative; /*vira a referência para posicionar os elementos da logo com absolute*/
     flex-shrink: 0;
     margin: 4px 0 204px 13px;
 }
@@ -51,7 +51,6 @@ body {
     left: 79px;
     color: white;
     font-size: 35px;
-    line-height: normal;
     white-space: nowrap;
 }
 .linhaLogo {
@@ -74,7 +73,6 @@ body {
 .iconeSidebar {
     width: 24px;
     height: 24px;
-    display: block;
     flex-shrink: 0;
     object-fit: contain;
 }
@@ -82,6 +80,7 @@ body {
     filter: brightness(0) invert(1);
 }
 .sidebar a.ativo .iconeSidebar {
+    /*muda a cor do ícone ativo sem precisar criar outro arquivo de imagem*/
     filter: brightness(0) saturate(100%) invert(18%) sepia(33%) saturate(3529%) hue-rotate(250deg) brightness(87%) contrast(96%);
 }
 .sidebar a:not(.ativo):hover { /*ele NÃO vai aplicar bg color se a classe do botão for ativo*/
@@ -94,7 +93,7 @@ a.ativo {
 
 .conteudo {
     height: calc(100vh - 24px);
-    min-width: 0;
+    min-width: 0; /*permite que o conteúdo diminua dentro do flex sem estourar a largura da página*/
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -119,7 +118,6 @@ a.ativo {
     left: 246px;
     color: #968d9e;
     font-size: 15px;
-    font-weight: 400;
 }
 .vazio {
     margin-top: 36px;
@@ -134,7 +132,7 @@ a.ativo {
 .pesquisa form {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 117px 96px 87px;
+    grid-template-columns: minmax(0, 1fr) 117px 96px 87px;
     column-gap: 11px;
 }
 .pesquisa input {
@@ -155,18 +153,13 @@ a.ativo {
 .pesquisa, .pesquisa form, .botaoPesquisar {
     height: 39px;
 }
-.botaoFiltro, button.botaoCriar, .botaoCriar > button {
-    height: 33px;
-}
-.botaoPesquisar, button.botaoCriar, .botaoCriar > button {
-    width: 117px;
-}
 .botaoPesquisar, .botaoFiltro, button.botaoCriar, .botaoCriar > button {
     font: inherit;
     font-size: 14px;
     cursor: pointer;
 }
 .botaoPesquisar, button.botaoCriar, .botaoCriar > button {
+    width: 117px;
     border: 0;
     border-radius: 13px;
     background-color: #4f2078;
@@ -174,6 +167,7 @@ a.ativo {
     box-shadow: 2px 2px 3px rgba(79, 32, 120, 0.23);
 }
 .botaoFiltro, button.botaoCriar, .botaoCriar > button {
+    height: 33px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -186,7 +180,6 @@ a.ativo {
     width: 87px;
     grid-column: 4;
     align-self: center;
-    padding: 0;
     border: 1px solid #4f2078;
     border-radius: 13px;
     background-color: rgba(242, 226, 255, 0.2);
@@ -206,7 +199,6 @@ a.ativo {
 .iconeFiltro img {
     width: 19px;
     height: 5px;
-    display: block;
     flex-shrink: 0;
 }
 .botaoFiltro:hover {
@@ -223,10 +215,10 @@ button.botaoCriar, .botaoCriar > button {
 
 .cartao {
     width: 100%;
-    max-height: min(819px, calc(100vh - 202px));
+    max-height: min(819px, calc(100vh - 202px)); /*usa no máximo 819px, mas diminui o cartão quando a tela não tem esse espaço*/
     min-height: 0;
     margin-top: 61px;
-    overflow: auto;
+    overflow: auto; /*a rolagem acontece dentro do cartão sem mover a página inteira*/
     border-radius: 13px;
     background-color: white;
     box-shadow: 0 0 22px rgba(0, 0, 0, 0.07);
@@ -244,7 +236,7 @@ th, td {
 }
 th {
     height: 49px;
-    position: sticky;
+    position: sticky; /*mantém o cabeçalho da tabela visível enquanto as linhas são roladas*/
     top: 0;
     z-index: 1;
     background-color: #4a1d78;
@@ -278,7 +270,6 @@ td {
     height: 46px;
     position: absolute;
     left: 0;
-    display: block;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -291,7 +282,7 @@ td {
 }
 .acoes {
     white-space: nowrap;
-    font-size: 0;
+    font-size: 0; /*remove o pequeno espaço que o navegador coloca entre os botões inline*/
 }
 .botaoExcluir, .botaoEditar, .botaoBloquear {
     display: inline-flex;
@@ -304,7 +295,6 @@ td {
     margin-left: 21px;
 }
 .botaoExcluir, .botaoEditar {
-    padding: 0;
     border: 0;
     outline: 0;
     appearance: none;
@@ -320,24 +310,27 @@ td {
     width: 21px;
     height: 21px;
 }
+/*o checkbox fica invisível, mas continua ocupando todo o botão e recebendo o clique*/
 .bloqueioLinha {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    margin: 0;
     opacity: 0;
     cursor: pointer;
 }
+/*o :has aplica o foco no botão quando o checkbox invisível é selecionado pelo teclado*/
 .botaoBloquear:has(.bloqueioLinha:focus-visible) {
     outline: 2px solid #4f2078;
     outline-offset: 2px;
 }
+/*quando o olho é marcado, esconde somente as informações da linha e mantém as ações visíveis*/
 tbody tr:has(.bloqueioLinha:checked) td:not(.acoes) {
     position: relative;
     color: transparent;
     user-select: none;
 }
+/*coloca os asteriscos no lugar das informações escondidas sem alterar o conteúdo real*/
 tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     content: "********";
     position: absolute;
@@ -348,9 +341,9 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     color: #1a1a1a;
 }
 
+/*estilos que todos os popups compartilham para não repetir as mesmas propriedades*/
 .popupFormulario, .popupExclusao {
     max-width: calc(100% - 32px);
-    padding: 0;
     margin: auto;
     border: 0;
     border-radius: 12px;
@@ -374,17 +367,18 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     width: 515px;
     height: 530px;
 }
+/*o backdrop é o fundo escuro que aparece atrás do popup aberto*/
 .popupFormulario::backdrop, .popupExclusao::backdrop {
     background-color: rgba(0, 0, 0, 0.3);
 }
 .barraPopupFormulario, .barraPopupExclusao {
     width: 100%;
+    height: 8px;
     position: absolute;
     top: 0;
     left: 0;
 }
 .barraPopupFormulario {
-    height: 8px;
     background-color: #4f2078;
 }
 .conteudoPopupFormulario, .conteudoPopupExclusao {
@@ -414,6 +408,7 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     row-gap: 39px;
     margin-top: 21px;
 }
+/*ajusta somente os campos da parte de baixo do popup grande*/
 .popupFormularioGrande .campoPopup:nth-child(n + 5) {
     transform: translateY(3px);
 }
@@ -428,18 +423,20 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     font-weight: 600;
     line-height: 16px;
 }
-.campoPopup input {
+.campoPopup input, .campoPopupAdmin input {
     width: 100%;
-    height: 41px;
     padding: 0 12px;
-    border: 1px solid #e6d8f0;
-    border-radius: 12px;
     color: #291f33;
-    background-color: white;
     font-family: 'Poppins', sans-serif;
     font-size: 11px;
     font-weight: 400;
     outline: none;
+}
+.campoPopup input {
+    height: 41px;
+    border: 1px solid #e6d8f0;
+    border-radius: 12px;
+    background-color: white;
 }
 .campoPopup input:focus,
 .campoPopupAdmin input:focus {
@@ -457,6 +454,7 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     font-weight: 400;
     line-height: normal;
 }
+/*o left de 50% junto do translate centraliza os botões pelo próprio tamanho deles*/
 .acoesPopupFormulario, .acoesPopupExclusao {
     position: absolute;
     left: 50%;
@@ -499,6 +497,7 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     right: 24px;
     left: 24px;
 }
+/*os campos do administrador usam posições fixas para seguir exatamente o layout do figma*/
 .campoPopupAdmin {
     width: 100%;
     height: 40px;
@@ -528,16 +527,9 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     margin-top: 12px;
 }
 .campoPopupAdmin input {
-    width: 100%;
     height: 35px;
-    padding: 0 12px;
     border: 1px solid #d0bdf2;
     border-radius: 10px;
-    color: #291f33;
-    font-family: 'Poppins', sans-serif;
-    font-size: 11px;
-    font-weight: 400;
-    outline: none;
 }
 .campoPopupAdmin:nth-child(1) input, .campoPopupAdmin:nth-child(2) input {
     margin-top: 6px;
@@ -555,6 +547,7 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     display: block;
     margin-top: 2px;
 }
+/*cria os asteriscos falsos sobre a senha enquanto o botão de mostrar não estiver marcado*/
 .entradaSenhaAdministrador::after {
     content: "********";
     position: absolute;
@@ -565,15 +558,20 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     font-size: 11px;
     pointer-events: none;
 }
+/*quando o checkbox do olho é marcado, os asteriscos falsos desaparecem*/
 .entradaSenhaAdministrador:has(.controleSenhaAdministrador:checked)::after {
     display: none;
 }
-.entradaSenhaAdministrador:not(:has(.controleSenhaAdministrador:checked)) > #senhaAdministradorEdicao {
+/*esconde o texto da senha até o checkbox do olho ser marcado*/
+#senhaAdministradorEdicao {
     color: transparent;
     caret-color: transparent;
 }
+.entradaSenhaAdministrador:has(.controleSenhaAdministrador:checked) #senhaAdministradorEdicao {
+    color: #291f33;
+    caret-color: auto;
+}
 .entradaSenhaAdministrador input {
-    margin: 0;
     padding-right: 40px;
 }
 .botaoMostrarSenha {
@@ -585,7 +583,6 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
     border: 0;
     background: none;
     cursor: pointer;
@@ -621,19 +618,14 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
 .popupFormularioAdmin .fotoPopupAdministrador {
     width: 111px;
     height: 110px;
-    display: block;
     border-radius: 50%;
     background-color: #d9d9d9;
-    object-fit: cover;
+    object-fit: cover; /*preenche o círculo com a foto sem achatar ou deformar a imagem*/
 }
 .fotoPopupAdministradorVazia {
     color: transparent;
 }
-.popupFormularioAdmin .barraPopupFormulario {
-    height: 8px;
-}
 .popupFormularioAdmin .conteudoPopupFormulario {
-    height: 100%;
     padding: 0;
 }
 .popupFormularioAdmin .conteudoPopupFormulario h2 {
@@ -642,21 +634,11 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     top: 27px;
     left: 50%;
     color: black;
-    font-size: 22px;
-    line-height: 33px;
     transform: translateX(-50%);
 }
 .popupFormularioAdmin .acoesPopupFormulario {
     top: 472px;
     bottom: auto;
-    gap: 13px;
-    margin: 0;
-}
-.popupFormularioAdmin .acoesPopupFormulario button {
-    width: 121px;
-    height: 31px;
-    border-radius: 5px;
-    font-size: 12px;
 }
 
 .popupExclusao {
@@ -664,7 +646,6 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     height: 207px;
 }
 .barraPopupExclusao {
-    height: 8px;
     background-color: #e11d48;
 }
 .conteudoPopupExclusao {
@@ -675,7 +656,6 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     position: absolute;
     top: 35px;
     font-size: 21px;
-    line-height: normal;
 }
 .conteudoPopupExclusao h2 span, .conteudoPopupExclusao p strong {
     color: #e11d48;
@@ -689,7 +669,6 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     color: #2a1e34;
     font-family: 'Huninn', sans-serif;
     font-size: 16px;
-    line-height: normal;
     transform: translateX(-50%);
 }
 .conteudoPopupExclusao p strong {
@@ -709,22 +688,21 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
         gap: 24px;
     }
     .pesquisa form {
-        grid-template-columns: minmax(0, 1fr) 117px;
-    }
-    .botaoFiltro {
-        display: none;
+        grid-template-columns: minmax(0, 1fr) 117px minmax(12px, 40px) 87px;
     }
 }
 
 @media (max-width: 650px) {
     .popupFormulario:not(.popupFormularioAdmin) {
-        height: auto; min-height: 337px;
+        height: auto;
+        min-height: 337px;
     }
     .conteudoPopupFormulario {
         padding-bottom: 82px;
     }
     .gradeCamposPopup {
-        grid-template-columns: 1fr; row-gap: 18px;
+        grid-template-columns: 1fr;
+        row-gap: 18px;
     }
     .acoesPopupFormulario {
         bottom: 24px;

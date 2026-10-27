@@ -52,14 +52,6 @@
               <img src="<c:url value='/assets/filter-line-a.svg'/>" alt="">
             </span>
           </button>
-          <select class="ordenacaoTabela" name="ordenacao" aria-label="Ordenar administradores">
-            <option value="">Ordenar por</option>
-            <option value="nome_asc">Nome: A-Z</option>
-            <option value="nome_desc">Nome: Z-A</option>
-            <option value="email_asc">E-mail: A-Z</option>
-            <option value="id_asc">Menor ID</option>
-            <option value="id_desc">Maior ID</option>
-          </select>
         </form>
       </div>
 

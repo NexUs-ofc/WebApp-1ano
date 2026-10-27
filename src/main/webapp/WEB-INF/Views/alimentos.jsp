@@ -52,16 +52,6 @@
               <img src="<c:url value='/assets/filter-line-a.svg'/>" alt="">
             </span>
           </button>
-          <select class="ordenacaoTabela" name="ordenacao" aria-label="Ordenar alimentos">
-            <option value="">Ordenar por</option>
-            <option value="nome_asc">Nome: A-Z</option>
-            <option value="nome_desc">Nome: Z-A</option>
-            <option value="categoria_asc">Categoria: A-Z</option>
-            <option value="marca_asc">Marca: A-Z</option>
-            <option value="codigo_asc">Código de barras</option>
-            <option value="id_asc">Menor ID</option>
-            <option value="id_desc">Maior ID</option>
-          </select>
         </form>
       </div>
 
