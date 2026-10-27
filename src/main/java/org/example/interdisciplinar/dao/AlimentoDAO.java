@@ -167,7 +167,7 @@ public class AlimentoDAO {
         }
     }
 
-    public List<Alimento> listarFiltrado(
+    public List<AlimentoView> listarFiltrado(
             Integer idAlimentoInicio,
             Integer idAlimentoFim,
             String nome,
@@ -175,9 +175,9 @@ public class AlimentoDAO {
             String marca,
             String ordenar
     ) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM tb_alimento WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT * FROM tb_alimento_view WHERE 1=1");
         List<Object> parametrosDoFiltro = new ArrayList<>();
-        List<Alimento> alimentos = new ArrayList<>();
+        List<AlimentoView> alimentos = new ArrayList<>();
 
         if (idAlimentoInicio != null) {
             sql.append(" AND id_alimento >=?");
@@ -235,12 +235,12 @@ public class AlimentoDAO {
                 //Enquanto tiver mais registros cria novos objetos e adiciona à lista
 
                 while (rs.next()) {
-                    Alimento alimentoTemporario = new Alimento();
-                    alimentoTemporario.setId(rs.getInt(1));
-                    alimentoTemporario.setCodigoBarras(rs.getString(2));
-                    alimentoTemporario.setNome(rs.getString(3));
-                    alimentoTemporario.setMarca(rs.getString(4));
-                    alimentoTemporario.setIdCategoria(rs.getInt(5));
+                    AlimentoView alimentoTemporario = new AlimentoView(
+                            rs.getInt(1),
+                            rs.getString(2),
+                            rs.getString(3),
+                            rs.getString(4)
+                    );
                     alimentos.add(alimentoTemporario);
                 }
 
