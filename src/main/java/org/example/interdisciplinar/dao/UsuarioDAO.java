@@ -112,7 +112,7 @@ public class UsuarioDAO {
         Connection conn = GerenteConexao.conectar();
 
         //Comando de listar em SQL
-        String sqlSelect = "SELECT * FROM tb_usuario";
+        String sqlSelect = "SELECT * FROM tb_usuario_view";
 
         // Criando uma lista para guardar os registros dos usuários no bd
         List<UsuarioView> view = new ArrayList<>();
@@ -182,7 +182,7 @@ public class UsuarioDAO {
           String email,
           String ordenar
     ){
-        StringBuilder sql = new StringBuilder("SELECT * FROM tb_usuario WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT * FROM tb_usuario_view WHERE 1=1");
         List<Object> parametrosDoFiltro = new ArrayList<>();
         List<UsuarioView> view = new ArrayList<>();
 
