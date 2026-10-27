@@ -36,6 +36,8 @@ public class AdministradorDAO {
             pstmt.setString(3, administrador.getTelefone());
 
             //Se ação tiver dados certo commita e retorna true
+            linhasAfetadas = pstmt.executeUpdate();
+
             if (linhasAfetadas > 0) {
                 GerenteConexao.commit();
                 return true;
@@ -82,6 +84,7 @@ public class AdministradorDAO {
                 admTemporario.setNome(rs.getString(2));
                 admTemporario.setEmail(rs.getString(3));
                 admTemporario.setSenha(rs.getString(4));
+                admTemporario.setSenha(rs.getString(5));
                 administradores.add(admTemporario);
             }
 
