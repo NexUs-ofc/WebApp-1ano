@@ -269,10 +269,10 @@ public class UsuarioDAO {
                     Usuario usuario = new Usuario(
                             rs.getString("nome"),
                             rs.getString("email"),
-                            rs.getString("telefone"),
-                            rs.getString("senha"),
                             rs.getString("preferencias_consumo"),
-                            ConfiguracaoAlerta.valueOf(rs.getString("configuracao_alerta"))
+                            ConfiguracaoAlerta.valueOf(rs.getString("configuracao_alerta")),
+                            rs.getString("telefone"),
+                            rs.getString("senha")
                     );
                     return usuario;
                 }
