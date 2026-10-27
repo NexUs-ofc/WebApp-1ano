@@ -20,7 +20,7 @@ public class UsuarioDAO {
         Connection conn = GerenteConexao.conectar();
 
         //Comando de inserir em SQL
-        String sqlInsert = "INSERT INTO tb_usuario (nome, email, preferencias_consumo, configuracao_alerta, senha, telefone) VALUES (?, ?, ?, ?)";
+        String sqlInsert = "INSERT INTO tb_usuario (nome, email, preferencias_consumo, configuracao_alerta, senha, telefone) VALUES (?, ?, ?, ?, ?, ?)";
 
         //Controle de linhas afetadas
         int linhasAfetadas = 0;
