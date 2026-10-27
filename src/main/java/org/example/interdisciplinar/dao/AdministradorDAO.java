@@ -33,7 +33,7 @@ public class AdministradorDAO {
             pstmt.setString(1, administrador.getNome());
             pstmt.setString(2, administrador.getEmail());
             pstmt.setString(3, administrador.getSenha());
-            pstmt.setString(3, administrador.getTelefone());
+            pstmt.setString(4, administrador.getTelefone());
 
             //Se ação tiver dados certo commita e retorna true
             linhasAfetadas = pstmt.executeUpdate();
@@ -109,7 +109,7 @@ public class AdministradorDAO {
     }
 
     public boolean atualizar(Administrador administrador){
-        String sql = "UPDATE tb_administrador SET nome=?, email=?, senha=? WHERE id_admin=?";
+        String sql = "UPDATE tb_administrador SET nome=?, email=?, senha=?, telefone=? WHERE id_admin=?";
         try (
                 Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -117,7 +117,8 @@ public class AdministradorDAO {
             pstmt.setString(1, administrador.getNome());
             pstmt.setString(2, administrador.getEmail());
             pstmt.setString(3, administrador.getSenha());
-            pstmt.setInt(4, administrador.getId());
+            pstmt.setString(4, administrador.getTelefone());
+            pstmt.setInt(5, administrador.getId());
             int linhasAfetadas = pstmt.executeUpdate();
             return linhasAfetadas > 0;
 
