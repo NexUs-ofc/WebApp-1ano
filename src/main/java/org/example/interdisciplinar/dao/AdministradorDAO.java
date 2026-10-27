@@ -233,6 +233,7 @@ public class AdministradorDAO {
                     admTemporario.setNome(rs.getString(2));
                     admTemporario.setEmail(rs.getString(3));
                     admTemporario.setSenha(rs.getString(4));
+                    admTemporario.setTelefone(rs.getString(5));
                     administradores.add(admTemporario);
                 }
 
