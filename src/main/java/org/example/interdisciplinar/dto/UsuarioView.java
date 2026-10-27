@@ -7,6 +7,5 @@ public record UsuarioView(
    String nome,
    String telefone,
    String email,
-   String senha,
    ConfiguracaoAlerta configuracaoAlerta
 ) {}
