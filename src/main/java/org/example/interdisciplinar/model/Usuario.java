@@ -8,8 +8,8 @@ public class Usuario {
     private String email;
     private String preferenciasConsumo;
     private ConfiguracaoAlerta configuracaoAlerta;
-    private String senha;
     private String telefone;
+    private String senha;
 
     // Construtores
 
@@ -23,8 +23,8 @@ public class Usuario {
         this.email = email;
         this.preferenciasConsumo = preferenciasConsumo;
         this.configuracaoAlerta = configuracaoAlerta;
-        this.senha = senha;
         this.telefone = telefone;
+        this.senha = senha;
     }
 
     // Getters e setters
@@ -69,20 +69,20 @@ public class Usuario {
         this.configuracaoAlerta = configuracaoAlerta;
     }
 
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
     public String getTelefone() {
         return telefone;
     }
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     // Método toString()
@@ -95,8 +95,8 @@ public class Usuario {
                 "Email: " + this.email + "\n" +
                 "Preferências de consumo: " + this.preferenciasConsumo + "\n" +
                 "Configuração do alerta: " + this.configuracaoAlerta + "\n" +
-                "Senha: " + this.senha + "\n" +
                 "Telefone: " + this.telefone + "\n" +
+                "Senha: " + this.senha + "\n" +
                 "============================";
     }
 }
