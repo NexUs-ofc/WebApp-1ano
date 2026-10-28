@@ -8,6 +8,8 @@ public class Usuario {
     private String email;
     private String preferenciasConsumo;
     private ConfiguracaoAlerta configuracaoAlerta;
+    private String telefone;
+    private String senha;
 
     // Construtores
 
@@ -15,12 +17,14 @@ public class Usuario {
 
     }
 
-    public Usuario(String nome, String email, String preferenciasConsumo, ConfiguracaoAlerta configuracaoAlerta) {
+    public Usuario(String nome, String email, String preferenciasConsumo, ConfiguracaoAlerta configuracaoAlerta,  String senha, String telefone) {
 
         this.nome = nome;
         this.email = email;
         this.preferenciasConsumo = preferenciasConsumo;
         this.configuracaoAlerta = configuracaoAlerta;
+        this.telefone = telefone;
+        this.senha = senha;
     }
 
     // Getters e setters
@@ -65,16 +69,34 @@ public class Usuario {
         this.configuracaoAlerta = configuracaoAlerta;
     }
 
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
     // Método toString()
 
     @Override
     public String toString() {
-        return "==========USUARIO==========" +
+        return "==========USUARIO==========" + "\n" +
                 "Id: " + this.id + "\n" +
                 "Nome: " + this.nome + "\n" +
                 "Email: " + this.email + "\n" +
                 "Preferências de consumo: " + this.preferenciasConsumo + "\n" +
                 "Configuração do alerta: " + this.configuracaoAlerta + "\n" +
+                "Telefone: " + this.telefone + "\n" +
+                "Senha: " + this.senha + "\n" +
                 "============================";
     }
 }

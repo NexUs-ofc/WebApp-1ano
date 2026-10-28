@@ -71,7 +71,7 @@ public class ServletCriarCategoria extends HttpServlet {
 
             response.sendError(
                     HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Não foi possível inserir o alimento."
+                    "Não foi possível inserir a categoria"
             );
         }
 

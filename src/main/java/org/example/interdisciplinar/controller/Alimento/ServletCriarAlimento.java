@@ -38,11 +38,42 @@ public class ServletCriarAlimento extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+        Integer idCategoria = null;
         String codigoBarras = request.getParameter("codigoBarras");
         String nome = request.getParameter("nome");
         String marca = request.getParameter("marca");
         String idCategoriaTexto = request.getParameter("idCategoria");
 
+        if (codigoBarras == null || codigoBarras.isBlank()
+                || nome == null || nome.isBlank()
+                || marca == null || marca.isBlank()){
+
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Todos os campos precisam ser preenchidos!");
+            request.getRequestDispatcher("/alimentos").forward(request, response);
+            return;
+        }
+
+        if(idCategoriaTexto != null && !idCategoriaTexto.isBlank()){
+            idCategoria = Integer.parseInt(idCategoriaTexto);
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "O id da categoria deve ser um número inteiro!");
+        }
+
+        Alimento alimento = new Alimento(codigoBarras, nome, marca, idCategoria);
+        boolean inserido = alimentoDAO.inserir(alimento);
+
+        if(inserido){
+            // Redireciona para a listagem
+            response.sendRedirect(
+                    request.getContextPath() + "/alimentos"
+            );
+
+        } else {
+            response.sendError(
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Não foi possível inserir o alimento."
+            );
+        }
     }
 
     @Override
