@@ -21,7 +21,7 @@ public class ServletDeletarEndereco extends HttpServlet {
         String idEnderecoTexto = request.getParameter("id");
         int idEndereco = Integer.parseInt(idEnderecoTexto);
         enderecoDAO.deletar(idEndereco);
-        response.sendRedirect(request.getContextPath() + "/categorias");
+        response.sendRedirect(request.getContextPath() + "/enderecos");
     }
 
     public void destroy(){
