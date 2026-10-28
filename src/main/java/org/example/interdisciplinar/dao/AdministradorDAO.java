@@ -273,4 +273,30 @@ public class AdministradorDAO {
         }
         return null;
     }
+
+    public Administrador buscarPorEmail(String email){
+        String sql = "SELECT * FROM tb_administrador WHERE email=?";
+        try(
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
+            pstmt.setString(1, email);
+
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    Administrador administrador = new Administrador(
+                            rs.getString("nome"),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("telefone")
+                    );
+                    return administrador;
+                }
+            }
+
+        } catch (SQLException sqle){
+            System.out.println("Erro de SQL: " + sqle.getMessage());
+        }
+        return null;
+    }
 }
