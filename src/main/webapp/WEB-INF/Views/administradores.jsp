@@ -111,15 +111,14 @@
     <div class="barraPopupFormulario"></div>
     <div class="conteudoPopupFormulario">
       <h2><span>Editar</span> administrador</h2>
-      <form action="${pageContext.request.contextPath}/administradores/atualizar" method="post">
+      <form action="${pageContext.request.contextPath}/administradores/atualizar" method="post" enctype="multipart/form-data">
         <input type="hidden" id="idAdministradorEdicao" name="id">
-        <input type="hidden" id="fotoAtualAdministrador" name="fotoPerfil">
         <div class="edicaoFotoAdministrador">
           <label for="arquivoFotoAdministrador">
             <img id="previewFotoAdministrador" class="fotoPopupAdministrador" alt="Foto do administrador">
             <span>editar foto</span>
           </label>
-          <input type="file" id="arquivoFotoAdministrador" accept="image/png, image/jpeg, image/webp" hidden>
+          <input type="file" id="arquivoFotoAdministrador" name="fotoPerfilArquivo" accept="image/png, image/jpeg, image/webp" hidden>
         </div>
         <div class="camposPopupAdmin">
           <label class="campoPopupAdmin" for="nomeAdministradorEdicao"><span>nome</span><input id="nomeAdministradorEdicao" name="nome" type="text" required></label>
@@ -178,7 +177,6 @@
       document.getElementById("telefoneAdministradorEdicao").value = telefone.length > 10 ? telefone.slice(2) : telefone;
       document.getElementById("emailAdministradorEdicao").value = botao.dataset.email;
       document.getElementById("senhaAdministradorEdicao").value = botao.dataset.senha;
-      document.getElementById("fotoAtualAdministrador").value = foto;
       document.getElementById("arquivoFotoAdministrador").value = "";
 
       if (foto) {

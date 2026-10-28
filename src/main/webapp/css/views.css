@@ -683,28 +683,3 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
 .botaoConfirmarExclusao {
     background-color: #e11d48;
 }
-@media (max-width: 1360px) {
-    body {
-        gap: 24px;
-    }
-    .pesquisa form {
-        grid-template-columns: minmax(0, 1fr) 117px minmax(12px, 40px) 87px;
-    }
-}
-
-@media (max-width: 650px) {
-    .popupFormulario:not(.popupFormularioAdmin) {
-        height: auto;
-        min-height: 337px;
-    }
-    .conteudoPopupFormulario {
-        padding-bottom: 82px;
-    }
-    .gradeCamposPopup {
-        grid-template-columns: 1fr;
-        row-gap: 18px;
-    }
-    .acoesPopupFormulario {
-        bottom: 24px;
-    }
-}
