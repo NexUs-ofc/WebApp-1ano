@@ -21,7 +21,7 @@ public class ServletDeletarCategoria extends HttpServlet {
         String idCategoriaTexto = request.getParameter("id");
         int idCategoria = Integer.parseInt(idCategoriaTexto);
         categoriaDAO.deletar(idCategoria);
-        response.sendRedirect(request.getContextPath() + "/itens");
+        response.sendRedirect(request.getContextPath() + "/categorias");
     }
 
     public void destroy(){
