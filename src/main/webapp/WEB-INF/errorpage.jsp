@@ -11,13 +11,13 @@
 
 <c:choose>
   <c:when test="${codigoErro == 404}">
-    <c:set var="explicacaoErro" value="Não encontramos a página que você procura."/>
+    <c:set var="explicacaoErro" value="Parece que encontramos um erro ao recarregar a página."/>
   </c:when>
   <c:when test="${codigoErro == 403}">
     <c:set var="explicacaoErro" value="Você não possui permissão para acessar esta página."/>
   </c:when>
   <c:when test="${codigoErro == 500}">
-    <c:set var="explicacaoErro" value="Parece que encontramos um erro ao carregar a página."/>
+    <c:set var="explicacaoErro" value="Parece que encontramos um erro ao recarregar a página."/>
   </c:when>
   <c:otherwise>
     <c:set var="explicacaoErro" value="Não foi possível concluir a sua solicitação."/>
@@ -43,12 +43,12 @@
       <span>Ceris</span>
     </a>
 
-    <div class="decoracaoErrorpage decoracaoErrorpageCima">
+    <div class="decoracaoErrorpage decoracaoErrorpageCima" aria-hidden="true">
       <span class="decoracaoEscuraErrorpage"></span>
       <span class="decoracaoClaraErrorpage"></span>
     </div>
 
-    <div class="decoracaoErrorpage decoracaoErrorpageBaixa">
+    <div class="decoracaoErrorpage decoracaoErrorpageBaixa" aria-hidden="true">
       <span class="decoracaoEscuraErrorpage"></span>
       <span class="decoracaoClaraErrorpage"></span>
     </div>

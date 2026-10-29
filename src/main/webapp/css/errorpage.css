@@ -1,0 +1,229 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    overflow: hidden;
+    background-color: #fcfcfc;
+    color: #475569;
+    font-family: 'Poppins', sans-serif;
+}
+
+.Errorpage {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.logoErrorpage {
+    position: absolute;
+    top: 3.42%;
+    left: 4.44%;
+    display: flex;
+    align-items: center;
+    gap: min(0.86vw, 1.21vh);
+    color: #4f2078;
+    font-size: min(3.07vw, 4.32vh);
+    line-height: 1;
+    text-decoration: none;
+}
+
+.logoErrorpage img {
+    width: min(2.5vw, 3.52vh);
+    height: min(2.5vw, 3.52vh);
+}
+
+.conteudoErrorpage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(100%, calc(100vh * 1.40625));
+    height: min(100%, calc(100vw * 0.711111));
+    transform: translate(-50%, -50%);
+    container-type: size;
+}
+
+.ilustracaoErrorpage {
+    position: absolute;
+    top: 27.34%;
+    left: 6.74%;
+    width: 31.39%;
+    height: 58.85%;
+}
+
+.ceritaErrorpage {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.mensagemErrorpage {
+    position: absolute;
+    inset: 0;
+    color: #475569;
+    text-align: center;
+}
+
+.codigoErrorpage {
+    position: absolute;
+    top: 8.79%;
+    left: 54.65%;
+    width: 31.39%;
+    color: #6b2d93;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15.22cqw;
+    font-weight: 700;
+    line-height: 1.09;
+}
+
+.mensagemErrorpage h1 {
+    position: absolute;
+    top: 37.3%;
+    left: 57.15%;
+    width: 27.29%;
+    color: #6b2d93;
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5cqw;
+    font-weight: 500;
+    line-height: 1.22;
+}
+
+.explicacaoErrorpage {
+    position: absolute;
+    top: 43.85%;
+    right: 15.54%;
+    width: 37.65%;
+    font-family: 'Huninn', sans-serif;
+    font-size: 2.22cqw;
+    font-weight: 400;
+    line-height: 1.34;
+    text-align: right;
+}
+
+.acoesErrorpage {
+    position: absolute;
+    top: 56.84%;
+    left: 51.39%;
+    width: 33.09%;
+    height: 5.75%;
+    display: flex;
+    align-items: stretch;
+    gap: 3.36%;
+}
+
+.botaoErrorpage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.74cqw;
+    border-radius: 1.11cqw;
+    font-family: 'Huninn', sans-serif;
+    font-size: 1.21cqw;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.botaoErrorpage img {
+    width: 1.58cqw;
+    height: 1.58cqw;
+}
+
+.botaoTentarNovamenteErrorpage {
+    width: 51.64%;
+    border: 1px solid #4f2078;
+    background-color: #4f2078;
+    color: #ffffff;
+}
+
+.botaoVoltarInicioErrorpage {
+    width: 45.01%;
+    border: 1px solid #e5e7eb;
+    background-color: #ffffff;
+    color: #4f2078;
+}
+
+.orientacaoSuporteErrorpage {
+    position: absolute;
+    top: 65.53%;
+    left: 52.78%;
+    width: 31.67%;
+    font-family: 'Huninn', sans-serif;
+    font-size: 1.27cqw;
+    font-weight: 400;
+    line-height: 1.67;
+}
+
+.contatoSuporteErrorpage {
+    position: absolute;
+    top: 71.78%;
+    left: 63.47%;
+    width: 12.22%;
+    display: flex;
+    align-items: center;
+    gap: 0.67cqw;
+    color: #4f2078;
+    font-family: 'Huninn', sans-serif;
+    font-size: 1.09cqw;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.contatoSuporteErrorpage img {
+    width: 1.34cqw;
+    height: 1.34cqw;
+}
+
+.decoracaoErrorpage {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.decoracaoEscuraErrorpage,
+.decoracaoClaraErrorpage {
+    position: absolute;
+    display: block;
+    border-radius: 76px;
+}
+
+.decoracaoEscuraErrorpage {
+    width: min(5.28vw, 7.42vh);
+    height: 85.64%;
+    background-color: #4f2078;
+}
+
+.decoracaoClaraErrorpage {
+    width: min(2.85vw, 4.01vh);
+    height: 44.53%;
+    background-color: #9769bf;
+}
+
+.decoracaoErrorpageCima .decoracaoEscuraErrorpage {
+    top: -57.23%;
+    right: 0;
+}
+
+.decoracaoErrorpageCima .decoracaoClaraErrorpage {
+    top: -33.69%;
+    right: min(3.26vw, 4.58vh);
+}
+
+.decoracaoErrorpageBaixa .decoracaoEscuraErrorpage {
+    top: 65.04%;
+    left: -2.43%;
+}
+
+.decoracaoErrorpageBaixa .decoracaoClaraErrorpage {
+    top: 82.92%;
+    left: min(1.06vw, 1.49vh);
+}
