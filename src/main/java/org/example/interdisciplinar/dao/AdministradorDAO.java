@@ -131,22 +131,23 @@ public class AdministradorDAO {
 
     /* Método para deletar um administrador do banco de dados
         requisitando a senha para deletar */
-    public boolean deletar(String senha){
+    public boolean deletar(int id){
 
         //Controle de linhas afetadas
         int linhasAfetadas = 0;
 
         //Comando de deletar em SQL
-        String sqlDelete = "DELETE FROM tb_adminstrador WHERE senha=?";
+        String sqlDelete = "DELETE FROM tb_adminstrador WHERE id_admin=?";
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
 
         try (PreparedStatement pstmt = conn.prepareStatement(sqlDelete)){
             //Seta valor nos '?' do comando SQL
-            pstmt.setString(1, senha);
+            pstmt.setInt(1, id);
 
             //Se ação tiver dados certo commita e retorna true
+            linhasAfetadas = pstmt.executeUpdate();
             if (linhasAfetadas > 0) {
                 GerenteConexao.commit();
                 return true;
