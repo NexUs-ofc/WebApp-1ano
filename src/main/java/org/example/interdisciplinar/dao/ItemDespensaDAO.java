@@ -1,6 +1,7 @@
 package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
+import org.example.interdisciplinar.dto.ItemDespensaView;
 import org.example.interdisciplinar.model.ItemDespensa;
 
 import java.sql.Connection;
@@ -104,6 +105,35 @@ public class ItemDespensaDAO {
         }
 
         // Retorna a lista de itens da despensa
+        return itensDespensa;
+    }
+
+    public List<ItemDespensaView> listarView() {
+        String sql = "SELECT i.id_item, u.nome AS nome_usuario, a.nome AS alimento, " +
+                "i.quantidade, i.data_validade FROM tb_item_despensa i " +
+                "JOIN tb_usuario u ON i.id_usuario = u.id_usuario " +
+                "JOIN tb_alimento a ON i.id_alimento = a.id_alimento ORDER BY i.id_item";
+        List<ItemDespensaView> itensDespensa = new ArrayList<>();
+        Connection conn = GerenteConexao.conectar();
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                Date validade = rs.getDate("data_validade");
+                itensDespensa.add(new ItemDespensaView(
+                        rs.getInt("id_item"),
+                        rs.getString("nome_usuario"),
+                        rs.getString("alimento"),
+                        rs.getInt("quantidade"),
+                        validade == null ? null : validade.toLocalDate()
+                ));
+            }
+            GerenteConexao.commit();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            GerenteConexao.rollback();
+        }
+
         return itensDespensa;
     }
 

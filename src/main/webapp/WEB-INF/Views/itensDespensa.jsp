@@ -79,31 +79,31 @@
           <thead>
             <tr>
               <th>id_item</th>
-              <th>id_usuario</th>
-              <th>id_alimento</th>
+              <th>usuario</th>
+              <th>alimento</th>
               <th>quantidade</th>
               <th>data_validade</th>
               <th aria-label="Ações"></th>
             </tr>
           </thead>
           <tbody>
-            <c:forEach var="itemDaDespensa" items="${itensDespensa}">
-              <c:if test="${empty param.pesquisa or itemDaDespensa.id.toString() == param.pesquisa or itemDaDespensa.idUsuario.toString() == param.pesquisa or itemDaDespensa.idAlimento.toString() == param.pesquisa or fn:contains(itemDaDespensa.validade.toString(), param.pesquisa)}">
+            <c:forEach var="itemDaDespensa" items="${itensDespensa}" varStatus="status">
+              <c:if test="${empty param.pesquisa or itemDaDespensa.id().toString() == param.pesquisa or fn:contains(fn:toLowerCase(itemDaDespensa.nomeUsuario()), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(itemDaDespensa.alimento()), fn:toLowerCase(param.pesquisa)) or fn:contains(itemDaDespensa.validade().toString(), param.pesquisa)}">
                 <tr>
-                  <td><c:out value="${itemDaDespensa.id}"/></td>
-                  <td><c:out value="${itemDaDespensa.idUsuario}"/></td>
-                  <td><c:out value="${itemDaDespensa.idAlimento}"/></td>
-                  <td><c:out value="${itemDaDespensa.quantidade}"/></td>
-                  <td><c:out value="${itemDaDespensa.validade}"/></td>
+                  <td><c:out value="${itemDaDespensa.id()}"/></td>
+                  <td><c:out value="${itemDaDespensa.nomeUsuario()}"/></td>
+                  <td><c:out value="${itemDaDespensa.alimento()}"/></td>
+                  <td><c:out value="${itemDaDespensa.quantidade()}"/></td>
+                  <td><c:out value="${itemDaDespensa.validade()}"/></td>
                   <td class="acoes">
                     <label class="botaoBloquear" title="Ocultar dados da linha">
                       <input type="checkbox" class="bloqueioLinha" aria-label="Ocultar dados da linha">
                       <img src="<c:url value='/assets/fi-br-eye.svg'/>" alt="" aria-hidden="true">
                     </label>
-                    <button type="button" class="botaoEditar" title="Editar item" aria-label="Editar item" data-id="${itemDaDespensa.id}" data-usuario="${itemDaDespensa.idUsuario}" data-alimento="${itemDaDespensa.idAlimento}" data-quantidade="${itemDaDespensa.quantidade}" data-validade="${itemDaDespensa.validade}" onclick="abrirPopupEdicao(this)">
+                    <button type="button" class="botaoEditar" title="Editar item" aria-label="Editar item" data-id="${itemDaDespensa.id()}" data-usuario="${itensDespensaOriginais[status.index].idUsuario}" data-alimento="${itensDespensaOriginais[status.index].idAlimento}" data-quantidade="${itemDaDespensa.quantidade()}" data-validade="${itemDaDespensa.validade()}" onclick="abrirPopupEdicao(this)">
                       <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                     </button>
-                    <button type="button" class="botaoExcluir" title="Excluir item" aria-label="Excluir item" onclick="abrirPopupExclusao('${itemDaDespensa.id}')">
+                    <button type="button" class="botaoExcluir" title="Excluir item" aria-label="Excluir item" onclick="abrirPopupExclusao('${itemDaDespensa.id()}')">
                       <img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="" aria-hidden="true">
                     </button>
                   </td>

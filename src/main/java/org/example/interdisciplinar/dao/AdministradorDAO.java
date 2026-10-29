@@ -22,6 +22,9 @@ public class AdministradorDAO {
         // Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
 
+        // Controle da quantidade de linhas alteradas no banco de dados
+        int linhasAfetadas = 0;
+
         // Inicia o executor que adiciona os valores e executa o comando SQL
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             // Seta os valores nos '?' do comando SQL
@@ -31,7 +34,18 @@ public class AdministradorDAO {
             pstmt.setString(4, administrador.getTelefone());
             pstmt.setString(5, administrador.getFotoPerfil());
 
-            return finalizarAlteracao(pstmt.executeUpdate());
+            // Executa o comando e armazena a quantidade de linhas inseridas
+            linhasAfetadas = pstmt.executeUpdate();
+
+            // Se algum registro foi inserido, confirma a ação e retorna true
+            if (linhasAfetadas > 0) {
+                GerenteConexao.commit();
+                return true;
+            }
+
+            // Se nenhum registro foi inserido, desfaz a ação e retorna false
+            GerenteConexao.rollback();
+            return false;
 
         // Em casos de erros no banco de dados, desfaz a ação
         } catch (SQLException sqle) {
@@ -64,7 +78,19 @@ public class AdministradorDAO {
 
             // Enquanto tiver registros, cria os objetos e adiciona à lista
             while (rs.next()) {
-                administradores.add(criarAdministrador(rs));
+                // Cria um administrador temporário para receber os dados da linha atual
+                Administrador administradorTemporario = new Administrador();
+
+                // Preenche o objeto com os valores retornados pelo banco de dados
+                administradorTemporario.setId(rs.getInt("id_administrador"));
+                administradorTemporario.setNome(rs.getString("nome"));
+                administradorTemporario.setEmail(rs.getString("email"));
+                administradorTemporario.setSenha(rs.getString("senha"));
+                administradorTemporario.setTelefone(rs.getString("telefone"));
+                administradorTemporario.setFotoPerfil(rs.getString("url_foto"));
+
+                // Adiciona o administrador preenchido à lista
+                administradores.add(administradorTemporario);
             }
 
             // Confirma a ação no banco de dados
@@ -85,32 +111,76 @@ public class AdministradorDAO {
 
     // Método para buscar um administrador pelo id
     public Administrador listarPorId(int idAdministrador) {
-        String sql = "SELECT id_administrador, nome, email, senha, telefone, url_foto " +
-                "FROM tb_administrador WHERE id_administrador=?";
+        // Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        // Comando para buscar um administrador pelo id
+        String sqlSelect = "SELECT id_administrador, nome, email, senha, telefone, url_foto " +
+                "FROM tb_administrador WHERE id_administrador=?";
+
+        // Cria o executor que recebe o comando e executa a consulta
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlSelect)) {
+
+            // Seta o id do administrador no '?' do comando SQL
             pstmt.setInt(1, idAdministrador);
 
+            // Executa a consulta e armazena o resultado
             try (ResultSet rs = pstmt.executeQuery()) {
-                Administrador administrador = rs.next() ? criarAdministrador(rs) : null;
+
+                // Se encontrou um registro, cria e preenche o administrador
+                if (rs.next()) {
+                    Administrador administrador = new Administrador();
+                    administrador.setId(rs.getInt("id_administrador"));
+                    administrador.setNome(rs.getString("nome"));
+                    administrador.setEmail(rs.getString("email"));
+                    administrador.setSenha(rs.getString("senha"));
+                    administrador.setTelefone(rs.getString("telefone"));
+                    administrador.setFotoPerfil(rs.getString("url_foto"));
+
+                    // Confirma a consulta no banco de dados
+                    GerenteConexao.commit();
+
+                    // Retorna o administrador encontrado
+                    return administrador;
+                }
+
+                // Confirma a consulta mesmo quando não encontra um registro
                 GerenteConexao.commit();
-                return administrador;
+
+                // Retorna null quando o administrador não existe
+                return null;
             }
+
+        // Em casos de erros no banco de dados, desfaz a ação
         } catch (SQLException sqle) {
+
+            // Lista todos os erros
             sqle.printStackTrace();
+
+            // Desfaz a ação
             GerenteConexao.rollback();
+
+            // Retorna null
             return null;
         }
     }
 
     // Método para atualizar os dados do administrador pelo id
     public boolean atualizar(Administrador administrador) {
-        String sql = "UPDATE tb_administrador " +
-                "SET nome=?, email=?, senha=?, telefone=?, url_foto=? WHERE id_administrador=?";
+        // Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        // Comando de atualizar em SQL
+        String sqlUpdate = "UPDATE tb_administrador " +
+                "SET nome=?, email=?, senha=?, telefone=?, url_foto=? WHERE id_administrador=?";
+
+        // Controle da quantidade de linhas alteradas no banco de dados
+        int linhasAfetadas = 0;
+
+        // Inicia o executor que adiciona os valores e executa o comando SQL
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdate)) {
+
+            // Seta os valores nos '?' do comando SQL
             pstmt.setString(1, administrador.getNome());
             pstmt.setString(2, administrador.getEmail());
             pstmt.setString(3, administrador.getSenha());
@@ -118,10 +188,29 @@ public class AdministradorDAO {
             pstmt.setString(5, administrador.getFotoPerfil());
             pstmt.setInt(6, administrador.getId());
 
-            return finalizarAlteracao(pstmt.executeUpdate());
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
+            // Executa o comando e armazena a quantidade de linhas atualizadas
+            linhasAfetadas = pstmt.executeUpdate();
+
+            // Se algum registro foi atualizado, confirma a ação e retorna true
+            if (linhasAfetadas > 0) {
+                GerenteConexao.commit();
+                return true;
+            }
+
+            // Se nenhum registro foi atualizado, desfaz a ação e retorna false
             GerenteConexao.rollback();
+            return false;
+
+        // Em casos de erros no banco de dados, desfaz a ação
+        } catch (SQLException sqle) {
+
+            // Lista todos os erros
+            sqle.printStackTrace();
+
+            // Desfaz a ação
+            GerenteConexao.rollback();
+
+            // Retorna false
             return false;
         }
     }
@@ -129,16 +218,31 @@ public class AdministradorDAO {
     // Método para deletar um administrador pelo id
     public boolean deletar(int idAdministrador) {
         // Comando de deletar em SQL
-        String sql = "DELETE FROM tb_administrador WHERE id_administrador=?";
+        String sqlDelete = "DELETE FROM tb_administrador WHERE id_administrador=?";
 
         // Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
 
+        // Controle da quantidade de linhas alteradas no banco de dados
+        int linhasAfetadas = 0;
+
         // Inicia o executor que atribui o valor e executa o comando SQL
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlDelete)) {
             // Seta o valor no '?' do comando SQL
             pstmt.setInt(1, idAdministrador);
-            return finalizarAlteracao(pstmt.executeUpdate());
+
+            // Executa o comando e armazena a quantidade de linhas excluídas
+            linhasAfetadas = pstmt.executeUpdate();
+
+            // Se algum registro foi excluído, confirma a ação e retorna true
+            if (linhasAfetadas > 0) {
+                GerenteConexao.commit();
+                return true;
+            }
+
+            // Se nenhum registro foi excluído, desfaz a ação e retorna false
+            GerenteConexao.rollback();
+            return false;
 
         // Em casos de erros no banco de dados, desfaz a ação
         } catch (SQLException sqle) {
@@ -153,28 +257,4 @@ public class AdministradorDAO {
         }
     }
 
-    // Evita repetir a mesma confirmação em todas as alterações
-    private boolean finalizarAlteracao(int linhasAfetadas) {
-        // Se a ação alterou dados, confirma e retorna true
-        if (linhasAfetadas > 0) {
-            GerenteConexao.commit();
-            return true;
-        }
-
-        // Se não alterou dados, desfaz a ação e retorna false
-        GerenteConexao.rollback();
-        return false;
-    }
-
-    // Converte uma linha do banco em um administrador
-    private Administrador criarAdministrador(ResultSet rs) throws SQLException {
-        Administrador administrador = new Administrador();
-        administrador.setId(rs.getInt("id_administrador"));
-        administrador.setNome(rs.getString("nome"));
-        administrador.setEmail(rs.getString("email"));
-        administrador.setSenha(rs.getString("senha"));
-        administrador.setTelefone(rs.getString("telefone"));
-        administrador.setFotoPerfil(rs.getString("url_foto"));
-        return administrador;
-    }
 }

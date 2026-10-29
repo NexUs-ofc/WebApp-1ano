@@ -55,12 +55,9 @@
         </form>
       </div>
 
-      <div class="botaoCriar">
-        <button type="button" onclick="document.getElementById('popupUsuario').showModal()">Adicionar<img class="iconeAdicionar" src="${pageContext.request.contextPath}/assets/fi-br-add.svg" alt="" aria-hidden="true"></button>
-      </div>
+      <button type="button" class="botaoCriar" onclick="abrirPopupUsuario()">Adicionar<img class="iconeAdicionar" src="${pageContext.request.contextPath}/assets/fi-br-add.svg" alt="" aria-hidden="true"></button>
 
-      <div class="popupCriar">
-        <dialog id="popupUsuario" class="popupFormulario popupFormularioMedio">
+      <dialog id="popupUsuario" class="popupFormulario popupFormularioMedio">
           <div class="barraPopupFormulario"></div>
           <div class="conteudoPopupFormulario">
           <h2><span>Criar</span> usuário</h2>
@@ -77,8 +74,7 @@
             </div>
           </form>
           </div>
-        </dialog>
-      </div>
+      </dialog>
 
       <div class="cartao">
         <table>

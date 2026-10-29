@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.ItemDespensaDAO;
-import org.example.interdisciplinar.model.ItemDespensa;
+import org.example.interdisciplinar.dto.ItemDespensaView;
 import java.io.IOException;
 import java.util.List;
 
@@ -22,8 +22,9 @@ public class ServletListarItem extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        List<ItemDespensa> itensDespensa = itemDespensaDAO.listar();
+        List<ItemDespensaView> itensDespensa = itemDespensaDAO.listarView();
         request.setAttribute("itensDespensa", itensDespensa);
+        request.setAttribute("itensDespensaOriginais", itemDespensaDAO.listar());
         request.getRequestDispatcher("/WEB-INF/Views/itensDespensa.jsp").forward(request, response);
     }
 

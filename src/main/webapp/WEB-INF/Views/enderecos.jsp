@@ -59,7 +59,7 @@
         <div class="barraPopupFormulario"></div>
         <div class="conteudoPopupFormulario">
           <h2><span>Criar</span> endereço</h2>
-          <form action="${pageContext.request.contextPath}/enderecos" method="post">
+          <form action="${pageContext.request.contextPath}/enderecos/insert" method="post">
             <div class="gradeCamposPopup">
               <label class="campoPopup" for="ruaEndereco">Rua<input id="ruaEndereco" name="rua" type="text" required></label>
               <label class="campoPopup" for="numeroEndereco">Número<input id="numeroEndereco" name="numero" type="number" required></label>
@@ -80,7 +80,7 @@
         <table>
           <thead>
             <tr>
-              <th>id_enderco</th>
+              <th>id_endereco</th>
               <th>rua</th>
               <th>numero</th>
               <th>bairro</th>

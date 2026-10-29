@@ -2,6 +2,7 @@ package org.example.interdisciplinar.dao;
 
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
+import org.example.interdisciplinar.dto.AlimentoView;
 import org.example.interdisciplinar.model.Alimento;
 import java.sql.*;
 import java.util.ArrayList;
@@ -134,7 +135,7 @@ public class AlimentoDAO {
     public List<Alimento> listar(){
 
         Connection conn = GerenteConexao.conectar();
-        String sqlSelect = "SELECT * FROM tb_alimento";
+        String sqlSelect = "SELECT * FROM tb_alimento ORDER BY id_alimento";
         List<Alimento> alimentos = new ArrayList<>();
 
         //Iniciando executor que: adicionará valores no comando SQL e executará o comando
@@ -169,6 +170,32 @@ public class AlimentoDAO {
             // Retorna a lista
             return alimentos;
         }
+    }
+
+    public List<AlimentoView> listarView() {
+        Connection conn = GerenteConexao.conectar();
+        String sql = "SELECT a.id_alimento, a.nome AS alimento, a.marca, c.nome AS nome_categoria " +
+                "FROM tb_alimento a JOIN tb_categoria c ON a.id_categoria = c.id_categoria " +
+                "ORDER BY a.id_alimento";
+        List<AlimentoView> alimentos = new ArrayList<>();
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                alimentos.add(new AlimentoView(
+                        rs.getInt("id_alimento"),
+                        rs.getString("alimento"),
+                        rs.getString("marca"),
+                        rs.getString("nome_categoria")
+                ));
+            }
+            GerenteConexao.commit();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            GerenteConexao.rollback();
+        }
+
+        return alimentos;
     }
 
 }

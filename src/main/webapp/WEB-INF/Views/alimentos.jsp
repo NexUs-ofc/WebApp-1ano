@@ -55,12 +55,9 @@
         </form>
       </div>
 
-    <div class="botaoCriar">
-                <button type="button" onclick="document.getElementById('popupAlimento').showModal()">Adicionar<img class="iconeAdicionar" src="${pageContext.request.contextPath}/assets/fi-br-add.svg" alt="" aria-hidden="true"></button>
-            </div>
+      <button type="button" class="botaoCriar" onclick="abrirPopupAlimento()">Adicionar<img class="iconeAdicionar" src="${pageContext.request.contextPath}/assets/fi-br-add.svg" alt="" aria-hidden="true"></button>
 
-            <div class="popupCriar">
-                <dialog id="popupAlimento" class="popupFormulario popupFormularioMedio">
+      <dialog id="popupAlimento" class="popupFormulario popupFormularioMedio">
                     <div class="barraPopupFormulario"></div>
                     <div class="conteudoPopupFormulario">
                     <h2><span>Criar</span> alimento</h2>
@@ -77,39 +74,36 @@
                         </div>
                     </form>
                     </div>
-                </dialog>
-            </div>
+      </dialog>
 
       <div class="cartao">
         <table>
           <thead>
             <tr>
               <th>id_alimento</th>
-              <th>cod_barras</th>
-              <th>nome</th>
+              <th>alimento</th>
               <th>marca</th>
               <th>categoria</th>
               <th aria-label="Ações"></th>
             </tr>
           </thead>
           <tbody>
-            <c:forEach var="alimento" items="${alimentos}">
-              <c:if test="${empty param.pesquisa or fn:contains(fn:toLowerCase(alimento.id), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(alimento.codigoBarras), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(alimento.nome), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(alimento.marca), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(alimento.idCategoria), fn:toLowerCase(param.pesquisa))}">
+            <c:forEach var="alimento" items="${alimentos}" varStatus="status">
+              <c:if test="${empty param.pesquisa or fn:contains(fn:toLowerCase(alimento.id()), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(alimento.alimento()), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(alimento.marca()), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(alimento.nomeCategoria()), fn:toLowerCase(param.pesquisa))}">
                 <tr>
-                <td><c:out value="${alimento.id}"/></td>
-                <td><c:out value="${alimento.codigoBarras}"/></td>
-                <td><c:out value="${alimento.nome}"/></td>
-                <td><c:out value="${alimento.marca}"/></td>
-                <td><c:out value="${alimento.idCategoria}"/></td>
+                <td><c:out value="${alimento.id()}"/></td>
+                <td><c:out value="${alimento.alimento()}"/></td>
+                <td><c:out value="${alimento.marca()}"/></td>
+                <td><c:out value="${alimento.nomeCategoria()}"/></td>
                 <td class="acoes">
                   <label class="botaoBloquear" title="Ocultar dados da linha">
                     <input type="checkbox" class="bloqueioLinha" aria-label="Ocultar dados da linha">
                     <img src="<c:url value='/assets/fi-br-eye.svg'/>" alt="" aria-hidden="true">
                   </label>
-                  <button type="button" class="botaoEditar" title="Editar alimento" aria-label="Editar alimento" data-id="${alimento.id}" data-codigo-barras="${fn:escapeXml(alimento.codigoBarras)}" data-nome="${fn:escapeXml(alimento.nome)}" data-marca="${fn:escapeXml(alimento.marca)}" data-categoria="${alimento.idCategoria}" onclick="abrirPopupEdicao(this)">
+                  <button type="button" class="botaoEditar" title="Editar alimento" aria-label="Editar alimento" data-id="${alimento.id()}" data-codigo-barras="${fn:escapeXml(alimentosOriginais[status.index].codigoBarras)}" data-nome="${fn:escapeXml(alimentosOriginais[status.index].nome)}" data-marca="${fn:escapeXml(alimentosOriginais[status.index].marca)}" data-categoria="${alimentosOriginais[status.index].idCategoria}" onclick="abrirPopupEdicao(this)">
                     <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                   </button>
-                  <button type="button" class="botaoExcluir" title="Excluir alimento" aria-label="Excluir alimento" onclick="abrirPopupExclusao('${alimento.id}')">
+                  <button type="button" class="botaoExcluir" title="Excluir alimento" aria-label="Excluir alimento" onclick="abrirPopupExclusao('${alimento.id()}')">
                     <img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="" aria-hidden="true">
                   </button>
                 </td>

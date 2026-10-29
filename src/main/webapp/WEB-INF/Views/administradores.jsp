@@ -9,7 +9,7 @@
   <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/views.css?v=20261027-2">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/views.css">
 </head>
 <body>
   <nav class="sidebar">
@@ -61,7 +61,7 @@
             <tr>
               <th>id_administrador</th>
               <th>nome</th>
-              <th>e-mail</th>
+              <th>email</th>
               <th>senha</th>
               <th aria-label="Ações"></th>
             </tr>

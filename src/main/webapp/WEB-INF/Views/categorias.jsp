@@ -59,10 +59,10 @@
         <div class="barraPopupFormulario"></div>
         <div class="conteudoPopupFormulario">
         <h2><span>Criar</span> categoria</h2>
-        <form action="${pageContext.request.contextPath}/categorias" method="post">
+        <form action="${pageContext.request.contextPath}/categorias/insert" method="post">
         <div class="gradeCamposPopup">
-          <label class="campoPopup" for="nomeCategoria">Nome<input id="nomeCategoria" name="nome" type="text" required></label>
-          <label class="campoPopup" for="descricaoCategoria">Descrição<input id="descricaoCategoria" name="descricao" type="text" required></label>
+          <label class="campoPopup" for="nomeCategoria">Nome<input id="nomeCategoria" name="nomeCategoria" type="text" required></label>
+          <label class="campoPopup" for="descricaoCategoria">Descrição<input id="descricaoCategoria" name="descricaoCategoria" type="text" required></label>
         </div>
         <div class="acoesPopupFormulario">
           <button type="button" class="botaoCancelarPopup" onclick="fecharPopupCategoria()">cancelar</button>
