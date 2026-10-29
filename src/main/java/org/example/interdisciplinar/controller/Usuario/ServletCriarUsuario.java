@@ -30,11 +30,11 @@ public class ServletCriarUsuario extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nome = request.getParameter("nome");
-        String email = request.getParameter("nome");
-        String preferencias = request.getParameter("nome");
-        String configAlerta = request.getParameter("nome");
-        String telefone = request.getParameter("nome");
-        String senha = request.getParameter("nome");
+        String email = request.getParameter("email");
+        String preferencias = request.getParameter("preferencias");
+        String configAlerta = request.getParameter("configuracao");
+        String telefone = request.getParameter("telefone");
+        String senha = request.getParameter("senha");
 
         if(
                 nome == null || nome.isBlank() ||
