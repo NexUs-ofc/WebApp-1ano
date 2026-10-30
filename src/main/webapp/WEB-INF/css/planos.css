@@ -104,3 +104,34 @@
 }
 .botao-plano:focus-visible { outline: 3px solid var(--roxo-claro); outline-offset: 3px; }
 .plano:hover .botao-plano { background: var(--roxo-escuro); }
+
+.plano-destaque,
+.plano:hover,
+.plano:focus-within {
+    border-color: var(--roxo);
+    box-shadow: 0 0 0 1px var(--roxo), 0 8px 30px rgba(140, 63, 216, 0.25);
+    transform: scale(1.065);
+    z-index: 1;
+}
+
+.plano-destaque .plano-descricao,
+.plano-destaque li,
+.plano:hover .plano-descricao,
+.plano:hover li,
+.plano:focus-within .plano-descricao,
+.plano:focus-within li { color: var(--roxo); }
+
+.plano:hover,
+.plano:focus-within {
+    transform: translateY(-12px) scale(1.065);
+    z-index: 3;
+}
+
+.planos-lista:has(.plano:hover) .plano-destaque:not(:hover) {
+    border-color: #e3dcff;
+    box-shadow: 0 2px 10px rgba(140, 63, 216, 0.08);
+    transform: none;
+    z-index: auto;
+}
+.planos-lista:has(.plano:hover) .plano-destaque:not(:hover) .plano-descricao,
+.planos-lista:has(.plano:hover) .plano-destaque:not(:hover) li { color: var(--texto); }
