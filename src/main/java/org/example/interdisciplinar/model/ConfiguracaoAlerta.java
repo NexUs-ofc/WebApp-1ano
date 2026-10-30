@@ -4,3 +4,4 @@ public enum ConfiguracaoAlerta {
     ATIVADO,
     DESATIVADO
 }
+
