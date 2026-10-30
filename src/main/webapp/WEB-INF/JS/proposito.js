@@ -14,3 +14,10 @@ function irPara(indice) {
 
     // o slide fora da tela não recebe foco do teclado
     slides.forEach((slide, i) => { slide.inert = i !== indiceAtual; });
+
+    // o botão do slide atual fica "ativo" (o fade vem do transition do CSS)
+    botoesInterface.forEach((botao) => {
+        botao.classList.toggle('ativo', botao.dataset.interface === ordem[indiceAtual]);
+    });
+}
+
