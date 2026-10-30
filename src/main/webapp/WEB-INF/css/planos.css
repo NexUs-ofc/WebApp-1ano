@@ -135,3 +135,10 @@
 }
 .planos-lista:has(.plano:hover) .plano-destaque:not(:hover) .plano-descricao,
 .planos-lista:has(.plano:hover) .plano-destaque:not(:hover) li { color: var(--texto); }
+
+.aba-plano { position: absolute; }
+.esquerda-escura { left: 0; top: 400px; bottom: 0; width: 36px; background: var(--roxo); border-radius: 0 50px 0 0; }
+.esquerda-clara { left: 18px; top: 635px; bottom: 0; width: 40px; background: var(--roxo-claro); border-radius: 20px 20px 0 0; z-index: 1; }
+.direita-clara { right: 0; top: 0; width: 72px; height: 235px; background: var(--roxo-claro); border-radius: 0 0 36px 36px; }
+.direita-escura { right: 0; top: 0; width: 60px; height: 412px; background: var(--roxo); border-radius: 0 0 0 60px; z-index: 1; }
+
