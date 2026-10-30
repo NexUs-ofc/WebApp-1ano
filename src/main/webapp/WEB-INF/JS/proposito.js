@@ -43,3 +43,8 @@ carrossel.addEventListener('pointerdown', (e) => {
     deslocamento = 0;
     larguraSlide = carrossel.clientWidth;
 });
+
+carrossel.addEventListener('pointermove', (e) => {
+    if (!pressionando) return;
+    const dx = e.clientX - inicioX;
+
