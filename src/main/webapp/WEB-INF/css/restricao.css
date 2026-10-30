@@ -5,3 +5,12 @@
                                          .login-marca:visited,
                                          .login-marca:hover { width: fit-content; color: #fff; }
 .login-marca .login-nome { color: #fff; }
+
+.login-sair {
+    right: auto;
+    left: 34px;
+    bottom: 28px;
+    transition: transform .25s ease, box-shadow .25s ease, background-color .2s, color .2s;
+}
+.login-sair:hover { background: #fff; }
+.login-sair:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
