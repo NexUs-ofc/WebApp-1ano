@@ -48,3 +48,15 @@ carrossel.addEventListener('pointermove', (e) => {
     if (!pressionando) return;
     const dx = e.clientX - inicioX;
 
+    // só vira "arrasto" depois de mover um pouco na horizontal;
+    // antes disso é um clique normal
+    if (!arrastando) {
+        if (Math.abs(dx) < 8 || Math.abs(dx) < Math.abs(e.clientY - inicioY)) return;
+        arrastando = true;
+        faixa.classList.add('sem-transicao');
+        carrossel.classList.add('arrastando');
+        carrossel.setPointerCapture(e.pointerId);
+    }
+
+    deslocamento = dx;
+
