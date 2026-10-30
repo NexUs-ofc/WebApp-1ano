@@ -24,4 +24,11 @@ function irPara(indice) {
 botoesInterface.forEach((botao) => {
     botao.addEventListener('click', () => irPara(ordem.indexOf(botao.dataset.interface)));
 });
-
+// arrastar em qualquer ponto do carrossel
+let pressionando = false;
+let arrastando = false;
+let bloquearClique = false;
+let inicioX = 0;
+let inicioY = 0;
+let deslocamento = 0;
+let larguraSlide = 0;
