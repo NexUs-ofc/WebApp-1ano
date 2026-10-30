@@ -11,3 +11,6 @@ let indiceAtual = 0;
 function irPara(indice) {
     indiceAtual = Math.max(0, Math.min(ordem.length - 1, indice));
     faixa.style.transform = `translateX(calc(${-indiceAtual * 100}% + 0px))`;
+
+    // o slide fora da tela não recebe foco do teclado
+    slides.forEach((slide, i) => { slide.inert = i !== indiceAtual; });
