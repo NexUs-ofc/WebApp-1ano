@@ -60,3 +60,12 @@ carrossel.addEventListener('pointermove', (e) => {
 
     deslocamento = dx;
 
+    // nas pontas o carrossel "segura" um pouco, para mostrar que não há mais slides
+    const naPrimeira = indiceAtual === 0 && deslocamento > 0;
+    const naUltima = indiceAtual === ordem.length - 1 && deslocamento < 0;
+    const resistencia = naPrimeira || naUltima ? 0.3 : 1;
+
+    faixa.style.transform = `translateX(calc(${-indiceAtual * 100}% + ${deslocamento * resistencia}px))`;
+});
+
+
