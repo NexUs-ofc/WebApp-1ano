@@ -12,3 +12,14 @@
     color: var(--roxo);
     margin-bottom: 90px;
 }
+
+.destaque-vivo { color: #8c3fd8; }
+
+.planos-lista {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 42px;
+}
