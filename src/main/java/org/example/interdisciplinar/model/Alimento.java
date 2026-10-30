@@ -16,8 +16,7 @@ public class Alimento {
 
     }
 
-    public Alimento(int id, String codigoBarras, String nome, String marca, int idCategoria) {
-        this.id = id;
+    public Alimento(String codigoBarras, String nome, String marca, int idCategoria) {
         this.codigoBarras = codigoBarras;
         this.nome = nome;
         this.marca = marca;
@@ -70,7 +69,7 @@ public class Alimento {
 
     @Override
     public String toString() {
-        return "==========ALIMENTO==========" +
+        return "==========ALIMENTO========="+ "\n" +
                 "Id: " + this.id + "\n" +
                 "Código de barras: " + this.codigoBarras + "\n" +
                 "Nome: " + this.nome + "\n" +

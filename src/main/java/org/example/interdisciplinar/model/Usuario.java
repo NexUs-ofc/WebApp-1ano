@@ -3,12 +3,13 @@ package org.example.interdisciplinar.model;
 public class Usuario {
 
     // Atributos
-
     private int id;
     private String nome;
     private String email;
-    private String preferenciasCosnumo;
-    private String configuracaoAlerta;
+    private String preferenciasConsumo;
+    private ConfiguracaoAlerta configuracaoAlerta;
+    private String telefone;
+    private String senha;
 
     // Construtores
 
@@ -16,12 +17,14 @@ public class Usuario {
 
     }
 
-    public Usuario(int id, String nome, String email, String preferenciasCosnumo, String configuracaoAlerta) {
-        this.id = id;
+    public Usuario(String nome, String email, String preferenciasConsumo, ConfiguracaoAlerta configuracaoAlerta,  String senha, String telefone) {
+
         this.nome = nome;
         this.email = email;
-        this.preferenciasCosnumo = preferenciasCosnumo;
+        this.preferenciasConsumo = preferenciasConsumo;
         this.configuracaoAlerta = configuracaoAlerta;
+        this.telefone = telefone;
+        this.senha = senha;
     }
 
     // Getters e setters
@@ -50,32 +53,50 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getPreferenciasCosnumo() {
-        return preferenciasCosnumo;
+    public String getPreferenciasConsumo() {
+        return preferenciasConsumo;
     }
 
-    public void setPreferenciasCosnumo(String preferenciasCosnumo) {
-        this.preferenciasCosnumo = preferenciasCosnumo;
+    public void setPreferenciasConsumo(String preferenciasCosnumo) {
+        this.preferenciasConsumo = preferenciasCosnumo;
     }
 
-    public String getConfiguracaoAlerta() {
+    public ConfiguracaoAlerta getConfiguracaoAlerta() {
         return configuracaoAlerta;
     }
 
-    public void setConfiguracaoAlerta(String configuracaoAlerta) {
+    public void setConfiguracaoAlerta(ConfiguracaoAlerta configuracaoAlerta) {
         this.configuracaoAlerta = configuracaoAlerta;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     // Método toString()
 
     @Override
     public String toString() {
-        return "==========USUARIO==========" +
+        return "==========USUARIO==========" + "\n" +
                 "Id: " + this.id + "\n" +
                 "Nome: " + this.nome + "\n" +
                 "Email: " + this.email + "\n" +
-                "Preferências de consumo: " + this.preferenciasCosnumo + "\n" +
+                "Preferências de consumo: " + this.preferenciasConsumo + "\n" +
                 "Configuração do alerta: " + this.configuracaoAlerta + "\n" +
+                "Telefone: " + this.telefone + "\n" +
+                "Senha: " + this.senha + "\n" +
                 "============================";
     }
 }
