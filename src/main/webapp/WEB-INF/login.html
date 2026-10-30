@@ -53,3 +53,16 @@
     </section>
 
 </main>
+<script>
+    // mostrar / esconder senha
+    const campoSenha = document.getElementById('senha');
+    document.getElementById('ver-senha').addEventListener('click', () => {
+        campoSenha.type = campoSenha.type === 'password' ? 'text' : 'password';
+    });
+
+
+    // por enquanto o formulário não envia para nenhum lugar
+    document.getElementById('form-login').addEventListener('submit', (e) => e.preventDefault());
+</script>
+</body>
+</html>
