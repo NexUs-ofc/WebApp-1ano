@@ -1,7 +1,5 @@
 package org.example.interdisciplinar.model;
 
-import java.time.LocalDate;
-
 public class Usuario {
 
     // Atributos
@@ -10,9 +8,6 @@ public class Usuario {
     private String email;
     private String preferenciasConsumo;
     private ConfiguracaoAlerta configuracaoAlerta;
-    private String telefone;
-    private String senha;
-    private LocalDate dataCadastro;
 
     // Construtores
 
@@ -20,15 +15,12 @@ public class Usuario {
 
     }
 
-    public Usuario(String nome, String email, String preferenciasConsumo, ConfiguracaoAlerta configuracaoAlerta,  String senha, String telefone, LocalDate dataCadastro) {
+    public Usuario(String nome, String email, String preferenciasConsumo, ConfiguracaoAlerta configuracaoAlerta) {
 
         this.nome = nome;
         this.email = email;
         this.preferenciasConsumo = preferenciasConsumo;
         this.configuracaoAlerta = configuracaoAlerta;
-        this.telefone = telefone;
-        this.senha = senha;
-        this.dataCadastro = dataCadastro;
     }
 
     // Getters e setters
@@ -73,43 +65,16 @@ public class Usuario {
         this.configuracaoAlerta = configuracaoAlerta;
     }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public LocalDate getDataCadastro() {
-        return dataCadastro;
-    }
-
-    public void setDataCadastro(LocalDate dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-
     // Método toString()
 
     @Override
     public String toString() {
-        return "==========USUARIO==========" + "\n" +
+        return "==========USUARIO==========" +
                 "Id: " + this.id + "\n" +
                 "Nome: " + this.nome + "\n" +
                 "Email: " + this.email + "\n" +
                 "Preferências de consumo: " + this.preferenciasConsumo + "\n" +
                 "Configuração do alerta: " + this.configuracaoAlerta + "\n" +
-                "Telefone: " + this.telefone + "\n" +
-                "Senha: " + this.senha + "\n" +
-                "Data de cadastro: " + this.dataCadastro + "\n" +
                 "============================";
     }
 }

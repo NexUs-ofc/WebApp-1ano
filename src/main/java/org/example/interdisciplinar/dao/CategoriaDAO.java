@@ -226,7 +226,8 @@ public class CategoriaDAO {
             }
 
         } catch (SQLException sqle) {
-            throw new RuntimeException("Erro ao consultar categoria", sqle);
+            sqle.printStackTrace();
+            return categorias;
         }
     }
 

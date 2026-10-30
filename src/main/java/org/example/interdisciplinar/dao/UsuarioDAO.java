@@ -1,7 +1,6 @@
 package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
-import org.example.interdisciplinar.dto.UsuarioView;
 import org.example.interdisciplinar.model.Alimento;
 import org.example.interdisciplinar.model.ConfiguracaoAlerta;
 import org.example.interdisciplinar.model.Endereco;
@@ -20,7 +19,7 @@ public class UsuarioDAO {
         Connection conn = GerenteConexao.conectar();
 
         //Comando de inserir em SQL
-        String sqlInsert = "INSERT INTO tb_usuario (nome, email, preferencias_consumo, configuracao_alerta, senha, telefone) VALUES (?, ?, ?, ?, ?, ?)";
+        String sqlInsert = "INSERT INTO tb_usuario (nome, email, preferencias_consumo, configuracao_alerta) VALUES (?, ?, ?, ?)";
 
         //Controle de linhas afetadas
         int linhasAfetadas = 0;
@@ -33,12 +32,8 @@ public class UsuarioDAO {
             pstmt.setString(2, usuario.getEmail());
             pstmt.setString(3, usuario.getPreferenciasConsumo());
             pstmt.setString(4, usuario.getConfiguracaoAlerta().name());
-            pstmt.setString(5, usuario.getTelefone());
-            pstmt.setString(6, usuario.getSenha());
 
             //Se ação tiver dados certo commita e retorna true
-            linhasAfetadas = pstmt.executeUpdate();
-
             if (linhasAfetadas > 0) {
                 GerenteConexao.commit();
                 return true;
@@ -81,8 +76,6 @@ public class UsuarioDAO {
             //Seta valor no '?' do comando SQL
             pstmt.setInt(1, idUsuario);
 
-            linhasAfetadas = pstmt.executeUpdate();
-
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
                 GerenteConexao.commit();
@@ -106,16 +99,16 @@ public class UsuarioDAO {
     }
 
     // Método para listar todos os usuários cadastrados no bd
-    public List<UsuarioView> listar(){
+    public List<Usuario> listar(){
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
 
         //Comando de listar em SQL
-        String sqlSelect = "SELECT * FROM tb_usuario_view";
+        String sqlSelect = "SELECT * FROM tb_usuario";
 
         // Criando uma lista para guardar os registros dos usuários no bd
-        List<UsuarioView> view = new ArrayList<>();
+        List<Usuario> usuarios = new ArrayList<>();
 
         //Cria executor que receberá comando e executará ele
         try (PreparedStatement pstmt = conn.prepareStatement(sqlSelect);
@@ -123,21 +116,19 @@ public class UsuarioDAO {
 
             //Enquanto tiver mais registros cria novos objetos e adiciona à lista
             while (rs.next()){
-                UsuarioView usuarioTemporario = new UsuarioView(
-                        rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        ConfiguracaoAlerta.valueOf(rs.getString(6))
-                );
-                view.add(usuarioTemporario);
+                Usuario usuarioTemporario = new Usuario();
+                usuarioTemporario.setId(rs.getInt(1));
+                usuarioTemporario.setNome(rs.getString(2));
+                usuarioTemporario.setEmail(rs.getString(3));
+                usuarioTemporario.setPreferenciasConsumo(rs.getString(4));
+                usuarioTemporario.setConfiguracaoAlerta(ConfiguracaoAlerta.valueOf(rs.getString(5)));
+                usuarios.add(usuarioTemporario);
             }
             // Commita a ação no banco de dados
             GerenteConexao.commit();
 
             // Retrona a lista de administradores
-            return view;
+            return usuarios;
 
         // Em casos de erro no banco de dados desfaz a ação
         } catch (SQLException sqle) {
@@ -149,12 +140,12 @@ public class UsuarioDAO {
             GerenteConexao.rollback();
 
             //Retorna a lista
-            return view;
+            return usuarios;
         }
     }
 
     public boolean atualizar(Usuario usuario){
-        String sql = "UPDATE tb_usuario SET nome=?, email=?, preferencias_consumo=?, configuracao_alerta=?, telefone=?, senha=? WHERE id_usuario=?";
+        String sql = "UPDATE tb_usuario SET nome=?, email=?, preferencias_consumo=?, configuracao_alerta=? WHERE id_usuario=?";
         try (
                 Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -163,9 +154,7 @@ public class UsuarioDAO {
             pstmt.setString(2, usuario.getEmail());
             pstmt.setString(3, usuario.getPreferenciasConsumo());
             pstmt.setString(4, usuario.getConfiguracaoAlerta().name());
-            pstmt.setString(5, usuario.getTelefone());
-            pstmt.setString(6, usuario.getSenha());
-            pstmt.setInt(7, usuario.getId());
+            pstmt.setInt(5, usuario.getId());
             int linhasAfetadas = pstmt.executeUpdate();
             return linhasAfetadas > 0;
 
@@ -175,16 +164,16 @@ public class UsuarioDAO {
         }
     }
 
-    public List<UsuarioView> listarFiltrado(
+    public List<Usuario> listarFiltrado(
           Integer idUsuarioInicio,
           Integer idUsuarioFim,
           String nome,
           String email,
           String ordenar
     ){
-        StringBuilder sql = new StringBuilder("SELECT * FROM tb_usuario_view WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT * FROM tb_usuario WHERE 1=1");
         List<Object> parametrosDoFiltro = new ArrayList<>();
-        List<UsuarioView> view = new ArrayList<>();
+        List<Usuario> usuarios = new ArrayList<>();
 
         if (idUsuarioInicio != null) {
             sql.append(" AND id_usuario >=?");
@@ -235,23 +224,22 @@ public class UsuarioDAO {
 
                 //Enquanto tiver mais registros cria novos objetos e adiciona à lista
                 while (rs.next()){
-                    UsuarioView usuarioTemporario = new UsuarioView(
-                            rs.getInt(1),
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getString(4),
-                            ConfiguracaoAlerta.valueOf(rs.getString(5))
-                    );
-                    view.add(usuarioTemporario);
+                    Usuario usuarioTemporario = new Usuario();
+                    usuarioTemporario.setId(rs.getInt(1));
+                    usuarioTemporario.setNome(rs.getString(2));
+                    usuarioTemporario.setEmail(rs.getString(3));
+                    usuarioTemporario.setPreferenciasConsumo(rs.getString(4));
+                    usuarioTemporario.setConfiguracaoAlerta(ConfiguracaoAlerta.valueOf(rs.getString(5)));
+                    usuarios.add(usuarioTemporario);
                 }
 
                 // Retrona a lista de administradores
-                return view;
+                return usuarios;
             }
 
         } catch (SQLException sqle) {
             sqle.printStackTrace();
-            return view;
+            return usuarios;
         }
     }
 
@@ -269,9 +257,7 @@ public class UsuarioDAO {
                             rs.getString("nome"),
                             rs.getString("email"),
                             rs.getString("preferencias_consumo"),
-                            ConfiguracaoAlerta.valueOf(rs.getString("configuracao_alerta")),
-                            rs.getString("telefone"),
-                            rs.getString("senha")
+                            ConfiguracaoAlerta.valueOf(rs.getString("configuracao_alerta"))
                     );
                     return usuario;
                 }

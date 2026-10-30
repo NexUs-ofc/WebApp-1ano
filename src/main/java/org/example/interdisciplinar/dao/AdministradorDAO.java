@@ -20,7 +20,7 @@ public class AdministradorDAO {
         int linhasAfetadas = 0;
 
         //Comando de inserir em SQL
-        String sqlInsert = "INSERT INTO tb_administrador(nome, email, senha, telefone) VALUES (?, ?, ?, ?)";
+        String sqlInsert = "INSERT INTO tb_administrador(nome, email, senha) VALUES (?, ?, ?)";
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
@@ -33,11 +33,8 @@ public class AdministradorDAO {
             pstmt.setString(1, administrador.getNome());
             pstmt.setString(2, administrador.getEmail());
             pstmt.setString(3, administrador.getSenha());
-            pstmt.setString(4, administrador.getTelefone());
 
             //Se ação tiver dados certo commita e retorna true
-            linhasAfetadas = pstmt.executeUpdate();
-
             if (linhasAfetadas > 0) {
                 GerenteConexao.commit();
                 return true;
@@ -84,7 +81,6 @@ public class AdministradorDAO {
                 admTemporario.setNome(rs.getString(2));
                 admTemporario.setEmail(rs.getString(3));
                 admTemporario.setSenha(rs.getString(4));
-                admTemporario.setSenha(rs.getString(5));
                 administradores.add(admTemporario);
             }
 
@@ -109,7 +105,7 @@ public class AdministradorDAO {
     }
 
     public boolean atualizar(Administrador administrador){
-        String sql = "UPDATE tb_administrador SET nome=?, email=?, senha=?, telefone=? WHERE id_admin=?";
+        String sql = "UPDATE tb_administrador SET nome=?, email=?, senha=? WHERE id_admin=?";
         try (
                 Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -117,8 +113,7 @@ public class AdministradorDAO {
             pstmt.setString(1, administrador.getNome());
             pstmt.setString(2, administrador.getEmail());
             pstmt.setString(3, administrador.getSenha());
-            pstmt.setString(4, administrador.getTelefone());
-            pstmt.setInt(5, administrador.getId());
+            pstmt.setInt(4, administrador.getId());
             int linhasAfetadas = pstmt.executeUpdate();
             return linhasAfetadas > 0;
 
@@ -233,7 +228,6 @@ public class AdministradorDAO {
                     admTemporario.setNome(rs.getString(2));
                     admTemporario.setEmail(rs.getString(3));
                     admTemporario.setSenha(rs.getString(4));
-                    admTemporario.setTelefone(rs.getString(5));
                     administradores.add(admTemporario);
                 }
 
@@ -261,8 +255,7 @@ public class AdministradorDAO {
                     Administrador administrador = new Administrador(
                             rs.getString("nome"),
                             rs.getString("email"),
-                            rs.getString("senha"),
-                            rs.getString("telefone")
+                            rs.getString("senha")
                     );
                     return administrador;
                 }

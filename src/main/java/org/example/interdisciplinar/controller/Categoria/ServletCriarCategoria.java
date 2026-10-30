@@ -49,13 +49,15 @@ public class ServletCriarCategoria extends HttpServlet {
                     HttpServletResponse.SC_BAD_REQUEST,
                     "Preencha todos os campos."
             );
-            request.getRequestDispatcher("/categorias").forward(request, response);
             return;
         }
 
 
         // Cria o objeto Categoria
-        Categoria categoria = new Categoria(nomeCategoria, descricaoCategoria);
+        Categoria categoria = new Categoria();
+
+        categoria.setNome(nomeCategoria);
+        categoria.setDescricao(descricaoCategoria);
 
         // Chama o DAO para inserir no banco
         boolean inserido = categoriaDAO.inserir(categoria);
@@ -71,7 +73,7 @@ public class ServletCriarCategoria extends HttpServlet {
 
             response.sendError(
                     HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Não foi possível inserir a categoria"
+                    "Não foi possível inserir o alimento."
             );
         }
 

@@ -8,20 +8,14 @@ public class Administrador {
     private String nome;
     private String email;
     private String senha;
-    private String telefone;
-    private String urlFoto;
-    private String cpf;
 
     // Construtores
 
-    public Administrador(String nome, String email, String senha, String telefone, String urlFoto, String cpf) {
+    public Administrador(String nome, String email, String senha) {
 
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.telefone = telefone;
-        this.urlFoto = urlFoto;
-        this.cpf = cpf;
     }
     public Administrador(){
 
@@ -61,30 +55,6 @@ public class Administrador {
         this.senha = senha;
     }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public String getUrlFoto() {
-        return urlFoto;
-    }
-
-    public void setUrlFoto(String urlFoto) {
-        this.urlFoto = urlFoto;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
     // Método toString()
 
     @Override
@@ -94,9 +64,6 @@ public class Administrador {
                 "Nome: " + this.nome + "\n" +
                 "Email: " + this.email + "\n" +
                 "Senha: " + this.senha + "\n" +
-                "Telefone: " + this.telefone + "\n" +
-                "Url da foto: " + this.urlFoto + "\n" +
-                "Cpf: " + this.cpf + "\n" +
                 "=================================";
     }
 }
