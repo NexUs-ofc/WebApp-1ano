@@ -20,4 +20,8 @@ function irPara(indice) {
         botao.classList.toggle('ativo', botao.dataset.interface === ordem[indiceAtual]);
     });
 }
+// clique nos botões (título e botões ficam parados; só o conteúdo desliza)
+botoesInterface.forEach((botao) => {
+    botao.addEventListener('click', () => irPara(ordem.indexOf(botao.dataset.interface)));
+});
 
