@@ -1,0 +1,169 @@
+* { /*vale para TUDO, O * é o nosso querido seletor universal*/
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh; /*100% de viewport, o tamanho da tela no navegador*/
+    display: flex;
+    gap: 44px; /*o espaço entre a sidebar e o conteúdo*/
+    padding: 12px;
+    background-color: #fdfdfe;
+    color: #1a1a1a;
+    font-family: 'Huninn', sans-serif;
+}
+
+.sidebar {
+    width: 268px;
+    calc(100vh - 24px); /*esse calc subtrai o tamanho da tela do padding, deixando a sidebar do tamanho que cabe na tela*/
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    padding: 18px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    border-radius: 14px;
+    background: linear-gradient(#4a1d78, #6f2fa8);
+    box-shadow: 0 4px 4px rgba(255, 255, 255, 0.10) inset;
+    filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.sidebar h2 {
+    margin-top: 29.53px;
+    margin-bottom: 221.58px;
+    padding: 0 12px;
+    color: white;
+    font-size: 35.42px;
+    font-weight: normal;
+}
+
+.sidebar a {
+    width: 239px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    border-radius: 13px;
+    color: white;
+    font-size: 14px;
+}
+
+.sidebar a:not(.ativo):hover { /*ele NÃO vai aplicar bg color se a classe do botão for ativo*/
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+a.ativo {
+    background-color: white;
+    color: #4a1d78;
+}
+
+.conteudo {
+    flex: 1;
+    min-width: 0;
+    padding: 20px 8px 0 0;
+}
+
+.titulo {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.titulo h1 {
+    font-size: 36px;
+    font-weight: normal;
+    font-family: 'Poppins', sans-serif;
+}
+
+.titulo small {
+    color: #8a8a8a;
+    font-size: 15.2px;
+}
+
+.vazio {
+    margin-top: 36px;
+    color: #8a8a8a;
+    font-size: 14px;
+}
+
+.pesquisa {
+    margin-top: 8px;
+}
+
+.pesquisa form {
+    width: 558px;
+    height:39px;
+    display: flex;
+    gap: 8px;
+}
+
+.pesquisa input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1px solid #c9b3f0;
+    border-radius: 12.757px;
+    font: inherit;
+    font-size: 14px;
+}
+
+.pesquisa button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4a1d78;
+    color: white;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.pesquisa button:hover {
+    background-color: #6f2fa8;
+}
+
+.cartao {
+    margin-top: 60px;
+    padding-bottom: 36px;
+    max-height: calc(100vh - 200px);
+    overflow: auto;
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+table {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+}
+
+th {
+    height: 50px;
+    padding: 0 12px;
+    position: sticky;
+    top: 0;
+    background-color: #4a1d78;
+    color: white;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: center;
+}
+
+th:first-child {
+    border-top-left-radius: 12px;
+}
+/*O first child e last child só vão deixar arredondado nas bordas extremas,
+se fosse colocado diretamente no th, iam ficar varias partições*/
+th:last-child {
+    border-top-right-radius: 12px;
+}
+td {
+    height: 55px;
+    padding: 0 12px;
+    border-bottom: 1px solid #c9b3f0;
+    font-size: 14px;
+    text-align: center;
+}
+
