@@ -67,3 +67,36 @@
         botaoVer.setAttribute('aria-pressed', String(!mostrando));
         botaoVer.setAttribute('aria-label', mostrando ? 'Mostrar senha' : 'Esconder senha');
     });
+
+    // limpa a mensagem de erro quando a pessoa volta a digitar
+    [campoEmail, campoSenha].forEach((campo) => {
+        campo.addEventListener('input', () => { mensagemErro.hidden = true; });
+    });
+
+    formulario.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        if (!campoEmail.value.trim() || !campoEmail.checkValidity()) {
+            mensagemErro.textContent = 'Digite um e-mail válido.';
+            mensagemErro.hidden = false;
+            campoEmail.focus();
+            return;
+        }
+
+        if (!campoSenha.value) {
+            mensagemErro.textContent = 'Digite sua senha.';
+            mensagemErro.hidden = false;
+            campoSenha.focus();
+            return;
+        }
+
+        // TODO: aqui entra a verificação de login com o seu back-end.
+        // Nunca confira e-mail e senha só no JavaScript do navegador:
+        // qualquer pessoa conseguiria ler a senha no código da página.
+        // Exemplo de como ficaria depois:
+        //   fetch('/api/acesso-restrito', { method: 'POST', ... })
+        //     .then(...)  // se der certo: window.location.href = 'painel.html';
+    });
+</script>
+</body>
+</html>
