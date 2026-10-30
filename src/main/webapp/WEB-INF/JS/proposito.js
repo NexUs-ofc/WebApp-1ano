@@ -6,3 +6,8 @@ const botoesInterface = document.querySelectorAll('.botao-interface');
 
 const ordem = ['cliente', 'mercado']; // ordem dos slides
 let indiceAtual = 0;
+
+// desliza a faixa até o slide pedido
+function irPara(indice) {
+    indiceAtual = Math.max(0, Math.min(ordem.length - 1, indice));
+    faixa.style.transform = `translateX(calc(${-indiceAtual * 100}% + 0px))`;
