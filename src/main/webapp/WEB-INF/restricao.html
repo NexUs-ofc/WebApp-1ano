@@ -57,3 +57,13 @@
     const campoSenha = document.getElementById('senha');
     const botaoVer = document.getElementById('ver-senha');
     const mensagemErro = document.getElementById('mensagem-erro');
+
+
+    // mostrar / esconder senha
+    botaoVer.addEventListener('click', () => {
+        const mostrando = campoSenha.type === 'text';
+        campoSenha.type = mostrando ? 'password' : 'text';
+        botaoVer.classList.toggle('mostrando', !mostrando);
+        botaoVer.setAttribute('aria-pressed', String(!mostrando));
+        botaoVer.setAttribute('aria-label', mostrando ? 'Mostrar senha' : 'Esconder senha');
+    });
