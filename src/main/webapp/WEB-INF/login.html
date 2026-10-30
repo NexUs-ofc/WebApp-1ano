@@ -27,3 +27,29 @@
             Sair
         </a>
     </aside>
+    <!-- Formulário -->
+    <section class="login-form">
+        <h1>Bem-vindo(a) de volta!</h1>
+        <p class="login-sub">Acesse sua conta empresarial</p>
+
+        <form id="form-login">
+            <label for="email">E-mail corporativo</label>
+            <input type="email" id="email" placeholder="seuemail@empresa.com" required>
+
+            <label for="senha">Senha</label>
+            <div class="campo-senha">
+                <input type="password" id="senha" placeholder="Digite sua senha" required>
+                <button type="button" class="ver-senha" id="ver-senha" aria-label="Mostrar senha">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+            </div>
+
+            <a href="#" class="esqueci">Esqueci minha senha</a>
+
+            <button type="submit" class="botao-entrar">Entrar na conta</button>
+        </form>
+
+        <p class="login-cadastro">Ainda não tem conta corporativa? <a href="#">Cadastre-se</a></p>
+    </section>
+
+</main>
