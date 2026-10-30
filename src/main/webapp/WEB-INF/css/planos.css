@@ -45,3 +45,42 @@
     color: var(--roxo);
     margin-bottom: 8px;
 }
+
+.plano-preco {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 8px;
+    margin-bottom: 14px;
+}
+.plano-preco strong {
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--roxo);
+}
+.plano-preco span {
+    font-size: 12px;
+    color: #666;
+}
+
+.plano-descricao {
+    font-size: 14px;
+    line-height: 1.5;
+    padding-bottom: 22px;
+    margin-bottom: 22px;
+    border-bottom: 2px solid var(--roxo-claro);
+    transition: color .3s ease;
+}
+
+.plano ul { flex-grow: 1; list-style: none; }
+.plano li { margin-bottom: 20px; font-size: 14px; line-height: 1.45; transition: color .3s ease; }
+
+.plano-limite {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: var(--roxo);
+}
