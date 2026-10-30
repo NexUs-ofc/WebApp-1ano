@@ -67,5 +67,30 @@ carrossel.addEventListener('pointermove', (e) => {
 
     faixa.style.transform = `translateX(calc(${-indiceAtual * 100}% + ${deslocamento * resistencia}px))`;
 });
+function soltar() {
+    pressionando = false;
+    if (!arrastando) return;
+    arrastando = false;
+    bloquearClique = true; // evita que o fim do arrasto conte como clique
 
+    faixa.classList.remove('sem-transicao');
+    carrossel.classList.remove('arrastando');
+
+    const limite = larguraSlide * 0.2; // arrastou mais de 20%? troca de slide
+    if (deslocamento < -limite) irPara(indiceAtual + 1);
+    else if (deslocamento > limite) irPara(indiceAtual - 1);
+    else irPara(indiceAtual); // senão volta para o lugar
+}
+
+carrossel.addEventListener('pointerup', soltar);
+carrossel.addEventListener('pointercancel', soltar);
+
+carrossel.addEventListener('click', (e) => {
+    if (bloquearClique && e.detail !== 0) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+}, true);
+
+irPara(0);
 
