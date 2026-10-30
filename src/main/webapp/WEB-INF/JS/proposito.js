@@ -32,3 +32,14 @@ let inicioX = 0;
 let inicioY = 0;
 let deslocamento = 0;
 let larguraSlide = 0;
+
+carrossel.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    pressionando = true;
+    arrastando = false;
+    bloquearClique = false;
+    inicioX = e.clientX;
+    inicioY = e.clientY;
+    deslocamento = 0;
+    larguraSlide = carrossel.clientWidth;
+});
