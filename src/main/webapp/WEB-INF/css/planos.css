@@ -1,0 +1,14 @@
+.planos-cards {
+    position: relative;
+    min-height: calc(100vh - 72px);
+    padding: 90px 112px 110px;
+    overflow: hidden;
+}
+
+.planos-cards h2 {
+    text-align: center;
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--roxo);
+    margin-bottom: 90px;
+}
