@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/views.css">
 </head>
 <body>
+  <!-- Sidebar -->
   <nav class="sidebar">
     <div class="logoSidebar">
       <div class="simboloLogo">
@@ -20,15 +21,17 @@
       <span class="nomeLogo">Ceris</span>
       <img class="linhaLogo" src="${pageContext.request.contextPath}/assets/logo-underline.svg" alt="">
     </div>
-    <a href="${pageContext.request.contextPath}/index.jsp"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-chart-histogram.svg" alt="">Análise</a>
-    <a href="${pageContext.request.contextPath}/enderecos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-marker.svg" alt="">Endereço</a>
-    <a class="ativo" href="${pageContext.request.contextPath}/usuarios"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="">Usuário</a>
-    <a href="${pageContext.request.contextPath}/alimentos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-utensils.svg" alt="">Alimento</a>
-    <a href="${pageContext.request.contextPath}/categorias"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-apps.svg" alt="">Categoria</a>
-    <a href="${pageContext.request.contextPath}/itensDespensa"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-bread-slice.svg" alt="">Item_dispensa</a>
-    <a href="${pageContext.request.contextPath}/administradores"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-shield-check.svg" alt="">Administrador</a>
-  </nav>
+        <a href="${pageContext.request.contextPath}/index.jsp"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-chart-histogram.svg" alt="">Análise</a>
+        <a href="${pageContext.request.contextPath}/enderecos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-marker.svg" alt="">Endereço</a>
+        <a class="ativo" href="${pageContext.request.contextPath}/usuarios"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="">Usuário</a>
+        <a href="${pageContext.request.contextPath}/alimentos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-utensils.svg" alt="">Alimento</a>
+        <a href="${pageContext.request.contextPath}/categorias"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-apps.svg" alt="">Categoria</a>
+        <a href="${pageContext.request.contextPath}/itensDespensa"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-bread-slice.svg" alt="">Item_despensa</a>
+        <a href="${pageContext.request.contextPath}/empresas"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-enterprise.svg" alt="">Empresas</a>
+        <a href="${pageContext.request.contextPath}/administradores"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-shield-check.svg" alt="">Administrador</a>
+      </nav>
 
+  <!-- Conteudo -->
   <main class="conteudo">
     <div class="titulo">
       <h1>Área Restrita</h1>
@@ -40,11 +43,12 @@
     </c:if>
 
     <c:if test="${not empty usuarios}">
+      <!-- Pesquisa -->
       <div class="pesquisa">
         <form action="${pageContext.request.contextPath}/usuarios" method="get">
           <input type="text" name="pesquisa" placeholder="Procurar" value="${param.pesquisa}">
           <button type="submit" class="botaoPesquisar">Pesquisar</button>
-          <button type="button" class="botaoFiltro" aria-label="Aplicar filtro de pesquisa">
+          <button type="button" class="botaoFiltro" aria-label="Aplicar filtro de pesquisa" onclick="abrirPopupFiltro()">
             <span>Filtro</span>
             <span class="iconeFiltro" aria-hidden="true">
               <img src="<c:url value='/assets/filter-line-a.svg'/>" alt="">
@@ -55,6 +59,46 @@
         </form>
       </div>
 
+      <!-- Filtro -->
+      <dialog id="popupFiltro" class="popupFiltro" aria-labelledby="tituloPopupFiltro">
+        <div class="conteudoPopupFiltro">
+          <div class="cabecalhoPopupFiltro">
+            <h2 id="tituloPopupFiltro">Filtros</h2>
+            <button type="button" class="botaoFecharPopupFiltro" aria-label="Fechar filtros" onclick="fecharPopupFiltro()">&times;</button>
+          </div>
+          <form onsubmit="event.preventDefault(); fecharPopupFiltro()">
+            <div class="camposPopupFiltro">
+          <div class="campoPopupFiltro">
+            <span>id</span>
+            <div class="intervaloPopupFiltro">
+              <input name="idMinimo" type="number" placeholder="M&iacute;nimo">
+              <span aria-hidden="true">&ndash;</span>
+              <input name="idMaximo" type="number" placeholder="M&aacute;ximo">
+            </div>
+          </div>
+          <label class="campoPopupFiltro">nome
+            <input name="nome" type="text" placeholder="Digite o nome">
+          </label>
+          <label class="campoPopupFiltro">email
+            <input name="email" type="text" placeholder="Digite o email">
+          </label>
+            </div>
+            <img class="divisorPopupFiltro" src="${pageContext.request.contextPath}/assets/popup-filter-divider.svg" alt="">
+            <fieldset class="ordemPopupFiltro">
+              <legend>Ordenar por</legend>
+              <div class="opcoesOrdemPopupFiltro">
+                <label><input name="ordem" type="radio" value="ascendente">Ordenar nome por ordem alfab&eacute;tica</label>
+                <label><input name="ordem" type="radio" value="descendente">Ordenar nome por ordem alfab&eacute;tica</label>
+              </div>
+            </fieldset>
+            <div class="acoesPopupFiltro">
+              <button type="reset" class="botaoLimparPopupFiltro">Limpar</button>
+              <button type="submit" class="botaoAplicarPopupFiltro">Aplicar</button>
+            </div>
+          </form>
+        </div>
+      </dialog>
+      <!-- Cadastro -->
       <button type="button" class="botaoCriar" onclick="abrirPopupUsuario()">Adicionar<img class="iconeAdicionar" src="${pageContext.request.contextPath}/assets/fi-br-add.svg" alt="" aria-hidden="true"></button>
 
       <dialog id="popupUsuario" class="popupFormulario popupFormularioMedio">
@@ -76,6 +120,7 @@
           </div>
       </dialog>
 
+      <!-- Tabela -->
       <div class="cartao">
         <table>
           <thead>
@@ -116,6 +161,7 @@
     </c:if>
   </main>
 
+  <!-- Edicao -->
   <dialog id="popupEdicao" class="popupFormulario popupFormularioMedio">
     <div class="barraPopupFormulario"></div>
     <div class="conteudoPopupFormulario">
@@ -136,6 +182,7 @@
     </div>
   </dialog>
 
+  <!-- Exclusao -->
   <dialog id="popupExclusao" class="popupExclusao">
     <div class="barraPopupExclusao"></div>
     <div class="conteudoPopupExclusao">
@@ -152,7 +199,14 @@
     </div>
   </dialog>
 
+  <!-- JavaScript -->
   <script>
+    function abrirPopupFiltro() {
+      document.getElementById("popupFiltro").showModal();
+    }
+    function fecharPopupFiltro() {
+      document.getElementById("popupFiltro").close();
+    }
     function abrirPopupUsuario() {
       document.getElementById("popupUsuario").showModal();
     }

@@ -1,3 +1,5 @@
+/*Aviso: para obter o visual mais fiel do website em relação ao figma, utilize-o em fullscreen! (aperte f11 ou fn+f11)*/
+
 * { /*vale para TUDO, O * é o nosso querido seletor universal, remove margens e espaçamentos padrões do navegador e faz as medidas incluírem padding e borda. */
     box-sizing: border-box;
     margin: 0;
@@ -16,25 +18,27 @@ body {
 
 .sidebar {
     width: 268px;
-    height: calc(100vh - 24px); /*esse calc subtrai o tamanho da tela do padding, deixando a sidebar do tamanho que cabe na tela*/
+    height: calc(100vh - 25px); /*esse calc subtrai o tamanho da tela do padding, deixando a sidebar do tamanho que cabe na tela*/
     flex-shrink: 0; /*impede a sidebar de ser espremida quando o conteúdo precisa de mais espaço*/
     display: flex;
     flex-direction: column;
     gap: 9px;
-    padding: 18px 14px;
+    position: relative;
+    margin: 1px 0 0 12px;
+    padding: 274px 14px 18px;
     border-radius: 14px;
     background: linear-gradient(#4a1d78, #6f2fa8);
     filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
 }
 .logoSidebar {
-    width: 165px;
+    width: 161.606px;
     height: 49px;
-    position: relative; /*vira a referência para posicionar os elementos da logo com absolute*/
-    flex-shrink: 0;
-    margin: 4px 0 204px 13px;
+    position: absolute; /*vira a referência para posicionar os elementos da logo com absolute*/
+    top: 22px;
+    left: 27px;
 }
 .simboloLogo {
-    width: 54px;
+    width: 54.345px;
     height: 49px;
     position: absolute;
     background-color: white;
@@ -50,7 +54,7 @@ body {
     top: 8px;
     left: 79px;
     color: white;
-    font-size: 35px;
+    font-size: 35.415px;
     white-space: nowrap;
 }
 .linhaLogo {
@@ -62,6 +66,7 @@ body {
     width: 239px;
     height: 48px;
     display: flex;
+    align-self: center;
     align-items: center;
     gap: 22px;
     padding: 0 16px;
@@ -117,7 +122,7 @@ a.ativo {
     top: 26px;
     left: 246px;
     color: #968d9e;
-    font-size: 15px;
+    font-size: 15.2px;
 }
 .vazio {
     margin-top: 36px;
@@ -126,11 +131,10 @@ a.ativo {
 }
 
 .pesquisa {
-    width: calc(100% - 134px);
+    width: calc(100% - 193px);
     margin-top: 4px;
 }
 .pesquisa form {
-    width: 100%;
     display: grid;
     grid-template-columns: minmax(0, 1fr) 117px 96px 87px;
     column-gap: 11px;
@@ -207,15 +211,15 @@ a.ativo {
 .botaoCriar {
     position: absolute;
     top: 79px;
-    right: 0;
+    right: 67px;
 }
 button.botaoCriar, .botaoCriar > button {
     white-space: nowrap;
 }
 
 .cartao {
-    width: 100%;
-    max-height: min(819px, calc(100vh - 202px)); /*usa no máximo 819px, mas diminui o cartão quando a tela não tem esse espaço*/
+    width: calc(100% - 59px);
+    max-height: calc(100vh - 202px); /*cresce conforme os dados até chegar ao final da sidebar*/
     min-height: 0;
     margin-top: 61px;
     overflow: auto; /*a rolagem acontece dentro do cartão sem mover a página inteira*/
@@ -242,7 +246,7 @@ th {
     background-color: #4a1d78;
     color: white;
     font-family: 'Poppins', sans-serif;
-    font-size: 15px;
+    font-size: 14.977px;
 }
 th:first-child {
     border-top-left-radius: 11px;
@@ -253,7 +257,7 @@ th:last-child {
     border-top-right-radius: 11px;
 }
 td {
-    height: 55px;
+    height: 55.228px;
     border-bottom: 1px solid #c9b3f0;
     color: #2a1e34;
     font-size: 14px;
@@ -296,10 +300,8 @@ td {
 }
 .botaoExcluir, .botaoEditar {
     border: 0;
-    outline: 0;
     appearance: none;
     background: none;
-    box-shadow: none;
     line-height: 0;
 }
 .botaoExcluir img, .botaoEditar img, .botaoBloquear img {
@@ -342,6 +344,165 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
 }
 
 /*estilos que todos os popups compartilham para não repetir as mesmas propriedades*/
+.popupFiltro {
+    width: 378px;
+    height: 504px;
+    margin: auto;
+    border: 1px solid #f2ecf8;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: white;
+    box-shadow: 0 8px 24px rgba(26, 15, 41, 0.14);
+}
+.popupFiltroAlimento {
+    height: 603px;
+}
+.popupFiltroCategoria {
+    height: 415px;
+}
+.popupFiltro::backdrop {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+.conteudoPopupFiltro {
+    height: 100%;
+    position: relative;
+    padding: 18px 22px 14px;
+}
+.cabecalhoPopupFiltro {
+    height: 44px;
+}
+.cabecalhoPopupFiltro h2 {
+    color: #291a33;
+    font-size: 25px;
+    font-weight: 400;
+    line-height: 30px;
+}
+.botaoFecharPopupFiltro {
+    width: 28px;
+    height: 32px;
+    position: absolute;
+    top: 10px;
+    right: 13px;
+    border: 0;
+    background: none;
+    color: #4f2078;
+    font-family: 'Huninn', sans-serif;
+    font-size: 28px;
+    line-height: 28px;
+    cursor: pointer;
+}
+.camposPopupFiltro {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.campoPopupFiltro {
+    height: 73px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: #4f2078;
+    font-size: 14px;
+    line-height: 17px;
+}
+.campoPopupFiltro input, .campoPopupFiltro select {
+    width: 100%;
+    height: 48px;
+    padding: 0 12px;
+    border: 1px solid #c7addb;
+    border-radius: 9px;
+    outline: none;
+    background-color: white;
+    color: #291a33;
+    font-family: 'Huninn', sans-serif;
+    font-size: 14px;
+}
+.campoPopupFiltro select {
+    appearance: none;
+}
+.campoPopupFiltro input::placeholder {
+    color: #948c9e;
+    opacity: 1;
+}
+.campoPopupFiltro input:focus, .campoPopupFiltro select:focus {
+    border-color: #4f2078;
+}
+.intervaloPopupFiltro {
+    display: grid;
+    grid-template-columns: 154px 24px 154px;
+}
+.intervaloPopupFiltro span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.divisorPopupFiltro {
+    width: 332px;
+    height: 1px;
+    display: block;
+    margin-top: 18px;
+}
+.ordemPopupFiltro {
+    margin-top: 8px;
+    border: 0;
+    color: #4f2078;
+}
+.ordemPopupFiltro legend {
+    font-size: 16.188px;
+    line-height: 19px;
+}
+.opcoesOrdemPopupFiltro {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 13px;
+}
+.opcoesOrdemPopupFiltro label {
+    height: 15px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12.719px;
+    line-height: 15px;
+}
+.opcoesOrdemPopupFiltro input {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    appearance: none;
+    border: 0;
+    border-radius: 3px;
+    background-color: #d9d9d9;
+    cursor: pointer;
+}
+.opcoesOrdemPopupFiltro input:checked {
+    background-color: #4f2078;
+}
+.acoesPopupFiltro {
+    display: flex;
+    gap: 16px;
+    margin-top: 27px;
+}
+.acoesPopupFiltro button {
+    width: 158px;
+    height: 48px;
+    border-radius: 10px;
+    font-family: 'Huninn', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+}
+.botaoLimparPopupFiltro {
+    border: 1px solid #4f2078;
+    background-color: white;
+    color: #4f2078;
+}
+.botaoAplicarPopupFiltro {
+    border: 1px solid #4f2078;
+    background-color: #4f2078;
+    color: white;
+}
+
+
 .popupFormulario, .popupExclusao {
     max-width: calc(100% - 32px);
     margin: auto;
@@ -497,7 +658,7 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     right: 24px;
     left: 24px;
 }
-/*os campos do administrador usam posições fixas para seguir exatamente o layout do figma*/
+/*os campos do administrador usam posições fixas para seguir o layout que foi prototipado*/
 .campoPopupAdmin {
     width: 100%;
     height: 40px;
