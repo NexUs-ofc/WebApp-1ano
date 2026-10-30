@@ -94,3 +94,12 @@ carrossel.addEventListener('click', (e) => {
 
 irPara(0);
 
+/* DÚVIDAS FREQUENTES */
+document.querySelectorAll('.duvida-pergunta').forEach((pergunta) => {
+    pergunta.addEventListener('click', () => {
+        const item = pergunta.parentElement;
+        const aberta = item.classList.toggle('aberta');
+        pergunta.setAttribute('aria-expanded', aberta);
+    });
+});
+
