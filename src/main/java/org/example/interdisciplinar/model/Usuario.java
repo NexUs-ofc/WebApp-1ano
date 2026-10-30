@@ -1,5 +1,7 @@
 package org.example.interdisciplinar.model;
 
+import java.time.LocalDate;
+
 public class Usuario {
 
     // Atributos
@@ -10,6 +12,7 @@ public class Usuario {
     private ConfiguracaoAlerta configuracaoAlerta;
     private String telefone;
     private String senha;
+    private LocalDate dataCadastro;
 
     // Construtores
 
@@ -17,7 +20,7 @@ public class Usuario {
 
     }
 
-    public Usuario(String nome, String email, String preferenciasConsumo, ConfiguracaoAlerta configuracaoAlerta,  String senha, String telefone) {
+    public Usuario(String nome, String email, String preferenciasConsumo, ConfiguracaoAlerta configuracaoAlerta,  String senha, String telefone, LocalDate dataCadastro) {
 
         this.nome = nome;
         this.email = email;
@@ -25,6 +28,7 @@ public class Usuario {
         this.configuracaoAlerta = configuracaoAlerta;
         this.telefone = telefone;
         this.senha = senha;
+        this.dataCadastro = dataCadastro;
     }
 
     // Getters e setters
@@ -85,6 +89,14 @@ public class Usuario {
         this.senha = senha;
     }
 
+    public LocalDate getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(LocalDate dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
     // Método toString()
 
     @Override
@@ -97,6 +109,7 @@ public class Usuario {
                 "Configuração do alerta: " + this.configuracaoAlerta + "\n" +
                 "Telefone: " + this.telefone + "\n" +
                 "Senha: " + this.senha + "\n" +
+                "Data de cadastro: " + this.dataCadastro + "\n" +
                 "============================";
     }
 }
