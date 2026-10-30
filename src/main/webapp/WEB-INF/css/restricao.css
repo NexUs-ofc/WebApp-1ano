@@ -42,3 +42,7 @@
     color: #b3261e;
 }
 .mensagem-erro[hidden] { display: none; }
+
+.botao-entrar { transition: background-color .2s, box-shadow .2s; }
+.botao-entrar:hover { background: var(--roxo-escuro); box-shadow: 0 6px 16px rgba(82, 32, 128, 0.3); }
+.botao-entrar:focus-visible { outline: 3px solid var(--roxo-claro); outline-offset: 3px; }
