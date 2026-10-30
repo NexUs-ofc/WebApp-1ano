@@ -34,3 +34,11 @@
 .icone-olho-fechado { display: none; }
 .ver-senha.mostrando .icone-olho { display: none; }
 .ver-senha.mostrando .icone-olho-fechado { display: block; }
+
+.mensagem-erro {
+    margin: -40px 0 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #b3261e;
+}
+.mensagem-erro[hidden] { display: none; }
