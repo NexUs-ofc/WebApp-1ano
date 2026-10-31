@@ -125,3 +125,25 @@ nav a { color: #111; font-size: 14px; }
     width: 46%;
     z-index: 3;
 }
+
+.carrossel {
+    overflow: hidden;
+    cursor: grab;
+    touch-action: pan-y;
+    user-select: none;
+}
+.carrossel.arrastando { cursor: grabbing; }
+.carrossel-faixa {
+    display: flex;
+    transition: transform 1.1s cubic-bezier(.22, .8, .3, 1);
+}
+.carrossel-faixa.sem-transicao { transition: none; }
+.slide {
+    position: relative;
+    flex: 0 0 100%;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    min-height: 1024px; /* altura do frame no Figma */
+    padding: 100px 112px;
+}
