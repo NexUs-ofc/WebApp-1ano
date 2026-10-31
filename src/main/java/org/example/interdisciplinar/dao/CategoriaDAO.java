@@ -74,8 +74,6 @@ public class CategoriaDAO {
             //Seta valor no '?' do comando SQL
             pstmt.setInt(1, id);
 
-            linhasAfetadas = pstmt.executeUpdate();
-
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
                 GerenteConexao.commit();
@@ -150,25 +148,18 @@ public class CategoriaDAO {
 
     public boolean atualizar(Categoria categoria){
         String sql = "UPDATE tb_categoria SET nome=?, descricao=? WHERE id_categoria=?";
-        Connection conn = GerenteConexao.conectar();
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
             pstmt.setString(1, categoria.getNome());
             pstmt.setString(2, categoria.getDescricao());
             pstmt.setInt(3, categoria.getId());
             int linhasAfetadas = pstmt.executeUpdate();
-
-            if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
-                return true;
-            }
-
-            GerenteConexao.rollback();
-            return false;
+            return linhasAfetadas > 0;
 
         } catch (SQLException sqle){
             sqle.printStackTrace();
-            GerenteConexao.rollback();
             return false;
         }
     }
@@ -196,7 +187,7 @@ public class CategoriaDAO {
             parametrosDoFiltro.add("%" + nome + "%");
         }
 
-        switch (ordenar) {
+        switch (ordenar == null ? "" : ordenar) {
             case "id":
                 sql.append(" ORDER BY id_categoria");
                 break;
@@ -235,8 +226,7 @@ public class CategoriaDAO {
             }
 
         } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            return categorias;
+            throw new RuntimeException("Erro ao consultar categoria", sqle);
         }
     }
 

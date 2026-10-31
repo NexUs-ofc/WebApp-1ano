@@ -5,7 +5,7 @@
          version="6.0">
     <servlet>
         <servlet-name>Empresas</servlet-name>
-        <jsp-file>/WEB-INF/Views/empresas.jsp</jsp-file>
+        <jsp-file>/WEB-INF/Views/empresa.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
         <servlet-name>Empresas</servlet-name>

@@ -66,14 +66,14 @@
             <h2 id="tituloPopupFiltro">Filtros</h2>
             <button type="button" class="botaoFecharPopupFiltro" aria-label="Fechar filtros" onclick="fecharPopupFiltro()">&times;</button>
           </div>
-          <form onsubmit="event.preventDefault(); fecharPopupFiltro()">
+          <form action="${pageContext.request.contextPath}/alimentos" method="get">
             <div class="camposPopupFiltro">
           <div class="campoPopupFiltro">
             <span>id</span>
             <div class="intervaloPopupFiltro">
-              <input name="idMinimo" type="number" placeholder="M&iacute;nimo">
+              <input name="idInicio" type="number" placeholder="M&iacute;nimo">
               <span aria-hidden="true">&ndash;</span>
-              <input name="idMaximo" type="number" placeholder="M&aacute;ximo">
+              <input name="idFim" type="number" placeholder="M&aacute;ximo">
             </div>
           </div>
           <label class="campoPopupFiltro">nome
@@ -83,17 +83,15 @@
             <input name="marca" type="text" placeholder="Digite a marca">
           </label>
           <label class="campoPopupFiltro">categoria
-            <select name="categoria">
-              <option value="">Selecione a categoria</option>
-            </select>
+            <input name="categoria" type="text" placeholder="Digite a categoria">
           </label>
             </div>
             <img class="divisorPopupFiltro" src="${pageContext.request.contextPath}/assets/popup-filter-divider.svg" alt="">
             <fieldset class="ordemPopupFiltro">
               <legend>Ordenar por</legend>
               <div class="opcoesOrdemPopupFiltro">
-                <label><input name="ordem" type="radio" value="ascendente">Ordenar nome por ordem alfab&eacute;tica</label>
-                <label><input name="ordem" type="radio" value="descendente">Ordenar nome por ordem alfab&eacute;tica</label>
+                <label><input name="ordenar" type="radio" value="nome">Ordenar por nome</label>
+                <label><input name="ordenar" type="radio" value="marca">Ordenar por marca</label>
               </div>
             </fieldset>
             <div class="acoesPopupFiltro">
@@ -110,7 +108,7 @@
                     <div class="barraPopupFormulario"></div>
                     <div class="conteudoPopupFormulario">
                     <h2><span>Criar</span> alimento</h2>
-                    <form action="${pageContext.request.contextPath}/alimentos" method="post">
+                    <form action="${pageContext.request.contextPath}/alimentos/insert" method="post">
                         <div class="gradeCamposPopup">
                             <label class="campoPopup" for="codigoBarras">Cod_barras<input id="codigoBarras" name="codigoBarras" type="text" required></label>
                             <label class="campoPopup" for="marcaAlimento">Marca<input id="marcaAlimento" name="marca" type="text" required></label>
@@ -146,10 +144,6 @@
                 <td><c:out value="${alimento.marca()}"/></td>
                 <td><c:out value="${alimento.nomeCategoria()}"/></td>
                 <td class="acoes">
-                  <label class="botaoBloquear" title="Ocultar dados da linha">
-                    <input type="checkbox" class="bloqueioLinha" aria-label="Ocultar dados da linha">
-                    <img src="<c:url value='/assets/fi-br-eye.svg'/>" alt="" aria-hidden="true">
-                  </label>
                   <button type="button" class="botaoEditar" title="Editar alimento" aria-label="Editar alimento" data-id="${alimento.id()}" data-codigo-barras="${fn:escapeXml(alimentosOriginais[status.index].codigoBarras)}" data-nome="${fn:escapeXml(alimentosOriginais[status.index].nome)}" data-marca="${fn:escapeXml(alimentosOriginais[status.index].marca)}" data-categoria="${alimentosOriginais[status.index].idCategoria}" onclick="abrirPopupEdicao(this)">
                     <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                   </button>

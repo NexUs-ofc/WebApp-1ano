@@ -2,6 +2,7 @@ package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.*;
+import org.example.interdisciplinar.dto.AlimentoView;
 import org.example.interdisciplinar.model.*;
 import java.util.*;
 
@@ -14,9 +15,9 @@ public class MainTesteCRUD {
         System.out.println(conn);
 
         AlimentoDAO alimentoDAO = new AlimentoDAO();
-        List<Alimento> alimentos = alimentoDAO.listar();
+        List<AlimentoView> alimentos = alimentoDAO.listar();
 
-        for (Alimento a : alimentos){
+        for (AlimentoView a : alimentos){
             System.out.println(a);
         }
         EnderecoDAO enderecoDAO = new EnderecoDAO();

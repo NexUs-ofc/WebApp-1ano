@@ -38,11 +38,11 @@
       <small>item_despensa</small>
     </div>
 
-    <c:if test="${empty itensDespensa}">
+    <c:if test="${empty itens}">
       <p class="vazio">Nenhum item cadastrado</p>
     </c:if>
 
-    <c:if test="${not empty itensDespensa}">
+    <c:if test="${not empty itens}">
       <!-- Pesquisa -->
       <div class="pesquisa">
         <form action="${pageContext.request.contextPath}/itensDespensa" method="get">
@@ -65,30 +65,30 @@
             <h2 id="tituloPopupFiltro">Filtros</h2>
             <button type="button" class="botaoFecharPopupFiltro" aria-label="Fechar filtros" onclick="fecharPopupFiltro()">&times;</button>
           </div>
-          <form onsubmit="event.preventDefault(); fecharPopupFiltro()">
+          <form action="${pageContext.request.contextPath}/itensDespensa" method="get">
             <div class="camposPopupFiltro">
           <div class="campoPopupFiltro">
             <span>id</span>
             <div class="intervaloPopupFiltro">
-              <input name="idMinimo" type="number" placeholder="M&iacute;nimo">
+              <input name="idInicio" type="number" placeholder="M&iacute;nimo">
               <span aria-hidden="true">&ndash;</span>
-              <input name="idMaximo" type="number" placeholder="M&aacute;ximo">
+              <input name="idFim" type="number" placeholder="M&aacute;ximo">
             </div>
           </div>
           <div class="campoPopupFiltro">
             <span>quantidade</span>
             <div class="intervaloPopupFiltro">
-              <input name="quantidadeMinima" type="number" placeholder="M&iacute;nimo">
+              <input name="qtdMinima" type="number" placeholder="M&iacute;nimo">
               <span aria-hidden="true">&ndash;</span>
-              <input name="quantidadeMaxima" type="number" placeholder="M&aacute;ximo">
+              <input name="qtdMaxima" type="number" placeholder="M&aacute;ximo">
             </div>
           </div>
           <div class="campoPopupFiltro">
             <span>validade</span>
             <div class="intervaloPopupFiltro">
-              <input name="validadeInicial" type="text" placeholder="De">
+              <input name="dataInicio" type="date" aria-label="Validade inicial">
               <span aria-hidden="true">&ndash;</span>
-              <input name="validadeFinal" type="text" placeholder="At&eacute;">
+              <input name="dataFim" type="date" aria-label="Validade final">
             </div>
           </div>
             </div>
@@ -96,8 +96,8 @@
             <fieldset class="ordemPopupFiltro">
               <legend>Ordenar por</legend>
               <div class="opcoesOrdemPopupFiltro">
-                <label><input name="ordem" type="radio" value="ascendente">Ordenar nome por ordem alfab&eacute;tica</label>
-                <label><input name="ordem" type="radio" value="descendente">Ordenar nome por ordem alfab&eacute;tica</label>
+                <label><input name="ordenar" type="radio" value="quantidade">Ordenar por quantidade</label>
+                <label><input name="ordenar" type="radio" value="validade">Ordenar por validade</label>
               </div>
             </fieldset>
             <div class="acoesPopupFiltro">
@@ -113,9 +113,9 @@
       <div class="barraPopupFormulario"></div>
       <div class="conteudoPopupFormulario">
       <h2><span>Criar</span> item_despensa</h2>
-      <form action="${pageContext.request.contextPath}/itensDespensa/inserir" method="post">
+      <form action="${pageContext.request.contextPath}/itens/insert" method="post">
         <div class="gradeCamposPopup">
-          <label class="campoPopup" for="idUsuario">ID do usuário<input id="idUsuario" name="idUsuario" type="number" required></label>
+          <label class="campoPopup" for="idCasa">ID da casa<input id="idCasa" name="idCasa" type="number" required></label>
           <label class="campoPopup" for="idAlimento">ID do alimento<input id="idAlimento" name="idAlimento" type="number" required></label>
           <label class="campoPopup" for="quantidade">Quantidade<input id="quantidade" name="quantidade" type="number" min="1" required></label>
           <label class="campoPopup" for="validade">Data de validade<input id="validade" name="validade" type="date" required></label>
@@ -142,7 +142,7 @@
             </tr>
           </thead>
           <tbody>
-            <c:forEach var="itemDaDespensa" items="${itensDespensa}" varStatus="status">
+            <c:forEach var="itemDaDespensa" items="${itens}" varStatus="status">
               <c:if test="${empty param.pesquisa or itemDaDespensa.id().toString() == param.pesquisa or fn:contains(fn:toLowerCase(itemDaDespensa.nomeUsuario()), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(itemDaDespensa.alimento()), fn:toLowerCase(param.pesquisa)) or fn:contains(itemDaDespensa.validade().toString(), param.pesquisa)}">
                 <tr>
                   <td><c:out value="${itemDaDespensa.id()}"/></td>
@@ -151,10 +151,6 @@
                   <td><c:out value="${itemDaDespensa.quantidade()}"/></td>
                   <td><c:out value="${itemDaDespensa.validade()}"/></td>
                   <td class="acoes">
-                    <label class="botaoBloquear" title="Ocultar dados da linha">
-                      <input type="checkbox" class="bloqueioLinha" aria-label="Ocultar dados da linha">
-                      <img src="<c:url value='/assets/fi-br-eye.svg'/>" alt="" aria-hidden="true">
-                    </label>
                     <button type="button" class="botaoEditar" title="Editar item" aria-label="Editar item" data-id="${itemDaDespensa.id()}" data-usuario="${itensDespensaOriginais[status.index].idUsuario}" data-alimento="${itensDespensaOriginais[status.index].idAlimento}" data-quantidade="${itemDaDespensa.quantidade()}" data-validade="${itemDaDespensa.validade()}" onclick="abrirPopupEdicao(this)">
                       <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                     </button>

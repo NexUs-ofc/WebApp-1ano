@@ -34,8 +34,6 @@ public class EnderecoDAO {
             pstmt.setString(5, endereco.getEstado());
             pstmt.setString(6, endereco.getCep());
 
-            linhasAfetadas = pstmt.executeUpdate();
-
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
                 GerenteConexao.commit();
@@ -78,8 +76,6 @@ public class EnderecoDAO {
 
             //Seta valor no '?' do comando SQL
             pstmt.setInt(1, idEndereco);
-
-            linhasAfetadas = pstmt.executeUpdate();
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
@@ -153,9 +149,10 @@ public class EnderecoDAO {
 
     public boolean atualizar(Endereco endereco){
         String sql = "UPDATE tb_endereco SET rua=?, numero=?, bairro=?, cidade=?, estado=?, cep=? WHERE id_endereco=?";
-        Connection conn = GerenteConexao.conectar();
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
             pstmt.setString(1, endereco.getRua());
             pstmt.setString(2, endereco.getNumero());
             pstmt.setString(3, endereco.getBairro());
@@ -164,18 +161,10 @@ public class EnderecoDAO {
             pstmt.setString(6, endereco.getCep());
             pstmt.setInt(7, endereco.getId());
             int linhasAfetadas = pstmt.executeUpdate();
-
-            if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
-                return true;
-            }
-
-            GerenteConexao.rollback();
-            return false;
+            return linhasAfetadas > 0;
 
         } catch (SQLException sqle){
             sqle.printStackTrace();
-            GerenteConexao.rollback();
             return false;
         }
     }
@@ -206,10 +195,10 @@ public class EnderecoDAO {
 
         if (estado != null && !estado.isBlank()) {
             sql.append(" AND estado ILIKE ?");
-            parametrosDoFiltro.add("%" + cidade + "%");
+            parametrosDoFiltro.add("%" + estado + "%");
         }
 
-        switch (ordenar) {
+        switch (ordenar == null ? "" : ordenar) {
             case "id":
                 sql.append(" ORDER BY id_endereco");
                 break;

@@ -65,14 +65,14 @@
             <h2 id="tituloPopupFiltro">Filtros</h2>
             <button type="button" class="botaoFecharPopupFiltro" aria-label="Fechar filtros" onclick="fecharPopupFiltro()">&times;</button>
           </div>
-          <form onsubmit="event.preventDefault(); fecharPopupFiltro()">
+          <form action="${pageContext.request.contextPath}/enderecos" method="get">
             <div class="camposPopupFiltro">
           <div class="campoPopupFiltro">
             <span>id</span>
             <div class="intervaloPopupFiltro">
-              <input name="idMinimo" type="number" placeholder="M&iacute;nimo">
+              <input name="idInicio" type="number" placeholder="M&iacute;nimo">
               <span aria-hidden="true">&ndash;</span>
-              <input name="idMaximo" type="number" placeholder="M&aacute;ximo">
+              <input name="idFim" type="number" placeholder="M&aacute;ximo">
             </div>
           </div>
           <label class="campoPopupFiltro">cidade
@@ -86,8 +86,8 @@
             <fieldset class="ordemPopupFiltro">
               <legend>Ordenar por</legend>
               <div class="opcoesOrdemPopupFiltro">
-                <label><input name="ordem" type="radio" value="ascendente">Ordenar nome por ordem alfab&eacute;tica</label>
-                <label><input name="ordem" type="radio" value="descendente">Ordenar nome por ordem alfab&eacute;tica</label>
+                <label><input name="ordenar" type="radio" value="cidade">Ordenar por cidade</label>
+                <label><input name="ordenar" type="radio" value="estado">Ordenar por estado</label>
               </div>
             </fieldset>
             <div class="acoesPopupFiltro">
@@ -147,10 +147,6 @@
                   <td><c:out value="${endereco.estado}"/></td>
                   <td><c:out value="${endereco.cep}"/></td>
                   <td class="acoes">
-                    <label class="botaoBloquear" title="Ocultar dados da linha">
-                      <input type="checkbox" class="bloqueioLinha" aria-label="Ocultar dados da linha">
-                      <img src="<c:url value='/assets/fi-br-eye.svg'/>" alt="" aria-hidden="true">
-                    </label>
                     <button type="button" class="botaoEditar" title="Editar endereço" aria-label="Editar endereço" data-id="${endereco.id}" data-rua="${fn:escapeXml(endereco.rua)}" data-numero="${endereco.numero}" data-bairro="${fn:escapeXml(endereco.bairro)}" data-cidade="${fn:escapeXml(endereco.cidade)}" data-estado="${fn:escapeXml(endereco.estado)}" data-cep="${fn:escapeXml(endereco.cep)}" onclick="abrirPopupEdicao(this)">
                       <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                     </button>

@@ -66,14 +66,14 @@
             <h2 id="tituloPopupFiltro">Filtros</h2>
             <button type="button" class="botaoFecharPopupFiltro" aria-label="Fechar filtros" onclick="fecharPopupFiltro()">&times;</button>
           </div>
-          <form onsubmit="event.preventDefault(); fecharPopupFiltro()">
+          <form action="${pageContext.request.contextPath}/administradores" method="get">
             <div class="camposPopupFiltro">
           <div class="campoPopupFiltro">
             <span>id</span>
             <div class="intervaloPopupFiltro">
-              <input name="idMinimo" type="number" placeholder="M&iacute;nimo">
+              <input name="idInicio" type="number" placeholder="M&iacute;nimo">
               <span aria-hidden="true">&ndash;</span>
-              <input name="idMaximo" type="number" placeholder="M&aacute;ximo">
+              <input name="idFim" type="number" placeholder="M&aacute;ximo">
             </div>
           </div>
           <label class="campoPopupFiltro">nome
@@ -87,8 +87,8 @@
             <fieldset class="ordemPopupFiltro">
               <legend>Ordenar por</legend>
               <div class="opcoesOrdemPopupFiltro">
-                <label><input name="ordem" type="radio" value="ascendente">Ordenar nome por ordem alfab&eacute;tica</label>
-                <label><input name="ordem" type="radio" value="descendente">Ordenar nome por ordem alfab&eacute;tica</label>
+                <label><input name="ordenar" type="radio" value="nome">Ordenar por nome</label>
+                <label><input name="ordenar" type="radio" value="email">Ordenar por email</label>
               </div>
             </fieldset>
             <div class="acoesPopupFiltro">
@@ -117,8 +117,8 @@
                 <td>
                   <div class="identificacaoAdministrador">
                     <c:choose>
-                      <c:when test="${not empty administrador.fotoPerfil}">
-                        <img class="fotoPerfil" src="${fn:escapeXml(administrador.fotoPerfil)}" alt="Foto de ${fn:escapeXml(administrador.nome)}">
+                      <c:when test="${not empty administrador.urlFoto}">
+                        <img class="fotoPerfil" src="${fn:escapeXml(administrador.urlFoto)}" alt="Foto de ${fn:escapeXml(administrador.nome)}">
                       </c:when>
                       <c:otherwise>
                         <span class="fotoPerfil fotoPerfilVazia" aria-hidden="true"></span>
@@ -135,7 +135,7 @@
                     <input type="checkbox" class="bloqueioLinha" aria-label="Ocultar dados da linha">
                     <img src="<c:url value='/assets/fi-br-eye.svg'/>" alt="" aria-hidden="true">
                   </label>
-                  <button type="button" class="botaoEditar" title="Editar administrador" aria-label="Editar administrador" data-id="${administrador.id}" data-nome="${fn:escapeXml(administrador.nome)}" data-telefone="${fn:escapeXml(administrador.telefone)}" data-email="${fn:escapeXml(administrador.email)}" data-senha="${fn:escapeXml(administrador.senha)}" data-foto="${fn:escapeXml(administrador.fotoPerfil)}" onclick="abrirPopupEdicao(this)">
+                  <button type="button" class="botaoEditar" title="Editar administrador" aria-label="Editar administrador" data-id="${administrador.id}" data-nome="${fn:escapeXml(administrador.nome)}" data-telefone="${fn:escapeXml(administrador.telefone)}" data-email="${fn:escapeXml(administrador.email)}" data-senha="${fn:escapeXml(administrador.senha)}" data-foto="${fn:escapeXml(administrador.urlFoto)}" onclick="abrirPopupEdicao(this)">
                     <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                   </button>
                   <button type="button" class="botaoExcluir" title="Excluir administrador" aria-label="Excluir administrador" onclick="abrirPopupExclusao('${administrador.id}')">

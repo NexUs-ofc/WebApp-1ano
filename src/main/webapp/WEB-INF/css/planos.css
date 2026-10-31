@@ -1,0 +1,166 @@
+.planos-cards {
+    position: relative;
+    min-height: calc(100vh - 72px);
+    padding: 90px 112px 110px;
+    overflow: hidden;
+}
+
+.planos-cards h2 {
+    text-align: center;
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--roxo);
+    margin-bottom: 90px;
+}
+
+.destaque-vivo { color: #8c3fd8; }
+
+.planos-lista {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 42px;
+}
+
+.plano {
+    position: relative;
+    width: 360px;
+    min-height: 620px;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 26px 22px;
+    background: #fff;
+    border: 1px solid #e3dcff;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(140, 63, 216, 0.08);
+    cursor: pointer;
+    transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+}
+.plano h3 {
+    font-family: 'Huninn', sans-serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--roxo);
+    margin-bottom: 8px;
+}
+
+.plano-preco {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 8px;
+    margin-bottom: 14px;
+}
+.plano-preco strong {
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--roxo);
+}
+.plano-preco span {
+    font-size: 12px;
+    color: #666;
+}
+
+.plano-descricao {
+    font-size: 14px;
+    line-height: 1.5;
+    padding-bottom: 22px;
+    margin-bottom: 22px;
+    border-bottom: 2px solid var(--roxo-claro);
+    transition: color .3s ease;
+}
+
+.plano ul { flex-grow: 1; list-style: none; }
+.plano li { margin-bottom: 20px; font-size: 14px; line-height: 1.45; transition: color .3s ease; }
+
+.plano-limite {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: var(--roxo);
+}.botao-plano {
+     display: block;
+     padding: 13px;
+     text-align: center;
+     font-family: 'Poppins', sans-serif;
+     font-size: 15px;
+     font-weight: 600;
+     color: #fff;
+     background: var(--roxo);
+     border-radius: 8px;
+     transition: background-color .3s ease;
+ }
+
+.botao-plano::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+}
+.botao-plano:focus-visible { outline: 3px solid var(--roxo-claro); outline-offset: 3px; }
+.plano:hover .botao-plano { background: var(--roxo-escuro); }
+
+.plano-destaque,
+.plano:hover,
+.plano:focus-within {
+    border-color: var(--roxo);
+    box-shadow: 0 0 0 1px var(--roxo), 0 8px 30px rgba(140, 63, 216, 0.25);
+    transform: scale(1.065);
+    z-index: 1;
+}
+
+.plano-destaque .plano-descricao,
+.plano-destaque li,
+.plano:hover .plano-descricao,
+.plano:hover li,
+.plano:focus-within .plano-descricao,
+.plano:focus-within li { color: var(--roxo); }
+
+.plano:hover,
+.plano:focus-within {
+    transform: translateY(-12px) scale(1.065);
+    z-index: 3;
+}
+
+.planos-lista:has(.plano:hover) .plano-destaque:not(:hover) {
+    border-color: #e3dcff;
+    box-shadow: 0 2px 10px rgba(140, 63, 216, 0.08);
+    transform: none;
+    z-index: auto;
+}
+.planos-lista:has(.plano:hover) .plano-destaque:not(:hover) .plano-descricao,
+.planos-lista:has(.plano:hover) .plano-destaque:not(:hover) li { color: var(--texto); }
+
+.aba-plano { position: absolute; }
+.esquerda-escura { left: 0; top: 400px; bottom: 0; width: 36px; background: var(--roxo); border-radius: 0 50px 0 0; }
+.esquerda-clara { left: 18px; top: 635px; bottom: 0; width: 40px; background: var(--roxo-claro); border-radius: 20px 20px 0 0; z-index: 1; }
+.direita-clara { right: 0; top: 0; width: 72px; height: 235px; background: var(--roxo-claro); border-radius: 0 0 36px 36px; }
+.direita-escura { right: 0; top: 0; width: 60px; height: 412px; background: var(--roxo); border-radius: 0 0 0 60px; z-index: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+    .plano, .plano-descricao, .plano li, .botao-plano { transition: none; }
+}
+
+@media (max-width: 1100px) {
+    .planos-cards { padding-left: 48px; padding-right: 48px; }
+    .planos-lista { flex-wrap: wrap; }
+}
+
+@media (max-width: 800px) {
+    .planos-cards { padding: 60px 24px; }
+    .planos-cards h2 { font-size: 28px; margin-bottom: 40px; }
+    .planos-lista { flex-direction: column; align-items: center; gap: 24px; }
+    .plano { width: 100%; max-width: 400px; min-height: 0; }
+    .plano ul { margin-bottom: 24px; }
+    .aba-plano { display: none; }
+
+    .plano-destaque { transform: none; }
+    .plano:hover,
+    .plano:focus-within { transform: translateY(-6px); }
+}
+

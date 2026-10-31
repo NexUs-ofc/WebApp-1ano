@@ -28,6 +28,7 @@ body {
     align-items: center;
     gap: min(0.86vw, 1.21vh);
     color: #4f2078;
+    font-family: 'Huninn', sans-serif;
     font-size: min(3.07vw, 4.32vh);
     line-height: 1;
     text-decoration: none;

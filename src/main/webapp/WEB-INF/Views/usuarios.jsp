@@ -66,14 +66,14 @@
             <h2 id="tituloPopupFiltro">Filtros</h2>
             <button type="button" class="botaoFecharPopupFiltro" aria-label="Fechar filtros" onclick="fecharPopupFiltro()">&times;</button>
           </div>
-          <form onsubmit="event.preventDefault(); fecharPopupFiltro()">
+          <form action="${pageContext.request.contextPath}/usuarios" method="get">
             <div class="camposPopupFiltro">
           <div class="campoPopupFiltro">
             <span>id</span>
             <div class="intervaloPopupFiltro">
-              <input name="idMinimo" type="number" placeholder="M&iacute;nimo">
+              <input name="idInicio" type="number" placeholder="M&iacute;nimo">
               <span aria-hidden="true">&ndash;</span>
-              <input name="idMaximo" type="number" placeholder="M&aacute;ximo">
+              <input name="idFim" type="number" placeholder="M&aacute;ximo">
             </div>
           </div>
           <label class="campoPopupFiltro">nome
@@ -87,8 +87,8 @@
             <fieldset class="ordemPopupFiltro">
               <legend>Ordenar por</legend>
               <div class="opcoesOrdemPopupFiltro">
-                <label><input name="ordem" type="radio" value="ascendente">Ordenar nome por ordem alfab&eacute;tica</label>
-                <label><input name="ordem" type="radio" value="descendente">Ordenar nome por ordem alfab&eacute;tica</label>
+                <label><input name="ordenar" type="radio" value="nome">Ordenar por nome</label>
+                <label><input name="ordenar" type="radio" value="email">Ordenar por email</label>
               </div>
             </fieldset>
             <div class="acoesPopupFiltro">
@@ -105,7 +105,7 @@
           <div class="barraPopupFormulario"></div>
           <div class="conteudoPopupFormulario">
           <h2><span>Criar</span> usuário</h2>
-          <form action="${pageContext.request.contextPath}/usuarios" method="post">
+          <form action="${pageContext.request.contextPath}/usuarios/insert" method="post">
             <div class="gradeCamposPopup">
               <label class="campoPopup" for="nome">Nome<input id="nome" name="nome" type="text" required></label>
               <label class="campoPopup" for="email">E-mail<input id="email" name="email" type="email" required></label>

@@ -49,7 +49,7 @@ public class Categoria {
 
     @Override
     public String toString() {
-        return "==========CATEGORIA==========" +
+        return "==========CATEGORIA==========" + "\n" +
                 "Id: " + this.id + "\n" +
                 "Nome: " + this.nome + "\n" +
                 "Descrição: " + this.descricao + "\n" +

@@ -11,59 +11,121 @@ import org.example.interdisciplinar.model.ItemDespensa;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
-// Recebe os dados enviados pelo pop-up de criacao
-@WebServlet(name = "CriarItemDespensa", value = "/itensDespensa/inserir")
+// Definindo um nome interno para o servlet e a url que ativa ele
+@WebServlet(name = "CriarItem", value = "/itens/insert")
+
+
 public class ServletCriarItem extends HttpServlet {
     private ItemDespensaDAO itemDespensaDAO;
 
     @Override
-    public void init() {
+    public void init(){
         itemDespensaDAO = new ItemDespensaDAO();
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(
+            HttpServletRequest request,
+            HttpServletResponse response)
             throws ServletException, IOException {
 
-        request.setCharacterEncoding("UTF-8");
-
-        try {
-            ItemDespensa itemDespensa = new ItemDespensa();
-            itemDespensa.setIdUsuario(Integer.parseInt(request.getParameter("idUsuario")));
-            itemDespensa.setIdAlimento(Integer.parseInt(request.getParameter("idAlimento")));
-            itemDespensa.setQuantidade(Integer.parseInt(request.getParameter("quantidade")));
-            itemDespensa.setValidade(LocalDate.parse(request.getParameter("validade")));
-
-            if (!dadosValidos(itemDespensa)) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Dados do item invalidos.");
-                return;
-            }
-
-            if (!itemDespensaDAO.inserir(itemDespensa)) {
-                response.sendError(
-                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                        "Nao foi possivel inserir o item da despensa."
-                );
-                return;
-            }
-
-            response.sendRedirect(request.getContextPath() + "/itensDespensa");
-        } catch (NumberFormatException | DateTimeParseException excecao) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Dados do item invalidos.");
-        }
-    }
-
-    // Confere os campos numericos antes de enviar ao banco
-    private boolean dadosValidos(ItemDespensa itemDespensa) {
-        return itemDespensa.getIdUsuario() > 0
-                && itemDespensa.getIdAlimento() > 0
-                && itemDespensa.getQuantidade() > 0;
+        request.getRequestDispatcher(
+                "/WEB-INF/Views/itensDespensa.jsp"
+        ).forward(request, response);
     }
 
     @Override
-    public void destroy() {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        request.setCharacterEncoding("UTF-8");
+
+        String idCasaTexto = request.getParameter("idCasa");
+        String idAlimentoTexto = request.getParameter("idAlimento");
+        String quantidadeTexto = request.getParameter("quantidade");
+        String validadeTexto = request.getParameter("validade");
+
+
+        // Converte a categoria para inteiro
+        int idCasa;
+        int idAlimento;
+        int quantidade;
+        LocalDate validade = null;
+
+        try {
+            idCasa = Integer.parseInt(idCasaTexto);
+        } catch (NumberFormatException e) {
+            response.sendError(
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    "O ID da casa deve ser numérico."
+            );
+            return;
+        }
+
+        try {
+            idAlimento = Integer.parseInt(idAlimentoTexto);
+
+        } catch (NumberFormatException e) {
+            response.sendError(
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    "O ID do alimento deve ser numérico."
+            );
+            return;
+        }
+
+        try {
+            quantidade = Integer.parseInt(quantidadeTexto);
+
+        } catch (NumberFormatException e) {
+            response.sendError(
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    "A quantidade deve ser numérica."
+            );
+            return;
+        }
+
+        try {
+            validade = LocalDate.parse(validadeTexto);
+        } catch (Exception e) {
+            response.sendError(
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    "A data inserida é invalida."
+            );
+            return;
+        }
+
+
+
+        // Cria o objeto Alimento
+        ItemDespensa itemDespensa = new ItemDespensa();
+        itemDespensa.setIdCasa(idCasa);
+        itemDespensa.setIdAlimento(idAlimento);
+        itemDespensa.setQuantidade(quantidade);
+        itemDespensa.setValidade(validade);
+
+        // Chama o DAO para inserir no banco
+
+        boolean inserido = itemDespensaDAO.inserir(itemDespensa);
+
+        if (inserido) {
+
+            // Redireciona para a listagem
+            response.sendRedirect(
+                    request.getContextPath() + "/itensDespensa"
+            );
+        } else {
+
+            response.sendError(
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Não foi possível inserir o alimento."
+            );
+
+        }
+
+    }
+
+    @Override
+    public void destroy(){
         GerenteConexao.desconectar();
     }
+
 }

@@ -9,23 +9,19 @@ public class Administrador {
     private String email;
     private String senha;
     private String telefone;
-    private String fotoPerfil;
+    private String urlFoto;
+    private String cpf;
 
     // Construtores
 
-    public Administrador(String nome, String email, String senha) {
+    public Administrador(String nome, String email, String senha, String telefone, String urlFoto, String cpf) {
 
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-    }
-    public Administrador(int id, String nome, String email, String senha, String telefone, String fotoPerfil) {
-        this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.telefone = telefone;
-        this.fotoPerfil = fotoPerfil;
+        this.urlFoto = urlFoto;
+        this.cpf = cpf;
     }
     public Administrador(){
 
@@ -73,12 +69,20 @@ public class Administrador {
         this.telefone = telefone;
     }
 
-    public String getFotoPerfil() {
-        return fotoPerfil;
+    public String getUrlFoto() {
+        return urlFoto;
     }
 
-    public void setFotoPerfil(String fotoPerfil) {
-        this.fotoPerfil = fotoPerfil;
+    public void setUrlFoto(String urlFoto) {
+        this.urlFoto = urlFoto;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     // Método toString()
@@ -91,7 +95,8 @@ public class Administrador {
                 "Email: " + this.email + "\n" +
                 "Senha: " + this.senha + "\n" +
                 "Telefone: " + this.telefone + "\n" +
-                "Foto de perfil: " + this.fotoPerfil + "\n" +
+                "Url da foto: " + this.urlFoto + "\n" +
+                "Cpf: " + this.cpf + "\n" +
                 "=================================";
     }
 }
