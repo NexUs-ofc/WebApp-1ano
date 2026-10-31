@@ -16,3 +16,12 @@
     border-radius: 56px;
     overflow: hidden;
 }
+
+.login-lateral {
+    position: relative;
+    width: 46%;
+    padding: 28px;
+    color: #fff;
+    background: linear-gradient(165deg, #4f2078 0%, #7a2bb3 100%);
+    overflow: hidden;
+}
