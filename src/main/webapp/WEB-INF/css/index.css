@@ -616,3 +616,37 @@ footer { padding: 56px 112px 36px; background: #fff; }
 @media (min-width: 801px) and (max-width: 1100px) {
     #imagem-mercado { margin-right: calc(-10.1vw - 48px); } /* nessa faixa o slide tem 48px de padding */
 }
+/* ===== DEPOIMENTOS: letras maiores, subtítulo maior e cards um pouco maiores =====
+   Cole este bloco no FINAL do seu index.css (ele sobrescreve os valores antigos). */
+
+/* subtítulo (só o da seção de depoimentos; o das Dúvidas Frequentes não muda) */
+.depoimentos .subtitulo-secao {
+    max-width: 760px;
+    margin-bottom: 56px;
+    font-size: 18px;
+    line-height: 1.3;
+}
+
+/* cards */
+.depoimentos-lista { gap: 32px; }
+.depoimento { padding: 30px 32px 32px; border-radius: 18px; }
+/*para aqui*/
+
+/* letras dentro do card */
+.depoimento p { margin: 18px 0 30px; font-size: 16px; line-height: 1.4; }
+.depoimento-autor { gap: 14px; }
+.depoimento-autor img { width: 46px; height: 46px; }
+.depoimento-autor strong { font-size: 16px; }
+.depoimento-autor span { font-size: 13px; }
+
+/* telas grandes: margens laterais menores, deixando os cards mais largos */
+@media (min-width: 1101px) {
+    .depoimentos { padding-left: 68px; padding-right: 68px; }
+}
+
+/* celular */
+@media (max-width: 800px) {
+    .depoimentos .subtitulo-secao { font-size: 16px; margin-bottom: 36px; }
+    .depoimentos-lista { gap: 20px; }
+    .depoimento { padding: 24px; }
+}
