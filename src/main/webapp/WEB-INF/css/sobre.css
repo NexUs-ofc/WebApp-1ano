@@ -151,6 +151,27 @@ valores-divisor {
     .valores-cartao { margin: 60px 48px 0; padding: 40px; gap: 30px; }
     .valores h2 { font-size: 38px; }
 }
+@media (max-width: 800px) {
+    .sobre-hero { aspect-ratio: 16 / 9; }
+    .barra-titulo { width: 80px; height: 28px; }
+    .historia-titulo { gap: 20px; }
+    .historia-titulo h2 { font-size: 30px; }
+    .historia-texto { max-width: none; margin: 40px 24px 0; font-size: 18px; }
+    .forma-escura, .forma-clara { display: none; }
+    .historia { padding-bottom: 80px; }
 
+    .valores { padding: 60px 24px; }
+    .valores h2 { font-size: 28px; }
+    .valores-sub { font-size: 16px; }
+    .valores-cartao { grid-template-columns: 1fr; margin: 40px 0 0; padding: 32px 24px; gap: 28px; }
+    .valores-divisor { display: none; }
+    .valores-coluna h3 { font-size: 30px; margin-bottom: 20px; }
+    .valores-coluna p { font-size: 16px; }
+    .valores-lista { font-size: 14px; }
+
+    .equipe { padding: 60px 24px 80px; }
+    .equipe h2 { font-size: 28px; }
+    .equipe img { margin-top: 40px; border-radius: 24px; }
+}
 
 
