@@ -126,3 +126,11 @@ valores-divisor {
 /* EQUIPE */
 .equipe { padding: 90px 24px 220px; text-align: center; }
 
+.equipe h2 {
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #000;
+}
+
+
