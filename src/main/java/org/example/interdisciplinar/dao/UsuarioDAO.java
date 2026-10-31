@@ -283,4 +283,23 @@ public class UsuarioDAO {
         return null;
     }
 
+    public int contarUsuarios() {
+        String sql = "SELECT COUNT(*) FROM tb_usuario";
+
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                ResultSet rs = pstmt.executeQuery()
+        ) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+            return 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao contar usuários.", e);
+        }
+    }
+
 }
