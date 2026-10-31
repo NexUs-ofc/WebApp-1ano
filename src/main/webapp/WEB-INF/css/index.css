@@ -357,3 +357,11 @@ duvida-pergunta::after {
     border-radius: 14px; box-shadow: 0 6px 16px rgba(82, 32, 128, 0.3);
     transition: background-color .3s ease, box-shadow .3s ease;
 }
+
+/* mais escuro ao passar o mouse, tocar (celular) ou focar com o teclado */
+.botao-cadastro:hover,
+.botao-cadastro:active,
+.botao-cadastro:focus-visible {
+    background: var(--roxo-escuro);
+    box-shadow: 0 6px 16px rgba(43, 10, 77, 0.35);
+}
