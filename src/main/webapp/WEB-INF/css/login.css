@@ -152,3 +152,13 @@
     border: none;
     cursor: pointer;
 }
+
+.esqueci {
+    align-self: flex-end;
+    display: block;
+    margin: 14px 0 44px;
+    text-align: right;
+    font-size: 13px;
+    color: var(--roxo);
+    text-decoration: underline;
+}
