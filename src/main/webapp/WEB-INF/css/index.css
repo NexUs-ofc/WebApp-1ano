@@ -346,3 +346,14 @@ duvida-pergunta::after {
 .duvida.aberta .duvida-resposta { grid-template-rows: 1fr; }
 .duvida-resposta p { overflow: hidden; padding: 0 26px; font-size: 16px; line-height: 1.5; }
 .duvida.aberta .duvida-resposta p { padding-bottom: 22px; }
+
+/* CHAMADA FINAL */
+.chamada-final { padding: 100px 112px 90px; text-align: center; background: var(--fundo-suave); }
+.chamada-final h2 { font-size: 46px; font-weight: 700; color: var(--roxo-escuro); }
+.chamada-final p { max-width: 540px; margin: 24px auto 44px; font-size: 20px; line-height: 1.3; }
+.botao-cadastro {
+    display: inline-block; padding: 18px 36px; background: var(--roxo); color: #fff;
+    font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 16px;
+    border-radius: 14px; box-shadow: 0 6px 16px rgba(82, 32, 128, 0.3);
+    transition: background-color .3s ease, box-shadow .3s ease;
+}
