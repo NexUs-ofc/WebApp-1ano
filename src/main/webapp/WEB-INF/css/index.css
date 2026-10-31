@@ -187,3 +187,48 @@ nav a { color: #111; font-size: 14px; }
     width: 35px;
     border-radius: 0 40px 40px 0;
 }
+
+.interfaces-texto {
+    position: relative;
+    z-index: 1;
+    width: 46%;
+    padding-top: 260px;
+}
+.interfaces h2 {
+    font-size: 46px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--roxo-escuro);
+}
+.interfaces-botoes { display: flex; gap: 16px; margin: 34px 0 0; }
+.botao-interface {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--roxo);
+    background: #fff;
+    border: 1.5px solid var(--roxo);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color .6s, color .6s, box-shadow .6s;
+}
+.botao-interface.ativo {
+    background: var(--roxo);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(82, 32, 128, 0.35);
+}
+.interfaces h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--roxo-escuro);
+    margin-bottom: 26px;
+}
+.lista-interface { list-style: none; }
+.lista-interface li { margin-bottom: 22px; }
+.lista-interface strong {
+    display: block; font-size: 20px; font-weight: 600;
+    color: var(--roxo); margin-bottom: 4px;
+}
