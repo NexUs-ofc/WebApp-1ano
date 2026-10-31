@@ -174,3 +174,11 @@
     border-radius: 32px;
     cursor: pointer;
 }
+
+.login-cadastro {
+    margin-top: 28px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+.login-cadastro a { color: var(--roxo); text-decoration: underline; }
