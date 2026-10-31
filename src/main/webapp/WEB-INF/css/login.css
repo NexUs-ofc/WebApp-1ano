@@ -38,3 +38,19 @@
     border-radius: 18px;
 }
 .login-icone img { width: 38px; }
+
+.login-nome {
+    font-size: 36px;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #fff;
+}
+
+.login-frase {
+    width: fit-content;
+    max-width: 450px;
+    margin-top: 26px;
+    padding-bottom: 4px;
+    font-size: 19px;
+    line-height: 1.15;
+    border-bottom: 1px solid #fff;
+}
