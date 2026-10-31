@@ -176,3 +176,14 @@ nav a { color: #111; font-size: 14px; }
     background: var(--roxo-claro);
     border-radius: 21px;
 }
+/* slide mercado */
+.mercado-direita {
+    right: 0; top: 125px;
+    width: 34px; height: 652px;
+    border-radius: 40px 0 0 40px;
+}
+.mercado-esquerda {
+    left: 0; top: 395px; bottom: 0;
+    width: 35px;
+    border-radius: 0 40px 40px 0;
+}
