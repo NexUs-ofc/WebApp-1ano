@@ -466,3 +466,17 @@ footer { padding: 56px 112px 36px; background: #fff; }
     align-items: center;
     justify-content: center;
 }
+
+/* Imagem da interface do mercado: maior e centralizada */
+#imagem-mercado {
+    display: block;
+    position: relative;
+    z-index: 2;
+    width: 900px;
+    max-width: 130%;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+    transform: translateY(0);
+    filter: none;
+}
