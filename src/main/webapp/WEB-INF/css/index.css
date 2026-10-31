@@ -504,3 +504,22 @@ footer { padding: 56px 112px 36px; background: #fff; }
         padding-top: 0;
     }
 }
+
+/* CELULAR ABAIXO DOS BOTÕES */
+#imagem-cliente {
+    transform: translateY(100px);
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+
+/* AJUSTE PARA TELAS PEQUENAS */
+@media (max-width: 800px) {
+    #imagem-cliente {
+        transform: translateY(0);
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+    }
+}
