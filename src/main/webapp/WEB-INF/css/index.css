@@ -597,3 +597,22 @@ footer { padding: 56px 112px 36px; background: #fff; }
         line-height: 1.6;
     }
 }
+
+/* NOTEBOOK NA FRENTE DA BARRA DA DIREITA (slide mercado)
+   Como no Figma: o notebook passa por cima da barra roxa e é cortado na borda do slide.
+   Só o pedaço de cima da barra aparece, atrás dele.
+   Tamanho e posição em vw para manter a proporção do frame de 1440px. */
+@media (min-width: 801px) {
+    #slide-mercado .interfaces-imagem { justify-content: flex-end; }
+
+    #imagem-mercado {
+        flex: none;
+        width: 58vw;
+        max-width: none;
+        margin: 0 calc(-10.1vw - 112px) 0 0; /* o notebook "vaza" para fora do slide e é cortado */
+    }
+}
+
+@media (min-width: 801px) and (max-width: 1100px) {
+    #imagem-mercado { margin-right: calc(-10.1vw - 48px); } /* nessa faixa o slide tem 48px de padding */
+}
