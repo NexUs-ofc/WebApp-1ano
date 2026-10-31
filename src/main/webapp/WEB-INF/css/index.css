@@ -32,3 +32,11 @@ header {
     background: #fff;
     box-shadow: 0 2px 8px rgba(43, 10, 77, 0.08);
 }
+.container-header {
+    position: relative;
+    height: 72px;
+    padding: 0 112px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
