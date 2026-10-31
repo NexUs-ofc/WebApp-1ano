@@ -252,3 +252,13 @@ lista-interface p { font-size: 15px; line-height: 1.3; max-width: 480px; }
 @media (prefers-reduced-motion: reduce) {
     .carrossel-faixa { transition: none; }
 }
+
+/* DEPOIMENTOS */
+.depoimentos { padding: 60px 112px 90px; text-align: center; }
+.depoimentos h2, .duvidas h2 {
+    font-size: 36px; font-weight: 700; color: var(--roxo-escuro);
+}
+.subtitulo-secao {
+    max-width: 480px; margin: 14px auto 50px;
+    font-size: 14px; line-height: 1.3;
+}
