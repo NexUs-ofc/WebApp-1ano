@@ -143,4 +143,14 @@ valores-divisor {
     border-radius: 40px;
 }
 
+/* RESPONSIVO */
+@media (max-width: 1100px) {
+    .historia-texto { font-size: 24px; margin-left: 48px; max-width: 55%; }
+    .forma-escura { right: 48px; width: 200px; }
+    .forma-clara { right: 190px; width: 180px; }
+    .valores-cartao { margin: 60px 48px 0; padding: 40px; gap: 30px; }
+    .valores h2 { font-size: 38px; }
+}
+
+
 
