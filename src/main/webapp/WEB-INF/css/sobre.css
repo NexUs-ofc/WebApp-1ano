@@ -78,3 +78,27 @@ botao-instituto {
     background: #e8e0f5;
 }
 
+.valores h2 { font-size: 48px; font-weight: 700; color: var(--roxo); }
+.valores-sub { margin-top: 14px; font-size: 22px; color: #111; }
+
+.valores-cartao {
+    display: grid;
+    grid-template-columns: 1fr 30px 1fr;
+    gap: 60px;
+    max-width: 1161px;
+    margin: 60px auto 0;
+    padding: 60px 70px;
+    text-align: left;
+    background: #fff;
+    border-radius: 40px;
+}
+
+.valores-coluna h3 {
+    margin-bottom: 36px;
+    text-align: center;
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--roxo);
+}
+.valores-coluna p { font-size: 20px; line-height: 1.3; color: #111; }
+
