@@ -1,1 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Huninn&family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+    --roxo-escuro: #2b0a4d;
+    --roxo: #522080;
+    --roxo-claro: #9468c3;
+    --fundo-suave: #fbf9ff;
+    --texto: #2f2f2f;
+}
