@@ -298,4 +298,29 @@ public class ItemDespensaDAO {
         return null;
     }
 
+    public int contarTotalItens() {
+
+        String sql = "SELECT COALESCE(SUM(quantidade), 0) FROM tb_item_despensa";
+
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                ResultSet rs = pstmt.executeQuery()
+        ) {
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+            return 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(
+                    "Erro ao contar o total de itens.", e
+            );
+        }
+    }
+
+
+
 }
