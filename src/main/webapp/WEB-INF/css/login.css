@@ -54,3 +54,11 @@
     line-height: 1.15;
     border-bottom: 1px solid #fff;
 }
+
+.login-mascote {
+    position: absolute;
+    left: -24px;
+    bottom: -14px;
+    height: 480px;
+    max-width: none;
+}
