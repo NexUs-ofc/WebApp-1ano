@@ -456,3 +456,13 @@ footer { padding: 56px 112px 36px; background: #fff; }
     margin: 0 auto;
     transform: translateY(0);
 }
+
+/* Área da imagem da interface do mercado */
+#slide-mercado .interfaces-imagem {
+    position: relative;
+    z-index: 2;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
