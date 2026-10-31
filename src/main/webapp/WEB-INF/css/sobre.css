@@ -102,3 +102,27 @@ botao-instituto {
 }
 .valores-coluna p { font-size: 20px; line-height: 1.3; color: #111; }
 
+valores-divisor {
+    position: relative;
+    align-self: center;
+    height: 358px;
+    background: var(--roxo);
+    border-radius: 16px;
+}
+.valores-divisor::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    width: 18px;
+    height: 186px;
+    background: var(--roxo-claro);
+    border-radius: 9px;
+    transform: translateY(-50%);
+}
+
+.valores-lista { margin-top: 48px; font-size: 18px; color: #111; }
+
+/* EQUIPE */
+.equipe { padding: 90px 24px 220px; text-align: center; }
+
