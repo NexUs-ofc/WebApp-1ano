@@ -25,3 +25,16 @@
     background: linear-gradient(165deg, #4f2078 0%, #7a2bb3 100%);
     overflow: hidden;
 }
+
+.login-marca { display: flex; align-items: center; gap: 30px; }
+
+.login-icone {
+    width: 76px;
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 18px;
+}
+.login-icone img { width: 38px; }
