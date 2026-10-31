@@ -23,3 +23,12 @@ img { max-width: 100%; }
 a { text-decoration: none; }
 h1, h2, h3, strong, button { font-family: 'Poppins', sans-serif; }
 .destaque { color: var(--roxo); }
+
+/* HEADER */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(43, 10, 77, 0.08);
+}
