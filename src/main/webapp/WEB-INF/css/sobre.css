@@ -13,3 +13,16 @@
     background-position: center 40%;
     background-repeat: no-repeat;
 }
+
+/* NOSSA HISTÓRIA */
+.historia {
+    position: relative;
+    padding: 48px 0 150px;
+    overflow: hidden;
+}
+
+.historia-titulo {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+}
