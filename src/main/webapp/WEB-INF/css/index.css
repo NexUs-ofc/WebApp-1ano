@@ -336,3 +336,13 @@ lista-interface p { font-size: 15px; line-height: 1.3; max-width: 480px; }
     justify-content: space-between; gap: 16px; font-size: 18px; font-weight: 600;
     color: var(--roxo); text-align: left; background: none; border: none; cursor: pointer;
 }
+duvida-pergunta::after {
+    content: ""; flex: none; width: 10px; height: 10px;
+    border-right: 2px solid var(--roxo); border-bottom: 2px solid var(--roxo);
+    transform: rotate(45deg) translateY(-2px); transition: transform .3s;
+}
+.duvida.aberta .duvida-pergunta::after { transform: rotate(-135deg); }
+.duvida-resposta { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .35s ease; }
+.duvida.aberta .duvida-resposta { grid-template-rows: 1fr; }
+.duvida-resposta p { overflow: hidden; padding: 0 26px; font-size: 16px; line-height: 1.5; }
+.duvida.aberta .duvida-resposta p { padding-bottom: 22px; }
