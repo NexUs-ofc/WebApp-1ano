@@ -365,3 +365,18 @@ duvida-pergunta::after {
     background: var(--roxo-escuro);
     box-shadow: 0 6px 16px rgba(43, 10, 77, 0.35);
 }
+
+/* RODAPÉ */
+footer { padding: 56px 112px 36px; background: #fff; }
+.rodape-topo { display: flex; justify-content: space-between; }
+.rodape-sobre h3 {
+    font-family: 'Huninn', sans-serif; font-size: 32px; font-weight: 400;
+    color: var(--roxo); margin-bottom: 14px;
+}
+.rodape-sobre p { max-width: 260px; font-size: 13px; line-height: 1.25; }
+.rodape-email { display: flex; align-items: center; gap: 12px; margin-top: 22px; font-size: 13px; color: var(--roxo); }
+.rodape-links { display: flex; flex-direction: column; align-items: flex-end; gap: 9px; }
+.rodape-links strong { font-size: 15px; font-weight: 700; color: var(--roxo-escuro); margin-bottom: 4px; }
+.rodape-links a { font-size: 13px; color: var(--texto); }
+.rodape-base { display: flex; align-items: center; justify-content: space-between; margin-top: 56px; }
+.rodape-base p { width: 580px; padding-top: 18px; border-top: 1px solid #efe8f7; font-size: 11px; }
