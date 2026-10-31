@@ -147,3 +147,32 @@ nav a { color: #111; font-size: 14px; }
     min-height: 1024px; /* altura do frame no Figma */
     padding: 100px 112px;
 }
+/* BARRAS LATERAIS
+   Medidas tiradas do protótipo do Figma (frame 1440 x 1024).
+   Cada slide tem as suas barras. Quando os dois slides ficam lado a lado, o pilar escuro
+   da direita do cliente e o pilar escuro da esquerda do mercado formam uma "cápsula" só.
+   Os pilares usam bottom: 0, então sempre chegam até o pé do slide. */
+.barra {
+    position: absolute;
+    z-index: 0; /* atrás do texto e das imagens */
+    background: var(--roxo);
+    pointer-events: none;
+}
+
+/* slide cliente */
+.cliente-esquerda {
+    left: 0; top: 125px;
+    width: 41px; height: 652px;
+    border-radius: 0 40px 40px 0;
+}
+.cliente-direita-escura {
+    right: 0; top: 395px; bottom: 0;
+    width: 40px;
+    border-radius: 40px 0 0 40px;
+}
+.cliente-direita-clara { /* fica na frente da escura */
+    right: 21px; top: 595px; bottom: 0;
+    width: 41px;
+    background: var(--roxo-claro);
+    border-radius: 21px;
+}
