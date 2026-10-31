@@ -444,3 +444,15 @@ footer { padding: 56px 112px 36px; background: #fff; }
     #slide-mercado .interfaces-imagem { width: 100%; }
     #imagem-mercado { width: 100%; max-width: 600px; transform: none; }
 }
+
+/* AJUSTES DAS DUAS INTERFACES */
+
+/* Imagem da interface do cliente: maior e centralizada */
+#imagem-cliente {
+    display: block;
+    width: 500px;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    transform: translateY(0);
+}
