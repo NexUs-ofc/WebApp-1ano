@@ -18,3 +18,8 @@ body {
     background: #fff;
     overflow-x: hidden;
 }
+
+img { max-width: 100%; }
+a { text-decoration: none; }
+h1, h2, h3, strong, button { font-family: 'Poppins', sans-serif; }
+.destaque { color: var(--roxo); }
