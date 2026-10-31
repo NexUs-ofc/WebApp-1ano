@@ -1,0 +1,15 @@
+/* BANNER
+   A foto fica atrás e uma camada roxa semitransparente fica por cima (como no Figma).
+   Para trocar a foto, mude o nome do arquivo em url(...). Para deixar o roxo mais forte ou
+   mais fraco, mude o 0.70 (de 0 a 1) nas duas linhas do linear-gradient. */
+.sobre-hero {
+    width: 100%;
+    aspect-ratio: 1440 / 760;
+    background-color: var(--roxo);
+    background-image:
+            linear-gradient(rgba(82, 32, 128, 0.70), rgba(82, 32, 128, 0.70)),
+            url('assests/Rectangle 76.svg');
+    background-size: cover;
+    background-position: center 40%;
+    background-repeat: no-repeat;
+}
