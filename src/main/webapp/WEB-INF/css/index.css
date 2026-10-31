@@ -480,3 +480,27 @@ footer { padding: 56px 112px 36px; background: #fff; }
     transform: translateY(0);
     filter: none;
 }
+
+/* AJUSTA AS IMAGENS SEM CORTAR */
+#imagem-mercado,
+#imagem-cliente {
+    transform: translateY(100px);
+    max-height: none;
+    object-fit: contain;
+}
+
+/* NO CELULAR */
+@media (max-width: 800px) {
+    #imagem-mercado,
+    #imagem-cliente {
+        transform: translateY(0);
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+    }
+
+    #slide-mercado .interfaces-imagem {
+        overflow: visible;
+        padding-top: 0;
+    }
+}
