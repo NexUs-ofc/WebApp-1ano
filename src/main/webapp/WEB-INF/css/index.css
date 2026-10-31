@@ -523,3 +523,43 @@ footer { padding: 56px 112px 36px; background: #fff; }
         height: auto;
     }
 }
+
+/* AJUSTA O ESPAÇO DAS IMAGENS */
+#slide-mercado {
+    height: auto;
+    overflow: visible;
+}
+
+#slide-mercado .interfaces-imagem {
+    overflow: visible;
+    align-items: flex-start;
+    padding-top: 100px;
+    padding-bottom: 50px;
+}
+
+#imagem-mercado,
+#imagem-cliente {
+    height: auto;
+    max-height: none;
+    object-fit: contain;
+}
+
+/* CELULAR E COMPUTADOR EM TELAS PEQUENAS */
+@media (max-width: 800px) {
+    #slide-mercado {
+        min-height: auto;
+        height: auto;
+    }
+
+    #slide-mercado .interfaces-imagem {
+        padding-top: 20px;
+        padding-bottom: 30px;
+    }
+
+    #imagem-mercado,
+    #imagem-cliente {
+        transform: none;
+        max-width: 100%;
+        height: auto;
+    }
+}
