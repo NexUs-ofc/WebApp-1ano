@@ -6,3 +6,13 @@
     padding: 40px 24px;
     background: #f3f3f3;
 }
+
+.login-cartao {
+    display: flex;
+    width: 1133px;
+    max-width: 100%;
+    min-height: 730px;
+    background: #fff;
+    border-radius: 56px;
+    overflow: hidden;
+}
