@@ -182,3 +182,13 @@
     color: #666;
 }
 .login-cadastro a { color: var(--roxo); text-decoration: underline; }
+
+@media (max-width: 800px) {
+    .login-cartao { flex-direction: column; min-height: 0; border-radius: 32px; }
+    .login-lateral { width: 100%; min-height: 320px; }
+    .login-mascote { height: 300px; left: -10px; }
+    .login-nome { font-size: 28px; }
+    .login-form { width: 100%; padding: 40px 24px; }
+    .login-form h1 { font-size: 28px; }
+    .login-sub { margin-bottom: 36px; }
+}
