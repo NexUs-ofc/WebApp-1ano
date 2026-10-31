@@ -80,3 +80,14 @@
     cursor: pointer;
     transition: transform .25s ease, box-shadow .25s ease;
 }
+
+.login-sair:hover,
+.login-sair:focus-visible,
+.login-sair:active {
+    transform: scale(1.12);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .login-sair { transition: none; }
+}
