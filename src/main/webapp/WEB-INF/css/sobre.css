@@ -133,4 +133,14 @@ valores-divisor {
     color: #000;
 }
 
+.equipe img {
+    display: block;
+    width: 820px;
+    max-width: 100%;
+    aspect-ratio: 820 / 589;
+    margin: 80px auto 0;
+    object-fit: cover;
+    border-radius: 40px;
+}
+
 
