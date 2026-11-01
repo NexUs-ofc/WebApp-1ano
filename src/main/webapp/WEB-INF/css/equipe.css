@@ -19,3 +19,9 @@
     display: flex;
     gap: var(--espaco);
 }
+
+.equipe-card {
+    flex: 0 0 calc((100% - (var(--visiveis) - 1) * var(--espaco)) / var(--visiveis));
+    min-width: 0;
+    text-align: center;
+}
