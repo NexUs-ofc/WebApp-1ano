@@ -95,3 +95,7 @@
     .equipe-nome { font-size: 15px; }
     .equipe-cargo { font-size: 12px; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+    .equipe-seta { transition: none; }
+}
