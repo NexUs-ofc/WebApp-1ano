@@ -1,0 +1,11 @@
+.git
+.idea
+.mvn
+target
+src
+pom.xml
+mvnw
+mvnw.cmd
+LICENSE
+.gitignore
+dependency-reduced-pom.xml
