@@ -5,6 +5,7 @@ import java.util.List;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dto.CadastroMensal;
 import org.example.interdisciplinar.dto.CategoriaPopular;
+import org.example.interdisciplinar.dto.EmpresaRecente;
 
 
 public class AnaliseDAO {
@@ -47,7 +48,7 @@ public class AnaliseDAO {
         }
     }
 
-    public int contarAdministradores(){;
+    public int contarAdministradores(){
         String sql = "SELECT COUNT(*) FROM tb_administrador";
 
         try (
@@ -176,6 +177,33 @@ public class AnaliseDAO {
 
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao buscar categoria mais popular.", e);
+        }
+    }
+
+    public EmpresaRecente buscarEmpresaMaisRecente() {
+
+        String sql = """
+        SELECT nome, data_cadastro FROM tb_empresa
+        ORDER BY data_cadastro DESC, id DESC limit 1
+    """;
+
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                ResultSet rs = pstmt.executeQuery()
+        ) {
+
+            if (rs.next()) {
+                return new EmpresaRecente(
+                        rs.getString("nome"),
+                        rs.getDate("data_cadastro").toLocalDate()
+                );
+            }
+
+            return null;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar empresa recente.", e);
         }
     }
 }
