@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.UsuarioDAO;
+import org.example.interdisciplinar.dto.UsuarioView;
 import org.example.interdisciplinar.model.Usuario;
 
 import java.io.IOException;
@@ -49,7 +50,7 @@ public class ServletListarUsuario extends HttpServlet {
                 return;
             }
 
-            List<Usuario> usuarios = usuarioDAO.listarFiltrado(idInicio, idFim, nome, email, ordenar);
+            List<UsuarioView> usuarios = usuarioDAO.listarFiltrado(idInicio, idFim, nome, email, ordenar);
             request.setAttribute("usuarios", usuarios);
             request.getRequestDispatcher("/WEB-INF/Views/usuarios.jsp").forward(request, response);
 

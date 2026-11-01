@@ -6,6 +6,7 @@ import org.example.interdisciplinar.dto.EmpresaView;
 import org.example.interdisciplinar.model.Empresa;
 import java.sql.*;
 import java.sql.PreparedStatement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -262,7 +263,8 @@ public class EmpresaDAO {
                             rs.getString("cnpj"),
                             rs.getInt("id_endereco"),
                             rs.getString("email"),
-                            rs.getString("telefone")
+                            rs.getString("telefone"),
+                            rs.getObject("data_cadastro", LocalDate.class)
                     );
                     return empresa;
                 }
