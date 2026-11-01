@@ -73,3 +73,7 @@
         }
     });
     janela.addEventListener('pointercancel', () => { inicioX = null; });
+
+    window.addEventListener('resize', atualizarSetas);
+    atualizarSetas();
+})();
