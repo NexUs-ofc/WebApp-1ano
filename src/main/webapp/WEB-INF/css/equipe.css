@@ -43,3 +43,18 @@
     pointer-events: none;
     -webkit-user-drag: none;
 }
+
+.equipe-nome {
+    margin-top: 16px;
+    font-family: 'Huninn', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.25;
+    color: #111;
+}
+.equipe-cargo {
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 1.2;
+    color: #333;
+}
