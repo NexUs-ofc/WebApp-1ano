@@ -11,3 +11,11 @@
     let animando = false;
 
     const duracao = () => (window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : DURACAO);
+    function passo() {
+        const cards = faixa.children;
+        return cards.length > 1 ? cards[1].offsetLeft - cards[0].offsetLeft : 0;
+    }
+
+    function visiveis() {
+        return parseInt(getComputedStyle(carrossel).getPropertyValue('--visiveis'), 10) || 1;
+    }
