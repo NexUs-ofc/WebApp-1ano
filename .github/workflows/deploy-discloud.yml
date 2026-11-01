@@ -24,7 +24,7 @@ jobs:
         run: ./mvnw clean package -DskipTests
 
       - name: Copiar fat JAR para raiz
-        run: cp target/Interdisciplinar-1.0-SNAPSHOT-fat.war app.jar
+        run: cp target/app.jar app.jar
 
       - name: Instalar Discloud CLI
         run: npm install -g discloud-cli
