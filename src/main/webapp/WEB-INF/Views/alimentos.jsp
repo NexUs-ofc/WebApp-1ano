@@ -144,10 +144,10 @@
                 <td><c:out value="${alimento.marca()}"/></td>
                 <td><c:out value="${alimento.nomeCategoria()}"/></td>
                 <td class="acoes">
-                  <button type="button" class="botaoEditar" title="Editar alimento" aria-label="Editar alimento" data-id="${alimento.id()}" data-codigo-barras="${fn:escapeXml(alimentosOriginais[status.index].codigoBarras)}" data-nome="${fn:escapeXml(alimentosOriginais[status.index].nome)}" data-marca="${fn:escapeXml(alimentosOriginais[status.index].marca)}" data-categoria="${alimentosOriginais[status.index].idCategoria}" onclick="abrirPopupEdicao(this)">
+                  <button type="button" class="botaoEditar" title="Editar alimento" aria-label="Editar alimento" data-id="${alimento.id()}" data-codigo-barras="${fn:escapeXml(alimentosOriginais[status.index].codigoBarras)}" data-nome="${fn:escapeXml(alimentosOriginais[status.index].nome)}" data-marca="${fn:escapeXml(alimentosOriginais[status.index].marca)}" data-categoria="${alimentosOriginais[status.index].idCategoria}" onclick="abrirPopupEdicaoAlimento(this)">
                     <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                   </button>
-                  <button type="button" class="botaoExcluir" title="Excluir alimento" aria-label="Excluir alimento" onclick="abrirPopupExclusao('${alimento.id()}')">
+                  <button type="button" class="botaoExcluir" title="Excluir alimento" aria-label="Excluir alimento" onclick="abrirPopupExclusaoAlimento('${alimento.id()}')">
                     <img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="" aria-hidden="true">
                   </button>
                 </td>
@@ -199,38 +199,7 @@
   </dialog>
 
   <!-- JavaScript -->
-  <script>
-    function abrirPopupFiltro() {
-      document.getElementById("popupFiltro").showModal();
-    }
-    function fecharPopupFiltro() {
-      document.getElementById("popupFiltro").close();
-    }
-        function abrirPopupAlimento() {
-            document.getElementById("popupAlimento").showModal();
-        }
-        function fecharPopupAlimento() {
-            document.getElementById("popupAlimento").close();
-        }
-        function abrirPopupEdicao(botao) {
-            document.getElementById("idAlimentoEdicao").value = botao.dataset.id;
-            document.getElementById("codigoBarrasEdicao").value = botao.dataset.codigoBarras;
-            document.getElementById("marcaAlimentoEdicao").value = botao.dataset.marca;
-            document.getElementById("nomeAlimentoEdicao").value = botao.dataset.nome;
-            document.getElementById("categoriaAlimentoEdicao").value = botao.dataset.categoria;
-            document.getElementById("popupEdicao").showModal();
-        }
-        function fecharPopupEdicao() {
-            document.getElementById("popupEdicao").close();
-        }
-        function abrirPopupExclusao(idAlimento) {
-            document.getElementById("idAlimentoExclusao").value = idAlimento;
-            document.getElementById("popupExclusao").showModal();
-        }
-        function fecharPopupExclusao() {
-            document.getElementById("popupExclusao").close();
-        }
-    </script>
+  <script src="${pageContext.request.contextPath}/JS/views.js"></script>
 
 </body>
 </html>

@@ -147,10 +147,10 @@
                   <td><c:out value="${endereco.estado}"/></td>
                   <td><c:out value="${endereco.cep}"/></td>
                   <td class="acoes">
-                    <button type="button" class="botaoEditar" title="Editar endereço" aria-label="Editar endereço" data-id="${endereco.id}" data-rua="${fn:escapeXml(endereco.rua)}" data-numero="${endereco.numero}" data-bairro="${fn:escapeXml(endereco.bairro)}" data-cidade="${fn:escapeXml(endereco.cidade)}" data-estado="${fn:escapeXml(endereco.estado)}" data-cep="${fn:escapeXml(endereco.cep)}" onclick="abrirPopupEdicao(this)">
+                    <button type="button" class="botaoEditar" title="Editar endereço" aria-label="Editar endereço" data-id="${endereco.id}" data-rua="${fn:escapeXml(endereco.rua)}" data-numero="${endereco.numero}" data-bairro="${fn:escapeXml(endereco.bairro)}" data-cidade="${fn:escapeXml(endereco.cidade)}" data-estado="${fn:escapeXml(endereco.estado)}" data-cep="${fn:escapeXml(endereco.cep)}" onclick="abrirPopupEdicaoEndereco(this)">
                       <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                     </button>
-                    <button type="button" class="botaoExcluir" title="Excluir endereço" aria-label="Excluir endereço" onclick="abrirPopupExclusao('${endereco.id}')">
+                    <button type="button" class="botaoExcluir" title="Excluir endereço" aria-label="Excluir endereço" onclick="abrirPopupExclusaoEndereco('${endereco.id}')">
                       <img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="" aria-hidden="true">
                     </button>
                   </td>
@@ -204,39 +204,6 @@
   </dialog>
 
   <!-- JavaScript -->
-  <script>
-    function abrirPopupFiltro() {
-      document.getElementById("popupFiltro").showModal();
-    }
-    function fecharPopupFiltro() {
-      document.getElementById("popupFiltro").close();
-    }
-    function abrirPopupEndereco() {
-      document.getElementById("popupEndereco").showModal();
-    }
-    function fecharPopupEndereco() {
-      document.getElementById("popupEndereco").close();
-    }
-    function abrirPopupEdicao(botao) {
-      document.getElementById("idEnderecoEdicao").value = botao.dataset.id;
-      document.getElementById("ruaEnderecoEdicao").value = botao.dataset.rua;
-      document.getElementById("numeroEnderecoEdicao").value = botao.dataset.numero;
-      document.getElementById("bairroEnderecoEdicao").value = botao.dataset.bairro;
-      document.getElementById("cidadeEnderecoEdicao").value = botao.dataset.cidade;
-      document.getElementById("estadoEnderecoEdicao").value = botao.dataset.estado;
-      document.getElementById("cepEnderecoEdicao").value = botao.dataset.cep;
-      document.getElementById("popupEdicao").showModal();
-    }
-    function fecharPopupEdicao() {
-      document.getElementById("popupEdicao").close();
-    }
-    function abrirPopupExclusao(idEndereco) {
-      document.getElementById("idEnderecoExclusao").value = idEndereco;
-      document.getElementById("popupExclusao").showModal();
-    }
-    function fecharPopupExclusao() {
-      document.getElementById("popupExclusao").close();
-    }
-  </script>
+  <script src="${pageContext.request.contextPath}/JS/views.js"></script>
 </body>
 </html>

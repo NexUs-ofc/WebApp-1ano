@@ -347,7 +347,9 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
 .popupFiltro {
     width: 378px;
     height: 504px;
-    margin: auto;
+    position: fixed;
+    inset: 150px 79px auto auto;
+    margin: 0;
     border: 1px solid #f2ecf8;
     border-radius: 16px;
     overflow: hidden;
@@ -361,7 +363,7 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     height: 415px;
 }
 .popupFiltro::backdrop {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: transparent;
 }
 .conteudoPopupFiltro {
     height: 100%;
@@ -439,7 +441,6 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
 .divisorPopupFiltro {
     width: 332px;
     height: 1px;
-    display: block;
     margin-top: 18px;
 }
 .ordemPopupFiltro {

@@ -147,10 +147,10 @@
                       <input type="checkbox" class="bloqueioLinha" aria-label="Ocultar dados da linha">
                       <img src="<c:url value='/assets/fi-br-eye.svg'/>" alt="" aria-hidden="true">
                     </label>
-                    <button type="button" class="botaoEditar" title="Editar usuário" aria-label="Editar usuário" data-id="${usuario.id}" data-nome="${fn:escapeXml(usuario.nome)}" data-email="${fn:escapeXml(usuario.email)}" data-preferencias="${fn:escapeXml(usuario.preferenciasConsumo)}" data-alerta="${fn:escapeXml(usuario.configuracaoAlerta)}" onclick="abrirPopupEdicao(this)">
+                    <button type="button" class="botaoEditar" title="Editar usuário" aria-label="Editar usuário" data-id="${usuario.id}" data-nome="${fn:escapeXml(usuario.nome)}" data-email="${fn:escapeXml(usuario.email)}" data-preferencias="${fn:escapeXml(usuario.preferenciasConsumo)}" data-alerta="${fn:escapeXml(usuario.configuracaoAlerta)}" onclick="abrirPopupEdicaoUsuario(this)">
                       <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                     </button>
-                    <button type="button" class="botaoExcluir" title="Excluir usuário" aria-label="Excluir usuário" onclick="abrirPopupExclusao('${usuario.id}')"><img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="ícone de lixeira" aria-hidden="true"></button>
+                    <button type="button" class="botaoExcluir" title="Excluir usuário" aria-label="Excluir usuário" onclick="abrirPopupExclusaoUsuario('${usuario.id}')"><img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="ícone de lixeira" aria-hidden="true"></button>
                   </td>
                 </tr>
               </c:if>
@@ -200,38 +200,7 @@
   </dialog>
 
   <!-- JavaScript -->
-  <script>
-    function abrirPopupFiltro() {
-      document.getElementById("popupFiltro").showModal();
-    }
-    function fecharPopupFiltro() {
-      document.getElementById("popupFiltro").close();
-    }
-    function abrirPopupUsuario() {
-      document.getElementById("popupUsuario").showModal();
-    }
-    function fecharPopupUsuario() {
-      document.getElementById("popupUsuario").close();
-    }
-    function abrirPopupEdicao(botao) {
-      document.getElementById("idUsuarioEdicao").value = botao.dataset.id;
-      document.getElementById("nomeUsuarioEdicao").value = botao.dataset.nome;
-      document.getElementById("emailUsuarioEdicao").value = botao.dataset.email;
-      document.getElementById("preferenciasUsuarioEdicao").value = botao.dataset.preferencias;
-      document.getElementById("alertaUsuarioEdicao").value = botao.dataset.alerta;
-      document.getElementById("popupEdicao").showModal();
-    }
-    function fecharPopupEdicao() {
-      document.getElementById("popupEdicao").close();
-    }
-    function abrirPopupExclusao(idUsuario) {
-      document.getElementById("idUsuarioExclusao").value = idUsuario;
-      document.getElementById("popupExclusao").showModal();
-    }
-    function fecharPopupExclusao() {
-      document.getElementById("popupExclusao").close();
-    }
-  </script>
+  <script src="${pageContext.request.contextPath}/JS/views.js"></script>
 
 </body>
 </html>

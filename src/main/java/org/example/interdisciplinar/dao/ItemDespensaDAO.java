@@ -187,7 +187,7 @@ public class ItemDespensaDAO {
             LocalDate dataFim,
             String ordenar
     ){
-        StringBuilder sql = new StringBuilder("SELECT * FROM view_item_despensa WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT * FROM tb_item_despensa WHERE 1=1");
         List<Object> parametrosDoFiltro = new ArrayList<>();
         List<ItemDespensaView> itensDespensa = new ArrayList<>();
 
@@ -208,11 +208,11 @@ public class ItemDespensaDAO {
             parametrosDoFiltro.add(qtdMaxima);
         }
         if(dataInicio != null){
-            sql.append(" AND data_validade >=?");
+            sql.append(" AND validade >=?");
             parametrosDoFiltro.add(dataInicio);
         }
         if(dataFim != null){
-            sql.append(" AND data_validade <=?");
+            sql.append(" AND validade <=?");
             parametrosDoFiltro.add(dataFim);
         }
 
@@ -226,7 +226,7 @@ public class ItemDespensaDAO {
                 break;
 
             case "validade":
-                sql.append(" ORDER BY data_validade");
+                sql.append(" ORDER BY validade");
                 break;
 
             default:
@@ -248,15 +248,15 @@ public class ItemDespensaDAO {
                 while (rs.next()) {
                     LocalDate validade = null;
 
-                    if (rs.getDate("data_validade") != null) {
-                        validade = rs.getDate("data_validade").toLocalDate();
+                    if (rs.getDate(5) != null) {
+                        validade = rs.getDate(5).toLocalDate();
                     }
 
                     ItemDespensaView itemDespensa = new ItemDespensaView(
-                            rs.getInt("id_item"),
-                            rs.getString("usuario"),
-                            rs.getString("alimento"),
-                            rs.getInt("quantidade"),
+                            rs.getInt(1),
+                            rs.getString(2),
+                            rs.getString(3),
+                            rs.getInt(4),
                             validade
                     );
 

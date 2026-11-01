@@ -195,7 +195,7 @@ public class EnderecoDAO {
 
         if (estado != null && !estado.isBlank()) {
             sql.append(" AND estado ILIKE ?");
-            parametrosDoFiltro.add("%" + estado + "%");
+            parametrosDoFiltro.add("%" + cidade + "%");
         }
 
         switch (ordenar == null ? "" : ordenar) {

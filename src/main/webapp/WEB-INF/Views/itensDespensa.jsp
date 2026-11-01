@@ -151,10 +151,10 @@
                   <td><c:out value="${itemDaDespensa.quantidade()}"/></td>
                   <td><c:out value="${itemDaDespensa.validade()}"/></td>
                   <td class="acoes">
-                    <button type="button" class="botaoEditar" title="Editar item" aria-label="Editar item" data-id="${itemDaDespensa.id()}" data-usuario="${itensDespensaOriginais[status.index].idUsuario}" data-alimento="${itensDespensaOriginais[status.index].idAlimento}" data-quantidade="${itemDaDespensa.quantidade()}" data-validade="${itemDaDespensa.validade()}" onclick="abrirPopupEdicao(this)">
+                    <button type="button" class="botaoEditar" title="Editar item" aria-label="Editar item" data-id="${itemDaDespensa.id()}" data-usuario="${itensDespensaOriginais[status.index].idUsuario}" data-alimento="${itensDespensaOriginais[status.index].idAlimento}" data-quantidade="${itemDaDespensa.quantidade()}" data-validade="${itemDaDespensa.validade()}" onclick="abrirPopupEdicaoItemDespensa(this)">
                       <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                     </button>
-                    <button type="button" class="botaoExcluir" title="Excluir item" aria-label="Excluir item" onclick="abrirPopupExclusao('${itemDaDespensa.id()}')">
+                    <button type="button" class="botaoExcluir" title="Excluir item" aria-label="Excluir item" onclick="abrirPopupExclusaoItemDespensa('${itemDaDespensa.id()}')">
                       <img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="" aria-hidden="true">
                     </button>
                   </td>
@@ -206,39 +206,7 @@
   </dialog>
 
   <!-- JavaScript -->
-  <script>
-    function abrirPopupFiltro() {
-      document.getElementById("popupFiltro").showModal();
-    }
-    function fecharPopupFiltro() {
-      document.getElementById("popupFiltro").close();
-    }
-    function abrirPopupItemDespensa() {
-      document.getElementById("popupItemDespensa").showModal();
-    }
-
-    function fecharPopupItemDespensa() {
-      document.getElementById("popupItemDespensa").close();
-    }
-    function abrirPopupEdicao(botao) {
-      document.getElementById("idItemEdicao").value = botao.dataset.id;
-      document.getElementById("usuarioItemEdicao").value = botao.dataset.usuario;
-      document.getElementById("alimentoItemEdicao").value = botao.dataset.alimento;
-      document.getElementById("quantidadeItemEdicao").value = botao.dataset.quantidade;
-      document.getElementById("validadeItemEdicao").value = botao.dataset.validade;
-      document.getElementById("popupEdicao").showModal();
-    }
-    function fecharPopupEdicao() {
-      document.getElementById("popupEdicao").close();
-    }
-    function abrirPopupExclusao(idItem) {
-      document.getElementById("idItemExclusao").value = idItem;
-      document.getElementById("popupExclusao").showModal();
-    }
-    function fecharPopupExclusao() {
-      document.getElementById("popupExclusao").close();
-    }
-  </script>
+  <script src="${pageContext.request.contextPath}/JS/views.js"></script>
 
 </body>
 </html>

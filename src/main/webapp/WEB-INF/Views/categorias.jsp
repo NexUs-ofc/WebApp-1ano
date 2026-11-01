@@ -132,10 +132,10 @@
                   <td><c:out value="${categoria.nome}"/></td>
                   <td><c:out value="${categoria.descricao}"/></td>
                   <td class="acoes">
-                    <button type="button" class="botaoEditar" title="Editar categoria" aria-label="Editar categoria" data-id="${categoria.id}" data-nome="${fn:escapeXml(categoria.nome)}" data-descricao="${fn:escapeXml(categoria.descricao)}" onclick="abrirPopupEdicao(this)">
+                    <button type="button" class="botaoEditar" title="Editar categoria" aria-label="Editar categoria" data-id="${categoria.id}" data-nome="${fn:escapeXml(categoria.nome)}" data-descricao="${fn:escapeXml(categoria.descricao)}" onclick="abrirPopupEdicaoCategoria(this)">
                       <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                     </button>
-                    <button type="button" class="botaoExcluir" title="Excluir categoria" aria-label="Excluir categoria" onclick="abrirPopupExclusao('${categoria.id}')">
+                    <button type="button" class="botaoExcluir" title="Excluir categoria" aria-label="Excluir categoria" onclick="abrirPopupExclusaoCategoria('${categoria.id}')">
                       <img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="" aria-hidden="true">
                     </button>
                   </td>
@@ -185,36 +185,7 @@
   </dialog>
 
   <!-- JavaScript -->
-  <script>
-    function abrirPopupFiltro() {
-      document.getElementById("popupFiltro").showModal();
-    }
-    function fecharPopupFiltro() {
-      document.getElementById("popupFiltro").close();
-    }
-    function abrirPopupCategoria() {
-      document.getElementById("popupCategoria").showModal();
-    }
-    function fecharPopupCategoria() {
-      document.getElementById("popupCategoria").close();
-    }
-    function abrirPopupEdicao(botao) {
-      document.getElementById("idCategoriaEdicao").value = botao.dataset.id;
-      document.getElementById("nomeCategoriaEdicao").value = botao.dataset.nome;
-      document.getElementById("descricaoCategoriaEdicao").value = botao.dataset.descricao;
-      document.getElementById("popupEdicao").showModal();
-    }
-    function fecharPopupEdicao() {
-      document.getElementById("popupEdicao").close();
-    }
-    function abrirPopupExclusao(idCategoria) {
-      document.getElementById("idCategoriaExclusao").value = idCategoria;
-      document.getElementById("popupExclusao").showModal();
-    }
-    function fecharPopupExclusao() {
-      document.getElementById("popupExclusao").close();
-    }
-  </script>
+  <script src="${pageContext.request.contextPath}/JS/views.js"></script>
 
 </body>
 </html>

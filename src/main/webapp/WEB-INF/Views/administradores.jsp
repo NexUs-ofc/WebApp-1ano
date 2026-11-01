@@ -135,10 +135,10 @@
                     <input type="checkbox" class="bloqueioLinha" aria-label="Ocultar dados da linha">
                     <img src="<c:url value='/assets/fi-br-eye.svg'/>" alt="" aria-hidden="true">
                   </label>
-                  <button type="button" class="botaoEditar" title="Editar administrador" aria-label="Editar administrador" data-id="${administrador.id}" data-nome="${fn:escapeXml(administrador.nome)}" data-telefone="${fn:escapeXml(administrador.telefone)}" data-email="${fn:escapeXml(administrador.email)}" data-senha="${fn:escapeXml(administrador.senha)}" data-foto="${fn:escapeXml(administrador.urlFoto)}" onclick="abrirPopupEdicao(this)">
+                  <button type="button" class="botaoEditar" title="Editar administrador" aria-label="Editar administrador" data-id="${administrador.id}" data-nome="${fn:escapeXml(administrador.nome)}" data-telefone="${fn:escapeXml(administrador.telefone)}" data-email="${fn:escapeXml(administrador.email)}" data-senha="${fn:escapeXml(administrador.senha)}" data-foto="${fn:escapeXml(administrador.urlFoto)}" onclick="abrirPopupEdicaoAdministrador(this)">
                     <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                   </button>
-                  <button type="button" class="botaoExcluir" title="Excluir administrador" aria-label="Excluir administrador" onclick="abrirPopupExclusao('${administrador.id}')">
+                  <button type="button" class="botaoExcluir" title="Excluir administrador" aria-label="Excluir administrador" onclick="abrirPopupExclusaoAdministrador('${administrador.id}')">
                     <img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="" aria-hidden="true">
                   </button>
                 </td>
@@ -212,57 +212,6 @@
   </dialog>
 
   <!-- JavaScript -->
-  <script>
-    function abrirPopupFiltro() {
-      document.getElementById("popupFiltro").showModal();
-    }
-    function fecharPopupFiltro() {
-      document.getElementById("popupFiltro").close();
-    }
-    function abrirPopupEdicao(botao) {
-      const telefone = (botao.dataset.telefone || "").replace(/\D/g, "");
-      const foto = botao.dataset.foto || "";
-      const previewFoto = document.getElementById("previewFotoAdministrador");
-
-      document.getElementById("idAdministradorEdicao").value = botao.dataset.id;
-      document.getElementById("nomeAdministradorEdicao").value = botao.dataset.nome;
-      document.getElementById("dddAdministradorEdicao").value = telefone.length > 10 ? telefone.slice(0, 2) : "";
-      document.getElementById("telefoneAdministradorEdicao").value = telefone.length > 10 ? telefone.slice(2) : telefone;
-      document.getElementById("emailAdministradorEdicao").value = botao.dataset.email;
-      document.getElementById("senhaAdministradorEdicao").value = botao.dataset.senha;
-      document.getElementById("arquivoFotoAdministrador").value = "";
-
-      if (foto) {
-        previewFoto.src = foto;
-        previewFoto.classList.remove("fotoPopupAdministradorVazia");
-      } else {
-        previewFoto.removeAttribute("src");
-        previewFoto.classList.add("fotoPopupAdministradorVazia");
-      }
-
-      document.getElementById("popupEdicao").showModal();
-    }
-
-    document.getElementById("arquivoFotoAdministrador").addEventListener("change", function () {
-      const arquivo = this.files[0];
-
-      if (arquivo) {
-        const previewFoto = document.getElementById("previewFotoAdministrador");
-        previewFoto.src = URL.createObjectURL(arquivo);
-        previewFoto.classList.remove("fotoPopupAdministradorVazia");
-      }
-    });
-
-    function fecharPopupEdicao() {
-      document.getElementById("popupEdicao").close();
-    }
-    function abrirPopupExclusao(idAdministrador) {
-      document.getElementById("idAdministradorExclusao").value = idAdministrador;
-      document.getElementById("popupExclusao").showModal();
-    }
-    function fecharPopupExclusao() {
-      document.getElementById("popupExclusao").close();
-    }
-  </script>
+  <script src="${pageContext.request.contextPath}/JS/views.js"></script>
 </body>
 </html>
