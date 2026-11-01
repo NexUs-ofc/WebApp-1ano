@@ -74,3 +74,8 @@
 .equipe-seta:hover { background: var(--roxo-escuro); transform: scale(1.08); }
 .equipe-seta:focus-visible { outline: 3px solid var(--roxo-claro); outline-offset: 3px; }
 .equipe-seta[hidden] { display: none; }
+
+@media (max-width: 1100px) {
+    .equipe-carrossel { --visiveis: 3; column-gap: 20px; }
+    .equipe-seta { width: 44px; height: 44px; }
+}
