@@ -1,0 +1,11 @@
+.equipe-carrossel {
+    --visiveis: 4;
+    --espaco: 32px;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 40px;
+    max-width: 1300px;
+    margin: 80px auto 0;
+}
+
