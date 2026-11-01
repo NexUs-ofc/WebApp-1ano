@@ -262,7 +262,9 @@ public class AdministradorDAO {
                             rs.getString("nome"),
                             rs.getString("email"),
                             rs.getString("senha"),
-                            rs.getString("telefone")
+                            rs.getString("telefone"),
+                            rs.getString("cpf"),
+                            rs.getString("urlFoto")
                     );
                     return administrador;
                 }
