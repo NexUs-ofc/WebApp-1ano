@@ -31,7 +31,7 @@ public class Conexao {
             }
         }
 
-        // Método para fechar a conexão
+        // Metodo para fechar a conexão
 
         public void closeConnection(Connection conn){
             if(conn != null) {

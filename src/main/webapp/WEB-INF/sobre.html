@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sobre Nós | Ceris</title>
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/sobre.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="sobre.css">
+    <link rel="stylesheet" href="equipe.css">
 </head>
 <body>
 
@@ -31,6 +32,7 @@
 </header>
 
 <main>
+
     <!-- Banner roxo -->
     <section class="sobre-hero"></section>
 
@@ -63,7 +65,9 @@
             </a>
         </div>
     </section>
-    !-- Valores e missão -->
+
+
+    <!-- Valores e missão -->
     <section class="valores">
         <h2>Os valores e a missão que nos movem</h2>
         <p class="valores-sub">Tecnologia a favor da sustentabilidade, da eficiência e de um consumo mais responsável.</p>
@@ -78,6 +82,7 @@
                     responsabilidade <span class="destaque">ambiental e sustentabilidade</span> caminhem juntas.
                 </p>
             </div>
+
             <div class="valores-divisor"></div>
 
             <div class="valores-coluna">
@@ -99,13 +104,93 @@
         </p>
     </section>
 
-    <!-- Equipe -->
+
+    <!-- Equipe: carrossel dos integrantes -->
     <section class="equipe">
         <h2>As pessoas que transformam o<br><span class="destaque">propósito</span> em <span class="destaque">ação</span></h2>
 
+        <div class="equipe-carrossel" id="equipe-carrossel" role="group" aria-roledescription="carrossel" aria-label="Integrantes da equipe">
+
+            <button type="button" class="equipe-seta anterior" aria-label="Integrante anterior">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+
+            <div class="equipe-janela">
+                <div class="equipe-faixa">
+
+
+                    <article class="equipe-card">
+                        <div class="equipe-foto"><img src="assests/arthur.svg" alt="Arthur Sancho Pereira" draggable="false" onerror="this.remove()"></div>
+                        <h3 class="equipe-nome">Arthur Sancho Pereira</h3>
+                        <p class="equipe-cargo">Backend</p>
+                    </article>
+
+                    <article class="equipe-card">
+                        <div class="equipe-foto"><img src="assests/equipe/isa.jpg" alt="Isabella Benini Lins" draggable="false" onerror="this.remove()"></div>
+                        <h3 class="equipe-nome">Isabella Benini Lins</h3>
+                        <p class="equipe-cargo">UX Designer</p>
+                    </article>
+
+                    <article class="equipe-card">
+                        <div class="equipe-foto"><img src="assests/kaue.svg" alt="Kauê de Haro Meireles" draggable="false" onerror="this.remove()"></div>
+                        <h3 class="equipe-nome">Kauê de Haro Meireles</h3>
+                        <p class="equipe-cargo">Dados &amp; Frontend</p>
+                    </article>
+
+                    <article class="equipe-card">
+                        <div class="equipe-foto"><img src="assests/vic.svg" alt="Victória Lago Brunini" draggable="false" onerror="this.remove()"></div>
+                        <h3 class="equipe-nome">Victória Lago Brunini</h3>
+                        <p class="equipe-cargo">Dados &amp; Frontend</p>
+                    </article>
+
+                    <article class="equipe-card">
+                        <div class="equipe-foto"><img src="assests/bruna.svg" alt="Bruna Oliveira de Jesus" draggable="false" onerror="this.remove()"></div>
+                        <h3 class="equipe-nome">Bruna Oliveira de Jesus</h3>
+                        <p class="equipe-cargo">Ciência de Dados</p>
+                    </article>
+
+                    <article class="equipe-card">
+                        <div class="equipe-foto"><img src="assests/eduardo.svg" alt="Eduardo Farias Domingues" draggable="false" onerror="this.remove()"></div>
+                        <h3 class="equipe-nome">Eduardo Farias Domingues</h3>
+                        <p class="equipe-cargo">Engenharia de IA</p>
+                    </article>
+
+                    <article class="equipe-card">
+                        <div class="equipe-foto"><img src="assests/erick.svg" alt="Erick Neves Barbosa" draggable="false" onerror="this.remove()"></div>
+                        <h3 class="equipe-nome">Erick Neves Barbosa</h3>
+                        <p class="equipe-cargo">Dev Backend</p>
+                    </article>
+
+                    <article class="equipe-card">
+                        <div class="equipe-foto"><img src="assests/giovanna.svg" alt="Giovanna Medeiros Veloso" draggable="false" onerror="this.remove()"></div>
+                        <h3 class="equipe-nome">Giovanna Medeiros Veloso</h3>
+                        <p class="equipe-cargo">UX/UI Designer</p>
+                    </article>
+
+                    <article class="equipe-card">
+                        <div class="equipe-foto"><img src="assests/murilo.svg" alt="Murilo Rosa Fonseca" draggable="false" onerror="this.remove()"></div>
+                        <h3 class="equipe-nome">Murilo Rosa Fonseca</h3>
+                        <p class="equipe-cargo">Dev Backend</p>
+                    </article>
+
+                    <article class="equipe-card">
+                        <div class="equipe-foto"><img src="assests/ricardo.svg" alt="Ricardo Cirilo Junior" draggable="false" onerror="this.remove()"></div>
+                        <h3 class="equipe-nome">Ricardo Cirilo Junior</h3>
+                        <p class="equipe-cargo">Dev Full Stack</p>
+                    </article>
+
+                </div>
+            </div>
+
+            <button type="button" class="equipe-seta proximo" aria-label="Próximo integrante">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+
+        </div>
     </section>
 
 </main>
+
 <footer>
     <div class="rodape-topo">
         <div class="rodape-sobre">
@@ -126,16 +211,15 @@
         </div>
     </div>
 
-    div class="rodape-base">
-    <p>© 2026 NexUs. Todos os direitos reservados.</p>
-    <a href="restricao.html" class="acesso-restrito">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        Acesso Restrito
-    </a>
+    <div class="rodape-base">
+        <p>© 2026 NexUs. Todos os direitos reservados.</p>
+        <a href="restricao.html" class="acesso-restrito">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Acesso Restrito
+        </a>
     </div>
 </footer>
 
-<script src="proposito.js"></script>
+<script src="equipe.js"></script>
 </body>
 </html>
-
