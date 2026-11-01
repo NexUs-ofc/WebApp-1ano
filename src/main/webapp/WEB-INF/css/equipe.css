@@ -9,3 +9,13 @@
     margin: 80px auto 0;
 }
 
+.equipe-janela {
+    overflow: hidden;
+    touch-action: pan-y;
+    user-select: none;
+}
+
+.equipe-faixa {
+    display: flex;
+    gap: var(--espaco);
+}
