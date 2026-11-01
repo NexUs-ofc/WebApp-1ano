@@ -17,6 +17,9 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Permissao do mvnw
+        run: chmod +x ./mvnw
+
       - name: Build com Maven
         run: ./mvnw clean package -DskipTests
 
