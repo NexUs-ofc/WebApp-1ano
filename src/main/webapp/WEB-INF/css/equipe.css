@@ -79,3 +79,19 @@
     .equipe-carrossel { --visiveis: 3; column-gap: 20px; }
     .equipe-seta { width: 44px; height: 44px; }
 }
+
+@media (max-width: 800px) {
+    .equipe-carrossel {
+        --visiveis: 2;
+        --espaco: 16px;
+        grid-template-columns: 1fr 1fr;
+        row-gap: 24px;
+        margin-top: 40px;
+    }
+    .equipe-janela { grid-column: 1 / -1; grid-row: 1; }
+    .equipe-seta.anterior { grid-row: 2; grid-column: 1; justify-self: end; margin-right: 8px; }
+    .equipe-seta.proximo { grid-row: 2; grid-column: 2; justify-self: start; margin-left: 8px; }
+    .equipe .equipe-foto { border-radius: 14px; }
+    .equipe-nome { font-size: 15px; }
+    .equipe-cargo { font-size: 12px; }
+}
