@@ -1,0 +1,29 @@
+name: Deploy na Discloud
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-e-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Build com Maven
+        run: ./mvnw clean package -DskipTests
+
+      - name: Copiar fat JAR para raiz
+        run: cp target/Interdisciplinar-1.0-SNAPSHOT-fat.war app.jar
+
+      - name: Deploy na Discloud
+        run: |
+          npm install -g discloud-cli
+          discloud deploy --token ${{ secrets.DISCLOUD_TOKEN }}

@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.ItemDespensaDAO;
+import org.example.interdisciplinar.dto.ItemDespensaView;
 import org.example.interdisciplinar.model.ItemDespensa;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -84,7 +85,7 @@ public class ServletListarItem extends HttpServlet {
                 return;
             }
 
-            List<ItemDespensa> itens = itemDispensaDAO.listarFiltrado(idInicio, idFim, qtdMinima, qtdMaxima, dataInicio, dataFim, ordenar);
+            List<ItemDespensaView> itens = itemDispensaDAO.listarFiltrado(idInicio, idFim, qtdMinima, qtdMaxima, dataInicio, dataFim, ordenar);
             request.setAttribute("itens", itens);
             request.getRequestDispatcher("/WEB-INF/Views/itensDespensa.jsp").forward(request, response);
 
