@@ -48,3 +48,8 @@
 
         setTimeout(() => { animando = false; }, duracao());
     }
+    function atualizarSetas() {
+        const semNecessidade = faixa.children.length <= visiveis();
+        botaoAnterior.hidden = semNecessidade;
+        botaoProximo.hidden = semNecessidade;
+    }
