@@ -26,7 +26,11 @@ jobs:
       - name: Copiar fat JAR para raiz
         run: cp target/Interdisciplinar-1.0-SNAPSHOT-fat.war app.jar
 
+      - name: Instalar Discloud CLI
+        run: npm install -g discloud-cli
+
+      - name: Login na Discloud
+        run: echo ${{ secrets.DISCLOUD_TOKEN }} | discloud login
+
       - name: Deploy na Discloud
-        run: |
-          npm install -g discloud-cli
-          discloud deploy --token ${{ secrets.DISCLOUD_TOKEN }}
+        run: discloud app up
