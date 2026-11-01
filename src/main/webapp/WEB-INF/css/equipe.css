@@ -25,3 +25,21 @@
     min-width: 0;
     text-align: center;
 }
+.equipe .equipe-foto {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border-radius: 22px;
+}
+.equipe .equipe-foto:empty { background: var(--roxo); }
+.equipe .equipe-foto img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+    aspect-ratio: auto;
+    border-radius: 0;
+    object-fit: cover;
+    pointer-events: none;
+    -webkit-user-drag: none;
+}
