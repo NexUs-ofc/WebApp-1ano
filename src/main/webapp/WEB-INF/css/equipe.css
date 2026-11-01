@@ -58,3 +58,19 @@
     line-height: 1.2;
     color: #333;
 }
+
+.equipe-seta {
+    display: grid;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    color: #fff;
+    background: var(--roxo);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color .2s, transform .2s;
+}
+.equipe-seta:hover { background: var(--roxo-escuro); transform: scale(1.08); }
+.equipe-seta:focus-visible { outline: 3px solid var(--roxo-claro); outline-offset: 3px; }
+.equipe-seta[hidden] { display: none; }
