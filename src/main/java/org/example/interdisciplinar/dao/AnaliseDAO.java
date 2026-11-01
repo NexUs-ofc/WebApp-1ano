@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dto.CadastroMensal;
+import org.example.interdisciplinar.dto.CategoriaPopular;
 
 
 public class AnaliseDAO {
@@ -149,5 +150,32 @@ public class AnaliseDAO {
         }
     }
 
+    public CategoriaPopular buscarCategoriaMaisPopular() {
 
+        String sql = """
+        SELECT c.nome, sum(i.quantidade) AS total
+        FROM tb_item_despensa i join tb_alimento a on i.id_alimento = a.id
+        join tb_categoria c on a.id_categoria = c.id
+        GROUP BY c.id, c.nome ORDER BY total DESC limit 1
+    """;
+
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                ResultSet rs = pstmt.executeQuery()
+        ) {
+
+            if (rs.next()) {
+                return new CategoriaPopular(
+                        rs.getString("nome"),
+                        rs.getInt("total")
+                );
+            }
+
+            return null;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar categoria mais popular.", e);
+        }
+    }
 }
