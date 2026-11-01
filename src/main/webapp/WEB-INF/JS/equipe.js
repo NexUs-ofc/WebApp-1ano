@@ -60,3 +60,16 @@
         if (e.key === 'ArrowRight') irParaProximo();
         if (e.key === 'ArrowLeft') irParaAnterior();
     });
+
+    let inicioX = null;
+    janela.addEventListener('pointerdown', (e) => { inicioX = e.clientX; });
+    janela.addEventListener('pointerup', (e) => {
+        if (inicioX === null) return;
+        const deslocamento = e.clientX - inicioX;
+        inicioX = null;
+        if (Math.abs(deslocamento) > 50) {
+            if (deslocamento < 0) irParaProximo();
+            else irParaAnterior();
+        }
+    });
+    janela.addEventListener('pointercancel', () => { inicioX = null; });
