@@ -33,4 +33,4 @@ jobs:
         run: echo ${{ secrets.DISCLOUD_TOKEN }} | discloud login
 
       - name: Deploy na Discloud
-        run: discloud app up
+        run: discloud app commit ceris-webapp
