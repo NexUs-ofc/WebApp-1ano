@@ -20,7 +20,7 @@ public class Usuario {
 
     }
 
-    public Usuario(String nome, String email, String preferenciasConsumo, ConfiguracaoAlerta configuracaoAlerta,  String senha, String telefone, LocalDate dataCadastro) {
+    public Usuario(String nome, String email, String preferenciasConsumo, ConfiguracaoAlerta configuracaoAlerta,  String senha, String telefone) {
 
         this.nome = nome;
         this.email = email;
@@ -28,7 +28,6 @@ public class Usuario {
         this.configuracaoAlerta = configuracaoAlerta;
         this.telefone = telefone;
         this.senha = senha;
-        this.dataCadastro = dataCadastro;
     }
 
     // Getters e setters
