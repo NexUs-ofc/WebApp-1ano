@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public class Launcher {
     public static void main(String[] args) throws Exception {
@@ -15,31 +17,35 @@ public class Launcher {
         int port = (portEnv != null && !portEnv.isBlank()) ? Integer.parseInt(portEnv) : 8080;
         tomcat.setPort(port);
 
-        File warFile = extractWarFromJar();
-        tomcat.addWebapp("", warFile.getAbsolutePath());
+        File webappDir = extractJarToTempDir();
+        tomcat.addWebapp("", webappDir.getAbsolutePath());
 
         tomcat.start();
         tomcat.getServer().await();
     }
 
-    private static File extractWarFromJar() throws IOException {
-        String warResource = "/WEB-INF/web.xml";
-        try (InputStream is = Launcher.class.getResourceAsStream(warResource)) {
-            if (is == null) {
-                throw new IllegalStateException("WEB-INF/web.xml não encontrado no classpath");
-            }
-        }
-
-        File tempDir = Files.createTempDirectory("discloud-war-").toFile();
+    private static File extractJarToTempDir() throws IOException {
+        File tempDir = Files.createTempDirectory("discloud-webapp-").toFile();
         tempDir.deleteOnExit();
 
-        try (InputStream is = Launcher.class.getResourceAsStream("/app.war")) {
-            if (is == null) {
-                throw new IllegalStateException("app.war não encontrado dentro do JAR");
+        String jarPath = Launcher.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        File jarFile = new File(java.net.URLDecoder.decode(jarPath, "UTF-8"));
+
+        try (JarFile jar = new JarFile(jarFile)) {
+            java.util.Enumeration<JarEntry> entries = jar.entries();
+            while (entries.hasMoreElements()) {
+                JarEntry entry = entries.nextElement();
+                if (entry.isDirectory()) {
+                    continue;
+                }
+                File entryFile = new File(tempDir, entry.getName());
+                entryFile.getParentFile().mkdirs();
+                try (InputStream is = jar.getInputStream(entry)) {
+                    Files.copy(is, entryFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                }
             }
-            File extractedWar = new File(tempDir, "app.war");
-            Files.copy(is, extractedWar.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            return extractedWar;
         }
+
+        return tempDir;
     }
 }
