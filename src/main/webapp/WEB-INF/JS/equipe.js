@@ -19,3 +19,17 @@
     function visiveis() {
         return parseInt(getComputedStyle(carrossel).getPropertyValue('--visiveis'), 10) || 1;
     }
+    function irParaProximo() {
+        if (animando || faixa.children.length <= visiveis()) return;
+        animando = true;
+
+        faixa.style.transition = `transform ${duracao()}ms ease`;
+        faixa.style.transform = `translateX(${-passo()}px)`;
+
+        setTimeout(() => {
+            faixa.style.transition = 'none';
+            faixa.appendChild(faixa.firstElementChild);
+            faixa.style.transform = 'translateX(0)';
+            animando = false;
+        }, duracao());
+    }
