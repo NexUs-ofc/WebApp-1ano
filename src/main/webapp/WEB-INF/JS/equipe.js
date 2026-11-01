@@ -33,3 +33,18 @@
             animando = false;
         }, duracao());
     }
+
+    function irParaAnterior() {
+        if (animando || faixa.children.length <= visiveis()) return;
+        animando = true;
+
+        faixa.style.transition = 'none';
+        faixa.insertBefore(faixa.lastElementChild, faixa.firstElementChild);
+        faixa.style.transform = `translateX(${-passo()}px)`;
+        void faixa.offsetWidth;
+
+        faixa.style.transition = `transform ${duracao()}ms ease`;
+        faixa.style.transform = 'translateX(0)';
+
+        setTimeout(() => { animando = false; }, duracao());
+    }
