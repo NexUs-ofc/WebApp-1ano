@@ -148,4 +148,6 @@ public class AnaliseDAO {
             throw new RuntimeException("Erro ao contar empresas.", e);
         }
     }
+
+
 }
