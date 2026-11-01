@@ -53,3 +53,10 @@
         botaoAnterior.hidden = semNecessidade;
         botaoProximo.hidden = semNecessidade;
     }
+    botaoProximo.addEventListener('click', irParaProximo);
+    botaoAnterior.addEventListener('click', irParaAnterior);
+
+    carrossel.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') irParaProximo();
+        if (e.key === 'ArrowLeft') irParaAnterior();
+    });
