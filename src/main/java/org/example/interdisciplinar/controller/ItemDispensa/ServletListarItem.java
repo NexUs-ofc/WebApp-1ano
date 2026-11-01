@@ -91,11 +91,11 @@ public class ServletListarItem extends HttpServlet {
 
         } catch (NumberFormatException nfe){
             request.setAttribute("erro", "O ID dos itens precisa ser um número inteiro");
-            request.getRequestDispatcher("/WEB-INF/Views/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
 
         } catch (RuntimeException re) {
             request.setAttribute("erro", "Não foi possível carregar os itens. Tente novamente.");
-            request.getRequestDispatcher("/WEB-INF/Views/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
         }
     }
 
