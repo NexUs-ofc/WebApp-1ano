@@ -64,7 +64,7 @@ nav a { color: #111; font-size: 14px; }
     padding: 11px 22px;
     border-radius: 8px;
 }
-/* para aqui*/
+
 
 /* HERO */
 .hero {
@@ -116,7 +116,7 @@ nav a { color: #111; font-size: 14px; }
 .barra-hero { position: absolute; right: 0; border-radius: 40px 0 0 40px; }
 .barra-hero.escura { bottom: 60px; width: 36%; height: 70px; background: var(--roxo); }
 .barra-hero.clara { bottom: 25px; width: 22%; height: 40px; background: var(--roxo-claro); }
-/*para aqui*/
+
 
 /* DUAS INTERFACES */
 .interfaces { position: relative; overflow: hidden; }
@@ -179,7 +179,7 @@ nav a { color: #111; font-size: 14px; }
     background: var(--roxo-claro);
     border-radius: 21px;
 }
-/*para aqui*/
+
 
 /* slide mercado */
 .mercado-direita {
@@ -281,7 +281,7 @@ nav a { color: #111; font-size: 14px; }
 .depoimento-autor img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
 .depoimento-autor strong { display: block; font-size: 13px; font-weight: 600; color: var(--roxo-escuro); }
 .depoimento-autor span { font-size: 10px; color: #666; }
-/*para aqui*/
+
 /* PLANOS */
 .planos-banner {
     --u: min(1px, calc(100vw / 1440));
@@ -326,7 +326,7 @@ nav a { color: #111; font-size: 14px; }
     background: #fff;
     border-radius: 8px;
 }
-/*para aqui*/
+
 
 /* DÚVIDAS */
 .duvidas { padding: 90px 112px 110px; text-align: center; }
@@ -351,7 +351,7 @@ nav a { color: #111; font-size: 14px; }
 .duvida.aberta .duvida-resposta { grid-template-rows: 1fr; }
 .duvida-resposta p { overflow: hidden; padding: 0 26px; font-size: 16px; line-height: 1.5; }
 .duvida.aberta .duvida-resposta p { padding-bottom: 22px; }
-/*para aqui*/
+
 
 /* CHAMADA FINAL */
 .chamada-final { padding: 100px 112px 90px; text-align: center; background: var(--fundo-suave); }
@@ -363,7 +363,7 @@ nav a { color: #111; font-size: 14px; }
     border-radius: 14px; box-shadow: 0 6px 16px rgba(82, 32, 128, 0.3);
     transition: background-color .3s ease, box-shadow .3s ease;
 }
-/*para aqui*/
+
 
 
 /* mais escuro ao passar o mouse, tocar (celular) ou focar com o teclado */
@@ -373,7 +373,7 @@ nav a { color: #111; font-size: 14px; }
     background: var(--roxo-escuro);
     box-shadow: 0 6px 16px rgba(43, 10, 77, 0.35);
 }
-/*para aqui*/
+
 
 /* RODAPÉ */
 footer { padding: 56px 112px 36px; background: #fff; }
@@ -402,7 +402,7 @@ footer { padding: 56px 112px 36px; background: #fff; }
     content: ""; flex: none; width: 14px; height: 16px;
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 16' fill='none' stroke='%234f2078' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='1.5' y='6.9' width='11' height='7.4' rx='2.9'/%3E%3Cpath d='M3.4 6.9V5a3.6 3.6 0 0 1 7.2 0V6.9'/%3E%3Ccircle cx='7' cy='10.4' r='1.3' fill='%234f2078' stroke='none'/%3E%3C/svg%3E") center / contain no-repeat;
 }
-/*para aqui*/
+
 
 /* RESPONSIVO */
 @media (max-width: 1100px) {
@@ -414,7 +414,6 @@ footer { padding: 56px 112px 36px; background: #fff; }
     .hero h1 { font-size: 44px; }
     .interfaces h2, .chamada-final h2 { font-size: 36px; }
 }
-/*para aqui*/
 @media (max-width: 800px) {
     .container-header { height: auto; flex-wrap: wrap; padding: 14px 20px; gap: 12px; }
     nav { position: static; transform: none; order: 3; width: 100%; justify-content: center; flex-wrap: wrap; gap: 8px 18px; }
@@ -455,7 +454,7 @@ footer { padding: 56px 112px 36px; background: #fff; }
     #slide-mercado .interfaces-imagem { width: 100%; }
     #imagem-mercado { width: 100%; max-width: 600px; transform: none; }
 }
-/*para aqui*/
+
 
 /* AJUSTES DAS DUAS INTERFACES */
 
@@ -468,7 +467,6 @@ footer { padding: 56px 112px 36px; background: #fff; }
     margin: 0 auto;
     transform: translateY(0);
 }
-/*para aqui*/
 
 /* Área da imagem da interface do mercado */
 #slide-mercado .interfaces-imagem {
@@ -479,7 +477,7 @@ footer { padding: 56px 112px 36px; background: #fff; }
     align-items: center;
     justify-content: center;
 }
-/*para aqui*/
+
 
 /* Imagem da interface do mercado: maior e centralizada */
 #imagem-mercado {
@@ -494,7 +492,7 @@ footer { padding: 56px 112px 36px; background: #fff; }
     transform: translateY(0);
     filter: none;
 }
-/*para aqui*/
+
 
 /* AJUSTA AS IMAGENS SEM CORTAR */
 #imagem-mercado,
@@ -632,7 +630,7 @@ footer { padding: 56px 112px 36px; background: #fff; }
 @media (min-width: 801px) and (max-width: 1100px) {
     #imagem-mercado { margin-right: calc(-10.1vw - 48px); } /* nessa faixa o slide tem 48px de padding */
 }
-/*para aqui*/
+
 
 /* ===== DEPOIMENTOS: letras maiores, subtítulo maior e cards um pouco maiores =====
    Cole este bloco no FINAL do seu index.css (ele sobrescreve os valores antigos). */
@@ -643,12 +641,10 @@ footer { padding: 56px 112px 36px; background: #fff; }
     margin-bottom: 56px;
     font-size: 18px;
     line-height: 1.3;
-}/*para aqui*/
-
+}
 /* cards */
 .depoimentos-lista { gap: 32px; }
 .depoimento { padding: 30px 32px 32px; border-radius: 18px; }
-/*para aqui*/
 
 /* letras dentro do card */
 .depoimento p { margin: 18px 0 30px; font-size: 16px; line-height: 1.4; }
@@ -656,7 +652,7 @@ footer { padding: 56px 112px 36px; background: #fff; }
 .depoimento-autor img { width: 46px; height: 46px; }
 .depoimento-autor strong { font-size: 16px; }
 .depoimento-autor span { font-size: 13px; }
-/*para aqui*/
+
 
 /* telas grandes: margens laterais menores, deixando os cards mais largos */
 @media (min-width: 1101px) {

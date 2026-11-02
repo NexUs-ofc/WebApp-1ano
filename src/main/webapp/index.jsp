@@ -1,32 +1,73 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Huninn&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css">
-    <title>PI do crud</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/views.css">
+    <title>analise</title>
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/favicon.ico">
 </head>
 <body>
 
-    <div class="sidebar">
-        <h1>Ceris</h1>
-        <a href="${pageContext.request.contextPath}/enderecos">Endereço</a>
-        <a href="${pageContext.request.contextPath}/usuarios">Usuário</a>
-        <a href="${pageContext.request.contextPath}/categorias">Categoria</a>
-        <a href="${pageContext.request.contextPath}/administradores">Administrador</a>
-        <a href="${pageContext.request.contextPath}/alimentos">Alimento</a>
-        <a href="${pageContext.request.contextPath}/itensDispensa">Item Dispensa</a>
-    </div>
-    <main class = "conteudo">
-    <div class="conteudo">
-        <h1>Área Restrita!</h1>
+    <nav class="sidebar">
+        <div class="logoSidebar">
+          <div class="simboloLogo">
+            <img src="${pageContext.request.contextPath}/assets/logo-ceris.svg" alt="">
+          </div>
+          <span class="nomeLogo">Ceris</span>
+          <img class="linhaLogo" src="${pageContext.request.contextPath}/assets/logo-underline.svg" alt="">
+        </div>
+            <a class="ativo" href="${pageContext.request.contextPath}/index.jsp"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-chart-histogram.svg" alt="">Análise</a>
+            <a href="${pageContext.request.contextPath}/enderecos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-marker.svg" alt="">Endereço</a>
+            <a href="${pageContext.request.contextPath}/usuarios"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="">Usuário</a>
+            <a href="${pageContext.request.contextPath}/alimentos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-utensils.svg" alt="">Alimento</a>
+            <a href="${pageContext.request.contextPath}/categorias"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-apps.svg" alt="">Categoria</a>
+            <a href="${pageContext.request.contextPath}/itensDespensa"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-bread-slice.svg" alt="">Item_despensa</a>
+            <a href="${pageContext.request.contextPath}/empresas"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-enterprise.svg" alt="">Empresas</a>
+            <a href="${pageContext.request.contextPath}/administradores"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-shield-check.svg" alt="">Administrador</a>
+        <!-- Perfil -->
+        <div class="rodapeSidebar">
+          <img class="linhaPerfilSidebar" src="${pageContext.request.contextPath}/assets/profile-line.svg" alt="">
+          <div class="perfilSidebar">
+            <div class="fotoPerfilSidebar">
+              <c:choose>
+                <c:when test="${not empty sessionScope.administradorFoto}">
+                  <img class="fotoAdministradorSidebar" src="<c:out value='${sessionScope.administradorFoto}'/>" alt="Foto de perfil">
+                </c:when>
+                <c:otherwise>
+                  <img src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="Foto de perfil">
+                </c:otherwise>
+              </c:choose>
+            </div>
+            <div class="dadosPerfilSidebar">
+              <strong><c:out value="${sessionScope.administradorNome}" default="Administrador"/></strong>
+              <span>Administrador</span>
+            </div>
+          </div>
+          <form action="${pageContext.request.contextPath}/logout" method="post">
+            <button class="botaoSairSidebar" type="submit">
+              <img src="${pageContext.request.contextPath}/assets/fi-br-exit.svg" alt="">
+              Sair
+            </button>
+          </form>
+        </div>
+    </nav>
+    <main class="conteudo">
+      <div class="titulo">
+        <h1>Área Restrita</h1>
+        <small>Análise</small>
+      </div>
+      <div>
         <h4>insira codigo sla o que barras inicio LOGIN FAZ LOGIN #grrrrmondays</h4>
-    </div>
-</main>
+      </div>
+    </main>
+    <script src="${pageContext.request.contextPath}/JS/views.js"></script>
 </body>
 </html>

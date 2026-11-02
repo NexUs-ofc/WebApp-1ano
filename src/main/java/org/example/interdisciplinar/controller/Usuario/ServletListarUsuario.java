@@ -59,7 +59,7 @@ public class ServletListarUsuario extends HttpServlet {
         } catch (NumberFormatException nfe){
             getServletContext().log("Erro ao formatar o número.", nfe);
             request.setAttribute("erro", "O ID dos usuários precisa ser um número inteiro");
-            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
 
@@ -73,7 +73,7 @@ public class ServletListarUsuario extends HttpServlet {
             );
 
             // Encaminha para a página de erro
-            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
 
         } catch (ErroPersistenciaException e) {
@@ -88,7 +88,7 @@ public class ServletListarUsuario extends HttpServlet {
             );
 
             // Encaminha para a página de erro.
-            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         }
     }

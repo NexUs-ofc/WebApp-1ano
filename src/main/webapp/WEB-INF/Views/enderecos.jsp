@@ -5,74 +5,162 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ceris · Endereços</title>
+  <title>enderecos</title>
+  <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/views.css">
 </head>
 <body>
+  <!-- Sidebar -->
   <nav class="sidebar">
-    <h2>Ceris</h2>
-    <a href="${pageContext.request.contextPath}/index.jsp">Análise</a>
-    <a class="ativo" href="${pageContext.request.contextPath}/enderecos">Endereço</a>
-    <a href="${pageContext.request.contextPath}/usuarios">Usuário</a>
-    <a href="${pageContext.request.contextPath}/categorias">Categoria</a>
-    <a href="${pageContext.request.contextPath}/administradores">Administrador</a>
-    <a href="${pageContext.request.contextPath}/alimentos">Alimento</a>
-    <a href="${pageContext.request.contextPath}/itensDispensa">Item Dispensa</a>
+    <div class="logoSidebar">
+      <div class="simboloLogo">
+        <img src="${pageContext.request.contextPath}/assets/logo-ceris.svg" alt="">
+      </div>
+      <span class="nomeLogo">Ceris</span>
+      <img class="linhaLogo" src="${pageContext.request.contextPath}/assets/logo-underline.svg" alt="">
+    </div>
+        <a href="${pageContext.request.contextPath}/index.jsp"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-chart-histogram.svg" alt="">Análise</a>
+        <a class="ativo" href="${pageContext.request.contextPath}/enderecos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-marker.svg" alt="">Endereço</a>
+        <a href="${pageContext.request.contextPath}/usuarios"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="">Usuário</a>
+        <a href="${pageContext.request.contextPath}/alimentos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-utensils.svg" alt="">Alimento</a>
+        <a href="${pageContext.request.contextPath}/categorias"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-apps.svg" alt="">Categoria</a>
+        <a href="${pageContext.request.contextPath}/itensDespensa"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-bread-slice.svg" alt="">Item_despensa</a>
+        <a href="${pageContext.request.contextPath}/empresas"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-enterprise.svg" alt="">Empresas</a>
+        <a href="${pageContext.request.contextPath}/administradores"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-shield-check.svg" alt="">Administrador</a>
+    <!-- Perfil -->
+    <div class="rodapeSidebar">
+      <img class="linhaPerfilSidebar" src="${pageContext.request.contextPath}/assets/profile-line.svg" alt="">
+      <div class="perfilSidebar">
+        <div class="fotoPerfilSidebar">
+          <c:choose>
+            <c:when test="${not empty sessionScope.administradorFoto}">
+              <img class="fotoAdministradorSidebar" src="<c:out value='${sessionScope.administradorFoto}'/>" alt="Foto de perfil">
+            </c:when>
+            <c:otherwise>
+              <img src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="Foto de perfil">
+            </c:otherwise>
+          </c:choose>
+        </div>
+        <div class="dadosPerfilSidebar">
+          <strong><c:out value="${sessionScope.administradorNome}" default="Administrador"/></strong>
+          <span>Administrador</span>
+        </div>
+      </div>
+      <form action="${pageContext.request.contextPath}/logout" method="post">
+        <button class="botaoSairSidebar" type="submit">
+          <img src="${pageContext.request.contextPath}/assets/fi-br-exit.svg" alt="">
+          Sair
+        </button>
+      </form>
+    </div>
   </nav>
 
+  <!-- Conteudo -->
   <main class="conteudo">
     <div class="titulo">
       <h1>Área Restrita</h1>
-      <small>Endereços</small>
+      <small>Endereço</small>
     </div>
 
     <c:if test="${empty enderecos}">
       <p class="vazio">Nenhum endereço cadastrado</p>
     </c:if>
     <c:if test="${not empty enderecos}">
+      <!-- Pesquisa -->
       <div class="pesquisa">
         <form action="${pageContext.request.contextPath}/enderecos" method="get">
-          <input type="text" name="pesquisa" placeholder="Pesquisar endereço..." value="${param.pesquisa}">
-          <button type="submit">Pesquisar</button>
+          <input type="text" name="pesquisa" placeholder="Procurar" value="${param.pesquisa}">
+          <button type="submit" class="botaoPesquisar">Pesquisar</button>
+          <button type="button" class="botaoFiltro" aria-label="Aplicar filtro de pesquisa" onclick="abrirPopupFiltro()">
+            <span>Filtro</span>
+            <span class="iconeFiltro" aria-hidden="true">
+              <img src="<c:url value='/assets/filter-line-a.svg'/>" alt="">
+              <img src="<c:url value='/assets/filter-line-b.svg'/>" alt="">
+              <img src="<c:url value='/assets/filter-line-a.svg'/>" alt="">
+            </span>
+          </button>
         </form>
       </div>
 
-      <button type="button" onclick="abrirPopupEndereco()">Adicionar endereço</button>
-      <dialog id="popupEndereco">
-        <h2>Novo endereço</h2>
-        <form action="${pageContext.request.contextPath}/enderecos/insert" method="post">
-            <label for="ruaEndereco">Rua</label>
-            <input id="ruaEndereco" name="rua" type="text" required>
-            <label for="numeroEndereco">Número</label>
-            <input id="numeroEndereco" name="numero" type="number" required>
-            <label for="bairroEndereco">Bairro</label>
-            <input id="bairroEndereco" name="bairro" type="text" required>
-            <label for="cidadeEndereco">Cidade</label>
-            <input id="cidadeEndereco" name="cidade" type="text" required>
-            <label for="estadoEndereco">Estado</label>
-            <input id="estadoEndereco" name="estado" type="text" maxlength="2" required>
-            <label for="cepEndereco">CEP</label>
-            <input id="cepEndereco" name="cep" type="text" required>
-            <div class="botoes-popup">
-                <button type="submit">Salvar</button>
-                <button type="button" onclick="fecharPopupEndereco()">Cancelar</button>
+      <!-- Filtro -->
+      <dialog id="popupFiltro" class="popupFiltro" aria-labelledby="tituloPopupFiltro">
+        <div class="conteudoPopupFiltro">
+          <div class="cabecalhoPopupFiltro">
+            <h2 id="tituloPopupFiltro">Filtros</h2>
+            <button type="button" class="botaoFecharPopupFiltro" aria-label="Fechar filtros" onclick="fecharPopupFiltro()">&times;</button>
+          </div>
+          <form action="${pageContext.request.contextPath}/enderecos" method="get">
+            <div class="camposPopupFiltro">
+          <div class="campoPopupFiltro">
+            <span>id</span>
+            <div class="intervaloPopupFiltro">
+              <input name="idInicio" type="number" placeholder="M&iacute;nimo">
+              <span aria-hidden="true">&ndash;</span>
+              <input name="idFim" type="number" placeholder="M&aacute;ximo">
             </div>
-        </form>
+          </div>
+          <label class="campoPopupFiltro">cidade
+            <input name="cidade" type="text" placeholder="Digite a cidade">
+          </label>
+          <label class="campoPopupFiltro">estado
+            <input name="estado" type="text" placeholder="Digite o estado">
+          </label>
+            </div>
+            <img class="divisorPopupFiltro" src="${pageContext.request.contextPath}/assets/popup-filter-divider.svg" alt="">
+            <fieldset class="ordemPopupFiltro">
+              <legend>Ordenar por</legend>
+              <div class="opcoesOrdemPopupFiltro">
+                <label><input name="ordenar" type="radio" value="cidade">Ordenar por cidade</label>
+                <label><input name="ordenar" type="radio" value="estado">Ordenar por estado</label>
+              </div>
+            </fieldset>
+            <div class="acoesPopupFiltro">
+              <button type="reset" class="botaoLimparPopupFiltro">Limpar</button>
+              <button type="submit" class="botaoAplicarPopupFiltro">Aplicar</button>
+            </div>
+          </form>
+        </div>
+      </dialog>
+    </c:if>
+      <!-- Cadastro -->
+      <button type="button" class="botaoCriar" onclick="abrirPopupEndereco()">Adicionar<img class="iconeAdicionar" src="${pageContext.request.contextPath}/assets/fi-br-add.svg" alt="" aria-hidden="true"></button>
+      <dialog id="popupEndereco" class="popupFormulario popupFormularioGrande">
+        <div class="barraPopupFormulario"></div>
+        <div class="conteudoPopupFormulario">
+          <h2><span>Criar</span> endereço</h2>
+          <form action="${pageContext.request.contextPath}/enderecos/insert" method="post">
+            <div class="gradeCamposPopup">
+              <label class="campoPopup" for="ruaEndereco">Rua<input id="ruaEndereco" name="rua" type="text" required></label>
+              <label class="campoPopup" for="numeroEndereco">Número<input id="numeroEndereco" name="numero" type="number" required></label>
+              <label class="campoPopup" for="bairroEndereco">Bairro<input id="bairroEndereco" name="bairro" type="text" required></label>
+              <label class="campoPopup" for="cidadeEndereco">Cidade<input id="cidadeEndereco" name="cidade" type="text" required></label>
+              <label class="campoPopup" for="estadoEndereco">Estado<input id="estadoEndereco" name="estado" type="text" maxlength="2" required></label>
+              <label class="campoPopup" for="cepEndereco">CEP<input id="cepEndereco" name="cep" type="text" required><small class="ajudaCampoPopup">Formato: 00000-000</small></label>
+            </div>
+            <div class="acoesPopupFormulario">
+              <button type="button" class="botaoCancelarPopup" onclick="fecharPopupEndereco()">cancelar</button>
+              <button type="submit" class="botaoConfirmarPopup">confirmar</button>
+            </div>
+          </form>
+        </div>
       </dialog>
 
+    <c:if test="${not empty enderecos}">
+      <!-- Tabela -->
       <div class="cartao">
         <table>
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Rua</th>
-              <th>Número</th>
-              <th>Bairro</th>
-              <th>Cidade</th>
-              <th>Estado</th>
-              <th>CEP</th>
+              <th>id_endereco</th>
+              <th>rua</th>
+              <th>numero</th>
+              <th>bairro</th>
+              <th>cidade</th>
+              <th>estado</th>
+              <th>cep</th>
+              <th aria-label="Ações"></th>
             </tr>
           </thead>
           <tbody>
@@ -86,6 +174,14 @@
                   <td><c:out value="${endereco.cidade}"/></td>
                   <td><c:out value="${endereco.estado}"/></td>
                   <td><c:out value="${endereco.cep}"/></td>
+                  <td class="acoes">
+                    <button type="button" class="botaoEditar" title="Editar endereço" aria-label="Editar endereço" data-id="${endereco.id}" data-rua="${fn:escapeXml(endereco.rua)}" data-numero="${endereco.numero}" data-bairro="${fn:escapeXml(endereco.bairro)}" data-cidade="${fn:escapeXml(endereco.cidade)}" data-estado="${fn:escapeXml(endereco.estado)}" data-cep="${fn:escapeXml(endereco.cep)}" onclick="abrirPopupEdicaoEndereco(this)">
+                      <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
+                    </button>
+                    <button type="button" class="botaoExcluir" title="Excluir endereço" aria-label="Excluir endereço" onclick="abrirPopupExclusaoEndereco('${endereco.id}')">
+                      <img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="" aria-hidden="true">
+                    </button>
+                  </td>
                 </tr>
               </c:if>
             </c:forEach>
@@ -95,13 +191,47 @@
     </c:if>
   </main>
 
-  <script>
-    function abrirPopupEndereco() {
-      document.getElementById("popupEndereco").showModal();
-    }
-    function fecharPopupEndereco() {
-      document.getElementById("popupEndereco").close();
-    }
-  </script>
+  <!-- Edicao -->
+  <dialog id="popupEdicao" class="popupFormulario popupFormularioGrande">
+    <div class="barraPopupFormulario"></div>
+    <div class="conteudoPopupFormulario">
+      <h2><span>Editar</span> endereço</h2>
+      <form action="${pageContext.request.contextPath}/enderecos/atualizar" method="post">
+        <input type="hidden" id="idEnderecoEdicao" name="id">
+        <div class="gradeCamposPopup">
+          <label class="campoPopup" for="ruaEnderecoEdicao">Rua<input id="ruaEnderecoEdicao" name="rua" type="text" required></label>
+          <label class="campoPopup" for="numeroEnderecoEdicao">Número<input id="numeroEnderecoEdicao" name="numero" type="number" required></label>
+          <label class="campoPopup" for="bairroEnderecoEdicao">Bairro<input id="bairroEnderecoEdicao" name="bairro" type="text" required></label>
+          <label class="campoPopup" for="cidadeEnderecoEdicao">Cidade<input id="cidadeEnderecoEdicao" name="cidade" type="text" required></label>
+          <label class="campoPopup" for="estadoEnderecoEdicao">Estado<input id="estadoEnderecoEdicao" name="estado" type="text" maxlength="2" required></label>
+          <label class="campoPopup" for="cepEnderecoEdicao">CEP<input id="cepEnderecoEdicao" name="cep" type="text" required><small class="ajudaCampoPopup">Formato: 00000-000</small></label>
+        </div>
+        <div class="acoesPopupFormulario">
+          <button type="button" class="botaoCancelarPopup" onclick="fecharPopupEdicao()">cancelar</button>
+          <button type="submit" class="botaoConfirmarPopup">confirmar</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Exclusao -->
+  <dialog id="popupExclusao" class="popupExclusao">
+    <div class="barraPopupExclusao"></div>
+    <div class="conteudoPopupExclusao">
+      <h2><span>Excluir</span> endereço</h2>
+      <p>Tem certeza de que deseja <strong>excluir</strong> este item?
+      <br>Essa ação não poderá ser desfeita.</p>
+      <form action="${pageContext.request.contextPath}/enderecos/deletar" method="post">
+        <input type="hidden" id="idEnderecoExclusao" name="id">
+        <div class="acoesPopupExclusao">
+          <button type="button" class="botaoCancelarExclusao" onclick="fecharPopupExclusao()">cancelar</button>
+          <button type="submit" class="botaoConfirmarExclusao">confirmar</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- JavaScript -->
+  <script src="${pageContext.request.contextPath}/JS/views.js"></script>
 </body>
 </html>

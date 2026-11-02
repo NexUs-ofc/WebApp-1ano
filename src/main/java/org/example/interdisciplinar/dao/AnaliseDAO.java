@@ -15,12 +15,12 @@ public class AnaliseDAO {
 
         String sql = """
         SELECT
-            EXTRACT(MONTH FROM data_cadastro) AS mes,
+            EXTRACT(MONTH FROM data_criacao) AS mes,
             COUNT(*) AS total
         FROM tb_usuario
-        WHERE EXTRACT(YEAR FROM data_cadastro) =
+        WHERE EXTRACT(YEAR FROM data_criacao) =
               EXTRACT(YEAR FROM CURRENT_DATE)
-        GROUP BY EXTRACT(MONTH FROM data_cadastro)
+        GROUP BY EXTRACT(MONTH FROM data_criacao)
         ORDER BY mes
     """;
 
@@ -106,7 +106,7 @@ public class AnaliseDAO {
 
     public int contarItensProximosVencimento() {
 
-        String sql = "SELECT coalesce(sum(quantidade), 0) FROM tb_item_despensa WHERE validade BETWEEN current_date AND current_date + 7";
+        String sql = "SELECT coalesce(sum(quantidade), 0) FROM tb_item_despensa WHERE data_validade BETWEEN current_date AND current_date + 7";
 
         try (
                 Connection conn = GerenteConexao.conectar();
@@ -182,9 +182,9 @@ public class AnaliseDAO {
 
         String sql = """
         SELECT c.nome, sum(i.quantidade) AS total
-        FROM tb_item_despensa i join tb_alimento a on i.id_alimento = a.id
-        join tb_categoria c on a.id_categoria = c.id
-        GROUP BY c.id, c.nome ORDER BY total DESC limit 1
+        FROM tb_item_despensa i join tb_alimento a on i.id_alimento = a.id_alimento
+        join tb_categoria c on a.id_categoria = c.id_categoria
+        GROUP BY c.id_categoria, c.nome ORDER BY total DESC limit 1
     """;
 
         try (
@@ -215,8 +215,8 @@ public class AnaliseDAO {
     public EmpresaRecente buscarEmpresaMaisRecente() {
 
         String sql = """
-        SELECT nome, data_cadastro FROM tb_empresa
-        ORDER BY data_cadastro DESC, id DESC limit 1
+        SELECT nome FROM tb_empresa
+        ORDER BY id_empresa DESC limit 1
     """;
 
         try (
@@ -228,7 +228,7 @@ public class AnaliseDAO {
             if (rs.next()) {
                 return new EmpresaRecente(
                         rs.getString("nome"),
-                        rs.getDate("data_cadastro").toLocalDate()
+                        null
                 );
             }
 
