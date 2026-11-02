@@ -103,7 +103,7 @@ public class UsuarioDAO {
         Connection conn = GerenteConexao.conectar();
 
         //Comando de listar em SQL
-        String sqlSelect = "SELECT id_usuario, nome, email, telefone, configuracao_alerta FROM tb_usuario";
+        String sqlSelect = "SELECT id_usuario, nome, email, preferencias_consumo, telefone, configuracao_alerta FROM tb_usuario";
 
         // Criando uma lista para guardar os registros dos usuários no bd
         List<UsuarioView> view = new ArrayList<>();
@@ -118,8 +118,9 @@ public class UsuarioDAO {
                         rs.getInt("id_usuario"),
                         rs.getString("nome"),
                         rs.getString("email"),
+                        rs.getString("preferencias_consumo"),
                         rs.getString("telefone"),
-                        ConfiguracaoAlerta.valueOf(rs.getString("configuracao_alerta"))
+                        ConfiguracaoAlerta.valueOf(rs.getString("configuracao_alerta").trim().toUpperCase())
 
                 );
                 view.add(usuarioTemporario);
@@ -139,7 +140,7 @@ public class UsuarioDAO {
     }
 
     public boolean atualizar(Usuario usuario){
-        String sql = "UPDATE tb_usuario SET nome=?, email=?, preferencias_consumo=?, configuracao_alerta=?, telefone=?, senha=? WHERE id_usuario=?";
+        String sql = "UPDATE tb_usuario SET nome=?, email=?, preferencias_consumo=?, configuracao_alerta=?, senha=? WHERE id_usuario=?";
         try (
                 Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -148,9 +149,8 @@ public class UsuarioDAO {
             pstmt.setString(2, usuario.getEmail());
             pstmt.setString(3, usuario.getPreferenciasConsumo());
             pstmt.setString(4, usuario.getConfiguracaoAlerta().name());
-            pstmt.setString(5, usuario.getTelefone());
-            pstmt.setString(6, usuario.getSenha());
-            pstmt.setInt(7, usuario.getId());
+            pstmt.setString(5, usuario.getSenha());
+            pstmt.setInt(6, usuario.getId());
             int linhasAfetadas = pstmt.executeUpdate();
             return linhasAfetadas > 0;
 
@@ -171,7 +171,7 @@ public class UsuarioDAO {
           String email,
           String ordenar
     ){
-        StringBuilder sql = new StringBuilder("SELECT id_usuario, nome, email, telefone, configuracao_alerta FROM tb_usuario WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT id_usuario, nome, email, preferencias_consumo, telefone, configuracao_alerta FROM tb_usuario WHERE 1=1");
         List<Object> parametrosDoFiltro = new ArrayList<>();
         List<UsuarioView> view = new ArrayList<>();
 
@@ -228,8 +228,9 @@ public class UsuarioDAO {
                             rs.getInt("id_usuario"),
                             rs.getString("nome"),
                             rs.getString("email"),
+                            rs.getString("preferencias_consumo"),
                             rs.getString("telefone"),
-                            ConfiguracaoAlerta.valueOf(rs.getString("configuracao_alerta"))
+                            ConfiguracaoAlerta.valueOf(rs.getString("configuracao_alerta").trim().toUpperCase())
                     );
                     view.add(usuarioTemporario);
                 }
@@ -262,7 +263,7 @@ public class UsuarioDAO {
                             rs.getString("nome"),
                             rs.getString("email"),
                             rs.getString("preferencias_consumo"),
-                            ConfiguracaoAlerta.valueOf(rs.getString("configuracao_alerta")),
+                            ConfiguracaoAlerta.valueOf(rs.getString("configuracao_alerta").trim().toUpperCase()),
                             rs.getString("senha"),
                             rs.getString("telefone")
                     );

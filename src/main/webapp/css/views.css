@@ -749,12 +749,15 @@ td {
     grid-template-columns: 65px 1fr;
     gap: 10px;
 }
-.entradaSenhaAdministrador {
+.campoSenhaUsuario {
+    grid-column: 1 / -1;
+}
+.entradaSenhaAdministrador, .entradaSenhaUsuario {
     position: relative;
     display: block;
     margin-top: 2px;
 }
-.entradaSenhaAdministrador input {
+.entradaSenhaAdministrador input, .entradaSenhaUsuario input {
     padding-right: 40px;
 }
 .botaoMostrarSenha {
@@ -773,6 +776,9 @@ td {
 .botaoMostrarSenha img {
     width: 15px;
     height: 15px;
+}
+.entradaSenhaUsuario .botaoMostrarSenha {
+    height: 41px;
 }
 .edicaoFotoAdministrador {
     width: 111px;
@@ -861,4 +867,203 @@ td {
 }
 .botaoConfirmarExclusao {
     background-color: #e11d48;
+}
+
+/* Análise */
+.conteudoAnalise {
+    overflow: hidden;
+}
+.painelAnalise {
+    width: 100%;
+    height: 853px;
+    flex-shrink: 0;
+    zoom: var(--escalaAnalise, 1);
+}
+.boasVindasAnalise, .gradeAnalise {
+    width: calc(100% - 51px);
+}
+.boasVindasAnalise {
+    height: 220px;
+    flex-shrink: 0;
+    position: relative;
+    margin-top: 21px;
+    overflow: hidden;
+    border-radius: 33px;
+    background: linear-gradient(116deg, #4f2078 0%, #923bde 155%);
+}
+.fotoBoasVindasAnalise {
+    width: 171px;
+    height: 170px;
+    position: absolute;
+    top: 25px;
+    left: 33px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.textoBoasVindasAnalise {
+    position: absolute;
+    top: 25px;
+    right: 166px;
+    left: 247px;
+    color: white;
+}
+.textoBoasVindasAnalise > span {
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 9px;
+    border-radius: 14px;
+    background-color: rgba(255, 255, 255, 0.1);
+    font-size: 10.425px;
+}
+.textoBoasVindasAnalise h2 {
+    margin-top: -1px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 54px;
+}
+.textoBoasVindasAnalise p {
+    max-width: 624px;
+    margin-top: 18px;
+    color: #e8d9f2;
+    font-size: 16px;
+    line-height: 24px;
+}
+.decoracaoBoasVindasAnalise {
+    width: 374px;
+    height: 220px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    object-fit: cover;
+    object-position: left top;
+    filter: grayscale(1) invert(1);
+    mix-blend-mode: screen;
+    pointer-events: none;
+}
+.gradeAnalise {
+    display: grid;
+    grid-template-columns: 273px minmax(0, 1fr);
+    gap: 44px;
+    margin-top: 40px;
+    padding-bottom: 20px;
+}
+.indicadoresAnalise {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+.cartaoIndicadorAnalise, .atividadesAnalise, .graficoAnalise {
+    border: 1px solid #4f2078;
+    background-color: white;
+    box-shadow: 0 4px 4px rgba(79, 32, 120, 0.5);
+}
+.cartaoIndicadorAnalise {
+    width: 273px;
+    height: 146px;
+    padding: 22px 20px 15px;
+    border-radius: 20px;
+}
+.cartaoIndicadorAnalise h2 {
+    color: #968d9e;
+    font-size: 15.2px;
+    font-weight: 400;
+    line-height: 18px;
+}
+.cartaoIndicadorAnalise strong {
+    display: block;
+    margin-top: 5px;
+    color: #4f2078;
+    font-family: 'Poppins', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 60px;
+}
+.cartaoIndicadorAnalise p {
+    margin-top: 1px;
+    color: #968d9e;
+    font-size: 14px;
+    line-height: 17px;
+}
+.resumoAnalise {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 79px;
+}
+.atividadesAnalise {
+    height: 209px;
+    padding: 10px 33px 16px;
+    border-radius: 20px;
+}
+.atividadesAnalise h2 {
+    color: #4f2078;
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 36px;
+}
+.atividadesAnalise ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 9px;
+    list-style: none;
+}
+.atividadesAnalise li {
+    min-height: 35px;
+    display: flex;
+    align-items: center;
+    padding: 6px 13px;
+    border: 1px solid #d0bdf2;
+    border-radius: 10px;
+    color: #2a1e34;
+    font-size: 12.667px;
+    line-height: 19px;
+}
+.atividadesAnalise li strong {
+    margin-left: 4px;
+    color: #7b35b8;
+    font-weight: 400;
+}
+.atividadesAnalise li:last-child {
+    margin-top: 8px;
+}
+.graficoAnalise {
+    height: 230px;
+    padding: 19px;
+    border-radius: 20px;
+}
+.cabecalhoGraficoAnalise {
+    height: 42px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.cabecalhoGraficoAnalise h2 {
+    color: #4f2078;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 27px;
+}
+.cabecalhoGraficoAnalise span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 9px;
+    color: #968d9e;
+    font-size: 12px;
+}
+.cabecalhoGraficoAnalise i {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background-color: #7b35b8;
+}
+#graficoEmpresasAnalise {
+    width: 100%;
+    height: 136px;
+    display: block;
 }

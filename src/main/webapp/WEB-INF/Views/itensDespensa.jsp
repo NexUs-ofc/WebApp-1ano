@@ -142,7 +142,7 @@
       <h2><span>Criar</span> item_despensa</h2>
       <form action="${pageContext.request.contextPath}/itensDespensa/insert" method="post">
         <div class="gradeCamposPopup">
-          <label class="campoPopup" for="idCasa">ID da casa<input id="idCasa" name="idCasa" type="number" required></label>
+          <label class="campoPopup" for="idUsuario">ID do usuário<input id="idUsuario" name="idUsuario" type="number" required></label>
           <label class="campoPopup" for="idAlimento">ID do alimento<input id="idAlimento" name="idAlimento" type="number" required></label>
           <label class="campoPopup" for="quantidade">Quantidade<input id="quantidade" name="quantidade" type="number" min="1" required></label>
           <label class="campoPopup" for="validade">Data de validade<input id="validade" name="validade" type="date" required></label>
@@ -170,8 +170,8 @@
             </tr>
           </thead>
           <tbody>
-            <c:forEach var="itemDaDespensa" items="${itens}" varStatus="status">
-              <c:if test="${empty param.pesquisa or itemDaDespensa.id().toString() == param.pesquisa or fn:contains(fn:toLowerCase(itemDaDespensa.nomeUsuario()), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(itemDaDespensa.alimento()), fn:toLowerCase(param.pesquisa)) or fn:contains(itemDaDespensa.validade().toString(), param.pesquisa)}">
+            <c:forEach var="itemDaDespensa" items="${itens}">
+              <c:if test="${empty param.pesquisa or itemDaDespensa.id().toString() == param.pesquisa or fn:contains(fn:toLowerCase(itemDaDespensa.nomeUsuario()), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(itemDaDespensa.alimento()), fn:toLowerCase(param.pesquisa)) or (not empty itemDaDespensa.validade() and fn:contains(itemDaDespensa.validade().toString(), param.pesquisa))}">
                 <tr>
                   <td><c:out value="${itemDaDespensa.id()}"/></td>
                   <td><c:out value="${itemDaDespensa.nomeUsuario()}"/></td>
@@ -179,7 +179,7 @@
                   <td><c:out value="${itemDaDespensa.quantidade()}"/></td>
                   <td><c:out value="${itemDaDespensa.validade()}"/></td>
                   <td class="acoes">
-                    <button type="button" class="botaoEditar" title="Editar item" aria-label="Editar item" data-id="${itemDaDespensa.id()}" data-usuario="${itensDespensaOriginais[status.index].idUsuario}" data-alimento="${itensDespensaOriginais[status.index].idAlimento}" data-quantidade="${itemDaDespensa.quantidade()}" data-validade="${itemDaDespensa.validade()}" onclick="abrirPopupEdicaoItemDespensa(this)">
+                    <button type="button" class="botaoEditar" title="Editar item" aria-label="Editar item" data-id="${itemDaDespensa.id()}" data-usuario="${itemDaDespensa.idUsuario()}" data-alimento="${itemDaDespensa.idAlimento()}" data-quantidade="${itemDaDespensa.quantidade()}" data-validade="${itemDaDespensa.validade()}" onclick="abrirPopupEdicaoItemDespensa(this)">
                       <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                     </button>
                     <button type="button" class="botaoExcluir" title="Excluir item" aria-label="Excluir item" onclick="abrirPopupExclusaoItemDespensa('${itemDaDespensa.id()}')">

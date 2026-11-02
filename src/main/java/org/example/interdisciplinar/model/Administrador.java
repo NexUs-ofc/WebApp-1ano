@@ -9,7 +9,6 @@ public class Administrador {
     private String email;
     private String senha;
     private String telefone;
-    private String cpf;
     private String urlFoto;
 
     // Construtores
@@ -21,12 +20,11 @@ public class Administrador {
         this.senha = senha;
     }
 
-    public Administrador(String nome, String email, String senha, String telefone, String cpf, String urlFoto) {
+    public Administrador(String nome, String email, String senha, String telefone, String urlFoto) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.telefone = telefone;
-        this.cpf = cpf;
         this.urlFoto = urlFoto;
     }
 
@@ -74,14 +72,6 @@ public class Administrador {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
     }
 
     public String getUrlFoto() {

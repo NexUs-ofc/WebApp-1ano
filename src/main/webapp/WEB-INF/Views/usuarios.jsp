@@ -128,7 +128,7 @@
       <!-- Cadastro -->
       <button type="button" class="botaoCriar" onclick="abrirPopupUsuario()">Adicionar<img class="iconeAdicionar" src="${pageContext.request.contextPath}/assets/fi-br-add.svg" alt="" aria-hidden="true"></button>
 
-      <dialog id="popupUsuario" class="popupFormulario popupFormularioMedio">
+      <dialog id="popupUsuario" class="popupFormulario popupFormularioGrande">
           <div class="barraPopupFormulario"></div>
           <div class="conteudoPopupFormulario">
           <h2><span>Criar</span> usuário</h2>
@@ -136,8 +136,17 @@
             <div class="gradeCamposPopup">
               <label class="campoPopup" for="nome">Nome<input id="nome" name="nome" type="text" required></label>
               <label class="campoPopup" for="email">E-mail<input id="email" name="email" type="email" required></label>
-              <label class="campoPopup" for="preferenciasConsumo">Preferências<input id="preferenciasConsumo" name="preferenciasConsumo" type="text"></label>
-              <label class="campoPopup" for="configuracaoAlerta">Alerta<input id="configuracaoAlerta" name="configuracaoAlerta" type="text"></label>
+              <label class="campoPopup" for="preferenciasConsumo">Preferências<input id="preferenciasConsumo" name="preferenciasConsumo" type="text" required></label>
+              <label class="campoPopup" for="configuracaoAlerta">Alerta<input id="configuracaoAlerta" name="configuracaoAlerta" type="text" required></label>
+              <div class="campoPopup campoSenhaUsuario">
+                <label for="senhaUsuarioCadastro">Senha</label>
+                <span class="entradaSenhaUsuario">
+                  <input id="senhaUsuarioCadastro" name="senha" type="password" required>
+                  <button type="button" class="botaoMostrarSenha" data-campo-senha="senhaUsuarioCadastro" aria-label="Mostrar senha" aria-pressed="false" onclick="alternarVisibilidadeSenha(this)">
+                    <img src="<c:url value='/assets/fi-br-eye-crossed.svg'/>" alt="" aria-hidden="true">
+                  </button>
+                </span>
+              </div>
             </div>
             <div class="acoesPopupFormulario">
               <button type="button" class="botaoCancelarPopup" onclick="fecharPopupUsuario()">cancelar</button>
@@ -174,7 +183,7 @@
                     <button type="button" class="botaoBloquear" title="Ocultar dados da linha" aria-label="Ocultar dados da linha" aria-pressed="false" onclick="alternarDadosLinha(this)">
                       <img src="<c:url value='/assets/fi-br-eye.svg'/>" alt="" aria-hidden="true">
                     </button>
-                    <button type="button" class="botaoEditar" title="Editar usuário" aria-label="Editar usuário" data-id="${usuario.id}" data-nome="${fn:escapeXml(usuario.nome)}" data-email="${fn:escapeXml(usuario.email)}" data-preferencias="" data-alerta="${fn:escapeXml(usuario.configuracaoAlerta)}" onclick="abrirPopupEdicaoUsuario(this)">
+                    <button type="button" class="botaoEditar" title="Editar usuário" aria-label="Editar usuário" data-id="${usuario.id}" data-nome="${fn:escapeXml(usuario.nome)}" data-email="${fn:escapeXml(usuario.email)}" data-preferencias="${fn:escapeXml(usuario.preferenciasConsumo)}" data-alerta="${fn:escapeXml(usuario.configuracaoAlerta)}" onclick="abrirPopupEdicaoUsuario(this)">
                       <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                     </button>
                     <button type="button" class="botaoExcluir" title="Excluir usuário" aria-label="Excluir usuário" onclick="abrirPopupExclusaoUsuario('${usuario.id}')"><img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="ícone de lixeira" aria-hidden="true"></button>
@@ -189,7 +198,7 @@
   </main>
 
   <!-- Edicao -->
-  <dialog id="popupEdicao" class="popupFormulario popupFormularioMedio">
+  <dialog id="popupEdicao" class="popupFormulario popupFormularioGrande">
     <div class="barraPopupFormulario"></div>
     <div class="conteudoPopupFormulario">
       <h2><span>Editar</span> usuário</h2>
@@ -200,6 +209,15 @@
           <label class="campoPopup" for="emailUsuarioEdicao">E-mail<input id="emailUsuarioEdicao" class="textoHuninn" name="email" type="email" required></label>
           <label class="campoPopup" for="preferenciasUsuarioEdicao">Preferências<input id="preferenciasUsuarioEdicao" name="preferenciasConsumo" type="text"></label>
           <label class="campoPopup" for="alertaUsuarioEdicao">Alerta<input id="alertaUsuarioEdicao" name="configuracaoAlerta" type="text"></label>
+          <div class="campoPopup campoSenhaUsuario">
+            <label for="senhaUsuarioEdicao">Senha</label>
+            <span class="entradaSenhaUsuario">
+              <input id="senhaUsuarioEdicao" name="senha" type="password" required>
+              <button type="button" class="botaoMostrarSenha" data-campo-senha="senhaUsuarioEdicao" aria-label="Mostrar senha" aria-pressed="false" onclick="alternarVisibilidadeSenha(this)">
+                <img src="<c:url value='/assets/fi-br-eye-crossed.svg'/>" alt="" aria-hidden="true">
+              </button>
+            </span>
+          </div>
         </div>
         <div class="acoesPopupFormulario">
           <button type="button" class="botaoCancelarPopup" onclick="fecharPopupEdicao()">cancelar</button>

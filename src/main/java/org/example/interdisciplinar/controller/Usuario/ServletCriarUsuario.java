@@ -5,9 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.UsuarioDAO;
-import org.example.interdisciplinar.model.Alimento;
 import org.example.interdisciplinar.model.ConfiguracaoAlerta;
 import org.example.interdisciplinar.model.Usuario;
 import org.example.interdisciplinar.utils.Regex;
@@ -15,15 +13,12 @@ import org.example.interdisciplinar.utils.Regex;
 import java.io.IOException;
 
 
-// Definindo um nome interno para o servlet e a url que ativa ele
 @WebServlet(name = "CriarUsuarios", value = "/usuarios/insert")
-
-
 public class ServletCriarUsuario extends HttpServlet {
     private UsuarioDAO usuarioDAO;
 
     @Override
-    public void init(){
+    public void init() {
         usuarioDAO = new UsuarioDAO();
     }
 
@@ -31,23 +26,20 @@ public class ServletCriarUsuario extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
-        String preferencias = request.getParameter("preferencias");
-        String configAlerta = request.getParameter("configuracao");
-        String telefone = request.getParameter("telefone");
+        String preferencias = request.getParameter("preferenciasConsumo");
+        String configAlerta = request.getParameter("configuracaoAlerta");
         String senha = request.getParameter("senha");
 
-        if(
+        if (
                 nome == null || nome.isBlank() ||
                 email == null || email.isBlank() ||
                 preferencias == null || preferencias.isBlank() ||
                 configAlerta == null || configAlerta.isBlank() ||
-                telefone == null || telefone.isBlank() ||
                 senha == null || senha.isBlank()
-        ){
+        ) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Todos os campos precisam ser preenchidos!");
             return;
         }
-
 
         if (!Regex.validarSenha(senha)) {
             response.sendError(
@@ -65,32 +57,29 @@ public class ServletCriarUsuario extends HttpServlet {
             return;
         }
 
-        if (!Regex.validarTelefone(telefone)) {
+        ConfiguracaoAlerta configuracao;
+
+        try {
+            configuracao = ConfiguracaoAlerta.valueOf(configAlerta.trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
             response.sendError(
                     HttpServletResponse.SC_BAD_REQUEST,
-                    "Telefone com formato inválido."
+                    "Configuração de alerta inválida."
             );
             return;
         }
 
-        ConfiguracaoAlerta configuracao = ConfiguracaoAlerta.valueOf(configAlerta);
-        Usuario usuario = new Usuario(nome, email, preferencias, configuracao, telefone, senha);
+        Usuario usuario = new Usuario(nome, email, preferencias, configuracao, senha, null);
         boolean inserido = usuarioDAO.inserir(usuario);
 
-        if(inserido){
-            // Redireciona para a listagem
-            response.sendRedirect(
-                    request.getContextPath() + "/alimentos"
-            );
-
+        if (inserido) {
+            response.sendRedirect(request.getContextPath() + "/usuarios");
         } else {
             response.sendError(
                     HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Não foi possível inserir o alimento."
+                    "Não foi possível inserir o usuário."
             );
         }
-
-
     }
 
 }
