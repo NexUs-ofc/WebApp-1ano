@@ -1,5 +1,7 @@
 package org.example.interdisciplinar.model;
 
+import java.time.LocalDate;
+
 public class Empresa {
 
     // Atributos
@@ -10,17 +12,19 @@ public class Empresa {
     private int idEndereco;
     private String telefone;
     private String email;
+    private LocalDate dataCadastro;
 
     // Construtores
 
     public Empresa(){}
 
-    public Empresa(String nome, String cnpj, int idEndereco, String telefone, String email) {
+    public Empresa(String nome, String cnpj, int idEndereco, String telefone, String email, LocalDate dataCadastro) {
         this.nome = nome;
         this.cnpj = cnpj;
         this.idEndereco = idEndereco;
         this.telefone = telefone;
         this.email = email;
+        this.dataCadastro = dataCadastro;
     }
 
     // Getters e setters
@@ -74,6 +78,14 @@ public class Empresa {
         this.email = email;
     }
 
+    public LocalDate getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(LocalDate dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
     // Método toString()
 
     @Override
@@ -85,6 +97,7 @@ public class Empresa {
                 "Id do endereço: " + this.idEndereco + "\n" +
                 "Telefone: " + this.telefone + "\n" +
                 "Email: " + this.email + "\n" +
+                "Data de cadastro: " + this.dataCadastro + "\n" +
                 "============================";
     }
 }
