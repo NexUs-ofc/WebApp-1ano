@@ -1,11 +1,9 @@
+
 name: Deploy da landing no GitHub Pages
 
 on:
   push:
     branches: [main]
-    paths:
-      - "src/main/webapp/**"
-      - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
 
 permissions:
@@ -37,12 +35,22 @@ jobs:
           mkdir -p _site/JS
 
           cp src/main/webapp/*.html _site/
-          cp -R src/main/webapp/css _site/css
-          cp -R src/main/webapp/assets _site/assets
-          cp -R src/main/webapp/assests _site/assests
 
-          cp src/main/webapp/WEB-INF/JS/proposito.js _site/JS/
-          cp src/main/webapp/WEB-INF/JS/equipe.js _site/JS/
+          for pasta in css assets assests; do
+            if [ -d "src/main/webapp/$pasta" ]; then
+              cp -R "src/main/webapp/$pasta" "_site/$pasta"
+            fi
+          done
+
+          if [ -d "src/main/webapp/JS" ]; then
+            cp -R src/main/webapp/JS/. _site/JS/
+          fi
+
+          if [ -d "src/main/webapp/WEB-INF/JS" ]; then
+            cp -R src/main/webapp/WEB-INF/JS/. _site/JS/
+          fi
+
+          touch _site/.nojekyll
 
       - name: Enviar arquivos
         uses: actions/upload-pages-artifact@v4

@@ -34,8 +34,8 @@ public class UsuarioDAO {
             pstmt.setString(2, usuario.getEmail());
             pstmt.setString(3, usuario.getPreferenciasConsumo());
             pstmt.setString(4, usuario.getConfiguracaoAlerta().name());
-            pstmt.setString(5, usuario.getTelefone());
-            pstmt.setString(6, usuario.getSenha());
+            pstmt.setString(5, usuario.getSenha());
+            pstmt.setString(6, usuario.getTelefone());
 
             //Se ação tiver dados certo commita e retorna true
             linhasAfetadas = pstmt.executeUpdate();
@@ -65,7 +65,7 @@ public class UsuarioDAO {
         Connection conn = GerenteConexao.conectar();
 
         //Comando de deletar em SQL
-        String sqlDelete = "DELETE FROM tb_usuario WHERE id=?";
+        String sqlDelete = "DELETE FROM tb_usuario WHERE id_usuario=?";
 
         //Controle de linhas afetadas
         int linhasAfetadas = 0;
@@ -103,7 +103,7 @@ public class UsuarioDAO {
         Connection conn = GerenteConexao.conectar();
 
         //Comando de listar em SQL
-        String sqlSelect = "SELECT * FROM tb_usuario_view";
+        String sqlSelect = "SELECT id_usuario, nome, email, telefone, configuracao_alerta FROM tb_usuario";
 
         // Criando uma lista para guardar os registros dos usuários no bd
         List<UsuarioView> view = new ArrayList<>();
@@ -115,11 +115,11 @@ public class UsuarioDAO {
             //Enquanto tiver mais registros cria novos objetos e adiciona à lista
             while (rs.next()){
                 UsuarioView usuarioTemporario = new UsuarioView(
-                        rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        ConfiguracaoAlerta.valueOf(rs.getString(5))
+                        rs.getInt("id_usuario"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("telefone"),
+                        ConfiguracaoAlerta.valueOf(rs.getString("configuracao_alerta"))
 
                 );
                 view.add(usuarioTemporario);
@@ -171,7 +171,7 @@ public class UsuarioDAO {
           String email,
           String ordenar
     ){
-        StringBuilder sql = new StringBuilder("SELECT * FROM tb_usuario_view WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT id_usuario, nome, email, telefone, configuracao_alerta FROM tb_usuario WHERE 1=1");
         List<Object> parametrosDoFiltro = new ArrayList<>();
         List<UsuarioView> view = new ArrayList<>();
 
@@ -225,11 +225,11 @@ public class UsuarioDAO {
                 //Enquanto tiver mais registros cria novos objetos e adiciona à lista
                 while (rs.next()){
                     UsuarioView usuarioTemporario = new UsuarioView(
-                            rs.getInt(1),
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getString(4),
-                            ConfiguracaoAlerta.valueOf(rs.getString(5))
+                            rs.getInt("id_usuario"),
+                            rs.getString("nome"),
+                            rs.getString("email"),
+                            rs.getString("telefone"),
+                            ConfiguracaoAlerta.valueOf(rs.getString("configuracao_alerta"))
                     );
                     view.add(usuarioTemporario);
                 }
@@ -249,7 +249,7 @@ public class UsuarioDAO {
     }
 
     public Usuario buscarporId(int id){
-        String sql = "SELECT * FROM tb_usuario WHERE id=?";
+        String sql = "SELECT * FROM tb_usuario WHERE id_usuario=?";
         try(
                 Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -263,9 +263,10 @@ public class UsuarioDAO {
                             rs.getString("email"),
                             rs.getString("preferencias_consumo"),
                             ConfiguracaoAlerta.valueOf(rs.getString("configuracao_alerta")),
-                            rs.getString("telefone"),
-                            rs.getString("senha")
+                            rs.getString("senha"),
+                            rs.getString("telefone")
                     );
+                    usuario.setId(rs.getInt("id_usuario"));
                     return usuario;
                 }
             }

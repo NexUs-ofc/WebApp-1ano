@@ -1,4 +1,4 @@
-package org.example.interdisciplinar.controller.ItemDispensa;
+package org.example.interdisciplinar.controller.ItemDespensa;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-@WebServlet(name = "ListarItens", value = "/itensDispensa")
+@WebServlet(name = "ListarItens", value = "/itensDespensa")
 public class ServletListarItem extends HttpServlet {
     private ItemDespensaDAO itemDispensaDAO;
 
@@ -94,7 +94,7 @@ public class ServletListarItem extends HttpServlet {
         } catch (NumberFormatException nfe){
             getServletContext().log("Erro ao formatar o número.", nfe);
             request.setAttribute("erro", "O ID dos itens precisa ser um número inteiro");
-            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
 
@@ -108,7 +108,7 @@ public class ServletListarItem extends HttpServlet {
             );
 
             // Encaminha para a página de erro
-            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
 
         } catch (ErroPersistenciaException e) {
@@ -123,7 +123,7 @@ public class ServletListarItem extends HttpServlet {
             );
 
             // Encaminha para a página de erro.
-            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         }
     }

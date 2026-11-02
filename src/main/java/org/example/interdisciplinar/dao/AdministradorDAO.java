@@ -288,14 +288,14 @@ public class AdministradorDAO {
 
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
-                    Administrador administrador = new Administrador(
-                            rs.getString("nome"),
-                            rs.getString("email"),
-                            rs.getString("senha"),
-                            rs.getString("telefone"),
-                            rs.getString("urlFoto"),
-                            rs.getString("cpf")
-                    );
+                    Administrador administrador = new Administrador();
+                    administrador.setId(rs.getInt("id_administrador"));
+                    administrador.setNome(rs.getString("nome"));
+                    administrador.setEmail(rs.getString("email"));
+                    administrador.setSenha(rs.getString("senha"));
+                    administrador.setTelefone(rs.getString("telefone"));
+                    administrador.setCpf(rs.getString("cpf"));
+                    administrador.setUrlFoto(rs.getString("url_foto"));
                     return administrador;
                 }
             }

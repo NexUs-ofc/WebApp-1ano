@@ -69,6 +69,7 @@ public class CategoriaDAO {
 
             //Seta valor no '?' do comando SQL
             pstmt.setInt(1, id);
+            linhasAfetadas = pstmt.executeUpdate();
 
             //Se ação tiver dado certo retorna true
             if (linhasAfetadas > 0) {
@@ -224,7 +225,7 @@ public class CategoriaDAO {
     }
 
     public Categoria buscarporId(int id){
-        String sql = "SELECT * FROM tb_categoria WHERE id=?";
+        String sql = "SELECT * FROM tb_categoria WHERE id_categoria=?";
         try(
                 Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -237,6 +238,7 @@ public class CategoriaDAO {
                             rs.getString("nome"),
                             rs.getString("descricao")
                     );
+                    categoria.setId(rs.getInt("id_categoria"));
                     return categoria;
                 }
             }

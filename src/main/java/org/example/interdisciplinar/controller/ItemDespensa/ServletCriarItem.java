@@ -1,4 +1,4 @@
-package org.example.interdisciplinar.controller.ItemDispensa;
+package org.example.interdisciplinar.controller.ItemDespensa;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 // Definindo um nome interno para o servlet e a url que ativa ele
-@WebServlet(name = "CriarItem", value = "/itens/insert")
+@WebServlet(name = "CriarItem", value = "/itensDespensa/insert")
 
 
 public class ServletCriarItem extends HttpServlet {
@@ -99,7 +99,7 @@ public class ServletCriarItem extends HttpServlet {
 
             // Redireciona para a listagem
             response.sendRedirect(
-                    request.getContextPath() + "/itens"
+                    request.getContextPath() + "/itensDespensa"
             );
         } else {
 
