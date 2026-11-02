@@ -101,7 +101,7 @@ public class EmpresaDAO {
     public List<EmpresaView> listar() {
 
         Connection conn = GerenteConexao.conectar();
-        String sqlSelect = "SELECT * FROM view_empresa";
+        String sqlSelect = "SELECT id_empresa, nome, cnpj, cep, telefone FROM view_empresa";
         List<EmpresaView> empresas = new ArrayList<>();
 
         //Iniciando executor que: adicionará valores no comando SQL e executará o comando
@@ -111,11 +111,11 @@ public class EmpresaDAO {
             //Enquanto tiver mais registros cria novos objetos e adiciona à lista
             while (rs.next()) {
                 EmpresaView empresaTemporaria = new EmpresaView(
-                        rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(5)
+                        rs.getInt("id_empresa"),
+                        rs.getString("nome"),
+                        rs.getString("cnpj"),
+                        rs.getString("cep"),
+                        rs.getString("telefone")
                 );
                 empresas.add(empresaTemporaria);
             }
@@ -166,7 +166,7 @@ public class EmpresaDAO {
             String nome,
             String ordenar
     ) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM view_empresa WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT id_empresa, nome, cnpj, cep, telefone FROM view_empresa WHERE 1=1");
         List<Object> parametrosDoFiltro = new ArrayList<>();
         List<EmpresaView> empresas = new ArrayList<>();
 
@@ -219,11 +219,11 @@ public class EmpresaDAO {
 
                 while (rs.next()) {
                     EmpresaView empresaTemporaria = new EmpresaView(
-                            rs.getInt(1),
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getString(4),
-                            rs.getString(5)
+                            rs.getInt("id_empresa"),
+                            rs.getString("nome"),
+                            rs.getString("cnpj"),
+                            rs.getString("cep"),
+                            rs.getString("telefone")
                     );
                     empresas.add(empresaTemporaria);
                 }

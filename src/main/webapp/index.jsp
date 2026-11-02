@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/views.css">
-    <title>analise</title>
+    <title>Análise</title>
     <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/favicon.ico">
 </head>
 <body>
@@ -42,7 +42,7 @@
                   <img class="fotoAdministradorSidebar" src="<c:out value='${sessionScope.administradorFoto}'/>" alt="Foto de perfil">
                 </c:when>
                 <c:otherwise>
-                  <img src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="Foto de perfil">
+                  <img class="fotoAdministradorSidebar" src="${pageContext.request.contextPath}/assets/administrador-placeholder.jpeg" alt="Foto de perfil">
                 </c:otherwise>
               </c:choose>
             </div>
@@ -59,13 +59,72 @@
           </form>
         </div>
     </nav>
-    <main class="conteudo">
+    <main class="conteudo conteudoAnalise">
+      <div class="painelAnalise">
       <div class="titulo">
         <h1>Área Restrita</h1>
-        <small>Análise</small>
+        <small>Início</small>
       </div>
-      <div>
-        <h4>insira codigo sla o que barras inicio LOGIN FAZ LOGIN #grrrrmondays</h4>
+
+      <!-- Boas-vindas -->
+      <section class="boasVindasAnalise">
+        <c:choose>
+          <c:when test="${not empty sessionScope.administradorFoto}">
+            <img class="fotoBoasVindasAnalise" src="<c:out value='${sessionScope.administradorFoto}'/>" alt="Foto do administrador">
+          </c:when>
+          <c:otherwise>
+            <img class="fotoBoasVindasAnalise" src="${pageContext.request.contextPath}/assets/administrador-placeholder.jpeg" alt="Foto do administrador">
+          </c:otherwise>
+        </c:choose>
+        <div class="textoBoasVindasAnalise">
+          <span>Bem-vindo de volta</span>
+          <h2>Olá <c:out value="${sessionScope.administradorNome}" default="Kauê"/> !</h2>
+          <p>Acompanhe novos cadastros, estoque, categorias e atividades recentes em um único painel.</p>
+        </div>
+        <img class="decoracaoBoasVindasAnalise" src="${pageContext.request.contextPath}/assets/analise-decoracao.png" alt="">
+      </section>
+
+      <div class="gradeAnalise">
+        <!-- Indicadores -->
+        <section class="indicadoresAnalise" aria-label="Indicadores gerais">
+          <article class="cartaoIndicadorAnalise">
+            <h2>Novos Cadastros</h2>
+            <strong>78</strong>
+            <p>+12% em relação ao mês anterior</p>
+          </article>
+          <article class="cartaoIndicadorAnalise">
+            <h2>Total Usuários</h2>
+            <strong>12.040</strong>
+            <p>10 administradores</p>
+          </article>
+          <article class="cartaoIndicadorAnalise">
+            <h2>Total de itens Cadastrados</h2>
+            <strong>4.502</strong>
+            <p>678 itens próximos ao vencimento</p>
+          </article>
+        </section>
+
+        <div class="resumoAnalise">
+          <!-- Atividades recentes -->
+          <section class="atividadesAnalise">
+            <h2>Atividades Recentes</h2>
+            <ul>
+              <li>Nova empresa cadastrada: <strong>Mercado Raio de Luz</strong></li>
+              <li>Relatório mensal enviado para <strong>13 empresas parceiras</strong></li>
+              <li>Categoria com maior numero de itens cadastrados: <strong>Carnes</strong></li>
+            </ul>
+          </section>
+
+          <!-- Gráfico -->
+          <section class="graficoAnalise">
+            <div class="cabecalhoGraficoAnalise">
+              <h2>Empresas cadastradas por mês</h2>
+              <span><i></i>Empresas</span>
+            </div>
+            <canvas id="graficoEmpresasAnalise" role="img" aria-label="Gráfico de empresas cadastradas por mês"></canvas>
+          </section>
+        </div>
+      </div>
       </div>
     </main>
     <script src="${pageContext.request.contextPath}/JS/views.js"></script>

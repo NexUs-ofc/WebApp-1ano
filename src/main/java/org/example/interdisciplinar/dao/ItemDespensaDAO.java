@@ -19,7 +19,7 @@ public class ItemDespensaDAO {
         Connection conn = GerenteConexao.conectar();
 
         //Comando de inserir em SQL
-        String sqlInsert = "INSERT INTO tb_item_dispensa (id_casa, id_alimento, quantidade, data_validade) VALUES (?, ?, ?, ?)";
+        String sqlInsert = "INSERT INTO tb_item_despensa (id_usuario, id_alimento, quantidade, data_validade) VALUES (?, ?, ?, ?)";
 
         //Controle de linhas afetadas
         int linhasAfetadas = 0;
@@ -28,7 +28,7 @@ public class ItemDespensaDAO {
         try (PreparedStatement pstmt = conn.prepareStatement(sqlInsert)) {
 
             //Seta valores nos '?' do comando SQL
-            pstmt.setInt(1, itemDespensa.getIdCasa());
+            pstmt.setInt(1, itemDespensa.getIdUsuario());
             pstmt.setInt(2, itemDespensa.getIdAlimento());
             pstmt.setInt(3, itemDespensa.getQuantidade());
             pstmt.setDate(4, Date.valueOf(itemDespensa.getValidade()));
@@ -60,7 +60,7 @@ public class ItemDespensaDAO {
         Connection conn = GerenteConexao.conectar();
 
         //Comando de deletar em SQL
-        String sqlDelete = "DELETE FROM tb_item_dispensa WHERE id_item=?";
+        String sqlDelete = "DELETE FROM tb_item_despensa WHERE id_item=?";
 
         //Controle de linhas afetadas
         int linhasAfetadas = 0;
@@ -100,7 +100,7 @@ public class ItemDespensaDAO {
         Connection conn = GerenteConexao.conectar();
 
         //Comando de listar em SQL
-        String sqlSelect = "SELECT * FROM view_item_dispensa";
+        String sqlSelect = "SELECT id_item, id_usuario, id_alimento, usuario, alimento, quantidade, data_validade FROM view_item_despensa";
 
         // Criando lista que irá armazenar os registros dos itens da dispensa
         List<ItemDespensaView> itensDespensa = new ArrayList<>();
@@ -113,15 +113,17 @@ public class ItemDespensaDAO {
             while (rs.next()) {
                 LocalDate validade = null;
 
-                if (rs.getDate(5) != null) {
-                    validade = rs.getDate(5).toLocalDate();
+                if (rs.getDate("data_validade") != null) {
+                    validade = rs.getDate("data_validade").toLocalDate();
                 }
 
                 ItemDespensaView itemDespensa = new ItemDespensaView(
-                        rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getInt(4),
+                        rs.getInt("id_item"),
+                        rs.getInt("id_usuario"),
+                        rs.getInt("id_alimento"),
+                        rs.getString("usuario"),
+                        rs.getString("alimento"),
+                        rs.getInt("quantidade"),
                         validade
                 );
 
@@ -142,12 +144,12 @@ public class ItemDespensaDAO {
     }
 
     public boolean atualizar(ItemDespensa itemDespensa){
-        String sql = "UPDATE tb_item_dispensa SET id_casa=?, id_alimento=?, quantidade=?, data_validade=? WHERE id_item=?";
+        String sql = "UPDATE tb_item_despensa SET id_usuario=?, id_alimento=?, quantidade=?, data_validade=? WHERE id_item=?";
         try (
                 Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
         ){
-            pstmt.setInt(1, itemDespensa.getIdCasa());
+            pstmt.setInt(1, itemDespensa.getIdUsuario());
             pstmt.setInt(2, itemDespensa.getIdAlimento());
             pstmt.setInt(3, itemDespensa.getQuantidade());
 
@@ -176,7 +178,7 @@ public class ItemDespensaDAO {
             LocalDate dataFim,
             String ordenar
     ){
-        StringBuilder sql = new StringBuilder("SELECT * FROM tb_item_dispensa WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT id_item, id_usuario, id_alimento, usuario, alimento, quantidade, data_validade FROM view_item_despensa WHERE 1=1");
         List<Object> parametrosDoFiltro = new ArrayList<>();
         List<ItemDespensaView> itensDespensa = new ArrayList<>();
 
@@ -197,11 +199,11 @@ public class ItemDespensaDAO {
             parametrosDoFiltro.add(qtdMaxima);
         }
         if(dataInicio != null){
-            sql.append(" AND validade >=?");
+            sql.append(" AND data_validade >=?");
             parametrosDoFiltro.add(dataInicio);
         }
         if(dataFim != null){
-            sql.append(" AND validade <=?");
+            sql.append(" AND data_validade <=?");
             parametrosDoFiltro.add(dataFim);
         }
 
@@ -215,7 +217,7 @@ public class ItemDespensaDAO {
                 break;
 
             case "validade":
-                sql.append(" ORDER BY validade");
+                sql.append(" ORDER BY data_validade");
                 break;
 
             default:
@@ -237,15 +239,17 @@ public class ItemDespensaDAO {
                 while (rs.next()) {
                     LocalDate validade = null;
 
-                    if (rs.getDate(5) != null) {
-                        validade = rs.getDate(5).toLocalDate();
+                    if (rs.getDate("data_validade") != null) {
+                        validade = rs.getDate("data_validade").toLocalDate();
                     }
 
                     ItemDespensaView itemDespensa = new ItemDespensaView(
-                            rs.getInt(1),
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getInt(4),
+                            rs.getInt("id_item"),
+                            rs.getInt("id_usuario"),
+                            rs.getInt("id_alimento"),
+                            rs.getString("usuario"),
+                            rs.getString("alimento"),
+                            rs.getInt("quantidade"),
                             validade
                     );
 
@@ -266,7 +270,7 @@ public class ItemDespensaDAO {
         }
     }
     public ItemDespensa buscarporId(int id){
-        String sql = "SELECT * FROM tb_item_despensa WHERE id=?";
+        String sql = "SELECT * FROM tb_item_despensa WHERE id_item=?";
         try(
                 Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -275,12 +279,14 @@ public class ItemDespensaDAO {
 
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
+                    Date dataValidade = rs.getDate("data_validade");
                     ItemDespensa itemDespensa = new ItemDespensa(
                             rs.getInt("id_usuario"),
                             rs.getInt("id_alimento"),
                             rs.getInt("quantidade"),
-                            rs.getDate("validade").toLocalDate()
+                            dataValidade == null ? null : dataValidade.toLocalDate()
                     );
+                    itemDespensa.setId(rs.getInt("id_item"));
                     return itemDespensa;
                 }
             }

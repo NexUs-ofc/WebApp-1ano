@@ -116,7 +116,7 @@ function abrirPopupEdicaoAdministrador(botao) {
 
 // Alterna a senha do administrador entre oculta e visível.
 function alternarVisibilidadeSenha(botao) {
-  const campoSenha = document.getElementById("senhaAdministradorEdicao");
+  const campoSenha = document.getElementById(botao.dataset.campoSenha || "senhaAdministradorEdicao");
   const icone = botao.querySelector("img");
   const mostrarSenha = campoSenha.type === "password";
 
@@ -126,6 +126,17 @@ function alternarVisibilidadeSenha(botao) {
   icone.src = mostrarSenha
       ? icone.src.replace("fi-br-eye-crossed.svg", "fi-br-eye.svg")
       : icone.src.replace("fi-br-eye.svg", "fi-br-eye-crossed.svg");
+}
+
+// Volta o campo de senha do usuário para o estado oculto ao abrir o pop-up.
+function ocultarSenhaUsuario(idCampo) {
+  const campoSenha = document.getElementById(idCampo);
+  const botao = document.querySelector(`[data-campo-senha="${idCampo}"]`);
+
+  campoSenha.type = "password";
+  botao.setAttribute("aria-label", "Mostrar senha");
+  botao.setAttribute("aria-pressed", "false");
+  botao.querySelector("img").src = botao.querySelector("img").src.replace("fi-br-eye.svg", "fi-br-eye-crossed.svg");
 }
 
 // Procura o campo de arquivo da foto.
@@ -314,6 +325,8 @@ function abrirPopupExclusaoItemDespensa(idItem) {
 
 // Abre o formulário de cadastro de usuário.
 function abrirPopupUsuario() {
+  document.getElementById("senhaUsuarioCadastro").value = "";
+  ocultarSenhaUsuario("senhaUsuarioCadastro");
   document.getElementById("popupUsuario").showModal();
 }
 
@@ -329,6 +342,8 @@ function abrirPopupEdicaoUsuario(botao) {
   document.getElementById("emailUsuarioEdicao").value = botao.dataset.email;
   document.getElementById("preferenciasUsuarioEdicao").value = botao.dataset.preferencias;
   document.getElementById("alertaUsuarioEdicao").value = botao.dataset.alerta;
+  document.getElementById("senhaUsuarioEdicao").value = "";
+  ocultarSenhaUsuario("senhaUsuarioEdicao");
   document.getElementById("popupEdicao").showModal();
 }
 
@@ -336,4 +351,112 @@ function abrirPopupEdicaoUsuario(botao) {
 function abrirPopupExclusaoUsuario(idUsuario) {
   document.getElementById("idUsuarioExclusao").value = idUsuario;
   document.getElementById("popupExclusao").showModal();
+}
+
+
+/* ---------------------------------------------------------------
+   ANÁLISE
+   --------------------------------------------------------------- */
+
+// Dados temporários do gráfico. Depois eles podem ser substituídos pelos valores enviados pelo back-end.
+const empresasCadastradasPorMes = [48, 72, 60, 90, 78, 108, 96, 114, 102, 120, 84, 66];
+const mesesGraficoAnalise = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+
+// Desenha uma barra com os dois cantos superiores arredondados.
+function desenharBarraGrafico(contexto, x, y, largura, altura, raio) {
+  contexto.beginPath();
+  contexto.moveTo(x, y + raio);
+  contexto.quadraticCurveTo(x, y, x + raio, y);
+  contexto.lineTo(x + largura - raio, y);
+  contexto.quadraticCurveTo(x + largura, y, x + largura, y + raio);
+  contexto.lineTo(x + largura, y + altura);
+  contexto.lineTo(x, y + altura);
+  contexto.closePath();
+  contexto.fill();
+}
+
+// Monta o gráfico no canvas e o redesenha quando o tamanho disponível muda.
+function desenharGraficoEmpresasAnalise() {
+  const canvas = document.getElementById("graficoEmpresasAnalise");
+
+  if (!canvas) {
+    return;
+  }
+
+  const contexto = canvas.getContext("2d");
+  const largura = canvas.clientWidth;
+  const altura = canvas.clientHeight;
+  const escala = window.devicePixelRatio || 1;
+
+  canvas.width = Math.round(largura * escala);
+  canvas.height = Math.round(altura * escala);
+  contexto.setTransform(escala, 0, 0, escala, 0, 0);
+  contexto.clearRect(0, 0, largura, altura);
+
+  const margemEsquerda = 40;
+  const alturaRotulos = 17;
+  const alturaGrafico = altura - alturaRotulos;
+  const larguraGrafico = largura - margemEsquerda;
+  const espacoBarras = 8;
+  const larguraBarra = (larguraGrafico - espacoBarras * (empresasCadastradasPorMes.length - 1)) / empresasCadastradasPorMes.length;
+  const valorMaximo = 120;
+
+  contexto.font = "10px Huninn, sans-serif";
+  contexto.fillStyle = "#968d9e";
+  contexto.textBaseline = "top";
+  contexto.textAlign = "right";
+
+  [120, 90, 60, 30, 0].forEach((valor, indice) => {
+    const y = indice * (alturaGrafico / 4);
+    contexto.fillText(String(valor), 28, y);
+  });
+
+  contexto.fillStyle = "#7b35b8";
+  empresasCadastradasPorMes.forEach((valor, indice) => {
+    const alturaBarra = alturaGrafico * (valor / valorMaximo);
+    const x = margemEsquerda + indice * (larguraBarra + espacoBarras);
+    const y = alturaGrafico - alturaBarra;
+    desenharBarraGrafico(contexto, x, y, larguraBarra, alturaBarra, Math.min(8, larguraBarra / 2));
+  });
+
+  contexto.fillStyle = "#968d9e";
+  contexto.textAlign = "center";
+  contexto.textBaseline = "bottom";
+  mesesGraficoAnalise.forEach((mes, indice) => {
+    const x = margemEsquerda + indice * (larguraBarra + espacoBarras) + larguraBarra / 2;
+    contexto.fillText(mes, x, altura);
+  });
+}
+
+// Reduz o painel proporcionalmente quando falta altura e ocupa toda a largura disponível.
+function ajustarEscalaAnalise() {
+  const conteudo = document.querySelector(".conteudoAnalise");
+  const painel = document.querySelector(".painelAnalise");
+
+  if (!conteudo || !painel) {
+    return;
+  }
+
+  const estiloConteudo = getComputedStyle(conteudo);
+  const larguraDisponivel = conteudo.clientWidth
+      - parseFloat(estiloConteudo.paddingLeft)
+      - parseFloat(estiloConteudo.paddingRight);
+  const alturaDisponivel = conteudo.clientHeight
+      - parseFloat(estiloConteudo.paddingTop)
+      - parseFloat(estiloConteudo.paddingBottom);
+  const escala = Math.min(1, alturaDisponivel / 853);
+
+  painel.style.setProperty("--escalaAnalise", escala);
+  painel.style.width = `${larguraDisponivel / escala}px`;
+}
+
+window.addEventListener("resize", ajustarEscalaAnalise);
+window.addEventListener("resize", desenharGraficoEmpresasAnalise);
+document.addEventListener("DOMContentLoaded", function () {
+  ajustarEscalaAnalise();
+  desenharGraficoEmpresasAnalise();
+});
+
+if (document.fonts) {
+  document.fonts.ready.then(desenharGraficoEmpresasAnalise);
 }

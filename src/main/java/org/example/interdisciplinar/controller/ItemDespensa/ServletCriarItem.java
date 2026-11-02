@@ -28,24 +28,24 @@ public class ServletCriarItem extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         request.setCharacterEncoding("UTF-8");
 
-        String idCasaTexto = request.getParameter("idCasa");
+        String idUsuarioTexto = request.getParameter("idUsuario");
         String idAlimentoTexto = request.getParameter("idAlimento");
         String quantidadeTexto = request.getParameter("quantidade");
         String validadeTexto = request.getParameter("validade");
 
 
         // Converte a categoria para inteiro
-        int idCasa;
+        int idUsuario;
         int idAlimento;
         int quantidade;
         LocalDate validade = null;
 
         try {
-            idCasa = Integer.parseInt(idCasaTexto);
+            idUsuario = Integer.parseInt(idUsuarioTexto);
         } catch (NumberFormatException e) {
             response.sendError(
                     HttpServletResponse.SC_BAD_REQUEST,
-                    "O ID da casa deve ser numérico."
+                    "O ID do usuário deve ser numérico."
             );
             return;
         }
@@ -86,7 +86,7 @@ public class ServletCriarItem extends HttpServlet {
 
         // Cria o objeto Alimento
         ItemDespensa itemDespensa = new ItemDespensa();
-        itemDespensa.setIdCasa(idCasa);
+        itemDespensa.setIdUsuario(idUsuario);
         itemDespensa.setIdAlimento(idAlimento);
         itemDespensa.setQuantidade(quantidade);
         itemDespensa.setValidade(validade);
