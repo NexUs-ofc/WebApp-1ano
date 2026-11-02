@@ -11,14 +11,14 @@ import java.util.List;
 // Abertura da classe
 public class ItemDespensaDAO {
 
-    // Método de inserir um item na despensa do usuário
+    // Método de inserir um item na dispensa do usuário
     public boolean inserir(ItemDespensa itemDespensa){
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
 
         //Comando de inserir em SQL
-        String sqlInsert = "INSERT INTO tb_item_despensa (id_casa, id_alimento, quantidade, data_validade) VALUES (?, ?, ?, ?)";
+        String sqlInsert = "INSERT INTO tb_item_dispensa (id_casa, id_alimento, quantidade, data_validade) VALUES (?, ?, ?, ?)";
 
         //Controle de linhas afetadas
         int linhasAfetadas = 0;
@@ -58,14 +58,14 @@ public class ItemDespensaDAO {
         }
     }
 
-    // Método para deletar um item da despensa do usuário
+    // Método para deletar um item da dispensa do usuário
     public boolean deletar(int idItem){
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
 
         //Comando de deletar em SQL
-        String sqlDelete = "DELETE FROM tb_item_despensa WHERE id_item=?";
+        String sqlDelete = "DELETE FROM tb_item_dispensa WHERE id_item=?";
 
         //Controle de linhas afetadas
         int linhasAfetadas = 0;
@@ -103,16 +103,16 @@ public class ItemDespensaDAO {
         }
     }
 
-    // Método para listar todos os itens da despensa
+    // Método para listar todos os itens da dispensa
     public List<ItemDespensaView> listar(){
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
 
         //Comando de listar em SQL
-        String sqlSelect = "SELECT * FROM view_item_despensa";
+        String sqlSelect = "SELECT * FROM view_item_dispensa";
 
-        // Criando lista que irá armazenar os registros dos itens da despensa
+        // Criando lista que irá armazenar os registros dos itens da dispensa
         List<ItemDespensaView> itensDespensa = new ArrayList<>();
 
         //Cria executor que receberá comando e executará ele
@@ -123,22 +123,22 @@ public class ItemDespensaDAO {
             while (rs.next()) {
                 LocalDate validade = null;
 
-                if (rs.getDate("data_validade") != null) {
-                    validade = rs.getDate("data_validade").toLocalDate();
+                if (rs.getDate(5) != null) {
+                    validade = rs.getDate(5).toLocalDate();
                 }
 
                 ItemDespensaView itemDespensa = new ItemDespensaView(
-                        rs.getInt("id_item"),
-                        rs.getString("usuario"),
-                        rs.getString("alimento"),
-                        rs.getInt("quantidade"),
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getInt(4),
                         validade
                 );
 
                 itensDespensa.add(itemDespensa);
             }
 
-            // Retrona a lista de itens da despensa
+            // Retrona a lista de itens da dispensa
             return itensDespensa;
 
         } catch (SQLException sqle) {
@@ -153,7 +153,7 @@ public class ItemDespensaDAO {
     }
 
     public boolean atualizar(ItemDespensa itemDespensa){
-        String sql = "UPDATE tb_item_despensa SET id_casa=?, id_alimento=?, quantidade=?, data_validade=? WHERE id_item=?";
+        String sql = "UPDATE tb_item_dispensa SET id_casa=?, id_alimento=?, quantidade=?, data_validade=? WHERE id_item=?";
         try (
                 Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -187,7 +187,7 @@ public class ItemDespensaDAO {
             LocalDate dataFim,
             String ordenar
     ){
-        StringBuilder sql = new StringBuilder("SELECT * FROM tb_item_despensa WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT * FROM tb_item_dispensa WHERE 1=1");
         List<Object> parametrosDoFiltro = new ArrayList<>();
         List<ItemDespensaView> itensDespensa = new ArrayList<>();
 
@@ -216,7 +216,7 @@ public class ItemDespensaDAO {
             parametrosDoFiltro.add(dataFim);
         }
 
-        switch (ordenar == null ? "" : ordenar){
+        switch (ordenar){
             case "id":
                 sql.append(" ORDER BY id_item");
                 break;
@@ -263,7 +263,7 @@ public class ItemDespensaDAO {
                     itensDespensa.add(itemDespensa);
                 }
 
-                // Retrona a lista de itens da despensa
+                // Retrona a lista de itens da dispensa
                 return itensDespensa;
             }
 
@@ -297,5 +297,4 @@ public class ItemDespensaDAO {
         }
         return null;
     }
-
 }

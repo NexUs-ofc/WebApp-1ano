@@ -10,7 +10,7 @@ public class Regex {
     public static boolean validarCep(String cep){
 
         // Importando a expressão regular (regex)
-        String expressao = Constantes.regexCep;
+        String expressao = Constantes.REGEX_CEP;
 
         // Compilando o regex
         Pattern regex = Pattern.compile(expressao);
@@ -26,7 +26,7 @@ public class Regex {
     public static boolean validarCpf(String cpf){
 
         // Importando a expressão regular (regex)
-        String expressao = Constantes.regexCpf;
+        String expressao = Constantes.REGEX_CPF;
 
         // Compilando o regex
         Pattern regex = Pattern.compile(expressao);
@@ -42,7 +42,7 @@ public class Regex {
     public static boolean validarTelefone(String telefone){
 
         // Importando a expressão regular (regex)
-        String expressao = Constantes.regexTelefone;
+        String expressao = Constantes.REGEX_TELEFONE;
 
         // Compilando o regex
         Pattern regex = Pattern.compile(expressao);
@@ -58,7 +58,7 @@ public class Regex {
     public static boolean validarEmail(String email){
 
         // Importando a expressão regular (regex)
-        String expressao = Constantes.regexEmail;
+        String expressao = Constantes.REGEX_EMAIL;
 
         // Compilando o regex
         Pattern regex = Pattern.compile(expressao);
@@ -74,7 +74,7 @@ public class Regex {
     public static boolean validarSenha(String senha){
 
         // Importando a expressão regular (regex)
-        String expressao = Constantes.regexSenha;
+        String expressao = Constantes.REGEX_SENHA;
 
         // Compilando o regex
         Pattern regex = Pattern.compile(expressao);

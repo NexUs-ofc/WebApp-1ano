@@ -110,7 +110,7 @@ public class AlimentoDAO {
     public List<AlimentoView> listar() {
 
         Connection conn = GerenteConexao.conectar();
-        String sqlSelect = "SELECT * FROM view_alimento";
+        String sqlSelect = "SELECT * FROM tb_alimento_view";
         List<AlimentoView> alimentos = new ArrayList<>();
 
         //Iniciando executor que: adicionará valores no comando SQL e executará o comando
@@ -121,9 +121,9 @@ public class AlimentoDAO {
             while (rs.next()) {
                 AlimentoView alimentoTemporario = new AlimentoView(
                         rs.getInt(1),
-                        rs.getString("nome"),
-                        rs.getString("marca"),
-                        rs.getString("categoria")
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4)
                 );
                 alimentos.add(alimentoTemporario);
             }
@@ -175,7 +175,7 @@ public class AlimentoDAO {
             String marca,
             String ordenar
     ) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM view_alimento WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT * FROM tb_alimento_view WHERE 1=1");
         List<Object> parametrosDoFiltro = new ArrayList<>();
         List<AlimentoView> alimentos = new ArrayList<>();
 
@@ -192,7 +192,7 @@ public class AlimentoDAO {
             parametrosDoFiltro.add("%" + nome + "%");
         }
         if (categoria != null && !categoria.isBlank()) {
-            sql.append(" AND categoria ILIKE ?");
+            sql.append(" AND id_categoria=?");
             parametrosDoFiltro.add("%" + categoria + "%");
         }
         if (marca != null && !marca.isBlank()) {
@@ -200,7 +200,7 @@ public class AlimentoDAO {
             parametrosDoFiltro.add("%" + marca + "%");
         }
 
-        switch (ordenar == null ? "" : ordenar) {
+        switch (ordenar) {
             case "id":
                 sql.append(" ORDER BY id_alimento");
                 break;
@@ -237,9 +237,9 @@ public class AlimentoDAO {
                 while (rs.next()) {
                     AlimentoView alimentoTemporario = new AlimentoView(
                             rs.getInt(1),
-                            rs.getString("nome"),
-                            rs.getString("marca"),
-                            rs.getString("categoria")
+                            rs.getString(2),
+                            rs.getString(3),
+                            rs.getString(4)
                     );
                     alimentos.add(alimentoTemporario);
                 }

@@ -55,11 +55,11 @@ public class ServletListarEndereco extends HttpServlet {
 
         } catch (NumberFormatException nfe){
             request.setAttribute("erro", "O ID dos endereços precisa ser um número inteiro");
-            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/Views/ErrorPage.jsp").forward(request, response);
 
         } catch (RuntimeException re) {
                 request.setAttribute("erro", "Não foi possível carregar os Endereços. Tente novamente.");
-                request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/Views/ErrorPage.jsp").forward(request, response);
         }
     }
 
