@@ -2,6 +2,7 @@ package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dto.UsuarioView;
+import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.model.Alimento;
 import org.example.interdisciplinar.model.ConfiguracaoAlerta;
 import org.example.interdisciplinar.model.Endereco;
@@ -40,26 +41,20 @@ public class UsuarioDAO {
             linhasAfetadas = pstmt.executeUpdate();
 
             if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
                 return true;
             }
 
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
+            //Se não retorna false
             return false;
 
 
-        //Em casos de erro no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
+        } catch (SQLException e) {
 
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao inserir um usuário no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -85,23 +80,19 @@ public class UsuarioDAO {
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
                 return true;
             }
 
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
+            //Se não retorna false
             return false;
 
-        } catch (SQLException sqle) {
-            //Lista todos os erros
-            sqle.printStackTrace();
+        } catch (SQLException e) {
 
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao deletar um usuário no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -133,23 +124,17 @@ public class UsuarioDAO {
                 );
                 view.add(usuarioTemporario);
             }
-            // Commita a ação no banco de dados
-            GerenteConexao.commit();
 
             // Retrona a lista de administradores
             return view;
 
-        // Em casos de erro no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
+        } catch (SQLException e) {
 
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna a lista
-            return view;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao listar um usuário no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -169,9 +154,13 @@ public class UsuarioDAO {
             int linhasAfetadas = pstmt.executeUpdate();
             return linhasAfetadas > 0;
 
-        } catch (SQLException sqle){
-            sqle.printStackTrace();
-            return false;
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao atualizar um usuário no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -249,9 +238,13 @@ public class UsuarioDAO {
                 return view;
             }
 
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            return view;
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao listar usuários com filtro no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -277,8 +270,13 @@ public class UsuarioDAO {
                 }
             }
 
-        } catch (SQLException sqle){
-            System.out.println("Erro de SQL: " + sqle.getMessage());
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao buscar uma empresa pelo id no banco de dados.",
+                    e
+            );
         }
         return null;
     }
