@@ -5,17 +5,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.ItemDespensaDAO;
 import org.example.interdisciplinar.dto.ItemDespensaView;
 import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.exception.FalhaConexaoException;
-import org.example.interdisciplinar.model.ItemDespensa;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-@WebServlet(name = "ListarItens", value = "/itensDespensa")
+@WebServlet(name = "ListarItens", value = "/itensDispensa")
 public class ServletListarItem extends HttpServlet {
     private ItemDespensaDAO itemDispensaDAO;
 
@@ -94,7 +93,7 @@ public class ServletListarItem extends HttpServlet {
         } catch (NumberFormatException nfe){
             getServletContext().log("Erro ao formatar o número.", nfe);
             request.setAttribute("erro", "O ID dos itens precisa ser um número inteiro");
-            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
 
@@ -108,7 +107,7 @@ public class ServletListarItem extends HttpServlet {
             );
 
             // Encaminha para a página de erro
-            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
 
 
         } catch (ErroPersistenciaException e) {
@@ -123,7 +122,7 @@ public class ServletListarItem extends HttpServlet {
             );
 
             // Encaminha para a página de erro.
-            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
 
         }
     }

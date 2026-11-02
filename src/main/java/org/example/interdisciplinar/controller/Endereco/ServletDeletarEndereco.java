@@ -1,26 +1,76 @@
 package org.example.interdisciplinar.controller.Endereco;
 
+// Todos os imports necessários
+import org.example.interdisciplinar.dao.EnderecoDAO;
+import org.example.interdisciplinar.exception.ErroPersistenciaException;
+import org.example.interdisciplinar.exception.FalhaConexaoException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.interdisciplinar.conexao.GerenteConexao;
-import org.example.interdisciplinar.dao.EnderecoDAO;
-import org.example.interdisciplinar.model.Endereco;
-
 import java.io.IOException;
 
+@WebServlet(name = "DeletarEndereco", value = "/enderecos/deletar")
 public class ServletDeletarEndereco extends HttpServlet {
+
     private EnderecoDAO enderecoDAO;
+
+    // Método que inicializa a DAO
     @Override
-    public void init(){
+    public void init() {
         enderecoDAO = new EnderecoDAO();
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        String idEnderecoTexto = request.getParameter("id");
-        int idEndereco = Integer.parseInt(idEnderecoTexto);
-        enderecoDAO.deletar(idEndereco);
-        response.sendRedirect(request.getContextPath() + "/enderecos");
+    // Método que recebe a solicitação de exclusão
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        // Recupera o ID enviado pelo formulário
+        String idParametro = request.getParameter("id");
+
+        // Verifica se o ID foi informado
+        if (idParametro == null || idParametro.isBlank()) {
+            request.setAttribute("erro", "ID do endereço não informado.");
+            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            return;
+        }
+
+        try {
+            // Converte o ID para inteiro
+            int id = Integer.parseInt(idParametro);
+
+            // Verifica se o ID é válido
+            if (id <= 0) {
+                request.setAttribute("erro", "ID do endereço inválido.");
+                request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+                return;
+            }
+
+            // Realiza a exclusão do endereço
+            enderecoDAO.deletar(id);
+
+            // Redireciona após a exclusão
+            response.sendRedirect(request.getContextPath() + "/enderecos");
+
+        } catch (NumberFormatException e) {
+            // Trata IDs que não possuem formato numérico
+            request.setAttribute("erro", "ID do endereço inválido.");
+            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+
+        } catch (FalhaConexaoException e) {
+            // Registra problemas de conexão com o banco
+            getServletContext().log("Falha na conexão com o banco de dados", e);
+
+            request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
+            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+
+        } catch (ErroPersistenciaException e) {
+            // Registra falhas durante a exclusão
+            getServletContext().log("Erro ao deletar endereço", e);
+
+            request.setAttribute("erro", "Não foi possível deletar o endereço.");
+            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+        }
     }
 }
