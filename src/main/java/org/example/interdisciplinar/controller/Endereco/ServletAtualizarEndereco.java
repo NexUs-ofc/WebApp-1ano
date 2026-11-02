@@ -1,4 +1,3 @@
-
 package org.example.interdisciplinar.controller.Endereco;
 
 import org.example.interdisciplinar.dao.EnderecoDAO;
@@ -15,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/enderecos/editar")
+@WebServlet(name="AtualizarEndereco", value="admin/enderecos/editar")
 public class ServletAtualizarEndereco extends HttpServlet {
 
     private EnderecoDAO enderecoDAO;

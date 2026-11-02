@@ -1,11 +1,10 @@
-package org.example.interdisciplinar.controller.ItemDispensa;
+package org.example.interdisciplinar.controller.ItemDespensa;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.ItemDespensaDAO;
 import org.example.interdisciplinar.model.ItemDespensa;
 
