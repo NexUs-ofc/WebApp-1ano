@@ -29,7 +29,24 @@
         <a href="${pageContext.request.contextPath}/itensDespensa"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-bread-slice.svg" alt="">Item_despensa</a>
         <a href="${pageContext.request.contextPath}/empresas"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-enterprise.svg" alt="">Empresas</a>
         <a href="${pageContext.request.contextPath}/administradores"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-shield-check.svg" alt="">Administrador</a>
-      </nav>
+    <!-- Perfil -->
+    <div class="rodapeSidebar">
+      <img class="linhaPerfilSidebar" src="${pageContext.request.contextPath}/assets/profile-line.svg" alt="">
+      <div class="perfilSidebar">
+        <div class="fotoPerfilSidebar">
+          <img src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="Foto de perfil">
+        </div>
+        <div class="dadosPerfilSidebar">
+          <strong>Nome do administrador</strong>
+          <span>Administrador</span>
+        </div>
+      </div>
+      <a class="botaoSairSidebar" href="${pageContext.request.contextPath}/index.html">
+        <img src="${pageContext.request.contextPath}/assets/fi-br-exit.svg" alt="">
+        Sair
+      </a>
+    </div>
+  </nav>
 
   <!-- Conteudo -->
   <main class="conteudo">
@@ -98,6 +115,7 @@
           </form>
         </div>
       </dialog>
+    </c:if>
       <!-- Cadastro -->
       <button type="button" class="botaoCriar" onclick="abrirPopupUsuario()">Adicionar<img class="iconeAdicionar" src="${pageContext.request.contextPath}/assets/fi-br-add.svg" alt="" aria-hidden="true"></button>
 
@@ -120,6 +138,7 @@
           </div>
       </dialog>
 
+    <c:if test="${not empty usuarios}">
       <!-- Tabela -->
       <div class="cartao">
         <table>
@@ -128,7 +147,7 @@
               <th>id_usuario</th>
               <th>nome</th>
               <th>email</th>
-              <th>preferencias</th>
+              <th>telefone</th>
               <th>alerta</th>
               <th aria-label="Ações"></th>
             </tr>
@@ -140,14 +159,13 @@
                   <td><c:out value="${usuario.id}"/></td>
                   <td><c:out value="${usuario.nome}"/></td>
                   <td><c:out value="${usuario.email}"/></td>
-                  <td><c:out value="${usuario.preferenciasConsumo}"/></td>
+                  <td><c:out value="${usuario.telefone}"/></td>
                   <td><c:out value="${usuario.configuracaoAlerta}"/></td>
                   <td class="acoes">
-                    <label class="botaoBloquear" title="Ocultar dados da linha">
-                      <input type="checkbox" class="bloqueioLinha" aria-label="Ocultar dados da linha">
+                    <button type="button" class="botaoBloquear" title="Ocultar dados da linha" aria-label="Ocultar dados da linha" aria-pressed="false" onclick="alternarDadosLinha(this)">
                       <img src="<c:url value='/assets/fi-br-eye.svg'/>" alt="" aria-hidden="true">
-                    </label>
-                    <button type="button" class="botaoEditar" title="Editar usuário" aria-label="Editar usuário" data-id="${usuario.id}" data-nome="${fn:escapeXml(usuario.nome)}" data-email="${fn:escapeXml(usuario.email)}" data-preferencias="${fn:escapeXml(usuario.preferenciasConsumo)}" data-alerta="${fn:escapeXml(usuario.configuracaoAlerta)}" onclick="abrirPopupEdicaoUsuario(this)">
+                    </button>
+                    <button type="button" class="botaoEditar" title="Editar usuário" aria-label="Editar usuário" data-id="${usuario.id}" data-nome="${fn:escapeXml(usuario.nome)}" data-email="${fn:escapeXml(usuario.email)}" data-preferencias="" data-alerta="${fn:escapeXml(usuario.configuracaoAlerta)}" onclick="abrirPopupEdicaoUsuario(this)">
                       <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                     </button>
                     <button type="button" class="botaoExcluir" title="Excluir usuário" aria-label="Excluir usuário" onclick="abrirPopupExclusaoUsuario('${usuario.id}')"><img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="ícone de lixeira" aria-hidden="true"></button>

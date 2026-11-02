@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fn" uri="jakarta.tags.functions" %>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -28,6 +29,23 @@
         <a href="${pageContext.request.contextPath}/itensDespensa"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-bread-slice.svg" alt="">Item_despensa</a>
         <a class="ativo" href="${pageContext.request.contextPath}/empresas"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-enterprise.svg" alt="">Empresas</a>
         <a href="${pageContext.request.contextPath}/administradores"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-shield-check.svg" alt="">Administrador</a>
+    <!-- Perfil -->
+    <div class="rodapeSidebar">
+      <img class="linhaPerfilSidebar" src="${pageContext.request.contextPath}/assets/profile-line.svg" alt="">
+      <div class="perfilSidebar">
+        <div class="fotoPerfilSidebar">
+          <img src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="Foto de perfil">
+        </div>
+        <div class="dadosPerfilSidebar">
+          <strong>Nome do administrador</strong>
+          <span>Administrador</span>
+        </div>
+      </div>
+      <a class="botaoSairSidebar" href="${pageContext.request.contextPath}/index.html">
+        <img src="${pageContext.request.contextPath}/assets/fi-br-exit.svg" alt="">
+        Sair
+      </a>
+    </div>
   </nav>
 
   <!-- Conteudo -->
@@ -44,8 +62,8 @@
     <c:if test="${not empty empresas}">
     <!-- Pesquisa -->
     <div class="pesquisa">
-      <form id="formPesquisaEmpresa">
-        <input id="pesquisaEmpresa" type="text" name="pesquisa" placeholder="Procurar">
+      <form action="${pageContext.request.contextPath}/empresas" method="get">
+        <input type="text" name="pesquisa" placeholder="Procurar" value="${param.pesquisa}">
         <button type="submit" class="botaoPesquisar">Pesquisar</button>
         <button type="button" class="botaoFiltro" aria-label="Aplicar filtro de pesquisa" onclick="abrirPopupFiltro()">
           <span>Filtro</span>
@@ -100,6 +118,7 @@
         </form>
       </div>
     </dialog>
+    </c:if>
 
     <!-- Cadastro -->
     <button type="button" class="botaoCriar" onclick="abrirPopupEmpresa()">Adicionar<img class="iconeAdicionar" src="${pageContext.request.contextPath}/assets/fi-br-add.svg" alt="" aria-hidden="true"></button>
@@ -123,6 +142,7 @@
       </div>
     </dialog>
 
+    <c:if test="${not empty empresas}">
     <!-- Tabela -->
     <div class="cartao">
       <table>
@@ -136,7 +156,27 @@
             <th aria-label="Ações"></th>
           </tr>
         </thead>
-        <tbody id="tabelaEmpresas"></tbody>
+        <tbody>
+          <c:forEach var="empresa" items="${empresas}">
+            <c:if test="${empty param.pesquisa or empresa.id.toString() == param.pesquisa or fn:contains(fn:toLowerCase(empresa.nome), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(empresa.cnpj), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(empresa.cep), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(empresa.telefone), fn:toLowerCase(param.pesquisa))}">
+              <tr>
+                <td><c:out value="${empresa.id}"/></td>
+                <td><c:out value="${empresa.nome}"/></td>
+                <td><c:out value="${empresa.cnpj}"/></td>
+                <td><c:out value="${empresa.cep}"/></td>
+                <td><c:out value="${empresa.telefone}"/></td>
+                <td class="acoes">
+                  <button type="button" class="botaoEditar" title="Editar empresa" aria-label="Editar empresa" data-id="${empresa.id}" data-nome="${fn:escapeXml(empresa.nome)}" data-cnpj="${fn:escapeXml(empresa.cnpj)}" data-cep="${fn:escapeXml(empresa.cep)}" data-telefone="${fn:escapeXml(empresa.telefone)}" onclick="abrirPopupEdicao(this)">
+                    <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
+                  </button>
+                  <button type="button" class="botaoExcluir" title="Excluir empresa" aria-label="Excluir empresa" onclick="abrirPopupExclusao('${empresa.id}')">
+                    <img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="" aria-hidden="true">
+                  </button>
+                </td>
+              </tr>
+            </c:if>
+          </c:forEach>
+        </tbody>
       </table>
     </div>
     </c:if>

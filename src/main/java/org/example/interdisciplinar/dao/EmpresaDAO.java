@@ -112,7 +112,7 @@ public class EmpresaDAO {
     public List<EmpresaView> listar() {
 
         Connection conn = GerenteConexao.conectar();
-        String sqlSelect = "SELECT * FROM tb_empresa_view";
+        String sqlSelect = "SELECT * FROM view_empresa";
         List<EmpresaView> empresas = new ArrayList<>();
 
         //Iniciando executor que: adicionará valores no comando SQL e executará o comando
@@ -177,16 +177,16 @@ public class EmpresaDAO {
             String nome,
             String ordenar
     ) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM tb_empresa_view WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT * FROM view_empresa WHERE 1=1");
         List<Object> parametrosDoFiltro = new ArrayList<>();
         List<EmpresaView> empresas = new ArrayList<>();
 
         if (idEmpresaInicio != null) {
-            sql.append(" AND id_alimento >=?");
+            sql.append(" AND id_empresa >=?");
             parametrosDoFiltro.add(idEmpresaInicio);
         }
         if (idEmpresaFim != null) {
-            sql.append(" AND id_alimento <=?");
+            sql.append(" AND id_empresa <=?");
             parametrosDoFiltro.add(idEmpresaFim);
         }
         if (nome != null && !nome.isBlank()) {
@@ -194,13 +194,13 @@ public class EmpresaDAO {
             parametrosDoFiltro.add("%" + nome + "%");
         }
 
-        switch (ordenar) {
+        switch (ordenar == null ? "" : ordenar) {
             case "id_asc":
-                sql.append(" ORDER BY id_alimento ASC");
+                sql.append(" ORDER BY id_empresa ASC");
                 break;
 
             case "id_desc":
-                sql.append(" ORDER BY id_alimento DESC");
+                sql.append(" ORDER BY id_empresa DESC");
                 break;
 
             case "nome_asc":
@@ -212,7 +212,7 @@ public class EmpresaDAO {
                 break;
 
             default:
-                sql.append(" ORDER BY id_alimento ASC");
+                sql.append(" ORDER BY id_empresa ASC");
                 break;
         }
 
@@ -236,7 +236,7 @@ public class EmpresaDAO {
                             rs.getString(4),
                             rs.getString(5)
                     );
-                    ;
+                    empresas.add(empresaTemporaria);
                 }
 
                 // Retrona a lista de administradores
@@ -265,8 +265,9 @@ public class EmpresaDAO {
                             rs.getInt("id_endereco"),
                             rs.getString("email"),
                             rs.getString("telefone"),
-                            rs.getObject("data_cadastro", LocalDate.class)
+                            null
                     );
+                    empresa.setId(rs.getInt("id_empresa"));
                     return empresa;
                 }
             }

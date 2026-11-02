@@ -81,6 +81,7 @@ public class AlimentoDAO {
 
             //Seta valor no '?' do comando SQL
             pstmt.setInt(1, alimento.getId());
+            linhasAfetadas = pstmt.executeUpdate();
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
@@ -110,7 +111,7 @@ public class AlimentoDAO {
     public List<AlimentoView> listar() {
 
         Connection conn = GerenteConexao.conectar();
-        String sqlSelect = "SELECT * FROM tb_alimento_view";
+        String sqlSelect = "SELECT * FROM view_alimento";
         List<AlimentoView> alimentos = new ArrayList<>();
 
         //Iniciando executor que: adicionará valores no comando SQL e executará o comando
@@ -120,10 +121,10 @@ public class AlimentoDAO {
             //Enquanto tiver mais registros cria novos objetos e adiciona à lista
             while (rs.next()) {
                 AlimentoView alimentoTemporario = new AlimentoView(
-                        rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4)
+                        rs.getInt("id_alimento"),
+                        rs.getString("nome"),
+                        rs.getString("marca"),
+                        rs.getString("categoria")
                 );
                 alimentos.add(alimentoTemporario);
             }
@@ -175,7 +176,7 @@ public class AlimentoDAO {
             String marca,
             String ordenar
     ) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM tb_alimento_view WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT * FROM view_alimento WHERE 1=1");
         List<Object> parametrosDoFiltro = new ArrayList<>();
         List<AlimentoView> alimentos = new ArrayList<>();
 
@@ -192,7 +193,7 @@ public class AlimentoDAO {
             parametrosDoFiltro.add("%" + nome + "%");
         }
         if (categoria != null && !categoria.isBlank()) {
-            sql.append(" AND id_categoria=?");
+            sql.append(" AND categoria ILIKE ?");
             parametrosDoFiltro.add("%" + categoria + "%");
         }
         if (marca != null && !marca.isBlank()) {
@@ -200,7 +201,7 @@ public class AlimentoDAO {
             parametrosDoFiltro.add("%" + marca + "%");
         }
 
-        switch (ordenar) {
+        switch (ordenar == null ? "" : ordenar) {
             case "id":
                 sql.append(" ORDER BY id_alimento");
                 break;
@@ -236,10 +237,10 @@ public class AlimentoDAO {
 
                 while (rs.next()) {
                     AlimentoView alimentoTemporario = new AlimentoView(
-                            rs.getInt(1),
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getString(4)
+                            rs.getInt("id_alimento"),
+                            rs.getString("nome"),
+                            rs.getString("marca"),
+                            rs.getString("categoria")
                     );
                     alimentos.add(alimentoTemporario);
                 }
@@ -255,7 +256,7 @@ public class AlimentoDAO {
     }
 
     public Alimento buscarporId(int id){
-        String sql = "SELECT * FROM tb_alimento WHERE id=?";
+        String sql = "SELECT * FROM tb_alimento WHERE id_alimento=?";
         try(
                 Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -270,6 +271,7 @@ public class AlimentoDAO {
                             rs.getString("marca"),
                             rs.getInt("id_categoria")
                     );
+                    alimento.setId(rs.getInt("id_alimento"));
                     return alimento;
                 }
             }

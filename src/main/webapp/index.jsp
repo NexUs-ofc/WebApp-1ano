@@ -31,7 +31,24 @@
             <a href="${pageContext.request.contextPath}/itensDespensa"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-bread-slice.svg" alt="">Item_despensa</a>
             <a href="${pageContext.request.contextPath}/empresas"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-enterprise.svg" alt="">Empresas</a>
             <a href="${pageContext.request.contextPath}/administradores"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-shield-check.svg" alt="">Administrador</a>
-          </nav>
+        <!-- Perfil -->
+        <div class="rodapeSidebar">
+          <img class="linhaPerfilSidebar" src="${pageContext.request.contextPath}/assets/profile-line.svg" alt="">
+          <div class="perfilSidebar">
+            <div class="fotoPerfilSidebar">
+              <img src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="Foto de perfil">
+            </div>
+            <div class="dadosPerfilSidebar">
+              <strong>Nome do administrador</strong>
+              <span>Administrador</span>
+            </div>
+          </div>
+          <a class="botaoSairSidebar" href="${pageContext.request.contextPath}/index.html">
+            <img src="${pageContext.request.contextPath}/assets/fi-br-exit.svg" alt="">
+            Sair
+          </a>
+        </div>
+    </nav>
     <main class="conteudo">
       <div class="titulo">
         <h1>Área Restrita</h1>
@@ -41,5 +58,6 @@
         <h4>insira codigo sla o que barras inicio LOGIN FAZ LOGIN #grrrrmondays</h4>
       </div>
     </main>
+    <script src="${pageContext.request.contextPath}/JS/views.js"></script>
 </body>
 </html>

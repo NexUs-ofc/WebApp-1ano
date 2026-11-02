@@ -29,7 +29,24 @@
         <a href="${pageContext.request.contextPath}/itensDespensa"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-bread-slice.svg" alt="">Item_despensa</a>
         <a href="${pageContext.request.contextPath}/empresas"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-enterprise.svg" alt="">Empresas</a>
         <a class="ativo" href="${pageContext.request.contextPath}/administradores"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-shield-check.svg" alt="">Administrador</a>
-      </nav>
+    <!-- Perfil -->
+    <div class="rodapeSidebar">
+      <img class="linhaPerfilSidebar" src="${pageContext.request.contextPath}/assets/profile-line.svg" alt="">
+      <div class="perfilSidebar">
+        <div class="fotoPerfilSidebar">
+          <img src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="Foto de perfil">
+        </div>
+        <div class="dadosPerfilSidebar">
+          <strong>Nome do administrador</strong>
+          <span>Administrador</span>
+        </div>
+      </div>
+      <a class="botaoSairSidebar" href="${pageContext.request.contextPath}/index.html">
+        <img src="${pageContext.request.contextPath}/assets/fi-br-exit.svg" alt="">
+        Sair
+      </a>
+    </div>
+  </nav>
 
   <!-- Conteudo -->
   <main class="conteudo">
@@ -131,10 +148,9 @@
                 <td><c:out value="${administrador.email}"/></td>
                 <td><c:out value="${administrador.senha}"/></td>
                 <td class="acoes">
-                  <label class="botaoBloquear" title="Ocultar dados da linha">
-                    <input type="checkbox" class="bloqueioLinha" aria-label="Ocultar dados da linha">
+                  <button type="button" class="botaoBloquear" title="Ocultar dados da linha" aria-label="Ocultar dados da linha" aria-pressed="false" onclick="alternarDadosLinha(this)">
                     <img src="<c:url value='/assets/fi-br-eye.svg'/>" alt="" aria-hidden="true">
-                  </label>
+                  </button>
                   <button type="button" class="botaoEditar" title="Editar administrador" aria-label="Editar administrador" data-id="${administrador.id}" data-nome="${fn:escapeXml(administrador.nome)}" data-telefone="${fn:escapeXml(administrador.telefone)}" data-email="${fn:escapeXml(administrador.email)}" data-senha="${fn:escapeXml(administrador.senha)}" data-foto="${fn:escapeXml(administrador.urlFoto)}" onclick="abrirPopupEdicaoAdministrador(this)">
                     <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                   </button>
@@ -178,11 +194,10 @@
           <div class="campoPopupAdmin campoSenhaAdministrador">
             <label for="senhaAdministradorEdicao">senha</label>
             <span class="entradaSenhaAdministrador">
-              <input id="senhaAdministradorEdicao" name="senha" type="text" required>
-              <label class="botaoMostrarSenha" aria-label="Mostrar senha">
-                <input type="checkbox" id="mostrarSenhaAdministrador" class="controleSenhaAdministrador">
+              <input id="senhaAdministradorEdicao" name="senha" type="password" required>
+              <button type="button" class="botaoMostrarSenha" aria-label="Mostrar senha" aria-pressed="false" onclick="alternarVisibilidadeSenha(this)">
                 <img src="<c:url value='/assets/fi-br-eye-crossed.svg'/>" alt="" aria-hidden="true">
-              </label>
+              </button>
             </span>
           </div>
         </div>

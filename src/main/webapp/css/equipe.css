@@ -1,0 +1,190 @@
+/* ===== CARROSSEL DA EQUIPE (página Sobre Nós) =====
+   Esse arquivo cuida só do visual do carrossel: o tamanho dos cards, as setas e como
+   ele se adapta no tablet e no celular. Quem faz os cards se mexerem é o equipe.js.
+   Ele precisa ficar DEPOIS do index.css e do sobre.css no <head>. */
+
+
+/* ---------------------------------------------------------------
+   A CAIXA DO CARROSSEL (seta | cards | seta)
+   --------------------------------------------------------------- */
+.equipe-carrossel {
+    /* essas duas são "variáveis do CSS". A gente muda o valor delas aqui em cima
+       (e nos @media lá embaixo) e o resto do código se ajusta sozinho */
+    --visiveis: 4;     /* quantos cards aparecem de uma vez */
+    --espaco: 32px;    /* o espaço entre um card e outro */
+
+    /* grid com 3 colunas: seta da esquerda, os cards e seta da direita */
+    display: grid;
+
+    /* "auto" = a seta ocupa só o tamanho dela.
+       O minmax(0, 1fr) faz a coluna do meio pegar todo o resto do espaço.
+       (o 0 é pra ela não ficar maior que a tela por causa da fita comprida de cards) */
+    grid-template-columns: auto minmax(0, 1fr) auto;
+
+    align-items: center;   /* deixa as setas no meio, na altura dos cards */
+    column-gap: 40px;      /* o espaço entre as setas e os cards */
+
+    /* largura máxima do carrossel inteiro. Quanto maior, maiores ficam os cards */
+    max-width: 1300px;
+
+    /* 80px de espaço em cima; "auto" nos lados centraliza o carrossel na página */
+    margin: 80px auto 0;
+}
+
+
+/* ---------------------------------------------------------------
+   A JANELA E A FAIXA
+   --------------------------------------------------------------- */
+
+/* a "janela" é o pedaço que a gente enxerga */
+.equipe-janela {
+    overflow: hidden;      /* esconde os cards que não cabem (só aparecem os da vez) */
+    touch-action: pan-y;   /* no celular, a página rola pra cima e pra baixo normal,
+                              mas o movimento pro lado fica livre pro JavaScript */
+    user-select: none;     /* não deixa selecionar texto/foto sem querer quando arrasta */
+}
+
+/* a "faixa" é a fita comprida com TODOS os cards. O JavaScript é quem empurra ela pro lado */
+.equipe-faixa {
+    display: flex;          /* coloca os cards um do lado do outro, na horizontal */
+    gap: var(--espaco);     /* usa a variável de cima pro espaço entre eles */
+}
+
+
+/* ---------------------------------------------------------------
+   OS CARDS
+   --------------------------------------------------------------- */
+.equipe-card {
+    /* flex: 0 0 X = "não cresce, não encolhe e tem exatamente X de largura".
+       A conta do X é: a largura total, menos os espaços que ficam entre os cards visíveis,
+       dividido pela quantidade de cards visíveis.
+       (com 4 cards visíveis tem 3 espaços entre eles, por isso o "- 1") */
+    flex: 0 0 calc((100% - (var(--visiveis) - 1) * var(--espaco)) / var(--visiveis));
+
+    min-width: 0;          /* evita o card ficar maior do que devia por causa do texto */
+    text-align: center;    /* nome e cargo centralizados embaixo da foto */
+}
+
+/* a caixa da foto.
+   Escrevi ".equipe .equipe-foto" (dois nomes) pra essa regra ser mais forte que o ".equipe img"
+   antigo do sobre.css, que era da foto única da equipe, senão ele bagunçava as fotos daqui */
+.equipe .equipe-foto {
+    aspect-ratio: 3 / 4;     /* o formato da foto: 3 de largura pra 4 de altura (em pé) */
+    overflow: hidden;        /* corta a foto nos cantos arredondados */
+    border-radius: 22px;     /* o arredondado dos cantos */
+}
+
+/* quando NÃO tem foto (o JavaScript do HTML remove a imagem se ela não carregar),
+   a caixa fica vazia (:empty) e aparece o quadrado roxo no lugar.
+   O roxo só aparece assim pra não vazar nos cantos das fotos que têm os cantos transparentes */
+.equipe .equipe-foto:empty { background: var(--roxo); }
+
+/* a imagem dentro da caixa */
+.equipe .equipe-foto img {
+    display: block;          /* tira aquele espacinho que as imagens têm embaixo */
+    width: 100%;             /* ocupa a caixa toda, na largura... */
+    height: 100%;            /* ...e na altura */
+
+    /* essas 4 linhas servem pra cancelar as regras antigas do ".equipe img" (do sobre.css),
+       que deixavam a imagem com 820px, margem em cima e borda arredondada de 40px */
+    max-width: none;
+    margin: 0;
+    aspect-ratio: auto;
+    border-radius: 0;        /* o arredondado já é feito pela caixa lá de cima */
+
+    object-fit: cover;       /* a foto preenche tudo sem esticar (corta o que sobrar) */
+
+    pointer-events: none;    /* a foto não "pega" o mouse, assim quem recebe o arrasto é o carrossel */
+    -webkit-user-drag: none; /* impede de arrastar a imagem sozinha (iria atrapalhar o carrossel) */
+}
+
+
+/* ---------------------------------------------------------------
+   NOME E CARGO
+   --------------------------------------------------------------- */
+.equipe-nome {
+    margin-top: 16px;                 /* espaço entre a foto e o nome */
+
+    /* precisei colocar a fonte aqui porque o index.css deixa todo <h3> com a fonte Poppins,
+       e a gente quer a Huninn nos nomes */
+    font-family: 'Huninn', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.25;                /* altura da linha (caso o nome grande quebre em 2 linhas) */
+    color: #111;
+}
+
+.equipe-cargo {
+    margin-top: 4px;
+    font-size: 14px;                  /* menor que o nome, pra dar destaque no nome */
+    line-height: 1.2;
+    color: #333;
+}
+
+
+/* ---------------------------------------------------------------
+   AS SETAS
+   --------------------------------------------------------------- */
+.equipe-seta {
+    display: grid;
+    place-items: center;      /* deixa o ícone da setinha bem no centro da bolinha */
+    width: 50px;
+    height: 50px;
+    color: #fff;              /* cor da setinha (o ícone usa "currentColor", então pega essa cor) */
+    background: var(--roxo);
+    border: none;             /* tira a borda padrão do botão */
+    border-radius: 50%;       /* 50% deixa o quadrado virar um círculo */
+    cursor: pointer;          /* o mouse vira a mãozinha */
+    transition: background-color .2s, transform .2s;   /* a mudança do hover fica suave */
+}
+
+/* quando passa o mouse: o roxo escurece e a bolinha cresce 8% */
+.equipe-seta:hover { background: var(--roxo-escuro); transform: scale(1.08); }
+
+/* quando a pessoa navega pelo teclado (Tab) aparece um contorno em volta da seta.
+   Isso ajuda quem não usa mouse (acessibilidade). Com clique do mouse ele não aparece */
+.equipe-seta:focus-visible { outline: 3px solid var(--roxo-claro); outline-offset: 3px; }
+
+/* o JavaScript esconde as setas (atributo hidden) quando todos os cards já cabem na tela.
+   Como o "display: grid" lá em cima ganharia do hidden, aqui a gente força sumir de vez */
+.equipe-seta[hidden] { display: none; }
+
+
+/* ---------------------------------------------------------------
+   TELAS MENORES (responsivo)
+   --------------------------------------------------------------- */
+
+/* tablet e telas menores: aparecem 3 cards e as setas ficam um pouco menores */
+@media (max-width: 1100px) {
+    .equipe-carrossel { --visiveis: 3; column-gap: 20px; }
+    .equipe-seta { width: 44px; height: 44px; }
+}
+
+/* celular: aparecem 2 cards e as setas vão pra baixo */
+@media (max-width: 800px) {
+    .equipe-carrossel {
+        --visiveis: 2;
+        --espaco: 16px;
+        grid-template-columns: 1fr 1fr;   /* agora são 2 colunas iguais, e não mais 3 */
+        row-gap: 24px;                    /* espaço entre os cards e as setas (que ficam embaixo) */
+        margin-top: 40px;
+    }
+
+    /* a janela com os cards ocupa a linha 1 inteira (da coluna 1 até a última) */
+    .equipe-janela { grid-column: 1 / -1; grid-row: 1; }
+
+    /* as duas setas ficam na linha 2: a da esquerda na coluna 1 (encostada pra direita)
+       e a da direita na coluna 2 (encostada pra esquerda), então elas ficam juntinhas no meio */
+    .equipe-seta.anterior { grid-row: 2; grid-column: 1; justify-self: end; margin-right: 8px; }
+    .equipe-seta.proximo { grid-row: 2; grid-column: 2; justify-self: start; margin-left: 8px; }
+
+    /* no celular tudo fica um pouco menor */
+    .equipe .equipe-foto { border-radius: 14px; }
+    .equipe-nome { font-size: 15px; }
+    .equipe-cargo { font-size: 12px; }
+}
+
+/* quem configurou o aparelho pra reduzir animações fica sem a transição das setas */
+@media (prefers-reduced-motion: reduce) {
+    .equipe-seta { transition: none; }
+}

@@ -29,7 +29,24 @@
         <a href="${pageContext.request.contextPath}/itensDespensa"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-bread-slice.svg" alt="">Item_despensa</a>
         <a href="${pageContext.request.contextPath}/empresas"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-enterprise.svg" alt="">Empresas</a>
         <a href="${pageContext.request.contextPath}/administradores"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-shield-check.svg" alt="">Administrador</a>
-      </nav>
+    <!-- Perfil -->
+    <div class="rodapeSidebar">
+      <img class="linhaPerfilSidebar" src="${pageContext.request.contextPath}/assets/profile-line.svg" alt="">
+      <div class="perfilSidebar">
+        <div class="fotoPerfilSidebar">
+          <img src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="Foto de perfil">
+        </div>
+        <div class="dadosPerfilSidebar">
+          <strong>Nome do administrador</strong>
+          <span>Administrador</span>
+        </div>
+      </div>
+      <a class="botaoSairSidebar" href="${pageContext.request.contextPath}/index.html">
+        <img src="${pageContext.request.contextPath}/assets/fi-br-exit.svg" alt="">
+        Sair
+      </a>
+    </div>
+  </nav>
 
   <!-- Conteudo -->
   <main class="conteudo">
@@ -97,6 +114,7 @@
           </form>
         </div>
       </dialog>
+    </c:if>
       <!-- Cadastro -->
       <button type="button" class="botaoCriar" onclick="abrirPopupEndereco()">Adicionar<img class="iconeAdicionar" src="${pageContext.request.contextPath}/assets/fi-br-add.svg" alt="" aria-hidden="true"></button>
       <dialog id="popupEndereco" class="popupFormulario popupFormularioGrande">
@@ -120,6 +138,7 @@
         </div>
       </dialog>
 
+    <c:if test="${not empty enderecos}">
       <!-- Tabela -->
       <div class="cartao">
         <table>

@@ -18,14 +18,14 @@ body {
 
 .sidebar {
     width: 268px;
-    height: calc(100vh - 25px); /*esse calc subtrai o tamanho da tela do padding, deixando a sidebar do tamanho que cabe na tela*/
+    height: calc(100vh - 26px);
     flex-shrink: 0; /*impede a sidebar de ser espremida quando o conteúdo precisa de mais espaço*/
     display: flex;
     flex-direction: column;
-    gap: 9px;
+    gap: var(--espacoBotoesSidebar, 9px);
     position: relative;
     margin: 1px 0 0 12px;
-    padding: 274px 14px 18px;
+    padding: var(--inicioBotoesSidebar, 274px) 14px 0;
     border-radius: 14px;
     background: linear-gradient(#4a1d78, #6f2fa8);
     filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
@@ -65,6 +65,7 @@ body {
 .sidebar a {
     width: 239px;
     height: 48px;
+    flex-shrink: 0;
     display: flex;
     align-self: center;
     align-items: center;
@@ -88,7 +89,7 @@ body {
     /*muda a cor do ícone ativo sem precisar criar outro arquivo de imagem*/
     filter: brightness(0) saturate(100%) invert(18%) sepia(33%) saturate(3529%) hue-rotate(250deg) brightness(87%) contrast(96%);
 }
-.sidebar a:not(.ativo):hover { /*ele NÃO vai aplicar bg color se a classe do botão for ativo*/
+.sidebar a:not(.ativo):not(.botaoSairSidebar):hover { /*ele NÃO vai aplicar bg color se a classe do botão for ativo*/
     background-color: rgba(255, 255, 255, 0.12);
 }
 a.ativo {
@@ -96,6 +97,74 @@ a.ativo {
     color: #4a1d78;
 }
 
+/* Perfil */
+.rodapeSidebar {
+    width: 197px;
+    height: 156px;
+    position: absolute;
+    bottom: 41px;
+    left: 32px;
+}
+.linhaPerfilSidebar {
+    width: 197px;
+    height: 1px;
+    display: block;
+}
+.perfilSidebar {
+    height: 61px;
+    display: flex;
+    align-items: center;
+    gap: 12.641px;
+    position: absolute;
+    top: 22px;
+    left: 0;
+}
+.fotoPerfilSidebar {
+    width: 61.359px;
+    height: 61px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.18);
+}
+.fotoPerfilSidebar img, .botaoSairSidebar img {
+    width: 24px;
+    height: 24px;
+}
+.dadosPerfilSidebar {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: white;
+    font-size: 13.033px;
+}
+.dadosPerfilSidebar strong {
+    max-width: 123px;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.sidebar .botaoSairSidebar {
+    width: 197px;
+    height: 49px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 19px;
+    position: absolute;
+    top: 107px;
+    left: 0;
+    padding: 0 13px;
+    border-radius: 13px;
+    background-color: white;
+    color: #4f2078;
+    font-size: 19.5px;
+}
 .conteudo {
     height: calc(100vh - 24px);
     min-width: 0; /*permite que o conteúdo diminua dentro do flex sem estourar a largura da página*/
@@ -135,6 +204,7 @@ a.ativo {
     margin-top: 4px;
 }
 .pesquisa form {
+    height: 39px;
     display: grid;
     grid-template-columns: minmax(0, 1fr) 117px 96px 87px;
     column-gap: 11px;
@@ -154,15 +224,12 @@ a.ativo {
     color: #acacac;
     opacity: 1;
 }
-.pesquisa, .pesquisa form, .botaoPesquisar {
-    height: 39px;
-}
-.botaoPesquisar, .botaoFiltro, button.botaoCriar, .botaoCriar > button {
+.botaoPesquisar, .botaoFiltro, .botaoCriar {
     font: inherit;
     font-size: 14px;
     cursor: pointer;
 }
-.botaoPesquisar, button.botaoCriar, .botaoCriar > button {
+.botaoPesquisar, .botaoCriar {
     width: 117px;
     border: 0;
     border-radius: 13px;
@@ -170,7 +237,7 @@ a.ativo {
     color: white;
     box-shadow: 2px 2px 3px rgba(79, 32, 120, 0.23);
 }
-.botaoFiltro, button.botaoCriar, .botaoCriar > button {
+.botaoFiltro, .botaoCriar {
     height: 33px;
     display: inline-flex;
     align-items: center;
@@ -212,14 +279,12 @@ a.ativo {
     position: absolute;
     top: 79px;
     right: 67px;
-}
-button.botaoCriar, .botaoCriar > button {
     white-space: nowrap;
 }
 
 .cartao {
     width: calc(100% - 59px);
-    max-height: calc(100vh - 202px); /*cresce conforme os dados até chegar ao final da sidebar*/
+    max-height: calc(100vh - 203px); /*cresce conforme os dados até chegar ao final da sidebar*/
     min-height: 0;
     margin-top: 61px;
     overflow: auto; /*a rolagem acontece dentro do cartão sem mover a página inteira*/
@@ -298,7 +363,7 @@ td {
 .acoes > .botaoEditar, .acoes > .botaoExcluir {
     margin-left: 21px;
 }
-.botaoExcluir, .botaoEditar {
+.botaoExcluir, .botaoEditar, .botaoBloquear {
     border: 0;
     appearance: none;
     background: none;
@@ -308,39 +373,12 @@ td {
     display: block;
 }
 .botaoBloquear {
-    position: relative;
     width: 21px;
     height: 21px;
 }
-/*o checkbox fica invisível, mas continua ocupando todo o botão e recebendo o clique*/
-.bloqueioLinha {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-}
-/*o :has aplica o foco no botão quando o checkbox invisível é selecionado pelo teclado*/
-.botaoBloquear:has(.bloqueioLinha:focus-visible) {
+.botaoBloquear:focus-visible {
     outline: 2px solid #4f2078;
     outline-offset: 2px;
-}
-/*quando o olho é marcado, esconde somente as informações da linha e mantém as ações visíveis*/
-tbody tr:has(.bloqueioLinha:checked) td:not(.acoes) {
-    position: relative;
-    color: transparent;
-    user-select: none;
-}
-/*coloca os asteriscos no lugar das informações escondidas sem alterar o conteúdo real*/
-tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
-    content: "********";
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #1a1a1a;
 }
 
 /*estilos que todos os popups compartilham para não repetir as mesmas propriedades*/
@@ -426,7 +464,8 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     color: #948c9e;
     opacity: 1;
 }
-.campoPopupFiltro input:focus, .campoPopupFiltro select:focus {
+.campoPopupFiltro input:focus, .campoPopupFiltro select:focus,
+.campoPopup input:focus, .campoPopupAdmin input:focus {
     border-color: #4f2078;
 }
 .intervaloPopupFiltro {
@@ -492,13 +531,14 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     font-size: 16px;
     cursor: pointer;
 }
-.botaoLimparPopupFiltro {
+.botaoLimparPopupFiltro, .botaoAplicarPopupFiltro {
     border: 1px solid #4f2078;
+}
+.botaoLimparPopupFiltro {
     background-color: white;
     color: #4f2078;
 }
 .botaoAplicarPopupFiltro {
-    border: 1px solid #4f2078;
     background-color: #4f2078;
     color: white;
 }
@@ -599,10 +639,6 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     border: 1px solid #e6d8f0;
     border-radius: 12px;
     background-color: white;
-}
-.campoPopup input:focus,
-.campoPopupAdmin input:focus {
-    border-color: #4f2078;
 }
 .campoPopup .textoHuninn {
     color: #2a1e34;
@@ -709,30 +745,6 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     display: block;
     margin-top: 2px;
 }
-/*cria os asteriscos falsos sobre a senha enquanto o botão de mostrar não estiver marcado*/
-.entradaSenhaAdministrador::after {
-    content: "********";
-    position: absolute;
-    top: 9px;
-    left: 12px;
-    color: #291f33;
-    font-family: 'Poppins', sans-serif;
-    font-size: 11px;
-    pointer-events: none;
-}
-/*quando o checkbox do olho é marcado, os asteriscos falsos desaparecem*/
-.entradaSenhaAdministrador:has(.controleSenhaAdministrador:checked)::after {
-    display: none;
-}
-/*esconde o texto da senha até o checkbox do olho ser marcado*/
-#senhaAdministradorEdicao {
-    color: transparent;
-    caret-color: transparent;
-}
-.entradaSenhaAdministrador:has(.controleSenhaAdministrador:checked) #senhaAdministradorEdicao {
-    color: #291f33;
-    caret-color: auto;
-}
 .entradaSenhaAdministrador input {
     padding-right: 40px;
 }
@@ -749,9 +761,6 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     background: none;
     cursor: pointer;
 }
-.botaoMostrarSenha .controleSenhaAdministrador {
-    display: none;
-}
 .botaoMostrarSenha img {
     width: 15px;
     height: 15px;
@@ -765,7 +774,6 @@ tbody tr:has(.bloqueioLinha:checked) td:not(.acoes)::after {
     transform: translateX(-50%);
 }
 .edicaoFotoAdministrador label {
-    width: 111px;
     display: flex;
     align-items: center;
     flex-direction: column;

@@ -33,6 +33,7 @@ public class EnderecoDAO {
             pstmt.setString(4, endereco.getCidade());
             pstmt.setString(5, endereco.getEstado());
             pstmt.setString(6, endereco.getCep());
+            linhasAfetadas = pstmt.executeUpdate();
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
@@ -76,6 +77,7 @@ public class EnderecoDAO {
 
             //Seta valor no '?' do comando SQL
             pstmt.setInt(1, idEndereco);
+            linhasAfetadas = pstmt.executeUpdate();
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
@@ -195,7 +197,7 @@ public class EnderecoDAO {
 
         if (estado != null && !estado.isBlank()) {
             sql.append(" AND estado ILIKE ?");
-            parametrosDoFiltro.add("%" + cidade + "%");
+            parametrosDoFiltro.add("%" + estado + "%");
         }
 
         switch (ordenar == null ? "" : ordenar) {
@@ -252,7 +254,7 @@ public class EnderecoDAO {
     }
 
     public Endereco buscarporId(int id){
-        String sql = "SELECT * FROM tb_endereco WHERE id=?";
+        String sql = "SELECT * FROM tb_endereco WHERE id_endereco=?";
         try(
                 Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -269,6 +271,7 @@ public class EnderecoDAO {
                             rs.getString("estado"),
                             rs.getString("cep")
                     );
+                    endereco.setId(rs.getInt("id_endereco"));
                     return endereco;
                 }
             }
