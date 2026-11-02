@@ -23,9 +23,7 @@ public class ServletAtualizarEmpresa extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String idParametro = request.getParameter("id");
 
@@ -67,9 +65,7 @@ public class ServletAtualizarEmpresa extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
         try {
@@ -112,11 +108,7 @@ public class ServletAtualizarEmpresa extends HttpServlet {
             email = email.trim();
             telefone = telefone.trim();
 
-            if (nome.length() < 2 || nome.length() > 100
-                    || !Regex.validarCnpj(cnpj)
-                    || !Regex.validarEmail(email)
-                    || !Regex.validarTelefone(telefone)) {
-
+            if (!Regex.validarCnpj(cnpj) || !Regex.validarEmail(email) || !Regex.validarTelefone(telefone)) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
