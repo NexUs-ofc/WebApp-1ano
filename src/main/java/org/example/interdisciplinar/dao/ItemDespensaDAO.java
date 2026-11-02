@@ -1,7 +1,6 @@
 package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
-import org.example.interdisciplinar.dto.ItemDespensaView;
 import org.example.interdisciplinar.model.ItemDespensa;
 import java.sql.*;
 import java.time.LocalDate;
@@ -18,7 +17,7 @@ public class ItemDespensaDAO {
         Connection conn = GerenteConexao.conectar();
 
         //Comando de inserir em SQL
-        String sqlInsert = "INSERT INTO tb_item_despensa (id_usuario, id_alimento, quantidade, data_validade) VALUES (?, ?, ?, ?)";
+        String sqlInsert = "INSERT INTO tb_item_dispensa (id_casa, id_alimento, quantidade, data_validade) VALUES (?, ?, ?, ?)";
 
         //Controle de linhas afetadas
         int linhasAfetadas = 0;
@@ -65,7 +64,7 @@ public class ItemDespensaDAO {
         Connection conn = GerenteConexao.conectar();
 
         //Comando de deletar em SQL
-        String sqlDelete = "DELETE FROM tb_item_despensa WHERE id_item=?";
+        String sqlDelete = "DELETE FROM tb_item_dispensa WHERE id_item=?";
 
         //Controle de linhas afetadas
         int linhasAfetadas = 0;
@@ -104,16 +103,16 @@ public class ItemDespensaDAO {
     }
 
     // Método para listar todos os itens da dispensa
-    public List<ItemDespensaView> listar(){
+    public List<ItemDespensa> listar(){
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
 
         //Comando de listar em SQL
-        String sqlSelect = "SELECT * FROM view_item_despensa";
+        String sqlSelect = "SELECT * FROM view_item_dispensa";
 
         // Criando lista que irá armazenar os registros dos itens da dispensa
-        List<ItemDespensaView> itensDespensa = new ArrayList<>();
+        List<ItemDespensa> itensDespensa = new ArrayList<>();
 
         //Cria executor que receberá comando e executará ele
         try (PreparedStatement pstmt = conn.prepareStatement(sqlSelect)){
@@ -121,20 +120,15 @@ public class ItemDespensaDAO {
 
             //Enquanto tiver mais registros cria novos objetos e adiciona à lista
             while (rs.next()) {
-                LocalDate validade = null;
+                ItemDespensa itemDespensa = new ItemDespensa();
+                itemDespensa.setId(rs.getInt(1));
+                itemDespensa.setIdCasa(rs.getInt(2));
+                itemDespensa.setIdAlimento(rs.getInt(3));
+                itemDespensa.setQuantidade(rs.getInt(4));
 
-                if (rs.getDate("data_validade") != null) {
-                    validade = rs.getDate("data_validade").toLocalDate();
+                if (rs.getDate(5) != null) {
+                    itemDespensa.setValidade(rs.getDate(5).toLocalDate());
                 }
-
-                ItemDespensaView itemDespensa = new ItemDespensaView(
-                        rs.getInt("id_item"),
-                        rs.getString("usuario"),
-                        rs.getString("alimento"),
-                        rs.getInt("quantidade"),
-                        validade
-                );
-
                 itensDespensa.add(itemDespensa);
             }
 
@@ -153,7 +147,7 @@ public class ItemDespensaDAO {
     }
 
     public boolean atualizar(ItemDespensa itemDespensa){
-        String sql = "UPDATE tb_item_despensa SET id_usuario=?, id_alimento=?, quantidade=?, data_validade=? WHERE id_item=?";
+        String sql = "UPDATE tb_item_dispensa SET id_casa=?, id_alimento=?, quantidade=?, data_validade=? WHERE id_item=?";
         try (
                 Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -178,7 +172,7 @@ public class ItemDespensaDAO {
         }
     }
 
-    public List<ItemDespensaView> listarFiltrado(
+    public List<ItemDespensa> listarFiltrado(
             Integer idItemInicio,
             Integer idItemFim,
             Integer qtdMinima,
@@ -187,9 +181,9 @@ public class ItemDespensaDAO {
             LocalDate dataFim,
             String ordenar
     ){
-        StringBuilder sql = new StringBuilder("SELECT * FROM view_item_despensa WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT * FROM tb_item_dispensa WHERE 1=1");
         List<Object> parametrosDoFiltro = new ArrayList<>();
-        List<ItemDespensaView> itensDespensa = new ArrayList<>();
+        List<ItemDespensa> itensDespensa = new ArrayList<>();
 
         if(idItemInicio != null){
             sql.append(" AND id_item >=?");
@@ -208,15 +202,15 @@ public class ItemDespensaDAO {
             parametrosDoFiltro.add(qtdMaxima);
         }
         if(dataInicio != null){
-            sql.append(" AND data_validade >=?");
+            sql.append(" AND validade >=?");
             parametrosDoFiltro.add(dataInicio);
         }
         if(dataFim != null){
-            sql.append(" AND data_validade <=?");
+            sql.append(" AND validade <=?");
             parametrosDoFiltro.add(dataFim);
         }
 
-        switch (ordenar == null ? "" : ordenar){
+        switch (ordenar){
             case "id":
                 sql.append(" ORDER BY id_item");
                 break;
@@ -226,7 +220,7 @@ public class ItemDespensaDAO {
                 break;
 
             case "validade":
-                sql.append(" ORDER BY data_validade");
+                sql.append(" ORDER BY validade");
                 break;
 
             default:
@@ -246,20 +240,15 @@ public class ItemDespensaDAO {
             try (ResultSet rs = pstmt.executeQuery()){
                 //Enquanto tiver mais registros cria novos objetos e adiciona à lista
                 while (rs.next()) {
-                    LocalDate validade = null;
+                    ItemDespensa itemDespensa = new ItemDespensa();
+                    itemDespensa.setId(rs.getInt(1));
+                    itemDespensa.setIdCasa(rs.getInt(2));
+                    itemDespensa.setIdAlimento(rs.getInt(3));
+                    itemDespensa.setQuantidade(rs.getInt(4));
 
-                    if (rs.getDate("data_validade") != null) {
-                        validade = rs.getDate("data_validade").toLocalDate();
+                    if (rs.getDate(5) != null) {
+                        itemDespensa.setValidade(rs.getDate(5).toLocalDate());
                     }
-
-                    ItemDespensaView itemDespensa = new ItemDespensaView(
-                            rs.getInt("id_item"),
-                            rs.getString("usuario"),
-                            rs.getString("alimento"),
-                            rs.getInt("quantidade"),
-                            validade
-                    );
-
                     itensDespensa.add(itemDespensa);
                 }
 
@@ -273,7 +262,7 @@ public class ItemDespensaDAO {
         }
     }
     public ItemDespensa buscarporId(int id){
-        String sql = "SELECT * FROM tb_item_despensa WHERE id_item=?";
+        String sql = "SELECT * FROM tb_item_despensa WHERE id=?";
         try(
                 Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -282,14 +271,12 @@ public class ItemDespensaDAO {
 
             try(ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
-                    Date dataValidade = rs.getDate("data_validade");
                     ItemDespensa itemDespensa = new ItemDespensa(
                             rs.getInt("id_usuario"),
                             rs.getInt("id_alimento"),
                             rs.getInt("quantidade"),
-                            dataValidade == null ? null : dataValidade.toLocalDate()
+                            rs.getDate("validade").toLocalDate()
                     );
-                    itemDespensa.setId(rs.getInt("id_item"));
                     return itemDespensa;
                 }
             }

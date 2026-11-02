@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.AlimentoDAO;
-import org.example.interdisciplinar.dto.AlimentoView;
+import org.example.interdisciplinar.model.Alimento;
 
 import java.io.IOException;
 import java.util.List;
@@ -50,7 +50,7 @@ public class ServletListarAlimento extends HttpServlet {
                 return;
             }
 
-            List<AlimentoView> alimentos = alimentoDAO.listarFiltrado(idInicio, idFim, nome, categoria, marca, ordenar);
+            List<Alimento> alimentos = alimentoDAO.listarFiltrado(idInicio, idFim, nome, categoria, marca, ordenar);
             request.setAttribute("alimentos", alimentos);
             request.getRequestDispatcher("/WEB-INF/Views/alimentos.jsp").forward(request, response);
 

@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 // Definindo um nome interno para o servlet e a url que ativa ele
-@WebServlet(name = "CriarItem", value = "/itens/insert")
+@WebServlet(name = "CriarItem", value = "/itensDespensa/insert")
 
 
 public class ServletCriarItem extends HttpServlet {

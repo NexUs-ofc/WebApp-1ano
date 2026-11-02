@@ -131,7 +131,7 @@
       <div class="barraPopupFormulario"></div>
       <div class="conteudoPopupFormulario">
       <h2><span>Criar</span> item_despensa</h2>
-      <form action="${pageContext.request.contextPath}/itens/insert" method="post">
+      <form action="${pageContext.request.contextPath}/itensDespensa/insert" method="post">
         <div class="gradeCamposPopup">
           <label class="campoPopup" for="idCasa">ID da casa<input id="idCasa" name="idCasa" type="number" required></label>
           <label class="campoPopup" for="idAlimento">ID do alimento<input id="idAlimento" name="idAlimento" type="number" required></label>

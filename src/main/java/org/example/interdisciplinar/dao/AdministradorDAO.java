@@ -20,7 +20,7 @@ public class AdministradorDAO {
         int linhasAfetadas = 0;
 
         //Comando de inserir em SQL
-        String sqlInsert = "INSERT INTO tb_administrador(nome, email, senha, telefone, url_foto) VALUES (?, ?, ?, ?, ?)";
+        String sqlInsert = "INSERT INTO tb_administrador(nome, email, senha, telefone) VALUES (?, ?, ?, ?)";
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
@@ -34,7 +34,6 @@ public class AdministradorDAO {
             pstmt.setString(2, administrador.getEmail());
             pstmt.setString(3, administrador.getSenha());
             pstmt.setString(4, administrador.getTelefone());
-            pstmt.setString(5, administrador.getUrlFoto());
 
             //Se ação tiver dados certo commita e retorna true
             linhasAfetadas = pstmt.executeUpdate();
@@ -81,12 +80,11 @@ public class AdministradorDAO {
             //Enquanto tiver mais registros cria novos objetos e adiciona à lista
             while(rs.next()){
                 Administrador admTemporario = new Administrador();
-                admTemporario.setId(rs.getInt("id_administrador"));
-                admTemporario.setNome(rs.getString("nome"));
-                admTemporario.setEmail(rs.getString("email"));
-                admTemporario.setSenha(rs.getString("senha"));
-                admTemporario.setTelefone(rs.getString("telefone"));
-                admTemporario.setUrlFoto(rs.getString("url_foto"));
+                admTemporario.setId(rs.getInt(1));
+                admTemporario.setNome(rs.getString(2));
+                admTemporario.setEmail(rs.getString(3));
+                admTemporario.setSenha(rs.getString(4));
+                admTemporario.setTelefone(rs.getString(5));
                 administradores.add(admTemporario);
             }
 
@@ -111,7 +109,7 @@ public class AdministradorDAO {
     }
 
     public boolean atualizar(Administrador administrador){
-        String sql = "UPDATE tb_administrador SET nome=?, email=?, senha=?, telefone=?, url_foto=? WHERE id_administrador=?";
+        String sql = "UPDATE tb_administrador SET nome=?, email=?, senha=?, telefone=? WHERE id_admin=?";
         try (
                 Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -120,21 +118,12 @@ public class AdministradorDAO {
             pstmt.setString(2, administrador.getEmail());
             pstmt.setString(3, administrador.getSenha());
             pstmt.setString(4, administrador.getTelefone());
-            pstmt.setString(5, administrador.getUrlFoto());
-            pstmt.setInt(6, administrador.getId());
+            pstmt.setInt(5, administrador.getId());
             int linhasAfetadas = pstmt.executeUpdate();
-
-            if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
-                return true;
-            }
-
-            GerenteConexao.rollback();
-            return false;
+            return linhasAfetadas > 0;
 
         } catch (SQLException sqle){
             sqle.printStackTrace();
-            GerenteConexao.rollback();
             return false;
         }
     }
@@ -148,7 +137,7 @@ public class AdministradorDAO {
         int linhasAfetadas = 0;
 
         //Comando de deletar em SQL
-        String sqlDelete = "DELETE FROM tb_administrador WHERE senha=?";
+        String sqlDelete = "DELETE FROM tb_adminstrador WHERE senha=?";
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
@@ -156,7 +145,6 @@ public class AdministradorDAO {
         try (PreparedStatement pstmt = conn.prepareStatement(sqlDelete)){
             //Seta valor nos '?' do comando SQL
             pstmt.setString(1, senha);
-            linhasAfetadas = pstmt.executeUpdate();
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
@@ -193,11 +181,11 @@ public class AdministradorDAO {
         List<Administrador> administradores = new ArrayList<>();
 
         if (idAdminInicio != null) {
-            sql.append(" AND id_administrador >=?");
+            sql.append(" AND id_admin >=?");
             parametrosDoFiltro.add(idAdminInicio);
         }
         if (idAdminFim != null) {
-            sql.append(" AND id_administrador <=?");
+            sql.append(" AND id_admin <=?");
             parametrosDoFiltro.add(idAdminFim);
         }
         if (nome != null && !nome.isBlank()) {
@@ -210,9 +198,9 @@ public class AdministradorDAO {
             parametrosDoFiltro.add("%" + email + "%");
         }
 
-        switch (ordenar == null ? "" : ordenar) {
+        switch (ordenar) {
             case "id":
-                sql.append(" ORDER BY id_administrador");
+                sql.append(" ORDER BY id_admin");
                 break;
 
             case "nome":
@@ -224,7 +212,7 @@ public class AdministradorDAO {
                 break;
 
             default:
-                sql.append(" ORDER BY id_administrador");
+                sql.append(" ORDER BY id_admin");
                 break;
         }
 
@@ -241,12 +229,11 @@ public class AdministradorDAO {
                 //Enquanto tiver mais registros cria novos objetos e adiciona à lista
                 while(rs.next()){
                     Administrador admTemporario = new Administrador();
-                    admTemporario.setId(rs.getInt("id_administrador"));
-                    admTemporario.setNome(rs.getString("nome"));
-                    admTemporario.setEmail(rs.getString("email"));
-                    admTemporario.setSenha(rs.getString("senha"));
-                    admTemporario.setTelefone(rs.getString("telefone"));
-                    admTemporario.setUrlFoto(rs.getString("url_foto"));
+                    admTemporario.setId(rs.getInt(1));
+                    admTemporario.setNome(rs.getString(2));
+                    admTemporario.setEmail(rs.getString(3));
+                    admTemporario.setSenha(rs.getString(4));
+                    admTemporario.setTelefone(rs.getString(5));
                     administradores.add(admTemporario);
                 }
 
@@ -262,7 +249,7 @@ public class AdministradorDAO {
     }
 
     public Administrador buscarporId(int id){
-        String sql = "SELECT * FROM tb_administrador WHERE id_administrador=?";
+        String sql = "SELECT * FROM tb_administrador WHERE id=?";
         try(
                 Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -276,10 +263,9 @@ public class AdministradorDAO {
                             rs.getString("email"),
                             rs.getString("senha"),
                             rs.getString("telefone"),
-                            rs.getString("url_foto"),
-                            null
+                            rs.getString("cpf"),
+                            rs.getString("urlFoto")
                     );
-                    administrador.setId(rs.getInt("id_administrador"));
                     return administrador;
                 }
             }

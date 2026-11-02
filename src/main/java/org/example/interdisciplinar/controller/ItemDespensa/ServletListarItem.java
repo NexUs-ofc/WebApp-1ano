@@ -1,4 +1,4 @@
-package org.example.interdisciplinar.controller.ItemDespensa;
+package org.example.interdisciplinar.controller.ItemDispensa;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -7,18 +7,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.ItemDespensaDAO;
-import org.example.interdisciplinar.dto.ItemDespensaView;
+import org.example.interdisciplinar.model.ItemDespensa;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
 @WebServlet(name = "ListarItens", value = "/itensDespensa")
 public class ServletListarItem extends HttpServlet {
-    private ItemDespensaDAO itemDespensaDAO;
+    private ItemDespensaDAO itemDispensaDAO;
 
     @Override
     public void init(){
-        itemDespensaDAO = new ItemDespensaDAO();
+        itemDispensaDAO = new ItemDespensaDAO();
     }
 
     @Override
@@ -84,17 +84,17 @@ public class ServletListarItem extends HttpServlet {
                 return;
             }
 
-            List<ItemDespensaView> itens = itemDespensaDAO.listarFiltrado(idInicio, idFim, qtdMinima, qtdMaxima, dataInicio, dataFim, ordenar);
+            List<ItemDespensa> itens = itemDispensaDAO.listarFiltrado(idInicio, idFim, qtdMinima, qtdMaxima, dataInicio, dataFim, ordenar);
             request.setAttribute("itens", itens);
             request.getRequestDispatcher("/WEB-INF/Views/itensDespensa.jsp").forward(request, response);
 
         } catch (NumberFormatException nfe){
             request.setAttribute("erro", "O ID dos itens precisa ser um número inteiro");
-            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/Views/ErrorPage.jsp").forward(request, response);
 
         } catch (RuntimeException re) {
             request.setAttribute("erro", "Não foi possível carregar os itens. Tente novamente.");
-            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/Views/ErrorPage.jsp").forward(request, response);
         }
     }
 
