@@ -24,6 +24,12 @@ public class Conexao {
         // Recupera a senha do banco de dados na .env
         String password = dotenv.get("DB_PASSWORD", System.getenv("DB_PASSWORD"));
 
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("Driver PostgreSQL não encontrado!", e);
+        }
+
         // Estabelece e retorna uma nova conexão com o banco.
         return DriverManager.getConnection(url, user, password);
     }

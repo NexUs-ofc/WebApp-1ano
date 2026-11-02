@@ -55,7 +55,7 @@ public class ServletListarCategoria extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/Views/categorias.jsp").forward(request, response);
 
         } catch (NumberFormatException nfe){
-            getServletContext().log("Erro ao formatar o número.", nfe);
+            getServletContext().log("Erro ao formatar o númeroa.", nfe);
             request.setAttribute("erro", "O ID da categoria precisa ser um número inteiro");
             request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
 
