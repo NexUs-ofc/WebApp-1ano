@@ -3,6 +3,7 @@ package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dto.AlimentoView;
+import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.model.Administrador;
 import org.example.interdisciplinar.model.Alimento;
 import org.example.interdisciplinar.model.ItemDespensa;
@@ -41,25 +42,20 @@ public class AlimentoDAO {
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
                 return true;
             }
 
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
+            //Se não retorna false
             return false;
 
             //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
+        } catch (SQLException e) {
 
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao inserir o alimento no banco de dados.",
+                    e
+            );
         }
 
     }
@@ -84,25 +80,20 @@ public class AlimentoDAO {
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
                 return true;
             }
 
             //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
             return false;
 
-            //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
 
-            //Lista todos os erros
-            sqle.printStackTrace();
+        } catch (SQLException e) {
 
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao deletar o alimento pelo id no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -127,23 +118,18 @@ public class AlimentoDAO {
                 );
                 alimentos.add(alimentoTemporario);
             }
-            // Commita a ação no banco de dados
-            GerenteConexao.commit();
 
             // Retrona a lista de administradores
             return alimentos;
 
             //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
+        } catch (SQLException e) {
 
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            // Retorna a lista
-            return alimentos;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao listar o alimento no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -161,9 +147,13 @@ public class AlimentoDAO {
             int linhasAfetadas = pstmt.executeUpdate();
             return linhasAfetadas > 0;
 
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            return false;
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao atualizar o alimento no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -248,9 +238,13 @@ public class AlimentoDAO {
                 return alimentos;
             }
 
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            return alimentos;
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao listar os admins com filtro no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -274,8 +268,13 @@ public class AlimentoDAO {
                 }
             }
 
-        } catch (SQLException sqle){
-            System.out.println("Erro de SQL: " + sqle.getMessage());
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao buscar o alimento pelo id no banco de dados.",
+                    e
+            );
         }
         return null;
     }

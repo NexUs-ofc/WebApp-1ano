@@ -65,10 +65,5 @@ public class ServletCriarAlimento extends HttpServlet {
         }
     }
 
-    @Override
-    public void destroy(){
-        GerenteConexao.desconectar();
-    }
-
 }
 
