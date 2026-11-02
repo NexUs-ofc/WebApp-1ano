@@ -4,6 +4,7 @@ package org.example.interdisciplinar.dao;
 import java.time.LocalDate;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dto.EmpresaView;
+import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.model.Empresa;
 import java.sql.*;
 import java.sql.PreparedStatement;
@@ -39,27 +40,21 @@ public class EmpresaDAO {
             // Executa o comando e recebe a quantidade de linhas afetadas
             linhasAfetadas = pstmt.executeUpdate();
 
-            //Se ação tiver dados certo commita e retorna true
+            //Se ação tiver dado certo retorna true
             if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
                 return true;
             }
 
             //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
             return false;
 
-            //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
+        } catch (SQLException e) {
 
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao inserir uma empresa no banco de dados.",
+                    e
+            );
         }
 
     }
@@ -86,25 +81,19 @@ public class EmpresaDAO {
             linhasAfetadas = pstmt.executeUpdate();
 
             if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
                 return true;
             }
 
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
             return false;
 
             //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
+        } catch (SQLException e) {
 
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao deletar uma empresa no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -130,20 +119,16 @@ public class EmpresaDAO {
                 );
                 empresas.add(empresaTemporaria);
             }
-            // Commita a ação no banco de dados
-            GerenteConexao.commit();
+
 
             // Retrona a lista de administradores
             return empresas;
 
-            //Em casos de erros no banco de dados desfaz a ação
         } catch (SQLException sqle) {
 
             //Lista todos os erros
             sqle.printStackTrace();
 
-            //Desfaz a ação
-            GerenteConexao.rollback();
 
             // Retorna a lista
             return empresas;
@@ -165,9 +150,13 @@ public class EmpresaDAO {
             int linhasAfetadas = pstmt.executeUpdate();
             return linhasAfetadas > 0;
 
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            return false;
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao atualizar uma empresa no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -194,7 +183,7 @@ public class EmpresaDAO {
             parametrosDoFiltro.add("%" + nome + "%");
         }
 
-        switch (ordenar) {
+        switch (ordenar == null ? "" : ordenar) {
             case "id_asc":
                 sql.append(" ORDER BY id_alimento ASC");
                 break;
@@ -243,9 +232,13 @@ public class EmpresaDAO {
                 return empresas;
             }
 
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            return empresas;
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao listar com filtro uma empresa no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -271,8 +264,13 @@ public class EmpresaDAO {
                 }
             }
 
-        } catch (SQLException sqle){
-            System.out.println("Erro de SQL: " + sqle.getMessage());
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao buscar uma empresa pelo id no banco de dados.",
+                    e
+            );
         }
         return null;
     }
