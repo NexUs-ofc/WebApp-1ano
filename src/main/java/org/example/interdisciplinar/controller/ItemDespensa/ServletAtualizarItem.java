@@ -1,8 +1,6 @@
 package org.example.interdisciplinar.controller.ItemDespensa;
 
 import org.example.interdisciplinar.dao.ItemDespensaDAO;
-import org.example.interdisciplinar.dao.UsuarioDAO;
-import org.example.interdisciplinar.dao.AlimentoDAO;
 import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.exception.FalhaConexaoException;
 import org.example.interdisciplinar.model.ItemDespensa;
@@ -20,14 +18,10 @@ import java.time.format.DateTimeParseException;
 public class ServletAtualizarItem extends HttpServlet {
 
     private ItemDespensaDAO itemDespensaDAO;
-    private UsuarioDAO usuarioDAO;
-    private AlimentoDAO alimentoDAO;
 
     @Override
     public void init() {
         itemDespensaDAO = new ItemDespensaDAO();
-        usuarioDAO = new UsuarioDAO();
-        alimentoDAO = new AlimentoDAO();
     }
 
     @Override
@@ -117,13 +111,6 @@ public class ServletAtualizarItem extends HttpServlet {
                 return;
             }
 
-            if (usuarioDAO.buscarporId(idCasa) == null ||
-                    alimentoDAO.buscarporId(idAlimento) == null) {
-
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                        "Casa ou alimento informado não existe");
-                return;
-            }
 
             ItemDespensa itemDespensa = new ItemDespensa(idCasa, idAlimento, quantidade, validade);
             itemDespensa.setId(id);
