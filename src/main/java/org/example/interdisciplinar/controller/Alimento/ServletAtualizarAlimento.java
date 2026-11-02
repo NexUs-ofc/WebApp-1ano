@@ -6,7 +6,6 @@ import org.example.interdisciplinar.dao.AlimentoDAO;
 import org.example.interdisciplinar.model.Alimento;
 import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.exception.FalhaConexaoException;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
