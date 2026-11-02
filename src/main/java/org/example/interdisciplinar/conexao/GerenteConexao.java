@@ -29,42 +29,4 @@ public class GerenteConexao {
         return conn;
 
     }
-    public static void commit(){
-        try{
-            if(conn != null && !conn.isClosed()){
-                conn.commit();
-            }
-        } catch (SQLException sqle){
-            System.out.println("Erro ao commitar comando no banco: " + sqle.getMessage());
-        }
-    }
-
-    public static void rollback(){
-        try{
-            if(conn != null && !conn.isClosed()){
-                conn.rollback();
-            }
-
-        } catch (SQLException sqle){
-            System.out.println("Erro no rollback: " + sqle.getMessage());
-        }
-
-    }
-
-    public static void desconectar(){
-        try {
-            if (conn != null && !conn.isClosed()){
-
-                conn.close();
-
-            }
-        } catch (SQLException sqle){
-
-            System.out.println("Erro no SQL: " + sqle.getMessage());
-
-        } finally {
-
-            conn = null;
-        }
-    }
 }
