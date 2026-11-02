@@ -183,7 +183,7 @@ public class EmpresaDAO {
             parametrosDoFiltro.add("%" + nome + "%");
         }
 
-        switch (ordenar) {
+        switch (ordenar == null ? "" : ordenar) {
             case "id_asc":
                 sql.append(" ORDER BY id_alimento ASC");
                 break;

@@ -193,7 +193,7 @@ public class UsuarioDAO {
             parametrosDoFiltro.add("%" + email + "%");
         }
 
-        switch (ordenar) {
+        switch (ordenar == null ? "" : ordenar) {
             case "id":
                 sql.append(" ORDER BY id_usuario");
                 break;

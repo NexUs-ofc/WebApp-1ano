@@ -175,7 +175,7 @@ public class CategoriaDAO {
             parametrosDoFiltro.add("%" + nome + "%");
         }
 
-        switch (ordenar) {
+        switch (ordenar == null ? "" : ordenar) {
             case "id":
                 sql.append(" ORDER BY id_categoria");
                 break;

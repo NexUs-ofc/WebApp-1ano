@@ -184,7 +184,7 @@ public class EnderecoDAO {
             parametrosDoFiltro.add("%" + cidade + "%");
         }
 
-        switch (ordenar) {
+        switch (ordenar == null ? "" : ordenar) {
             case "id":
                 sql.append(" ORDER BY id_endereco");
                 break;

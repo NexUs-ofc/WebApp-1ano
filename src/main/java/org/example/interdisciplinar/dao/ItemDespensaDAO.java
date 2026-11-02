@@ -205,7 +205,7 @@ public class ItemDespensaDAO {
             parametrosDoFiltro.add(dataFim);
         }
 
-        switch (ordenar){
+        switch (ordenar == null ? "" : ordenar){
             case "id":
                 sql.append(" ORDER BY id_item");
                 break;

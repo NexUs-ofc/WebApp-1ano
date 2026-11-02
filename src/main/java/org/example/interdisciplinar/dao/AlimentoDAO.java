@@ -190,7 +190,7 @@ public class AlimentoDAO {
             parametrosDoFiltro.add("%" + marca + "%");
         }
 
-        switch (ordenar) {
+        switch (ordenar == null ? "" : ordenar) {
             case "id":
                 sql.append(" ORDER BY id_alimento");
                 break;
