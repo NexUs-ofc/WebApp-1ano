@@ -4,12 +4,222 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Planos | Ceris</title>
-    <link rel="stylesheet" href="css/index.css?v=3">
-    <link rel="stylesheet" href="css/planos.css">
 
+    <!-- Importação das fontes -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Huninn&family=Poppins:wght@400;500;600;700&display=swap');
+
+        :root {
+            --roxo-escuro: #2b0a4d;
+            --roxo: #522080;
+            --roxo-claro: #9468c3;
+            --fundo-suave: #fbf9ff;
+            --texto: #2f2f2f;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Huninn', sans-serif;
+            color: var(--texto);
+            background: #fff;
+            overflow-x: hidden;
+        }
+        img { max-width: 100%; }
+        a { text-decoration: none; }
+        h1, h2, h3, strong, button { font-family: 'Poppins', sans-serif; }
+
+        /* HEADER */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(43, 10, 77, 0.08);
+        }
+        .container-header {
+            position: relative;
+            height: 72px;
+            padding: 0 112px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .marca { display: flex; align-items: center; gap: 8px; color: var(--roxo); }
+        .marca span { font-size: 26px; }
+        .logo { width: 26px; }
+        nav {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 36px;
+        }
+        nav a { color: #111; font-size: 14px; }
+        .acoes { display: flex; align-items: center; gap: 24px; }
+        .entrar { color: var(--roxo); font-size: 15px; }
+        .cadastrar {
+            color: #fff;
+            background: var(--roxo);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 15px;
+            padding: 11px 22px;
+            border-radius: 8px;
+        }
+
+        /* ESTILOS DA PÁGINA DE PLANOS */
+        .planos-cards {
+            position: relative;
+            min-height: calc(100vh - 72px);
+            padding: 90px 112px 110px;
+            overflow: hidden;
+        }
+        .planos-cards h2 {
+            text-align: center;
+            font-size: 40px;
+            font-weight: 600;
+            color: var(--roxo);
+            margin-bottom: 90px;
+        }
+        .destaque-vivo { color: #8c3fd8; }
+        .planos-lista {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            gap: 42px;
+        }
+        .plano {
+            position: relative;
+            width: 360px;
+            min-height: 620px;
+            display: flex;
+            flex-direction: column;
+            padding: 24px 26px 22px;
+            background: #fff;
+            border: 1px solid #e3dcff;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(140, 63, 216, 0.08);
+            cursor: pointer;
+            transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+        }
+        .plano h3 {
+            font-family: 'Huninn', sans-serif;
+            font-size: 26px;
+            font-weight: 400;
+            color: var(--roxo);
+            margin-bottom: 8px;
+        }
+        .plano-preco {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 4px 8px;
+            margin-bottom: 14px;
+        }
+        .plano-preco strong {
+            font-size: 34px;
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--roxo);
+        }
+        .plano-preco span {
+            font-size: 12px;
+            color: #666;
+        }
+        .plano-descricao {
+            font-size: 14px;
+            line-height: 1.5;
+            padding-bottom: 22px;
+            margin-bottom: 22px;
+            border-bottom: 2px solid var(--roxo-claro);
+            transition: color .3s ease;
+        }
+        .plano ul { flex-grow: 1; list-style: none; }
+        .plano li { margin-bottom: 20px; font-size: 14px; line-height: 1.45; transition: color .3s ease; }
+        .plano-limite {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: var(--roxo);
+        }
+        .botao-plano {
+            display: block;
+            padding: 13px;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            background: var(--roxo);
+            border-radius: 8px;
+            transition: background-color .3s ease;
+        }
+        .botao-plano::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+        }
+        .botao-plano:focus-visible { outline: 3px solid var(--roxo-claro); outline-offset: 3px; }
+        .plano:hover .botao-plano { background: var(--roxo-escuro); }
+
+        .plano-destaque,
+        .plano:hover,
+        .plano:focus-within {
+            border-color: var(--roxo);
+            box-shadow: 0 0 0 1px var(--roxo), 0 8px 30px rgba(140, 63, 216, 0.25);
+            transform: scale(1.065);
+            z-index: 1;
+        }
+        .plano-destaque .plano-descricao,
+        .plano-destaque li,
+        .plano:hover .plano-descricao,
+        .plano:hover li,
+        .plano:focus-within .plano-descricao,
+        .plano:focus-within li { color: var(--roxo); }
+
+        .plano:hover,
+        .plano:focus-within {
+            transform: translateY(-12px) scale(1.065);
+            z-index: 3;
+        }
+        .planos-lista:has(.plano:hover) .plano-destaque:not(:hover) {
+            border-color: #e3dcff;
+            box-shadow: 0 2px 10px rgba(140, 63, 216, 0.08);
+            transform: none;
+            z-index: auto;
+        }
+        .planos-lista:has(.plano:hover) .plano-destaque:not(:hover) .plano-descricao,
+        .planos-lista:has(.plano:hover) .plano-destaque:not(:hover) li { color: var(--texto); }
+
+        .aba-plano { position: absolute; }
+        .esquerda-escura { left: 0; top: 400px; bottom: 0; width: 36px; background: var(--roxo); border-radius: 0 50px 0 0; }
+        .esquerda-clara { left: 18px; top: 635px; bottom: 0; width: 40px; background: var(--roxo-claro); border-radius: 20px 20px 0 0; z-index: 1; }
+        .direita-clara { right: 0; top: 0; width: 72px; height: 235px; background: var(--roxo-claro); border-radius: 0 0 36px 36px; }
+        .direita-escura { right: 0; top: 0; width: 60px; height: 412px; background: var(--roxo); border-radius: 0 0 0 60px; z-index: 1; }
+
+        @media (max-width: 1100px) {
+            .planos-cards { padding-left: 48px; padding-right: 48px; }
+            .planos-lista { flex-wrap: wrap; }
+        }
+        @media (max-width: 800px) {
+            .planos-cards { padding: 60px 24px; }
+            .planos-cards h2 { font-size: 28px; margin-bottom: 40px; }
+            .planos-lista { flex-direction: column; align-items: center; gap: 24px; }
+            .plano { width: 100%; max-width: 400px; min-height: 0; }
+            .plano ul { margin-bottom: 24px; }
+            .aba-plano { display: none; }
+            .plano-destaque { transform: none; }
+            .plano:hover, .plano:focus-within { transform: translateY(-6px); }
+        }
+    </style>
 </head>
 <body>
-
 
 <header>
     <div class="container-header">
@@ -20,17 +230,19 @@
 
         <nav>
             <a href="index.html">Início</a>
-            <a href="index.html#plataforma">Plataforma</a>
+            <a href="index.html">Plataforma</a>
             <a href="planos.html">Planos</a>
             <a href="sobre.html">Sobre Nós</a>
         </nav>
 
         <div class="acoes">
-            <a class="entrar" href="login.html">Entrar</a>
-            <a class="cadastrar" href="login.html">Cadastrar</a>
+            <a class="entrar" href="#">Entrar</a>
+            <a class="cadastrar" href="#">Cadastrar</a>
         </div>
     </div>
 </header>
+
+
 <main>
     <section class="planos-cards">
         <div class="aba-plano esquerda-escura"></div>
@@ -56,7 +268,7 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 7v6"/><path d="M12 17h.01"/></svg>
                     Limite de até 3 filiais cadastradas.
                 </p>
-                <a href="login.html" class="botao-plano">Escolher Plano Ceris</a>
+                <a href="#" class="botao-plano">Escolher Plano Ceris</a>
             </div>
 
             <div class="plano plano-destaque">
@@ -75,7 +287,7 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 7v6"/><path d="M12 17h.01"/></svg>
                     Limite de até 10 filiais cadastradas.
                 </p>
-                <a href="login.html" class="botao-plano">Escolher Plano Enterprise</a>
+                <a href="#" class="botao-plano">Escolher Plano Enterprise</a>
             </div>
 
             <div class="plano">
@@ -96,7 +308,7 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 7v6"/><path d="M12 17h.01"/></svg>
                     Quantidade ilimitada de filiais cadastradas.
                 </p>
-                <a href="login.html" class="botao-plano">Escolher Plano Exclusive</a>
+                <a href="#" class="botao-plano">Escolher Plano Exclusive</a>
             </div>
 
         </div>
