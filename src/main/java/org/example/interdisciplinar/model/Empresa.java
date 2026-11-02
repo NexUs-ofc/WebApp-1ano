@@ -4,31 +4,25 @@ import java.time.LocalDate;
 
 public class Empresa {
 
-    // Atributos
-
     private int id;
     private String nome;
     private String cnpj;
     private int idEndereco;
-    private String telefone;
     private String email;
+    private String telefone;
     private LocalDate dataCadastro;
 
-    // Construtores
+    public Empresa() {
+    }
 
-    public Empresa(){}
-
-    public Empresa(String nome, String cnpj, int idEndereco, String telefone, String email, LocalDate dataCadastro) {
+    public Empresa(String nome, String cnpj, int idEndereco, String email, String telefone, LocalDate dataCadastro) {
         this.nome = nome;
         this.cnpj = cnpj;
         this.idEndereco = idEndereco;
-        this.telefone = telefone;
         this.email = email;
+        this.telefone = telefone;
         this.dataCadastro = dataCadastro;
     }
-
-    // Getters e setters
-
 
     public int getId() {
         return id;
@@ -62,20 +56,20 @@ public class Empresa {
         this.idEndereco = idEndereco;
     }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public LocalDate getDataCadastro() {
@@ -86,18 +80,16 @@ public class Empresa {
         this.dataCadastro = dataCadastro;
     }
 
-    // Método toString()
-
     @Override
     public String toString() {
-        return "==========ALIMENTO========="+ "\n" +
+        return "==========EMPRESA==========" + "\n" +
                 "Id: " + this.id + "\n" +
                 "Nome: " + this.nome + "\n" +
-                "Cnpj: " + this.cnpj + "\n" +
-                "Id do endereço: " + this.idEndereco + "\n" +
-                "Telefone: " + this.telefone + "\n" +
+                "CNPJ: " + this.cnpj + "\n" +
+                "Id Endereco: " + this.idEndereco + "\n" +
                 "Email: " + this.email + "\n" +
-                "Data de cadastro: " + this.dataCadastro + "\n" +
+                "Telefone: " + this.telefone + "\n" +
+                "Data Cadastro: " + this.dataCadastro + "\n" +
                 "============================";
     }
 }

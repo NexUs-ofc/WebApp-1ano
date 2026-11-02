@@ -1,0 +1,149 @@
+/* SEÇÃO - DUAS INTERFACES" */
+
+section.interfaces {
+    position: relative;
+    overflow: hidden;
+}
+
+/* parte fixa: título e botões ficam parados enquanto o resto desliza */
+section.interfaces .interfaces-cabecalho {
+    position: absolute;
+    top: 100px;
+    left: 112px;
+    width: 46%;
+    z-index: 3;
+}
+
+section.interfaces h2 {
+    font-size: 46px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--roxo-escuro);
+}
+
+section.interfaces .interfaces-botoes { display: flex; gap: 16px; margin: 34px 0 0; }
+
+section.interfaces .botao-interface {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--roxo);
+    background: #fff;
+    border: 1px solid var(--roxo);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color .6s, color .6s, box-shadow .6s;
+}
+section.interfaces .botao-interface.ativo {
+    background: var(--roxo);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(82, 32, 128, 0.35);
+}
+
+/* CARROSSEL: cada slide tem barras, subtítulo, lista e imagem.
+   A faixa desliza para o lado e dá para arrastar em qualquer ponto. */
+section.interfaces .carrossel {
+    overflow: hidden;
+    cursor: grab;
+    touch-action: pan-y; /* a página rola na vertical; o carrossel é arrastado na horizontal */
+    user-select: none;
+}
+section.interfaces .carrossel.arrastando { cursor: grabbing; }
+
+section.interfaces .carrossel-faixa {
+    display: flex;
+    transition: transform 1.1s cubic-bezier(.22, .8, .3, 1);
+}
+section.interfaces .carrossel-faixa.sem-transicao { transition: none; }
+
+section.interfaces .slide {
+    position: relative; /* as barras laterais ficam dentro do slide e deslizam junto */
+    flex: 0 0 100%;
+    display: flex;
+    align-items: stretch; /* texto no topo; a imagem se centraliza sozinha */
+    justify-content: space-between;
+    min-height: 820px;
+    padding: 100px 112px;
+}
+
+/* barras laterais */
+section.interfaces .slide > .aba-lateral { position: absolute; z-index: 0; }
+section.interfaces .aba-lateral.esquerda {
+    left: 0; top: 100px;
+    width: 32px; height: 580px;
+    background: var(--roxo);
+    border-radius: 0 40px 40px 0;
+}
+section.interfaces .aba-lateral.esquerda.baixa { /* barra do slide "mercado" */
+    top: 340px; width: 36px; height: 480px;
+    border-radius: 0 40px 0 0;
+}
+section.interfaces .aba-lateral.direita { right: 0; left: auto; border-radius: 40px 0 0 40px; }
+section.interfaces .aba-lateral.escura { top: 340px; width: 36px; height: 480px; background: var(--roxo); }
+section.interfaces .aba-lateral.clara { top: 500px; width: 36px; height: 320px; background: var(--roxo-claro); }
+
+section.interfaces .interfaces-texto {
+    position: relative;
+    z-index: 1;
+    width: 46%;
+    margin: 0;
+    padding: 260px 0 0; /* espaço do título + botões fixos (ajuste o 260px se precisar) */
+}
+
+section.interfaces h3 {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--roxo-escuro);
+    margin-bottom: 30px;
+}
+
+section.interfaces .lista-interface { list-style: none; }
+section.interfaces .lista-interface li { margin-bottom: 26px; }
+section.interfaces .lista-interface strong { display: block; font-size: 26px; font-weight: 600; color: var(--roxo); margin-bottom: 6px; }
+section.interfaces .lista-interface p { font-size: 19px; line-height: 1.35; max-width: 580px; }
+
+section.interfaces .interfaces-imagem {
+    position: relative;
+    z-index: 1;
+    width: 46%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+section.interfaces .imagem-interface {
+    display: block;
+    max-width: 72%; /* tamanho da imagem: diminua o % para ficar menor */
+    pointer-events: none;
+    -webkit-user-drag: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    section.interfaces .carrossel-faixa { transition: none; }
+}
+
+@media (max-width: 1100px) {
+    section.interfaces .slide { padding-left: 48px; padding-right: 48px; }
+    section.interfaces .interfaces-cabecalho { left: 48px; }
+    section.interfaces h2 { font-size: 36px; }
+    section.interfaces h3 { font-size: 30px; }
+    section.interfaces .lista-interface strong { font-size: 22px; }
+    section.interfaces .lista-interface p { font-size: 17px; }
+}
+
+@media (max-width: 800px) {
+    /* no celular o título e os botões voltam para o fluxo normal, acima do carrossel */
+    section.interfaces .interfaces-cabecalho { position: static; width: 100%; padding: 60px 24px 0; }
+    section.interfaces .interfaces-texto { padding-top: 0; }
+    section.interfaces .slide { flex-direction: column; min-height: 0; padding: 30px 24px 60px; gap: 40px; }
+    section.interfaces .interfaces-texto,
+    section.interfaces .interfaces-imagem { width: 100%; }
+    section.interfaces h2 { font-size: 30px; }
+    section.interfaces h3 { font-size: 26px; }
+    section.interfaces .imagem-interface { max-width: 90%; }
+    section.interfaces .interfaces-botoes { flex-wrap: wrap; }
+    section.interfaces .aba-lateral { display: none; }
+}

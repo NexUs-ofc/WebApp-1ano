@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ceris</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+<header>
+    <div class="container-header">
+        <a href="index.html" class="marca">
+            <img class="logo" src="assests/elements.svg" alt="Logo Ceris">
+            <span>Ceris</span>
+        </a>
+
+        <nav>
+            <a href="index.html">Início</a>
+            <a href="#plataforma">Plataforma</a>
+            <a href="planos.html">Planos</a>
+            <a href="sobre.html">Sobre Nós</a>
+        </nav>
+
+        <div class="acoes">
+            <a class="entrar" href="login.html">Entrar</a>
+            <a class="cadastrar" href="login.html">Cadastrar</a>
+        </div>
+    </div>
+</header>
+<main>
+
+    <!-- Hero -->
+    <section class="hero" id="proposito">
+        <div class="hero-texto">
+            <h1>Transforme o fim em<br>uma nova<br><span class="destaque">possibilidade</span></h1>
+            <p>
+                A plataforma inteligente que une consumidores conscientes e
+                estabelecimentos locais para combater o desperdício de alimentos.
+                Economize em suas compras e gerencie sua despensa de forma sustentável.
+            </p>
+            <a href="login.html" class="botao-comecar">Comece já</a>
+        </div>
+
+        <div class="hero-visual">
+            <img src="assests/Frame 56.svg" alt="Painel de controle da plataforma Ceris">
+        </div>
+
+        <div class="barra-hero escura"></div>
+        <div class="barra-hero clara"></div>
+    </section>
+
+
+
+    <!-- Duas interfaces (carrossel: arraste ou use os botões) -->
+    <section class="interfaces" id="plataforma">
+
+        <!-- parte fixa: título e botões não deslizam -->
+        <div class="interfaces-cabecalho">
+            <h2>Duas interfaces um<br>só <span class="destaque">propósito</span></h2>
+
+            <div class="interfaces-botoes">
+                <button class="botao-interface ativo" data-interface="cliente">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    Interface Cliente
+                </button>
+                <button class="botao-interface" data-interface="mercado">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 2-4h16l2 4"/><path d="M2 7a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/><path d="M4 10v11h16V10"/><path d="M10 21v-6h4v6"/></svg>
+                    Interface Mercado
+                </button>
+            </div>
+        </div>
+
+
+        <!-- parte que desliza: barras, subtítulo, lista e imagem -->
+        <div class="carrossel" id="carrossel">
+
+            <div class="carrossel-faixa">
+
+                <!-- Slide: interface cliente -->
+                <div class="slide" id="slide-cliente">
+                    <!-- barras laterais deste slide -->
+                    <div class="barra cliente-esquerda" aria-hidden="true"></div>
+                    <div class="barra cliente-direita-escura" aria-hidden="true"></div>
+                    <div class="barra cliente-direita-clara" aria-hidden="true"></div>
+
+                    <div class="interfaces-texto">
+                        <h3>Controle total na ponta dos dedos</h3>
+
+                        <ul class="lista-interface" id="lista-cliente">
+                            <li>
+                                <strong>Despensa Inteligente</strong>
+                                <p>Cadastre alimentos e receba alertas automáticos de vencimento.</p>
+                            </li>
+                            <li>
+                                <strong>Receitas com IA</strong>
+                                <p>Sugestões de receitas otimizadas com o que você já tem em casa.</p>
+                            </li>
+                            <li>
+                                <strong>Ofertas em Tempo Real</strong>
+                                <p>Encontre produtos com descontos especiais de até 70% perto de você.</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="interfaces-imagem">
+                        <img class="imagem-interface" id="imagem-cliente" src="assests/iPhone 16 Pro.svg" alt="Aplicativo do cliente" draggable="false">
+                    </div>
+                </div>
+
+
+                <!-- Slide: interface mercado -->
+                <div class="slide" id="slide-mercado">
+                    <!-- barras laterais deste slide -->
+                    <div class="barra mercado-direita" aria-hidden="true"></div>
+                    <div class="barra mercado-esquerda" aria-hidden="true"></div>
+
+                    <div class="interfaces-texto">
+                        <h3>Controle total na ponta dos dedos</h3>
+
+                        <ul class="lista-interface" id="lista-mercado">
+                            <li>
+                                <strong>Divulgação Expressa</strong>
+                                <p>Publique ofertas relâmpago de produtos próximos ao vencimento instantaneamente.</p>
+                            </li>
+                            <li>
+                                <strong>Redução de Quebras</strong>
+                                <p>Minimize o descarte de alimentos gerando novas receitas financeiras.</p>
+                            </li>
+                            <li>
+                                <strong>Dashboard de Impacto</strong>
+                                <p>Acompanhe relatórios de vendas, desperdício evitado e economia ambiental.</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="interfaces-imagem">
+                        <img class="imagem-interface" id="imagem-mercado" src="assests/computador.svg" alt="Painel de relatórios do mercado" draggable="false">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Depoimentos -->
+    <section class="depoimentos">
+        <h2>O que dizem sobre <span class="destaque">a nossa rede</span></h2>
+        <p class="subtitulo-secao">
+            Consumidores satisfeitos e comércios eficientes que já fazem parte da nossa comunidade consciente.
+        </p>
+
+        <div class="depoimentos-lista">
+            <div class="depoimento">
+                <span class="estrelas">★★★★★</span>
+                <p>"Com o Ceris eu reduzi em quase 80% o desperdício de vegetais na minha geladeira. As receitas inteligentes sugerem exatamente o que eu preciso cozinhar antes que estrague!"</p>
+                <div class="depoimento-autor">
+                    <img src="assests/Rectangle.svg" alt="Mariana Silva">
+                    <div><strong>Mariana Silva</strong><span>Consumidora</span></div>
+                </div>
+            </div>
+
+
+
+            <div class="depoimento">
+                <span class="estrelas">★★★★★</span>
+                <p>"A facilidade de anunciar produtos próximos ao vencimento mudou nossas quebras. Conseguimos girar o estoque crítico de forma rápida e ainda atraímos novos clientes."</p>
+                <div class="depoimento-autor">
+                    <img src="assests/Rectangle (1).svg" alt="Supermercado Real">
+                    <div><strong>Supermercado Real</strong><span>Parceiro Comercial</span></div>
+                </div>
+            </div>
+
+
+            <div class="depoimento">
+                <span class="estrelas">★★★★★</span>
+                <p>"Economizo em média R$ 200 por mês aproveitando as ofertas relâmpago do hortifruti perto de casa. A plataforma é intuitiva, sustentável e muito vantajosa."</p>
+                <div class="depoimento-autor">
+                    <img src="assests/Rectangle (2).svg" alt="Carlos Eduardo">
+                    <div><strong>Carlos Eduardo</strong><span>Consumidor</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Planos (banner) -->
+    <section class="planos-banner" id="planos">
+        <div class="planos-mascote">
+            <img src="assests/image%204%20%5BVectorized%5D.svg" alt="Mascote do Ceris">
+        </div>
+
+        <div class="planos-banner-texto">
+            <h2>Planos e valores ideais<br>para o seu negócio</h2>
+            <p>Encontre a categoria perfeita para impulsionar suas metas de economia e sustentabilidade de maneira ágil.</p>
+            <a href="planos.html" class="botao-planos">Ver Planos</a>
+        </div>
+    </section>
+
+
+
+    <!-- Dúvidas Frequentes -->
+    <section class="duvidas">
+        <h2>Dúvidas <span class="destaque">Frequentes</span></h2>
+        <p class="subtitulo-secao">
+            Encontre respostas rápidas para as principais perguntas sobre o funcionamento do ecossistema Ceris.
+        </p>
+
+
+        <div class="duvidas-lista">
+            <div class="duvida">
+                <button class="duvida-pergunta" aria-expanded="false">O Ceris cobra alguma taxa dos consumidores?</button>
+                <div class="duvida-resposta"><p>Não, o download e uso do aplicativo pelo consumidor para encontrar ofertas de alimentos e gerenciar sua própria despensa é 100% gratuito.</p></div>
+            </div>
+
+            <div class="duvida">
+                <button class="duvida-pergunta" aria-expanded="false">Como o mercado anuncia seus produtos?</button>
+                <div class="duvida-resposta"><p>Através do nosso Site, o gerente do estabelecimento consegue cadastrar itens críticos que precisam girar rápido em menos de 1 minuto.</p></div>
+            </div>
+
+            <div class="duvida">
+                <button class="duvida-pergunta" aria-expanded="false">As receitas do aplicativo funcionam mesmo?</button>
+                <div class="duvida-resposta"><p>Sim! Nossa Inteligência Artificial lê a lista de ingredientes disponíveis cadastrados na sua despensa virtual e formula soluções viáveis de cozimento instantâneo.</p></div>
+            </div>
+
+            <div class="duvida">
+                <button class="duvida-pergunta" aria-expanded="false">Quais os benefícios para o meio ambiente?</button>
+                <div class="duvida-resposta"><p>A decomposição de alimentos no lixo produz gás metano, nocivo à atmosfera. Cada quilo de alimento consumido através do Ceris reduz diretamente essa emissão.</p></div>
+            </div>
+
+            <div class="duvida">
+                <button class="duvida-pergunta" aria-expanded="false">O app está disponível na minha cidade?</button>
+                <div class="duvida-resposta"><p>O Ceris está em expansão acelerada. Atualmente atendemos as principais capitais brasileiras e polos comerciais em constante crescimento.</p></div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Chamada final -->
+    <section class="chamada-final" id="sobre-nos">
+        <h2>Pronto para fazer a diferença?</h2>
+        <p>Cadastre-se na plataforma que está ressignificando o futuro do consumo de alimentos. Economia inteligente e sustentabilidade lado a lado.</p>
+        <a href="login.html" class="botao-cadastro">Fazer Cadastro Gratuito</a>
+    </section>
+
+</main>
+
+
+<footer>
+    <div class="rodape-topo">
+        <div class="rodape-sobre">
+            <h3>Ceris</h3>
+            <p>Acelerando a transformação sustentável na distribuição e consumo conscientes de alimentos em toda a rede nacional.</p>
+            <a href="mailto:nexus.inter2026@gmail.com" class="rodape-email">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+                nexus.inter2026@gmail.com
+            </a>
+        </div>
+
+
+        <div class="rodape-links">
+            <strong>Links Rápidos</strong>
+            <a href="index.html">Início</a>
+            <a href="#plataforma">Plataforma</a>
+            <a href="planos.html">Planos</a>
+            <a href="sobre.html">Sobre Nós</a>
+        </div>
+    </div>
+
+
+    <div class="rodape-base">
+        <p>© 2026 NexUs. Todos os direitos reservados.</p>
+        <a href="restricao.html" class="acesso-restrito">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Acesso Restrito
+        </a>
+    </div>
+</footer>
+
+<script src="JS/proposito.js"></script>
+</body>
+</html>

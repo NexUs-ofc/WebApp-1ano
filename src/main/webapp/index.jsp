@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Huninn&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/views.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css">
     <title>PI do crud</title>
 </head>
 <body>
