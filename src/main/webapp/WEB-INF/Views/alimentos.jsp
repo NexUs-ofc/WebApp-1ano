@@ -34,17 +34,26 @@
       <img class="linhaPerfilSidebar" src="${pageContext.request.contextPath}/assets/profile-line.svg" alt="">
       <div class="perfilSidebar">
         <div class="fotoPerfilSidebar">
-          <img src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="Foto de perfil">
+          <c:choose>
+            <c:when test="${not empty sessionScope.administradorFoto}">
+              <img class="fotoAdministradorSidebar" src="<c:out value='${sessionScope.administradorFoto}'/>" alt="Foto de perfil">
+            </c:when>
+            <c:otherwise>
+              <img src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="Foto de perfil">
+            </c:otherwise>
+          </c:choose>
         </div>
         <div class="dadosPerfilSidebar">
-          <strong>Nome do administrador</strong>
+          <strong><c:out value="${sessionScope.administradorNome}" default="Administrador"/></strong>
           <span>Administrador</span>
         </div>
       </div>
-      <a class="botaoSairSidebar" href="${pageContext.request.contextPath}/index.html">
-        <img src="${pageContext.request.contextPath}/assets/fi-br-exit.svg" alt="">
-        Sair
-      </a>
+      <form action="${pageContext.request.contextPath}/logout" method="post">
+        <button class="botaoSairSidebar" type="submit">
+          <img src="${pageContext.request.contextPath}/assets/fi-br-exit.svg" alt="">
+          Sair
+        </button>
+      </form>
     </div>
   </nav>
 

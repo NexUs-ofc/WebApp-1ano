@@ -29,7 +29,7 @@
     <section class="login-form">
         <h1>Bem-vindo(a) de volta!</h1>
 
-        <form id="form-acesso" novalidate>
+        <form id="form-acesso" action="login" method="post" novalidate>
             <label for="email">E-mail</label>
             <input type="email" id="email" name="email" autocomplete="username" required>
 
@@ -74,9 +74,8 @@
     });
 
     formulario.addEventListener('submit', (e) => {
-        e.preventDefault();
-
         if (!campoEmail.value.trim() || !campoEmail.checkValidity()) {
+            e.preventDefault();
             mensagemErro.textContent = 'Digite um e-mail válido.';
             mensagemErro.hidden = false;
             campoEmail.focus();
@@ -84,15 +83,12 @@
         }
 
         if (!campoSenha.value) {
+            e.preventDefault();
             mensagemErro.textContent = 'Digite sua senha.';
             mensagemErro.hidden = false;
             campoSenha.focus();
             return;
         }
-
-        // TODO: aqui entra a verificação de login com o seu back-end.
-        // Nunca confira e-mail e senha só no JavaScript do navegador:
-        // qualquer pessoa conseguiria ler a senha no código da página:
     });
 </script>
 </body>
