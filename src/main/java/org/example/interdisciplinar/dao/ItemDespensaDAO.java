@@ -2,6 +2,7 @@ package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dto.ItemDespensaView;
+import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.model.ItemDespensa;
 import java.sql.*;
 import java.time.LocalDate;
@@ -34,27 +35,21 @@ public class ItemDespensaDAO {
 
             linhasAfetadas = pstmt.executeUpdate();
 
-            //Se ação tiver dados certo commita e retorna true
+            //Se ação tiver dado certo retorna true
             if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
                 return true;
             }
 
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
+            //Se não retorna false
             return false;
 
-            //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
+        } catch (SQLException e) {
 
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao inserir um item no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -80,26 +75,21 @@ public class ItemDespensaDAO {
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
                 return true;
             }
 
             //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
             return false;
 
 
-            //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
 
-            //Lista todos os erros
-            sqle.printStackTrace();
+        } catch (SQLException e) {
 
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao deletar um item no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -141,15 +131,14 @@ public class ItemDespensaDAO {
             // Retrona a lista de itens da dispensa
             return itensDespensa;
 
-        } catch (SQLException sqle) {
-            //Lista todos os erros
-            sqle.printStackTrace();
+        } catch (SQLException e) {
 
-
-            //Retorna a lista
-            return itensDespensa;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao listar uma empresa no banco de dados.",
+                    e
+            );
         }
-
     }
 
     public boolean atualizar(ItemDespensa itemDespensa){
@@ -267,9 +256,13 @@ public class ItemDespensaDAO {
                 return itensDespensa;
             }
 
-        } catch (SQLException sqle){
-            sqle.printStackTrace();
-            return itensDespensa;
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao listar um item com filtro no banco de dados.",
+                    e
+            );
         }
     }
     public ItemDespensa buscarporId(int id){
@@ -292,8 +285,13 @@ public class ItemDespensaDAO {
                 }
             }
 
-        } catch (SQLException sqle){
-            System.out.println("Erro de SQL: " + sqle.getMessage());
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao buscar um item pelo id no banco de dados.",
+                    e
+            );
         }
         return null;
     }
