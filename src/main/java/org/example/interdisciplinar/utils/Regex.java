@@ -86,4 +86,20 @@ public class Regex {
         return validador.matches();
     }
 
+    // Método booleano para validar senha
+    public static boolean validarCnpj(String cnpj){
+
+        // Importando a expressão regular (regex)
+        String expressao = Constantes.regexCnpj;
+
+        // Compilando o regex
+        Pattern regex = Pattern.compile(expressao);
+
+        // Compara a entrada de dados com o regex
+        Matcher validador = regex.matcher(cnpj);
+
+        // Retorna se é válido ou não
+        return validador.matches();
+    }
+
 }
