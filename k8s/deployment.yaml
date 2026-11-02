@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-1ano
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: webapp-1ano
+  template:
+    metadata:
+      labels:
+        app: webapp-1ano
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: webapp-1ano
+        image: webapp-1ano:local
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8080
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        envFrom:
+        - secretRef:
+            name: webapp-1ano-secret
+        startupProbe:
+          httpGet:
+            path: /index.html
+            port: http
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 60
+        readinessProbe:
+          httpGet:
+            path: /index.html
+            port: http
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /index.html
+            port: http
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-1ano
+spec:
+  type: ClusterIP
+  selector:
+    app: webapp-1ano
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
