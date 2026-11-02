@@ -13,10 +13,7 @@ public class ServletFiltroAutenticacao implements Filter {
 
     // Método que verifica se o administrador está autenticado
     @Override
-    public void doFilter(ServletRequest request,
-                         ServletResponse response,
-                         FilterChain chain)
-            throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         HttpServletRequest requisicao = (HttpServletRequest) request;
         HttpServletResponse resposta = (HttpServletResponse) response;
