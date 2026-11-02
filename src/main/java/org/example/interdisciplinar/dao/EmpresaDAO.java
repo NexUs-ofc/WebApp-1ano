@@ -7,6 +7,7 @@ import org.example.interdisciplinar.dto.EmpresaView;
 import org.example.interdisciplinar.model.Empresa;
 import java.sql.*;
 import java.sql.PreparedStatement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
