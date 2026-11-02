@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.AlimentoDAO;
 import org.example.interdisciplinar.dto.AlimentoView;
-import org.example.interdisciplinar.model.Alimento;
 
 import java.io.IOException;
 import java.util.List;

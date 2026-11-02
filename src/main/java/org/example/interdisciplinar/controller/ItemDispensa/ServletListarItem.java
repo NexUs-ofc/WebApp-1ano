@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.ItemDespensaDAO;
 import org.example.interdisciplinar.dto.ItemDespensaView;
-import org.example.interdisciplinar.model.ItemDespensa;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;

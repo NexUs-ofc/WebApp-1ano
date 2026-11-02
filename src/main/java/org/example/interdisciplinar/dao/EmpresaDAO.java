@@ -1,6 +1,7 @@
 package org.example.interdisciplinar.dao;
 
 
+import java.time.LocalDate;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dto.EmpresaView;
 import org.example.interdisciplinar.model.Empresa;
