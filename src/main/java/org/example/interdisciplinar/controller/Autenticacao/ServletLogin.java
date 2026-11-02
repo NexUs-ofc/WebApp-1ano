@@ -1,12 +1,10 @@
-package org.example.interdisciplinar.controller.Auth;
+package org.example.interdisciplinar.controller.Autenticacao;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.AdministradorDAO;
 import org.example.interdisciplinar.model.Administrador;
 import org.example.interdisciplinar.utils.Criptografia;
