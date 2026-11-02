@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title>Acesso Restrito | Ceris</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/restricao.css">
+</head>
+<body class="pagina-login">
+
+<main class="login-cartao">
+
+    <!-- Lado roxo -->
+    <aside class="login-lateral">
+        <a href="index.html" class="login-marca" aria-label="Voltar para o início">
+            <span class="login-icone"><img src="assests/elements.svg" alt="Logo Ceris"></span>
+            <span class="login-nome">Ceris</span>
+        </a>
+
+        <a href="index.html" class="login-sair">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
+            Sair
+        </a>
+    </aside>
+    <!-- Formulário -->
+    <section class="login-form">
+        <h1>Bem-vindo(a) de volta!</h1>
+
+        <form id="form-acesso" novalidate>
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" autocomplete="username" required>
+
+            <label for="senha">Senha</label>
+            <div class="campo-senha">
+                <input type="password" id="senha" name="senha" autocomplete="current-password" required>
+                <button type="button" class="ver-senha" id="ver-senha" aria-label="Mostrar senha" aria-pressed="false">
+                    <svg class="icone-olho" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <svg class="icone-olho-fechado" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 19c-6.5 0-10-7-10-7a18.5 18.5 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c6.5 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="m1 1 22 22"/></svg>
+                </button>
+            </div>
+
+            <a href="#" class="esqueci">Esqueci minha senha</a>
+
+            <p class="mensagem-erro" id="mensagem-erro" role="alert" hidden></p>
+
+            <button type="submit" class="botao-entrar">Entrar na conta</button>
+        </form>
+    </section>
+
+</main>
+<script>
+    const formulario = document.getElementById('form-acesso');
+    const campoEmail = document.getElementById('email');
+    const campoSenha = document.getElementById('senha');
+    const botaoVer = document.getElementById('ver-senha');
+    const mensagemErro = document.getElementById('mensagem-erro');
+
+
+    // mostrar / esconder senha
+    botaoVer.addEventListener('click', () => {
+        const mostrando = campoSenha.type === 'text';
+        campoSenha.type = mostrando ? 'password' : 'text';
+        botaoVer.classList.toggle('mostrando', !mostrando);
+        botaoVer.setAttribute('aria-pressed', String(!mostrando));
+        botaoVer.setAttribute('aria-label', mostrando ? 'Mostrar senha' : 'Esconder senha');
+    });
+
+    // limpa a mensagem de erro quando a pessoa volta a digitar
+    [campoEmail, campoSenha].forEach((campo) => {
+        campo.addEventListener('input', () => { mensagemErro.hidden = true; });
+    });
+
+    formulario.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        if (!campoEmail.value.trim() || !campoEmail.checkValidity()) {
+            mensagemErro.textContent = 'Digite um e-mail válido.';
+            mensagemErro.hidden = false;
+            campoEmail.focus();
+            return;
+        }
+
+        if (!campoSenha.value) {
+            mensagemErro.textContent = 'Digite sua senha.';
+            mensagemErro.hidden = false;
+            campoSenha.focus();
+            return;
+        }
+
+        // TODO: aqui entra a verificação de login com o seu back-end.
+        // Nunca confira e-mail e senha só no JavaScript do navegador:
+        // qualquer pessoa conseguiria ler a senha no código da página:
+    });
+</script>
+</body>
+</html>

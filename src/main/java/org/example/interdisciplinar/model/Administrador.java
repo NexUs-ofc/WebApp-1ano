@@ -9,20 +9,27 @@ public class Administrador {
     private String email;
     private String senha;
     private String telefone;
-    private String urlFoto;
     private String cpf;
+    private String urlFoto;
 
     // Construtores
 
-    public Administrador(String nome, String email, String senha, String telefone, String urlFoto, String cpf) {
+    public Administrador(String nome, String email, String senha) {
 
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.telefone = telefone;
-        this.urlFoto = urlFoto;
-        this.cpf = cpf;
     }
+
+    public Administrador(String nome, String email, String senha, String telefone, String cpf, String urlFoto) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.telefone = telefone;
+        this.cpf = cpf;
+        this.urlFoto = urlFoto;
+    }
+
     public Administrador(){
 
     }
@@ -69,20 +76,20 @@ public class Administrador {
         this.telefone = telefone;
     }
 
-    public String getUrlFoto() {
-        return urlFoto;
-    }
-
-    public void setUrlFoto(String urlFoto) {
-        this.urlFoto = urlFoto;
-    }
-
     public String getCpf() {
         return cpf;
     }
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public String getUrlFoto() {
+        return urlFoto;
+    }
+
+    public void setUrlFoto(String urlFoto) {
+        this.urlFoto = urlFoto;
     }
 
     // Método toString()
@@ -94,9 +101,6 @@ public class Administrador {
                 "Nome: " + this.nome + "\n" +
                 "Email: " + this.email + "\n" +
                 "Senha: " + this.senha + "\n" +
-                "Telefone: " + this.telefone + "\n" +
-                "Url da foto: " + this.urlFoto + "\n" +
-                "Cpf: " + this.cpf + "\n" +
                 "=================================";
     }
 }

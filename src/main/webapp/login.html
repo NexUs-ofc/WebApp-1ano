@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Entrar | Ceris</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body class="pagina-login">
+
+<main class="login-cartao">
+
+    <!-- Lado roxo -->
+    <aside class="login-lateral">
+        <div class="login-marca">
+            <span class="login-icone"><img src="assests/elements.svg" alt="Logo Ceris"></span>
+            <span class="login-nome">Ceris</span>
+        </div>
+
+        <p class="login-frase">Simplifique o controle das suas filiais e transforme dados operacionais em crescimento estratégico.</p>
+
+        <img class="login-mascote" src="assests/image%204%20%5BVectorized%5D.svg" alt="Mascote do Ceris">
+
+        <a href="index.html" class="login-sair">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
+            Sair
+        </a>
+    </aside>
+    <!-- Formulário -->
+    <section class="login-form">
+        <h1>Bem-vindo(a) de volta!</h1>
+        <p class="login-sub">Acesse sua conta empresarial</p>
+
+        <form id="form-login">
+            <label for="email">E-mail corporativo</label>
+            <input type="email" id="email" placeholder="seuemail@empresa.com" required>
+
+            <label for="senha">Senha</label>
+            <div class="campo-senha">
+                <input type="password" id="senha" placeholder="Digite sua senha" required>
+                <button type="button" class="ver-senha" id="ver-senha" aria-label="Mostrar senha">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+            </div>
+
+            <a href="#" class="esqueci">Esqueci minha senha</a>
+
+            <button type="submit" class="botao-entrar">Entrar na conta</button>
+        </form>
+
+        <p class="login-cadastro">Ainda não tem conta corporativa? <a href="#">Cadastre-se</a></p>
+    </section>
+
+</main>
+<script>
+    // mostrar / esconder senha
+    const campoSenha = document.getElementById('senha');
+    document.getElementById('ver-senha').addEventListener('click', () => {
+        campoSenha.type = campoSenha.type === 'password' ? 'text' : 'password';
+    });
+
+
+    // por enquanto o formulário não envia para nenhum lugar
+    document.getElementById('form-login').addEventListener('submit', (e) => e.preventDefault());
+</script>
+</body>
+</html>
