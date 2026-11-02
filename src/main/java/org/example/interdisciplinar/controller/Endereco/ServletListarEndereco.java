@@ -62,8 +62,4 @@ public class ServletListarEndereco extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
         }
     }
-
-    public void destroy(){
-        GerenteConexao.desconectar();
-    }
 }

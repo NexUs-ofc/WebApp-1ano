@@ -63,8 +63,4 @@ public class ServletListarCategoria extends HttpServlet {
         }
     }
 
-
-    public void destroy(){
-        GerenteConexao.desconectar();
-    }
 }

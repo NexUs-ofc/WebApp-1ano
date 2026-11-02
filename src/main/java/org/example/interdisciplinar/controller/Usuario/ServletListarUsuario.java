@@ -63,11 +63,5 @@ public class ServletListarUsuario extends HttpServlet {
             request.setAttribute("erro", "Não foi possível carregar os usuários. Tente novamente.");
             request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
         }
-
-
-    }
-
-    public void destroy(){
-        GerenteConexao.desconectar();
     }
 }
