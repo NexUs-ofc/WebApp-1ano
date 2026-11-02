@@ -7,12 +7,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.UsuarioDAO;
-import org.example.interdisciplinar.dto.UsuarioView;
+    import org.example.interdisciplinar.dto.UsuarioView;
 
-import java.io.IOException;
-import java.util.List;
+    import java.io.IOException;
+    import java.util.List;
 
-@WebServlet(name = "ListarUsuarios", value = "/usuarios")
+    @WebServlet(name = "ListarUsuarios", value = "/usuarios")
 public class ServletListarUsuario extends HttpServlet {
     private UsuarioDAO usuarioDAO;
 
