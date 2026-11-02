@@ -1,0 +1,36 @@
+name: Deploy na Discloud
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-e-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Permissao do mvnw
+        run: chmod +x ./mvnw
+
+      - name: Build com Maven
+        run: ./mvnw clean package -DskipTests
+
+      - name: Copiar fat JAR para raiz
+        run: cp target/app.jar app.jar
+
+      - name: Instalar Discloud CLI
+        run: npm install -g discloud-cli
+
+      - name: Login na Discloud
+        run: echo ${{ secrets.DISCLOUD_TOKEN }} | discloud login
+
+      - name: Deploy na Discloud
+        run: discloud app commit ceris-webapp
