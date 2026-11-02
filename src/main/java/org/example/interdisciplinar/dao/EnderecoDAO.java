@@ -1,6 +1,7 @@
 package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
+import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.model.Alimento;
 import org.example.interdisciplinar.model.Categoria;
 import org.example.interdisciplinar.model.Endereco;
@@ -34,28 +35,21 @@ public class EnderecoDAO {
             pstmt.setString(5, endereco.getEstado());
             pstmt.setString(6, endereco.getCep());
 
-            //Se ação tiver dados certo commita e retorna true
+            //Se ação tiver dado certo retorna true
             if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
                 return true;
             }
 
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
+            //Se não retorna false
             return false;
 
+        } catch (SQLException e) {
 
-        //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
-
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao inserir um endereco no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -77,27 +71,21 @@ public class EnderecoDAO {
             //Seta valor no '?' do comando SQL
             pstmt.setInt(1, idEndereco);
 
-            //Se ação tiver dados certo commita e retorna true
+            //Se ação tiver dado certo retorna true
             if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
                 return true;
             }
 
             //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
             return false;
 
-        //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
+        } catch (SQLException e) {
 
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao deletar um endereco no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -127,23 +115,17 @@ public class EnderecoDAO {
                 enderecoTemporario.setCep(rs.getString(7));
                 enderecos.add(enderecoTemporario);
             }
-            // Commita a ação no banco de dados
-            GerenteConexao.commit();
 
             // Retrona a lista de administradores
             return enderecos;
 
-        //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
+        } catch (SQLException e) {
 
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            // Retorna a lista
-            return enderecos;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao listar um endereco no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -163,9 +145,13 @@ public class EnderecoDAO {
             int linhasAfetadas = pstmt.executeUpdate();
             return linhasAfetadas > 0;
 
-        } catch (SQLException sqle){
-            sqle.printStackTrace();
-            return false;
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao atualizar um endereco no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -238,16 +224,18 @@ public class EnderecoDAO {
                     enderecoTemporario.setCep(rs.getString(7));
                     enderecos.add(enderecoTemporario);
                 }
-                // Commita a ação no banco de dados
-                GerenteConexao.commit();
 
                 // Retrona a lista de administradores
                 return enderecos;
             }
 
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            return enderecos;
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao listar um endereço com filtro no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -273,8 +261,13 @@ public class EnderecoDAO {
                 }
             }
 
-        } catch (SQLException sqle){
-            System.out.println("Erro de SQL: " + sqle.getMessage());
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao buscar um endereco pelo id no banco de dados.",
+                    e
+            );
         }
         return null;
     }
