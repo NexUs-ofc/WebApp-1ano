@@ -61,7 +61,7 @@ public class AlimentoDAO {
     }
 
     // Método de deletar um alimento do banco de dados
-    public boolean deletar(Alimento alimento) {
+    public boolean deletar(int id) {
 
         // Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
@@ -76,8 +76,7 @@ public class AlimentoDAO {
         try (PreparedStatement pstmt = conn.prepareStatement(sqlDelete)) {
 
             //Seta valor no '?' do comando SQL
-            pstmt.setInt(1, alimento.getId());
-            linhasAfetadas = pstmt.executeUpdate();
+            pstmt.setInt(1, id);
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
