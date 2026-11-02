@@ -7,12 +7,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.UsuarioDAO;
-    import org.example.interdisciplinar.dto.UsuarioView;
+import org.example.interdisciplinar.dto.UsuarioView;
+import org.example.interdisciplinar.exception.ErroPersistenciaException;
+import org.example.interdisciplinar.exception.FalhaConexaoException;
+import org.example.interdisciplinar.model.Usuario;
 
-    import java.io.IOException;
-    import java.util.List;
+import java.io.IOException;
+import java.util.List;
 
-    @WebServlet(name = "ListarUsuarios", value = "/usuarios")
+@WebServlet(name = "ListarUsuarios", value = "/usuarios")
 public class ServletListarUsuario extends HttpServlet {
     private UsuarioDAO usuarioDAO;
 
@@ -54,18 +57,39 @@ public class ServletListarUsuario extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/Views/usuarios.jsp").forward(request, response);
 
         } catch (NumberFormatException nfe){
+            getServletContext().log("Erro ao formatar o número.", nfe);
             request.setAttribute("erro", "O ID dos usuários precisa ser um número inteiro");
-            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
 
-        } catch (RuntimeException re) {
-            request.setAttribute("erro", "Não foi possível carregar os usuários. Tente novamente.");
-            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
+        } catch (FalhaConexaoException e) {
+
+            // Registra os detalhes técnicos da falha de conexão.
+            getServletContext().log("Falha ao conectar ao banco de dados.", e);
+
+            // Define uma mensagem compreensível para o administrador.
+            request.setAttribute(
+                    "erro",
+                    "Não foi possível estabelecer conexão com o banco de dados."
+            );
+
+            // Encaminha para a página de erro
+            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+
+
+        } catch (ErroPersistenciaException e) {
+
+            // Registra os detalhes técnicos do erro de persistência.
+            getServletContext().log("Erro ao listar os usuários", e);
+
+            // Define uma mensagem compreensível para o administrador.
+            request.setAttribute(
+                    "erro",
+                    "Ocorreu um erro ao listar os usuários."
+            );
+
+            // Encaminha para a página de erro.
+            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+
         }
-
-
-    }
-
-    public void destroy(){
-        GerenteConexao.desconectar();
     }
 }

@@ -1,6 +1,7 @@
 package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
+import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.model.Alimento;
 import org.example.interdisciplinar.model.Categoria;
 import java.sql.*;
@@ -29,29 +30,24 @@ public class CategoriaDAO {
             pstmt.setString(1, categoria.getNome());
             pstmt.setString(2, categoria.getDescricao());
 
-            //Se ação tiver dados certo commita e retorna true
+            //Se ação tiver dados certo retorna true
             linhasAfetadas = pstmt.executeUpdate();
             if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
                 return true;
             }
 
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
+            //Se não retorna false
             return false;
 
 
         //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
+        } catch (SQLException e) {
 
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao inserir uma categoria no banco de dados.",
+                    e
+            );
         }
 
     }
@@ -75,28 +71,21 @@ public class CategoriaDAO {
             pstmt.setInt(1, id);
             linhasAfetadas = pstmt.executeUpdate();
 
-            //Se ação tiver dados certo commita e retorna true
+            //Se ação tiver dado certo retorna true
             if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
                 return true;
             }
 
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
+            //Se não retorna false
             return false;
 
+        } catch (SQLException e) {
 
-        //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
-
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao deletar uma categoria do banco de dados.",
+                    e
+            );
         }
 
     }
@@ -127,23 +116,18 @@ public class CategoriaDAO {
                 categorias.add(categoriaTemporaria);
             }
 
-            // Commita a ação no banco de dados
-            GerenteConexao.commit();
 
             // Retrona a lista de administradores
             return categorias;
 
         //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
+        } catch (SQLException e) {
 
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna a lista
-            return categorias;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao listar as categorias no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -159,9 +143,13 @@ public class CategoriaDAO {
             int linhasAfetadas = pstmt.executeUpdate();
             return linhasAfetadas > 0;
 
-        } catch (SQLException sqle){
-            sqle.printStackTrace();
-            return false;
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao atualizar as categorias no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -226,9 +214,13 @@ public class CategoriaDAO {
                 return categorias;
             }
 
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            return categorias;
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao listar com filtro as categorias no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -251,8 +243,13 @@ public class CategoriaDAO {
                 }
             }
 
-        } catch (SQLException sqle){
-            System.out.println("Erro de SQL: " + sqle.getMessage());
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao buscar pelo id as categorias no banco de dados.",
+                    e
+            );
         }
         return null;
     }

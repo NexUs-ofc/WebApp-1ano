@@ -1,6 +1,7 @@
 package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
+import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.model.Administrador;
 import org.example.interdisciplinar.model.ConfiguracaoAlerta;
 import org.example.interdisciplinar.model.ItemDespensa;
@@ -20,7 +21,7 @@ public class AdministradorDAO {
         int linhasAfetadas = 0;
 
         //Comando de inserir em SQL
-        String sqlInsert = "INSERT INTO tb_administrador(nome, email, senha, telefone) VALUES (?, ?, ?, ?)";
+        String sqlInsert = "INSERT INTO tb_administrador(nome, email, senha, telefone, urlFoto, cpf) VALUES (?, ?, ?, ?, ?, ?)";
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
@@ -34,30 +35,25 @@ public class AdministradorDAO {
             pstmt.setString(2, administrador.getEmail());
             pstmt.setString(3, administrador.getSenha());
             pstmt.setString(4, administrador.getTelefone());
+            pstmt.setString(5, administrador.getUrlFoto());
+            pstmt.setString(6, administrador.getCpf());
 
             //Se ação tiver dados certo commita e retorna true
             linhasAfetadas = pstmt.executeUpdate();
 
             if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
                 return true;
+            } else{
+                return false;
             }
 
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
-            return false;
+        } catch (SQLException e) {
 
-        //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
-
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao inserir os administradores no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -88,28 +84,22 @@ public class AdministradorDAO {
                 administradores.add(admTemporario);
             }
 
-            // Commita a ação no banco de dados
-            GerenteConexao.commit();
-
             // Retrona a lista de administradores
             return administradores;
 
         //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
+        } catch (SQLException e) {
 
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna a lista
-            return administradores;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao listar os administradores no banco de dados.",
+                    e
+            );
         }
     }
 
     public boolean atualizar(Administrador administrador){
-        String sql = "UPDATE tb_administrador SET nome=?, email=?, senha=?, telefone=? WHERE id_admin=?";
+        String sql = "UPDATE tb_administrador SET nome=?, email=?, senha=?, telefone=?, urlFoto=?, cpf=? WHERE id_admin=?";
         try (
                 Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -118,55 +108,58 @@ public class AdministradorDAO {
             pstmt.setString(2, administrador.getEmail());
             pstmt.setString(3, administrador.getSenha());
             pstmt.setString(4, administrador.getTelefone());
-            pstmt.setInt(5, administrador.getId());
+            pstmt.setString(5, administrador.getUrlFoto());
+            pstmt.setString(6, administrador.getCpf());
+            pstmt.setInt(7, administrador.getId());
+
             int linhasAfetadas = pstmt.executeUpdate();
             return linhasAfetadas > 0;
 
-        } catch (SQLException sqle){
-            sqle.printStackTrace();
-            return false;
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao atualizar o administrador no banco de dados.",
+                    e
+            );
         }
     }
 
 
     /* Método para deletar um administrador do banco de dados
         requisitando a senha para deletar */
-    public boolean deletar(String senha){
+    public boolean deletar(int id){
 
         //Controle de linhas afetadas
         int linhasAfetadas = 0;
 
         //Comando de deletar em SQL
-        String sqlDelete = "DELETE FROM tb_adminstrador WHERE senha=?";
+        String sqlDelete = "DELETE FROM tb_adminstrador WHERE id_admin=?";
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
 
         try (PreparedStatement pstmt = conn.prepareStatement(sqlDelete)){
             //Seta valor nos '?' do comando SQL
-            pstmt.setString(1, senha);
+            pstmt.setInt(1, id);
 
             //Se ação tiver dados certo commita e retorna true
+            linhasAfetadas = pstmt.executeUpdate();
             if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
                 return true;
             }
 
             //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
             return false;
 
         //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
+        } catch (SQLException e) {
 
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao deletar o administrador no banco de dados.",
+                    e
+            );
         }
     }
     public List<Administrador> listarFiltrado(
@@ -198,7 +191,7 @@ public class AdministradorDAO {
             parametrosDoFiltro.add("%" + email + "%");
         }
 
-        switch (ordenar) {
+        switch (ordenar == null ? "" : ordenar) {
             case "id":
                 sql.append(" ORDER BY id_admin");
                 break;
@@ -242,9 +235,13 @@ public class AdministradorDAO {
 
             }
 
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-            return administradores;
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao listar os administradores com filtro no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -270,8 +267,46 @@ public class AdministradorDAO {
                 }
             }
 
-        } catch (SQLException sqle){
-            System.out.println("Erro de SQL: " + sqle.getMessage());
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao buscar um admin pelo id no banco de dados.",
+                    e
+            );
+        }
+        return null;
+    }
+
+    public Administrador buscarPorEmail(String email){
+        String sql = "SELECT * FROM tb_administrador WHERE email=?";
+        try(
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
+            pstmt.setString(1, email);
+
+            try(ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    Administrador administrador = new Administrador(
+                            rs.getString("nome"),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("telefone"),
+                            rs.getString("urlFoto"),
+                            rs.getString("cpf")
+                    );
+                    return administrador;
+                }
+            }
+
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao buscar um admin pelo email no banco de dados.",
+                    e
+            );
         }
         return null;
     }

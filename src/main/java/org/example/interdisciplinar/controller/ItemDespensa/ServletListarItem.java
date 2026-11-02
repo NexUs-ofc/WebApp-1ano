@@ -1,4 +1,4 @@
-package org.example.interdisciplinar.controller.ItemDispensa;
+package org.example.interdisciplinar.controller.ItemDespensa;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -7,6 +7,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.ItemDespensaDAO;
+import org.example.interdisciplinar.dto.ItemDespensaView;
+import org.example.interdisciplinar.exception.ErroPersistenciaException;
+import org.example.interdisciplinar.exception.FalhaConexaoException;
 import org.example.interdisciplinar.model.ItemDespensa;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -84,21 +87,44 @@ public class ServletListarItem extends HttpServlet {
                 return;
             }
 
-            List<ItemDespensa> itens = itemDispensaDAO.listarFiltrado(idInicio, idFim, qtdMinima, qtdMaxima, dataInicio, dataFim, ordenar);
+            List<ItemDespensaView> itens = itemDispensaDAO.listarFiltrado(idInicio, idFim, qtdMinima, qtdMaxima, dataInicio, dataFim, ordenar);
             request.setAttribute("itens", itens);
             request.getRequestDispatcher("/WEB-INF/Views/itensDespensa.jsp").forward(request, response);
 
         } catch (NumberFormatException nfe){
+            getServletContext().log("Erro ao formatar o número.", nfe);
             request.setAttribute("erro", "O ID dos itens precisa ser um número inteiro");
-            request.getRequestDispatcher("/WEB-INF/Views/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
 
-        } catch (RuntimeException re) {
-            request.setAttribute("erro", "Não foi possível carregar os itens. Tente novamente.");
-            request.getRequestDispatcher("/WEB-INF/Views/ErrorPage.jsp").forward(request, response);
+        } catch (FalhaConexaoException e) {
+
+            // Registra os detalhes técnicos da falha de conexão.
+            getServletContext().log("Falha ao conectar ao banco de dados.", e);
+
+            // Define uma mensagem compreensível para o administrador.
+            request.setAttribute(
+                    "erro",
+                    "Não foi possível estabelecer conexão com o banco de dados."
+            );
+
+            // Encaminha para a página de erro
+            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+
+
+        } catch (ErroPersistenciaException e) {
+
+            // Registra os detalhes técnicos do erro de persistência.
+            getServletContext().log("Erro ao listar os itens", e);
+
+            // Define uma mensagem compreensível para o administrador.
+            request.setAttribute(
+                    "erro",
+                    "Ocorreu um erro ao listar os itens."
+            );
+
+            // Encaminha para a página de erro.
+            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+
         }
-    }
-
-    public void destroy(){
-        GerenteConexao.desconectar();
     }
 }

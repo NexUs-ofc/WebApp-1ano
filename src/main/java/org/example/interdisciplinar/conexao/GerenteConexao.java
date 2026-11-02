@@ -1,70 +1,30 @@
 package org.example.interdisciplinar.conexao;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 
-import java.sql.*;
-import io.github.cdimascio.dotenv.Dotenv;
+import org.example.interdisciplinar.exception.FalhaConexaoException;
 
 public class GerenteConexao {
 
-    private static Connection conn;
-
-    public static Connection conectar(){
+    // Método responsável por estabelecer uma conexão com o banco de dados.
+    public static Connection conectar() {
 
         try {
 
-            if(conn == null || conn.isClosed()){
+            // Cria um objeto da classe Conexao, que tem informações necessárias para acessar o banco.
+            Conexao conexao = new Conexao();
 
-                Conexao conexao = new Conexao();
-                conn = conexao.getConnection();
-                // Desativa o AutoCommit
-                if (conn != null) {
-                    conn.setAutoCommit(false);
-                }
+            // Obtém e retorna uma nova conexão com o banco.
+            return conexao.getConnection();
 
-            }
-        } catch (SQLException sqle) {
-            System.out.println("Erro no SQL: " + sqle.getMessage());
-        }
+        } catch (SQLException e) {
 
-        return conn;
-
-    }
-    public static void commit(){
-        try{
-            if(conn != null && !conn.isClosed()){
-                conn.commit();
-            }
-        } catch (SQLException sqle){
-            System.out.println("Erro ao commitar comando no banco: " + sqle.getMessage());
-        }
-    }
-
-    public static void rollback(){
-        try{
-            if(conn != null && !conn.isClosed()){
-                conn.rollback();
-            }
-
-        } catch (SQLException sqle){
-            System.out.println("Erro no rollback: " + sqle.getMessage());
-        }
-
-    }
-
-    public static void desconectar(){
-        try {
-            if (conn != null && !conn.isClosed()){
-
-                conn.close();
-
-            }
-        } catch (SQLException sqle){
-
-            System.out.println("Erro no SQL: " + sqle.getMessage());
-
-        } finally {
-
-            conn = null;
+            // Lança uma exceção personalizada caso ocorra algum problema ao estabelecer a conexão.
+            throw new FalhaConexaoException(
+                    "Não foi possível estabelecer conexão com o banco de dados.",
+                    e
+            );
         }
     }
 }

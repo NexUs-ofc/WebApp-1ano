@@ -6,6 +6,7 @@ import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dto.CadastroMensal;
 import org.example.interdisciplinar.dto.CategoriaPopular;
 import org.example.interdisciplinar.dto.EmpresaRecente;
+import org.example.interdisciplinar.exception.ErroPersistenciaException;
 
 
 public class AnaliseDAO {
@@ -44,7 +45,12 @@ public class AnaliseDAO {
             return cadastros;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao buscar cadastros por mês.", e);
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao listar o cadastro mensal de empresas no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -63,7 +69,12 @@ public class AnaliseDAO {
             return 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao contar administradores.", e);
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao contar o número de administradores no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -84,8 +95,11 @@ public class AnaliseDAO {
             return 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException(
-                    "Erro ao contar o total de itens.", e
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao contar o total de itens no banco de dados.",
+                    e
             );
         }
     }
@@ -107,8 +121,11 @@ public class AnaliseDAO {
             return 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException(
-                    "Erro ao contar itens próximos do vencimento.", e
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao contar os itens próximo ao vencimento no banco de dados.",
+                    e
             );
         }
     }
@@ -128,7 +145,12 @@ public class AnaliseDAO {
             return 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao contar usuários.", e);
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao contar o número de usuários no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -147,7 +169,12 @@ public class AnaliseDAO {
             return 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao contar empresas.", e);
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao contar o número de empresas no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -176,7 +203,12 @@ public class AnaliseDAO {
             return null;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao buscar categoria mais popular.", e);
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao buscar a categoria mais popular no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -203,7 +235,12 @@ public class AnaliseDAO {
             return null;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao buscar empresa recente.", e);
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao buscar a empresa mais recente no banco de dados.",
+                    e
+            );
         }
     }
 }

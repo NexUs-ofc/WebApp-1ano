@@ -1,6 +1,8 @@
 package org.example.interdisciplinar.dao;
 
 import org.example.interdisciplinar.conexao.GerenteConexao;
+import org.example.interdisciplinar.dto.ItemDespensaView;
+import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.model.ItemDespensa;
 import java.sql.*;
 import java.time.LocalDate;
@@ -33,27 +35,21 @@ public class ItemDespensaDAO {
 
             linhasAfetadas = pstmt.executeUpdate();
 
-            //Se ação tiver dados certo commita e retorna true
+            //Se ação tiver dado certo retorna true
             if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
                 return true;
             }
 
-            //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
+            //Se não retorna false
             return false;
 
-            //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
+        } catch (SQLException e) {
 
-            //Lista todos os erros
-            sqle.printStackTrace();
-
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao inserir um item no banco de dados.",
+                    e
+            );
         }
     }
 
@@ -79,31 +75,26 @@ public class ItemDespensaDAO {
 
             //Se ação tiver dados certo commita e retorna true
             if (linhasAfetadas > 0) {
-                GerenteConexao.commit();
                 return true;
             }
 
             //Se não desfaz a ação e retorna false
-            GerenteConexao.rollback();
             return false;
 
 
-            //Em casos de erros no banco de dados desfaz a ação
-        } catch (SQLException sqle) {
 
-            //Lista todos os erros
-            sqle.printStackTrace();
+        } catch (SQLException e) {
 
-            //Desfaz a ação
-            GerenteConexao.rollback();
-
-            //Retorna false
-            return false;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao deletar um item no banco de dados.",
+                    e
+            );
         }
     }
 
     // Método para listar todos os itens da dispensa
-    public List<ItemDespensa> listar(){
+    public List<ItemDespensaView> listar(){
 
         //Abrindo e armazenando conexão com o banco
         Connection conn = GerenteConexao.conectar();
@@ -112,7 +103,7 @@ public class ItemDespensaDAO {
         String sqlSelect = "SELECT * FROM view_item_dispensa";
 
         // Criando lista que irá armazenar os registros dos itens da dispensa
-        List<ItemDespensa> itensDespensa = new ArrayList<>();
+        List<ItemDespensaView> itensDespensa = new ArrayList<>();
 
         //Cria executor que receberá comando e executará ele
         try (PreparedStatement pstmt = conn.prepareStatement(sqlSelect)){
@@ -120,30 +111,34 @@ public class ItemDespensaDAO {
 
             //Enquanto tiver mais registros cria novos objetos e adiciona à lista
             while (rs.next()) {
-                ItemDespensa itemDespensa = new ItemDespensa();
-                itemDespensa.setId(rs.getInt(1));
-                itemDespensa.setIdCasa(rs.getInt(2));
-                itemDespensa.setIdAlimento(rs.getInt(3));
-                itemDespensa.setQuantidade(rs.getInt(4));
+                LocalDate validade = null;
 
                 if (rs.getDate(5) != null) {
-                    itemDespensa.setValidade(rs.getDate(5).toLocalDate());
+                    validade = rs.getDate(5).toLocalDate();
                 }
+
+                ItemDespensaView itemDespensa = new ItemDespensaView(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getInt(4),
+                        validade
+                );
+
                 itensDespensa.add(itemDespensa);
             }
 
             // Retrona a lista de itens da dispensa
             return itensDespensa;
 
-        } catch (SQLException sqle) {
-            //Lista todos os erros
-            sqle.printStackTrace();
+        } catch (SQLException e) {
 
-
-            //Retorna a lista
-            return itensDespensa;
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao listar uma empresa no banco de dados.",
+                    e
+            );
         }
-
     }
 
     public boolean atualizar(ItemDespensa itemDespensa){
@@ -172,7 +167,7 @@ public class ItemDespensaDAO {
         }
     }
 
-    public List<ItemDespensa> listarFiltrado(
+    public List<ItemDespensaView> listarFiltrado(
             Integer idItemInicio,
             Integer idItemFim,
             Integer qtdMinima,
@@ -183,7 +178,7 @@ public class ItemDespensaDAO {
     ){
         StringBuilder sql = new StringBuilder("SELECT * FROM tb_item_dispensa WHERE 1=1");
         List<Object> parametrosDoFiltro = new ArrayList<>();
-        List<ItemDespensa> itensDespensa = new ArrayList<>();
+        List<ItemDespensaView> itensDespensa = new ArrayList<>();
 
         if(idItemInicio != null){
             sql.append(" AND id_item >=?");
@@ -210,7 +205,7 @@ public class ItemDespensaDAO {
             parametrosDoFiltro.add(dataFim);
         }
 
-        switch (ordenar){
+        switch (ordenar == null ? "" : ordenar){
             case "id":
                 sql.append(" ORDER BY id_item");
                 break;
@@ -240,15 +235,20 @@ public class ItemDespensaDAO {
             try (ResultSet rs = pstmt.executeQuery()){
                 //Enquanto tiver mais registros cria novos objetos e adiciona à lista
                 while (rs.next()) {
-                    ItemDespensa itemDespensa = new ItemDespensa();
-                    itemDespensa.setId(rs.getInt(1));
-                    itemDespensa.setIdCasa(rs.getInt(2));
-                    itemDespensa.setIdAlimento(rs.getInt(3));
-                    itemDespensa.setQuantidade(rs.getInt(4));
+                    LocalDate validade = null;
 
                     if (rs.getDate(5) != null) {
-                        itemDespensa.setValidade(rs.getDate(5).toLocalDate());
+                        validade = rs.getDate(5).toLocalDate();
                     }
+
+                    ItemDespensaView itemDespensa = new ItemDespensaView(
+                            rs.getInt(1),
+                            rs.getString(2),
+                            rs.getString(3),
+                            rs.getInt(4),
+                            validade
+                    );
+
                     itensDespensa.add(itemDespensa);
                 }
 
@@ -256,9 +256,13 @@ public class ItemDespensaDAO {
                 return itensDespensa;
             }
 
-        } catch (SQLException sqle){
-            sqle.printStackTrace();
-            return itensDespensa;
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao listar um item com filtro no banco de dados.",
+                    e
+            );
         }
     }
     public ItemDespensa buscarporId(int id){
@@ -281,8 +285,13 @@ public class ItemDespensaDAO {
                 }
             }
 
-        } catch (SQLException sqle){
-            System.out.println("Erro de SQL: " + sqle.getMessage());
+        } catch (SQLException e) {
+
+            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            throw new ErroPersistenciaException(
+                    "Erro ao buscar um item pelo id no banco de dados.",
+                    e
+            );
         }
         return null;
     }

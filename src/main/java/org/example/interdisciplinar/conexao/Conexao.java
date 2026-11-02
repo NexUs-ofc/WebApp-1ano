@@ -1,46 +1,36 @@
 package org.example.interdisciplinar.conexao;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class Conexao {
 
-        private static Dotenv dotenv = Dotenv.configure()
-                .ignoreIfMissing()
-                .load();
+    // Carrega as configurações do arquivo .env.
+    private static final Dotenv dotenv = Dotenv.configure()
+            .ignoreIfMissing()
+            .load();
 
+    // Método responsável por estabelecer uma conexão com o banco e propaga SQLException caso tenha algum problema na conexão.
+    public Connection getConnection() throws SQLException {
 
-        public Connection getConnection () {
-            try {
-                Class.forName("org.postgresql.Driver");
-                String url = dotenv.get("DB_URL", System.getenv("DB_URL"));
-                String user = dotenv.get("DB_USER", System.getenv("DB_USER"));
-                String password = dotenv.get("DB_PASSWORD", System.getenv("DB_PASSWORD"));
+        // Recupera a URL do banco de dados na .env
+        String url = dotenv.get("DB_URL", System.getenv("DB_URL"));
 
-                return DriverManager.getConnection(url, user, password);
+        // Recupera o usuário do banco de dados na .env
+        String user = dotenv.get("DB_USER", System.getenv("DB_USER"));
 
-            } catch (SQLException sqle) {
-                sqle.printStackTrace();
-                System.out.println("Erro ao se conectar sql");
-                return null;
+        // Recupera a senha do banco de dados na .env
+        String password = dotenv.get("DB_PASSWORD", System.getenv("DB_PASSWORD"));
 
-            } catch (ClassNotFoundException cnfe) {
-                cnfe.printStackTrace();
-                System.out.println("Erro ao se conectar cnf");
-                return null;
-            }
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("Driver PostgreSQL não encontrado!", e);
         }
 
-        // Metodo para fechar a conexão
-
-        public void closeConnection(Connection conn){
-            if(conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException sqle){
-                    sqle.printStackTrace();
-                }
-            }
-        }
-
+        // Estabelece e retorna uma nova conexão com o banco.
+        return DriverManager.getConnection(url, user, password);
+    }
 }
