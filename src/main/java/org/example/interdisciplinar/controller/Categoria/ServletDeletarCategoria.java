@@ -24,7 +24,4 @@ public class ServletDeletarCategoria extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/categorias");
     }
 
-    public void destroy(){
-        GerenteConexao.desconectar();
-    }
 }

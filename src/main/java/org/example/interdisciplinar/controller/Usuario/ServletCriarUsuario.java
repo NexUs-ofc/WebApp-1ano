@@ -93,10 +93,5 @@ public class ServletCriarUsuario extends HttpServlet {
 
     }
 
-    @Override
-    public void destroy(){
-        GerenteConexao.desconectar();
-    }
-
 }
 

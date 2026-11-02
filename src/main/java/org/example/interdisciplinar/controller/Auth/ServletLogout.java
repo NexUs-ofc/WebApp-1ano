@@ -18,8 +18,4 @@ public class ServletLogout extends HttpServlet {
         }
         response.sendRedirect(request.getContextPath() + "/index.html");
     }
-
-    public void destroy(){
-        GerenteConexao.desconectar();
-    }
 }

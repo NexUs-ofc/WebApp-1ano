@@ -66,10 +66,5 @@ public class ServletCriarCategoria extends HttpServlet {
 
     }
 
-    @Override
-    public void destroy(){
-        GerenteConexao.desconectar();
-    }
-
 }
 

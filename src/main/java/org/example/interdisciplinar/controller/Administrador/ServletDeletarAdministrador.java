@@ -10,20 +10,16 @@ import org.example.interdisciplinar.model.Administrador;
 
 import java.io.IOException;
 
-public class ServletDeletarAdministrador extends HttpServlet {
-    private AdministradorDAO administradorDAO;
-    @Override
-    public void init(){
-        administradorDAO = new AdministradorDAO();
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        String senhaTexto = request.getParameter("senha");
-        administradorDAO.deletar(senhaTexto);
-        response.sendRedirect(request.getContextPath() + "/administradores");
-    }
-
-    public void destroy(){
-        GerenteConexao.desconectar();
-    }
-}
+//public class ServletDeletarAdministrador extends HttpServlet {
+//    private AdministradorDAO administradorDAO;
+//    @Override
+//    public void init(){
+//        administradorDAO = new AdministradorDAO();
+//    }
+//
+//    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+//        String senhaTexto = request.getParameter("senha");
+//        administradorDAO.deletar(senhaTexto);
+//        response.sendRedirect(request.getContextPath() + "/administradores");
+//    }
+//}

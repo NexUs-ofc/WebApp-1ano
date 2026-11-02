@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.AlimentoDAO;
 import org.example.interdisciplinar.dto.AlimentoView;
+import org.example.interdisciplinar.exception.ErroPersistenciaException;
+import org.example.interdisciplinar.exception.FalhaConexaoException;
 import org.example.interdisciplinar.model.Alimento;
 
 import java.io.IOException;
@@ -35,11 +37,11 @@ public class ServletListarAlimento extends HttpServlet {
             String categoria = request.getParameter("categoria");
             String ordenar = request.getParameter("ordenar");
 
-            if(idInicioTexto != null && !idInicioTexto.isBlank()){
+            if (idInicioTexto != null && !idInicioTexto.isBlank()) {
                 idInicio = Integer.parseInt(idInicioTexto);
             }
 
-            if(idFimTexto != null && !idFimTexto.isBlank()){
+            if (idFimTexto != null && !idFimTexto.isBlank()) {
                 idFim = Integer.parseInt(idFimTexto);
             }
 
@@ -55,14 +57,40 @@ public class ServletListarAlimento extends HttpServlet {
             request.setAttribute("alimentos", alimentos);
             request.getRequestDispatcher("/WEB-INF/Views/alimentos.jsp").forward(request, response);
 
-        } catch (NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
+            getServletContext().log("Erro ao formatar o número.", nfe);
             request.setAttribute("erro", "O ID dos alimentos precisa ser um número inteiro");
             request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
 
-        } catch (RuntimeException re) {
-            request.setAttribute("erro", "Não foi possível carregar os Alimentos. Tente novamente.");
+        } catch (FalhaConexaoException e) {
+
+            // Registra os detalhes técnicos da falha de conexão.
+            getServletContext().log("Falha ao conectar ao banco de dados.", e);
+
+            // Define uma mensagem compreensível para o administrador.
+            request.setAttribute(
+                    "erro",
+                    "Não foi possível estabelecer conexão com o banco de dados."
+            );
+
+            // Encaminha para a página de erro
             request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+
+
+        } catch (ErroPersistenciaException e) {
+
+            // Registra os detalhes técnicos do erro de persistência.
+            getServletContext().log("Erro ao listar os alimentos", e);
+
+            // Define uma mensagem compreensível para o administrador.
+            request.setAttribute(
+                    "erro",
+                    "Ocorreu um erro ao listar os administradores."
+            );
+
+            // Encaminha para a página de erro.
+            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+
         }
     }
-
 }

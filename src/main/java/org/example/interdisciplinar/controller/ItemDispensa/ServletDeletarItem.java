@@ -24,7 +24,4 @@ public class ServletDeletarItem extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/itens");
     }
 
-    public void destroy(){
-        GerenteConexao.desconectar();
-    }
 }

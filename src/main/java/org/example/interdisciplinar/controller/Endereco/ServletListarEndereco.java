@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.EnderecoDAO;
+import org.example.interdisciplinar.exception.ErroPersistenciaException;
+import org.example.interdisciplinar.exception.FalhaConexaoException;
 import org.example.interdisciplinar.model.Endereco;
 
 import java.io.IOException;
@@ -54,12 +56,39 @@ public class ServletListarEndereco extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/Views/enderecos.jsp").forward(request,response);
 
         } catch (NumberFormatException nfe){
-            request.setAttribute("erro", "O ID dos endereços precisa ser um número inteiro");
+            getServletContext().log("Erro ao formatar o número.", nfe);
+            request.setAttribute("erro", "O ID do endereço precisa ser um número inteiro");
             request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
 
-        } catch (RuntimeException re) {
-                request.setAttribute("erro", "Não foi possível carregar os Endereços. Tente novamente.");
-                request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+        } catch (FalhaConexaoException e) {
+
+            // Registra os detalhes técnicos da falha de conexão.
+            getServletContext().log("Falha ao conectar ao banco de dados.", e);
+
+            // Define uma mensagem compreensível para o administrador.
+            request.setAttribute(
+                    "erro",
+                    "Não foi possível estabelecer conexão com o banco de dados."
+            );
+
+            // Encaminha para a página de erro
+            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+
+
+        } catch (ErroPersistenciaException e) {
+
+            // Registra os detalhes técnicos do erro de persistência.
+            getServletContext().log("Erro ao listar os endereços", e);
+
+            // Define uma mensagem compreensível para o administrador.
+            request.setAttribute(
+                    "erro",
+                    "Ocorreu um erro ao listar os endereços."
+            );
+
+            // Encaminha para a página de erro.
+            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+
         }
     }
 }

@@ -24,7 +24,4 @@ public class ServletDeletarUsuario extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/usuarios");
     }
 
-    public void destroy(){
-        GerenteConexao.desconectar();
-    }
 }

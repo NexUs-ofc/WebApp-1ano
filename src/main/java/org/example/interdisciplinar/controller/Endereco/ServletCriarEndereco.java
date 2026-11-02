@@ -67,7 +67,4 @@ public class ServletCriarEndereco extends HttpServlet {
         }
     }
 
-    public void destroy(){
-        GerenteConexao.desconectar();
-    }
 }

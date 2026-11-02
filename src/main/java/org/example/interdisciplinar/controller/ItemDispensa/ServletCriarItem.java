@@ -111,10 +111,4 @@ public class ServletCriarItem extends HttpServlet {
         }
 
     }
-
-    @Override
-    public void destroy(){
-        GerenteConexao.desconectar();
-    }
-
 }

@@ -23,8 +23,4 @@ public class ServletDeletarEndereco extends HttpServlet {
         enderecoDAO.deletar(idEndereco);
         response.sendRedirect(request.getContextPath() + "/enderecos");
     }
-
-    public void destroy(){
-        GerenteConexao.desconectar();
-    }
 }

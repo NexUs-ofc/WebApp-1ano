@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.AdministradorDAO;
+import org.example.interdisciplinar.exception.ErroPersistenciaException;
+import org.example.interdisciplinar.exception.FalhaConexaoException;
 import org.example.interdisciplinar.model.Administrador;
 
 import java.io.IOException;
@@ -55,12 +57,39 @@ public class ServletListarAdministrador extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/Views/administradores.jsp").forward(request, response);
 
         } catch (NumberFormatException nfe){
+            getServletContext().log("Erro ao formatar o número.", nfe);
             request.setAttribute("erro", "O ID dos administradores precisa ser um número inteiro");
             request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
 
-        } catch (RuntimeException re) {
-            request.setAttribute("erro", "Não foi possível carregar os Administradores. Tente novamente.");
+        } catch (FalhaConexaoException e) {
+
+            // Registra os detalhes técnicos da falha de conexão.
+            getServletContext().log("Falha ao conectar ao banco de dados.", e);
+
+            // Define uma mensagem compreensível para o administrador.
+            request.setAttribute(
+                    "erro",
+                    "Não foi possível estabelecer conexão com o banco de dados."
+            );
+
+            // Encaminha para a página de erro
             request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+
+
+        } catch (ErroPersistenciaException e) {
+
+            // Registra os detalhes técnicos do erro de persistência.
+            getServletContext().log("Erro ao listar os administradores", e);
+
+            // Define uma mensagem compreensível para o administrador.
+            request.setAttribute(
+                    "erro",
+                    "Ocorreu um erro ao listar os administradores."
+            );
+
+            // Encaminha para a página de erro.
+            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+
         }
     }
 }
