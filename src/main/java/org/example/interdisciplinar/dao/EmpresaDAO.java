@@ -1,6 +1,7 @@
 package org.example.interdisciplinar.dao;
 
 
+import java.time.LocalDate;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dto.EmpresaView;
 import org.example.interdisciplinar.model.Empresa;
@@ -262,7 +263,8 @@ public class EmpresaDAO {
                             rs.getString("cnpj"),
                             rs.getInt("id_endereco"),
                             rs.getString("email"),
-                            rs.getString("telefone")
+                            rs.getString("telefone"),
+                            rs.getObject("data_cadastro", LocalDate.class)
                     );
                     return empresa;
                 }
