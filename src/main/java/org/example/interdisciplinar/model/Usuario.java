@@ -30,16 +30,6 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public Usuario(String nome, String email, String preferenciasConsumo, ConfiguracaoAlerta configuracaoAlerta,  String senha, String telefone, LocalDate dataCadastro) {
-
-        this.nome = nome;
-        this.email = email;
-        this.preferenciasConsumo = preferenciasConsumo;
-        this.configuracaoAlerta = configuracaoAlerta;
-        this.telefone = telefone;
-        this.senha = senha;
-        this.dataCadastro = dataCadastro;
-    }
 
     // Getters e setters
 

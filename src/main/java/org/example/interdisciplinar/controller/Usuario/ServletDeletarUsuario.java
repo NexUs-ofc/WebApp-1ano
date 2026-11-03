@@ -1,7 +1,6 @@
-
 package org.example.interdisciplinar.controller.Usuario;
 
-// Todos os imports necessários
+// Importa as bibliotecas e classes necessárias para o funcionamento do Servlet
 import org.example.interdisciplinar.dao.UsuarioDAO;
 import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.exception.FalhaConexaoException;
@@ -10,8 +9,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
+// Define o endereço responsável pela exclusão dos usuários
 @WebServlet(name = "DeletarUsuario", value = "/usuarios/deletar")
 public class ServletDeletarUsuario extends HttpServlet {
 
@@ -23,10 +24,12 @@ public class ServletDeletarUsuario extends HttpServlet {
         usuarioDAO = new UsuarioDAO();
     }
 
-    // Método que recebe a solicitação de exclusão
+    // Método que recebe o ID e realiza a exclusão de um usuário
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        request.setCharacterEncoding("UTF-8");
 
         // Recupera o ID enviado pelo formulário
         String idParametro = request.getParameter("id");
@@ -40,7 +43,7 @@ public class ServletDeletarUsuario extends HttpServlet {
 
         try {
             // Converte o ID para inteiro
-            int id = Integer.parseInt(idParametro);
+            int id = Integer.parseInt(idParametro.trim());
 
             // Verifica se o ID é válido
             if (id <= 0) {
@@ -49,26 +52,37 @@ public class ServletDeletarUsuario extends HttpServlet {
                 return;
             }
 
-            // Realiza a exclusão do usuário
-            usuarioDAO.deletar(id);
+            // Envia o ID para a DAO realizar a exclusão
+            boolean deletado = usuarioDAO.deletar(id);
 
-            // Redireciona após a exclusão
+            // Verifica se o usuário foi encontrado e excluído
+            if (!deletado) {
+                response.sendError(
+                        HttpServletResponse.SC_NOT_FOUND,
+                        "Usuário não encontrado."
+                );
+                return;
+            }
+
+            // Redireciona para a listagem após a exclusão
             response.sendRedirect(request.getContextPath() + "/usuarios");
 
         } catch (NumberFormatException e) {
-            // Trata IDs que não possuem formato numérico
+            // Registra o erro de conversão no log
+            getServletContext().log("Erro ao converter o ID do usuário", e);
+
             request.setAttribute("erro", "ID do usuário inválido.");
             request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
-            // Registra problemas de conexão com o banco
+            // Registra os detalhes da falha de conexão no log
             getServletContext().log("Falha na conexão com o banco de dados", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
             request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
-            // Registra falhas durante a exclusão
+            // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro ao deletar usuário", e);
 
             request.setAttribute("erro", "Não foi possível deletar o usuário.");
