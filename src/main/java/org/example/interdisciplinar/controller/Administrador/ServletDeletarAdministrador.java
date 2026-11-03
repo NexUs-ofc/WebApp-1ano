@@ -51,7 +51,7 @@ public class ServletDeletarAdministrador extends HttpServlet {
         // Verifica se o ID foi informado
         if (idParametro == null || idParametro.isBlank()) {
             request.setAttribute("erro", "Administrador inválido.");
-            request.getRequestDispatcher("/administradores.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
             return;
         }
 
@@ -62,14 +62,14 @@ public class ServletDeletarAdministrador extends HttpServlet {
             // Verifica se o ID é válido
             if (id <= 0) {
                 request.setAttribute("erro", "Administrador inválido.");
-                request.getRequestDispatcher("/administradores.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
                 return;
             }
 
             // Impede que o administrador exclua a própria conta
             if (id == administradorLogado.getId()) {
                 request.setAttribute("erro", "Você não pode excluir sua própria conta.");
-                request.getRequestDispatcher("/administradores.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
                 return;
             }
 
@@ -82,21 +82,21 @@ public class ServletDeletarAdministrador extends HttpServlet {
         } catch (NumberFormatException e) {
             // Trata IDs que não possuem formato numérico
             request.setAttribute("erro", "ID do administrador inválido.");
-            request.getRequestDispatcher("/administradores.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
             // Registra problemas de conexão com o banco
             getServletContext().log("Falha na conexão com o banco de dados", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/administradores.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra falhas durante a exclusão
             getServletContext().log("Erro ao deletar administrador", e);
 
             request.setAttribute("erro", "Não foi possível deletar o administrador.");
-            request.getRequestDispatcher("/administradores.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

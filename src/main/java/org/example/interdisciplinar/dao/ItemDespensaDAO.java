@@ -1,122 +1,111 @@
 package org.example.interdisciplinar.dao;
 
+// Importa as bibliotecas e classes necessárias para trabalhar com banco de dados, listas e itens da despensa
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dto.ItemDespensaView;
 import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.model.ItemDespensa;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-// Abertura da classe
+// Classe responsável pelas operações dos itens da despensa no banco de dados
 public class ItemDespensaDAO {
 
-    // Método de inserir um item na dispensa do usuário
+    // Método que cadastra um item na despensa
     public boolean inserir(ItemDespensa itemDespensa){
 
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
-
-        //Comando de inserir em SQL
+        // Comando SQL para cadastrar um item
         String sqlInsert = "INSERT INTO tb_item_despensa (id_usuario, id_alimento, quantidade, data_validade) VALUES (?, ?, ?, ?)";
 
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
+        // Abre a conexão e prepara o comando SQL
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sqlInsert)
+        ) {
 
-        //Iniciando executor que vai adicionar valores no comando SQL e executará o comando
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlInsert)) {
-
-            //Seta valores nos '?' do comando SQL
+            // Preenche os parâmetros do comando SQL
             pstmt.setInt(1, itemDespensa.getIdUsuario());
             pstmt.setInt(2, itemDespensa.getIdAlimento());
             pstmt.setInt(3, itemDespensa.getQuantidade());
-            pstmt.setDate(4, Date.valueOf(itemDespensa.getValidade()));
 
-            linhasAfetadas = pstmt.executeUpdate();
-
-            //Se ação tiver dado certo retorna true
-            if (linhasAfetadas > 0) {
-                return true;
+            if (itemDespensa.getValidade() != null) {
+                pstmt.setDate(4, Date.valueOf(itemDespensa.getValidade()));
+            } else {
+                pstmt.setNull(4, Types.DATE);
             }
 
-            //Se não retorna false
-            return false;
+            // Executa o cadastro e verifica se algum registro foi inserido
+            int linhasAfetadas = pstmt.executeUpdate();
+            return linhasAfetadas > 0;
 
         } catch (SQLException e) {
 
-            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            // Lança uma exceção personalizada caso ocorra um erro no banco
             throw new ErroPersistenciaException(
-                    "Erro ao inserir um item no banco de dados.",
+                    "Erro ao inserir um item na despensa no banco de dados.",
                     e
             );
         }
     }
 
-    // Método para deletar um item da dispensa do usuário
+    // Método que deleta um item da despensa pelo seu ID
     public boolean deletar(int idItem){
 
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
-
-        //Comando de deletar em SQL
+        // Comando SQL para excluir um item
         String sqlDelete = "DELETE FROM tb_item_despensa WHERE id_item=?";
 
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
+        // Abre a conexão e prepara o comando SQL
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sqlDelete)
+        ) {
 
-        //Iniciando executor que vai atribuir valores ao comando SQL e executará ele
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlDelete)){
-
-            //Seta valor no '?' do comando SQL
+            // Informa o ID do item que será excluído
             pstmt.setInt(1, idItem);
 
-            linhasAfetadas = pstmt.executeUpdate();
-
-            //Se ação tiver dados certo commita e retorna true
-            if (linhasAfetadas > 0) {
-                return true;
-            }
-
-            //Se não desfaz a ação e retorna false
-            return false;
-
-
+            // Executa a exclusão e verifica se algum registro foi removido
+            int linhasAfetadas = pstmt.executeUpdate();
+            return linhasAfetadas > 0;
 
         } catch (SQLException e) {
 
-            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            // Lança uma exceção personalizada caso ocorra um erro no banco
             throw new ErroPersistenciaException(
-                    "Erro ao deletar um item no banco de dados.",
+                    "Erro ao deletar um item da despensa no banco de dados.",
                     e
             );
         }
     }
 
-    // Método para listar todos os itens da dispensa
+    // Método que lista todos os itens das despensas
     public List<ItemDespensaView> listar(){
 
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
-
-        //Comando de listar em SQL
+        // Comando SQL para consultar todos os itens
         String sqlSelect = "SELECT id_item, id_usuario, id_alimento, usuario, alimento, quantidade, data_validade FROM view_item_despensa";
 
-        // Criando lista que irá armazenar os registros dos itens da dispensa
+        // Lista que vai armazenar os itens encontrados
         List<ItemDespensaView> itensDespensa = new ArrayList<>();
 
-        //Cria executor que receberá comando e executará ele
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlSelect)){
-            ResultSet rs = pstmt.executeQuery();
+        // Abre a conexão e executa a consulta
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sqlSelect);
+                ResultSet rs = pstmt.executeQuery()
+        ) {
 
-            //Enquanto tiver mais registros cria novos objetos e adiciona à lista
+            // Percorre todos os registros encontrados
             while (rs.next()) {
+
                 LocalDate validade = null;
 
                 if (rs.getDate("data_validade") != null) {
                     validade = rs.getDate("data_validade").toLocalDate();
                 }
 
+                // Cria um objeto com os dados encontrados
                 ItemDespensaView itemDespensa = new ItemDespensaView(
                         rs.getInt("id_item"),
                         rs.getInt("id_usuario"),
@@ -130,29 +119,37 @@ public class ItemDespensaDAO {
                 itensDespensa.add(itemDespensa);
             }
 
-            // Retrona a lista de itens da dispensa
+            // Retorna a lista de itens da despensa
             return itensDespensa;
 
         } catch (SQLException e) {
 
-            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            // Lança uma exceção personalizada caso ocorra um erro no banco
             throw new ErroPersistenciaException(
-                    "Erro ao listar uma empresa no banco de dados.",
+                    "Erro ao listar os itens da despensa no banco de dados.",
                     e
             );
         }
     }
 
+    // Método que atualiza os dados de um item da despensa
     public boolean atualizar(ItemDespensa itemDespensa){
+
+        // Comando SQL para atualizar um item pelo ID
         String sql = "UPDATE tb_item_despensa SET id_usuario=?, id_alimento=?, quantidade=?, data_validade=? WHERE id_item=?";
+
+        // Abre a conexão e prepara o comando SQL
         try (
                 Connection conn = GerenteConexao.conectar();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
+                PreparedStatement pstmt = conn.prepareStatement(sql)
         ){
+
+            // Preenche os parâmetros do comando SQL
             pstmt.setInt(1, itemDespensa.getIdUsuario());
             pstmt.setInt(2, itemDespensa.getIdAlimento());
             pstmt.setInt(3, itemDespensa.getQuantidade());
 
+            // Verifica se a validade foi informada
             if(itemDespensa.getValidade() != null){
                 pstmt.setDate(4, Date.valueOf(itemDespensa.getValidade()));
             } else {
@@ -160,15 +157,22 @@ public class ItemDespensaDAO {
             }
 
             pstmt.setInt(5, itemDespensa.getId());
+
+            // Executa a atualização e verifica se algum registro foi alterado
             int linhasAfetadas = pstmt.executeUpdate();
             return linhasAfetadas > 0;
 
-        } catch (SQLException sqle){
-            sqle.printStackTrace();
-            return false;
+        } catch (SQLException e){
+
+            // Lança uma exceção personalizada caso ocorra um erro no banco
+            throw new ErroPersistenciaException(
+                    "Erro ao atualizar um item da despensa no banco de dados.",
+                    e
+            );
         }
     }
 
+    // Método que lista itens da despensa de acordo com os filtros informados
     public List<ItemDespensaView> listarFiltrado(
             Integer idItemInicio,
             Integer idItemFim,
@@ -178,35 +182,55 @@ public class ItemDespensaDAO {
             LocalDate dataFim,
             String ordenar
     ){
-        StringBuilder sql = new StringBuilder("SELECT id_item, id_usuario, id_alimento, usuario, alimento, quantidade, data_validade FROM view_item_despensa WHERE 1=1");
+
+        // Monta a consulta SQL conforme os filtros recebidos
+        StringBuilder sql = new StringBuilder(
+                "SELECT id_item, id_usuario, id_alimento, usuario, alimento, quantidade, data_validade FROM view_item_despensa WHERE 1=1"
+        );
+
+        // Lista que armazena os valores utilizados nos filtros
         List<Object> parametrosDoFiltro = new ArrayList<>();
+
+        // Lista que vai armazenar os itens encontrados
         List<ItemDespensaView> itensDespensa = new ArrayList<>();
 
+        // Filtra pelo ID inicial, caso tenha sido informado
         if(idItemInicio != null){
-            sql.append(" AND id_item >=?");
+            sql.append(" AND id_item >= ?");
             parametrosDoFiltro.add(idItemInicio);
         }
+
+        // Filtra pelo ID final, caso tenha sido informado
         if(idItemFim != null){
-            sql.append(" AND id_item <=?");
+            sql.append(" AND id_item <= ?");
             parametrosDoFiltro.add(idItemFim);
         }
+
+        // Filtra pela quantidade mínima, caso tenha sido informada
         if(qtdMinima != null){
-            sql.append(" AND quantidade >=?");
+            sql.append(" AND quantidade >= ?");
             parametrosDoFiltro.add(qtdMinima);
         }
+
+        // Filtra pela quantidade máxima, caso tenha sido informada
         if(qtdMaxima != null){
-            sql.append(" AND quantidade <=?");
+            sql.append(" AND quantidade <= ?");
             parametrosDoFiltro.add(qtdMaxima);
         }
+
+        // Filtra pela data inicial, caso tenha sido informada
         if(dataInicio != null){
-            sql.append(" AND data_validade >=?");
-            parametrosDoFiltro.add(dataInicio);
-        }
-        if(dataFim != null){
-            sql.append(" AND data_validade <=?");
-            parametrosDoFiltro.add(dataFim);
+            sql.append(" AND data_validade >= ?");
+            parametrosDoFiltro.add(Date.valueOf(dataInicio));
         }
 
+        // Filtra pela data final, caso tenha sido informada
+        if(dataFim != null){
+            sql.append(" AND data_validade <= ?");
+            parametrosDoFiltro.add(Date.valueOf(dataFim));
+        }
+
+        // Define a ordenação dos resultados
         switch (ordenar == null ? "" : ordenar){
             case "id":
                 sql.append(" ORDER BY id_item");
@@ -225,18 +249,23 @@ public class ItemDespensaDAO {
                 break;
         }
 
-        //Cria executor que receberá comando e executará ele
-        try (   Connection conn = GerenteConexao.conectar();
+        // Abre a conexão e prepara o comando SQL
+        try (
+                Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql.toString())
         ){
 
+            // Preenche os parâmetros dos filtros na consulta
             for(int i = 0; i < parametrosDoFiltro.size(); i++){
-                pstmt.setObject(i+1, parametrosDoFiltro.get(i));
+                pstmt.setObject(i + 1, parametrosDoFiltro.get(i));
             }
 
+            // Executa a consulta e percorre os resultados
             try (ResultSet rs = pstmt.executeQuery()){
-                //Enquanto tiver mais registros cria novos objetos e adiciona à lista
+
+                // Cria um objeto para cada item encontrado
                 while (rs.next()) {
+
                     LocalDate validade = null;
 
                     if (rs.getDate("data_validade") != null) {
@@ -256,49 +285,65 @@ public class ItemDespensaDAO {
                     itensDespensa.add(itemDespensa);
                 }
 
-                // Retrona a lista de itens da dispensa
+                // Retorna a lista de itens filtrados
                 return itensDespensa;
             }
 
         } catch (SQLException e) {
 
-            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            // Lança uma exceção personalizada caso ocorra um erro no banco
             throw new ErroPersistenciaException(
-                    "Erro ao listar um item com filtro no banco de dados.",
+                    "Erro ao listar os itens da despensa com filtro no banco de dados.",
                     e
             );
         }
     }
+
+    // Método que busca um item da despensa pelo seu ID
     public ItemDespensa buscarporId(int id){
-        String sql = "SELECT * FROM tb_item_despensa WHERE id_item=?";
-        try(
+
+        // Comando SQL para buscar um item pelo ID
+        String sql = "SELECT id_item, id_usuario, id_alimento, quantidade, data_validade FROM tb_item_despensa WHERE id_item=?";
+
+        // Abre a conexão e prepara o comando SQL
+        try (
                 Connection conn = GerenteConexao.conectar();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
+                PreparedStatement pstmt = conn.prepareStatement(sql)
         ){
+
+            // Informa o ID utilizado na consulta
             pstmt.setInt(1, id);
 
-            try(ResultSet rs = pstmt.executeQuery()){
+            // Executa a consulta e verifica se encontrou algum item
+            try (ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
+
+                    // Converte a validade para LocalDate
                     Date dataValidade = rs.getDate("data_validade");
+
+                    // Cria um objeto com os dados encontrados
                     ItemDespensa itemDespensa = new ItemDespensa(
                             rs.getInt("id_usuario"),
                             rs.getInt("id_alimento"),
                             rs.getInt("quantidade"),
                             dataValidade == null ? null : dataValidade.toLocalDate()
                     );
+
                     itemDespensa.setId(rs.getInt("id_item"));
+
                     return itemDespensa;
                 }
             }
 
         } catch (SQLException e) {
 
-            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            // Lança uma exceção personalizada caso ocorra um erro no banco
             throw new ErroPersistenciaException(
-                    "Erro ao buscar um item pelo id no banco de dados.",
+                    "Erro ao buscar um item da despensa pelo ID no banco de dados.",
                     e
             );
         }
+
         return null;
     }
 }

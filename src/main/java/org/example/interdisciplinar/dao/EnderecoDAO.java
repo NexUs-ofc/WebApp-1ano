@@ -1,142 +1,137 @@
 package org.example.interdisciplinar.dao;
 
+// Importa as bibliotecas e classes necessárias para trabalhar com banco de dados, listas e endereços
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.exception.ErroPersistenciaException;
-import org.example.interdisciplinar.model.Alimento;
-import org.example.interdisciplinar.model.Categoria;
 import org.example.interdisciplinar.model.Endereco;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-// Abertura da classe
+// Classe responsável pelas operações dos endereços no banco de dados
 public class EnderecoDAO {
 
-    // Método de inserir um enderço no bd
+    // Método que cadastra um endereço no banco de dados
     public boolean inserir(Endereco endereco){
 
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
-
-        //Comando de inserir em SQL
+        // Comando SQL para cadastrar um endereço
         String sqlInsert = "INSERT INTO tb_endereco (rua, numero, bairro, cidade, estado, cep) VALUES (?, ?, ?, ?, ?, ?)";
 
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
+        // Abre a conexão e prepara o comando SQL
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sqlInsert)
+        ){
 
-        //Iniciando executor que vai adicionar valores no comando SQL e executará o comando
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlInsert)){
-
-            //Seta valores nos '?' do comando SQL
+            // Preenche os parâmetros do comando SQL
             pstmt.setString(1, endereco.getRua());
             pstmt.setString(2, endereco.getNumero());
             pstmt.setString(3, endereco.getBairro());
             pstmt.setString(4, endereco.getCidade());
             pstmt.setString(5, endereco.getEstado());
             pstmt.setString(6, endereco.getCep());
-            linhasAfetadas = pstmt.executeUpdate();
 
-            //Se ação tiver dado certo retorna true
-            if (linhasAfetadas > 0) {
-                return true;
-            }
-
-            //Se não retorna false
-            return false;
+            // Executa o cadastro e verifica se algum registro foi inserido
+            int linhasAfetadas = pstmt.executeUpdate();
+            return linhasAfetadas > 0;
 
         } catch (SQLException e) {
 
-            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            // Lança uma exceção personalizada caso ocorra um erro no banco
             throw new ErroPersistenciaException(
-                    "Erro ao inserir um endereco no banco de dados.",
+                    "Erro ao inserir um endereço no banco de dados.",
                     e
             );
         }
     }
 
-    // Método de deletar um endereço do bd
+    // Método que deleta um endereço pelo seu ID
     public boolean deletar(int idEndereco){
 
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
-
-        //Comando de deletar em SQL
+        // Comando SQL para excluir um endereço
         String sqlDelete = "DELETE FROM tb_endereco WHERE id_endereco=?";
 
-        //Controle de linhas afetadas
-        int linhasAfetadas = 0;
+        // Abre a conexão e prepara o comando SQL
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sqlDelete)
+        ){
 
-        //Iniciando executor que vai atribuir valores ao comando SQL e executará ele
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlDelete)){
-
-            //Seta valor no '?' do comando SQL
+            // Informa o ID do endereço que será excluído
             pstmt.setInt(1, idEndereco);
-            linhasAfetadas = pstmt.executeUpdate();
 
-            //Se ação tiver dado certo retorna true
-            if (linhasAfetadas > 0) {
-                return true;
-            }
-
-            //Se não desfaz a ação e retorna false
-            return false;
+            // Executa a exclusão e verifica se algum registro foi removido
+            int linhasAfetadas = pstmt.executeUpdate();
+            return linhasAfetadas > 0;
 
         } catch (SQLException e) {
 
-            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            // Lança uma exceção personalizada caso ocorra um erro no banco
             throw new ErroPersistenciaException(
-                    "Erro ao deletar um endereco no banco de dados.",
+                    "Erro ao deletar um endereço no banco de dados.",
                     e
             );
         }
     }
 
-    // Método de listar todos os endereços do bd
+    // Método que lista todos os endereços cadastrados
     public List<Endereco> listar(){
 
-        //Abrindo e armazenando conexão com o banco
-        Connection conn = GerenteConexao.conectar();
+        // Comando SQL para consultar todos os endereços
+        String sqlSelect = "SELECT id_endereco, rua, numero, bairro, cidade, estado, cep FROM tb_endereco";
 
-        //Comando de listar em SQL
-        String sqlSelect = "SELECT * FROM tb_endereco";
+        // Lista que vai armazenar os endereços encontrados
         List<Endereco> enderecos = new ArrayList<>();
 
-        //Cria executor que receberá comando e executará ele
-        try (PreparedStatement pstmt = conn.prepareStatement(sqlSelect)) {
-            ResultSet rs  = pstmt.executeQuery();
+        // Abre a conexão e executa a consulta
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sqlSelect);
+                ResultSet rs = pstmt.executeQuery()
+        ) {
 
-            //Enquanto tiver mais registros cria novos objetos e adiciona à lista
+            // Percorre todos os registros encontrados
             while (rs.next()){
                 Endereco enderecoTemporario = new Endereco();
-                enderecoTemporario.setId(rs.getInt(1));
-                enderecoTemporario.setRua(rs.getString(2));
-                enderecoTemporario.setNumero(rs.getString(3));
-                enderecoTemporario.setBairro(rs.getString(4));
-                enderecoTemporario.setCidade(rs.getString(5));
-                enderecoTemporario.setEstado(rs.getString(6));
-                enderecoTemporario.setCep(rs.getString(7));
+
+                enderecoTemporario.setId(rs.getInt("id_endereco"));
+                enderecoTemporario.setRua(rs.getString("rua"));
+                enderecoTemporario.setNumero(rs.getString("numero"));
+                enderecoTemporario.setBairro(rs.getString("bairro"));
+                enderecoTemporario.setCidade(rs.getString("cidade"));
+                enderecoTemporario.setEstado(rs.getString("estado"));
+                enderecoTemporario.setCep(rs.getString("cep"));
+
                 enderecos.add(enderecoTemporario);
             }
 
-            // Retrona a lista de administradores
+            // Retorna a lista de endereços
             return enderecos;
 
         } catch (SQLException e) {
 
-            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            // Lança uma exceção personalizada caso ocorra um erro no banco
             throw new ErroPersistenciaException(
-                    "Erro ao listar um endereco no banco de dados.",
+                    "Erro ao listar os endereços no banco de dados.",
                     e
             );
         }
     }
 
+    // Método que atualiza os dados de um endereço
     public boolean atualizar(Endereco endereco){
+
+        // Comando SQL para atualizar um endereço pelo ID
         String sql = "UPDATE tb_endereco SET rua=?, numero=?, bairro=?, cidade=?, estado=?, cep=? WHERE id_endereco=?";
+
+        // Abre a conexão e prepara o comando SQL
         try (
                 Connection conn = GerenteConexao.conectar();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
+                PreparedStatement pstmt = conn.prepareStatement(sql)
         ){
+
+            // Preenche os parâmetros do comando SQL
             pstmt.setString(1, endereco.getRua());
             pstmt.setString(2, endereco.getNumero());
             pstmt.setString(3, endereco.getBairro());
@@ -144,19 +139,22 @@ public class EnderecoDAO {
             pstmt.setString(5, endereco.getEstado());
             pstmt.setString(6, endereco.getCep());
             pstmt.setInt(7, endereco.getId());
+
+            // Executa a atualização e verifica se algum registro foi alterado
             int linhasAfetadas = pstmt.executeUpdate();
             return linhasAfetadas > 0;
 
         } catch (SQLException e) {
 
-            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            // Lança uma exceção personalizada caso ocorra um erro no banco
             throw new ErroPersistenciaException(
-                    "Erro ao atualizar um endereco no banco de dados.",
+                    "Erro ao atualizar um endereço no banco de dados.",
                     e
             );
         }
     }
 
+    // Método que lista endereços de acordo com os filtros informados
     public List<Endereco> listarFiltrado(
             Integer idEnderecoInicio,
             Integer idEnderecoFim,
@@ -164,28 +162,43 @@ public class EnderecoDAO {
             String estado,
             String ordenar
     ) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM tb_endereco WHERE 1=1");
+
+        // Monta a consulta SQL conforme os filtros recebidos
+        StringBuilder sql = new StringBuilder(
+                "SELECT id_endereco, rua, numero, bairro, cidade, estado, cep FROM tb_endereco WHERE 1=1"
+        );
+
+        // Lista que armazena os valores utilizados nos filtros
         List<Object> parametrosDoFiltro = new ArrayList<>();
+
+        // Lista que vai armazenar os endereços encontrados
         List<Endereco> enderecos = new ArrayList<>();
 
+        // Filtra pelo ID inicial, caso tenha sido informado
         if (idEnderecoInicio != null) {
-            sql.append(" AND id_endereco >=?");
+            sql.append(" AND id_endereco >= ?");
             parametrosDoFiltro.add(idEnderecoInicio);
         }
+
+        // Filtra pelo ID final, caso tenha sido informado
         if (idEnderecoFim != null) {
-            sql.append(" AND id_endereco <=?");
+            sql.append(" AND id_endereco <= ?");
             parametrosDoFiltro.add(idEnderecoFim);
         }
+
+        // Filtra pela cidade, caso tenha sido informada
         if (cidade != null && !cidade.isBlank()) {
             sql.append(" AND cidade ILIKE ?");
             parametrosDoFiltro.add("%" + cidade + "%");
         }
 
+        // Filtra pelo estado, caso tenha sido informado
         if (estado != null && !estado.isBlank()) {
             sql.append(" AND estado ILIKE ?");
             parametrosDoFiltro.add("%" + estado + "%");
         }
 
+        // Define a ordenação dos resultados
         switch (ordenar == null ? "" : ordenar) {
             case "id":
                 sql.append(" ORDER BY id_endereco");
@@ -204,53 +217,69 @@ public class EnderecoDAO {
                 break;
         }
 
-        //Cria executor que receberá comando e executará ele
-        try (Connection conn = GerenteConexao.conectar();
-             PreparedStatement pstmt = conn.prepareStatement(sql.toString())
+        // Abre a conexão e prepara o comando SQL
+        try (
+                Connection conn = GerenteConexao.conectar();
+                PreparedStatement pstmt = conn.prepareStatement(sql.toString())
         ) {
 
+            // Preenche os parâmetros dos filtros na consulta
             for (int i = 0; i < parametrosDoFiltro.size(); i++) {
                 pstmt.setObject(i + 1, parametrosDoFiltro.get(i));
             }
 
+            // Executa a consulta e percorre os resultados
             try (ResultSet rs = pstmt.executeQuery()) {
-                //Enquanto tiver mais registros cria novos objetos e adiciona à lista
+
+                // Cria um objeto para cada endereço encontrado
                 while (rs.next()){
                     Endereco enderecoTemporario = new Endereco();
-                    enderecoTemporario.setId(rs.getInt(1));
-                    enderecoTemporario.setRua(rs.getString(2));
-                    enderecoTemporario.setNumero(rs.getString(3));
-                    enderecoTemporario.setBairro(rs.getString(4));
-                    enderecoTemporario.setCidade(rs.getString(5));
-                    enderecoTemporario.setEstado(rs.getString(6));
-                    enderecoTemporario.setCep(rs.getString(7));
+
+                    enderecoTemporario.setId(rs.getInt("id_endereco"));
+                    enderecoTemporario.setRua(rs.getString("rua"));
+                    enderecoTemporario.setNumero(rs.getString("numero"));
+                    enderecoTemporario.setBairro(rs.getString("bairro"));
+                    enderecoTemporario.setCidade(rs.getString("cidade"));
+                    enderecoTemporario.setEstado(rs.getString("estado"));
+                    enderecoTemporario.setCep(rs.getString("cep"));
+
                     enderecos.add(enderecoTemporario);
                 }
 
-                // Retrona a lista de administradores
+                // Retorna a lista de endereços filtrados
                 return enderecos;
             }
 
         } catch (SQLException e) {
 
-            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            // Lança uma exceção personalizada caso ocorra um erro no banco
             throw new ErroPersistenciaException(
-                    "Erro ao listar um endereço com filtro no banco de dados.",
+                    "Erro ao listar endereços com filtro no banco de dados.",
                     e
             );
         }
     }
 
+    // Método que busca um endereço pelo seu ID
     public Endereco buscarporId(int id){
-        String sql = "SELECT * FROM tb_endereco WHERE id_endereco=?";
-        try(
+
+        // Comando SQL para buscar um endereço pelo ID
+        String sql = "SELECT id_endereco, rua, numero, bairro, cidade, estado, cep FROM tb_endereco WHERE id_endereco=?";
+
+        // Abre a conexão e prepara o comando SQL
+        try (
                 Connection conn = GerenteConexao.conectar();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
+                PreparedStatement pstmt = conn.prepareStatement(sql)
         ){
+
+            // Informa o ID utilizado na consulta
             pstmt.setInt(1, id);
 
-            try(ResultSet rs = pstmt.executeQuery()){
+            // Executa a consulta e verifica se encontrou algum endereço
+            try (ResultSet rs = pstmt.executeQuery()){
                 if(rs.next()){
+
+                    // Cria um objeto com os dados encontrados
                     Endereco endereco = new Endereco(
                             rs.getString("rua"),
                             rs.getString("numero"),
@@ -259,20 +288,22 @@ public class EnderecoDAO {
                             rs.getString("estado"),
                             rs.getString("cep")
                     );
+
                     endereco.setId(rs.getInt("id_endereco"));
+
                     return endereco;
                 }
             }
 
         } catch (SQLException e) {
 
-            // Transforma a SQLException em uma exceção personalizada, preservando a causa original do erro.
+            // Lança uma exceção personalizada caso ocorra um erro no banco
             throw new ErroPersistenciaException(
-                    "Erro ao buscar um endereco pelo id no banco de dados.",
+                    "Erro ao buscar um endereço pelo ID no banco de dados.",
                     e
             );
         }
+
         return null;
     }
-
 }
