@@ -80,7 +80,7 @@ public class ServletListarEmpresa extends HttpServlet {
             request.setAttribute("empresas", empresas);
 
             // Encaminha para a página de listagem das empresas
-            request.getRequestDispatcher("/WEB-INF/Views/empresas.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/Views/empresa.jsp").forward(request, response);
 
         } catch (NumberFormatException e){
 

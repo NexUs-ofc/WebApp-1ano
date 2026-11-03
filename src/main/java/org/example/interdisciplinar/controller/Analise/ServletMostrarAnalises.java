@@ -12,6 +12,7 @@ import org.example.interdisciplinar.dto.CategoriaPopular;
 import org.example.interdisciplinar.dto.EmpresaRecente;
 import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 // Define o endereço responsável por exibir as análises
@@ -47,6 +48,23 @@ public class ServletMostrarAnalises extends HttpServlet {
             CategoriaPopular categoriaPopular = analiseDAO.buscarCategoriaMaisPopular();
             EmpresaRecente empresaRecente = analiseDAO.buscarEmpresaMaisRecente();
 
+            int mesAtual = LocalDate.now().getMonthValue();
+            int mesAnterior = mesAtual == 1 ? 12 : mesAtual - 1;
+            int novosCadastrosMes = cadastrosMensais.stream()
+                    .filter(cadastro -> cadastro.mes() == mesAtual)
+                    .mapToInt(CadastroMensal::total)
+                    .findFirst()
+                    .orElse(0);
+            int cadastrosMesAnterior = cadastrosMensais.stream()
+                    .filter(cadastro -> cadastro.mes() == mesAnterior)
+                    .mapToInt(CadastroMensal::total)
+                    .findFirst()
+                    .orElse(0);
+            Integer variacaoCadastros = cadastrosMesAnterior == 0
+                    ? null
+                    : Math.round((novosCadastrosMes - cadastrosMesAnterior)
+                    * 100f / cadastrosMesAnterior);
+
             // Envia os resultados das consultas para a JSP
             request.setAttribute("cadastrosMensais", cadastrosMensais);
             request.setAttribute("totalAdministradores", totalAdministradores);
@@ -56,9 +74,14 @@ public class ServletMostrarAnalises extends HttpServlet {
             request.setAttribute("totalEmpresas", totalEmpresas);
             request.setAttribute("categoriaPopular", categoriaPopular);
             request.setAttribute("empresaRecente", empresaRecente);
+            request.setAttribute("novosCadastrosMes", novosCadastrosMes);
+            request.setAttribute("cadastrosMesAnterior", cadastrosMesAnterior);
+            request.setAttribute("variacaoCadastros", variacaoCadastros);
+            request.setAttribute("empresasSemData", 0);
+            request.setAttribute("analisesCarregadas", true);
 
             // Encaminha para a página de análises
-            request.getRequestDispatcher("/WEB-INF/Views/analises.jsp").forward(request, response);
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
 

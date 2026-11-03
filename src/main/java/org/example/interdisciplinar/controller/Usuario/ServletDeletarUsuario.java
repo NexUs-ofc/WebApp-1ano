@@ -65,7 +65,7 @@ public class ServletDeletarUsuario extends HttpServlet {
             }
 
             // Redireciona para a listagem após a exclusão
-            response.sendRedirect(request.getContextPath() + "/usuarios");
+            response.sendRedirect(request.getContextPath() + "/admin/usuarios");
 
         } catch (NumberFormatException e) {
             // Registra o erro de conversão no log

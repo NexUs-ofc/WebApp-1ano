@@ -90,6 +90,8 @@ public class ServletLogin extends HttpServlet {
         sessao.setAttribute("administradorId", administrador.getId());
         sessao.setAttribute("administradorNome", administrador.getNome());
         sessao.setAttribute("administradorEmail", administrador.getEmail());
+        sessao.setAttribute("administradorFoto", administrador.getUrlFoto());
+        sessao.setAttribute("administrador", administrador);
 
         // Redireciona para a tela de análises
         response.sendRedirect(request.getContextPath() + "/admin/analises");

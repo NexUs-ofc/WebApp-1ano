@@ -69,7 +69,7 @@ public class ServletAtualizarAlimento extends HttpServlet {
             alimentoDAO.atualizar(alimento);
 
             // Redireciona após a atualização
-            response.sendRedirect(request.getContextPath() + "/alimentos");
+            response.sendRedirect(request.getContextPath() + "/admin/alimentos");
 
         } catch (NumberFormatException e) {
             // Trata IDs de categoria que não possuem formato numérico

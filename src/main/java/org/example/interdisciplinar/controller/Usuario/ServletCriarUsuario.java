@@ -109,7 +109,7 @@ public class ServletCriarUsuario extends HttpServlet {
             if (inserido) {
 
                 // Redireciona para a listagem após o cadastro
-                response.sendRedirect(request.getContextPath() + "/usuarios");
+                response.sendRedirect(request.getContextPath() + "/admin/usuarios");
 
             } else {
                 response.sendError(

@@ -152,7 +152,7 @@ public class ServletListarItem extends HttpServlet {
             getServletContext().log("Erro ao formatar os números", e);
 
             request.setAttribute("erro", "Os IDs e as quantidades precisam ser números inteiros");
-            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (DateTimeParseException e) {
 
@@ -160,7 +160,7 @@ public class ServletListarItem extends HttpServlet {
             getServletContext().log("Erro ao formatar as datas", e);
 
             request.setAttribute("erro", "Uma ou mais datas possuem formato inválido");
-            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
 
@@ -173,7 +173,7 @@ public class ServletListarItem extends HttpServlet {
             );
 
             // Encaminha para a página de erro
-            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
 
@@ -186,7 +186,7 @@ public class ServletListarItem extends HttpServlet {
             );
 
             // Encaminha para a página de erro
-            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

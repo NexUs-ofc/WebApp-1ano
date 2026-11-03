@@ -62,7 +62,7 @@ public class ServletAtualizarEndereco extends HttpServlet {
             request.setAttribute("endereco", endereco);
 
             // Encaminha para a listagem de endereços
-            request.getRequestDispatcher("/enderecos").forward(request, response);
+            request.getRequestDispatcher("/admin/enderecos").forward(request, response);
 
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);

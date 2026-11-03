@@ -14,7 +14,7 @@ import org.example.interdisciplinar.exception.FalhaConexaoException;
 import java.io.IOException;
 
 // Define o endereço responsável pelo cadastro de categorias
-@WebServlet(name = "CriarCategorias", value = "/categorias/insert")
+@WebServlet(name = "CriarCategorias", value = "/admin/categorias/insert")
 public class ServletCriarCategoria extends HttpServlet {
 
     private CategoriaDAO categoriaDAO;

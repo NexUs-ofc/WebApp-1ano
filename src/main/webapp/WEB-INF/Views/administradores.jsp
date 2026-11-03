@@ -21,14 +21,14 @@
       <span class="nomeLogo">Ceris</span>
       <img class="linhaLogo" src="${pageContext.request.contextPath}/assets/logo-underline.svg" alt="">
     </div>
-        <a href="${pageContext.request.contextPath}/index.jsp"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-chart-histogram.svg" alt="">Análise</a>
-        <a href="${pageContext.request.contextPath}/enderecos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-marker.svg" alt="">Endereço</a>
-        <a href="${pageContext.request.contextPath}/usuarios"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="">Usuário</a>
-        <a href="${pageContext.request.contextPath}/alimentos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-utensils.svg" alt="">Alimento</a>
-        <a href="${pageContext.request.contextPath}/categorias"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-apps.svg" alt="">Categoria</a>
-        <a href="${pageContext.request.contextPath}/itensDespensa"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-bread-slice.svg" alt="">Item_despensa</a>
-        <a href="${pageContext.request.contextPath}/empresas"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-enterprise.svg" alt="">Empresas</a>
-        <a class="ativo" href="${pageContext.request.contextPath}/administradores"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-shield-check.svg" alt="">Administrador</a>
+        <a href="${pageContext.request.contextPath}/admin/analises"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-chart-histogram.svg" alt="">Análise</a>
+        <a href="${pageContext.request.contextPath}/admin/enderecos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-marker.svg" alt="">Endereço</a>
+        <a href="${pageContext.request.contextPath}/admin/usuarios"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="">Usuário</a>
+        <a href="${pageContext.request.contextPath}/admin/alimentos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-utensils.svg" alt="">Alimento</a>
+        <a href="${pageContext.request.contextPath}/admin/categorias"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-apps.svg" alt="">Categoria</a>
+        <a href="${pageContext.request.contextPath}/admin/itens"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-bread-slice.svg" alt="">Item_despensa</a>
+        <a href="${pageContext.request.contextPath}/admin/empresas"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-enterprise.svg" alt="">Empresas</a>
+        <a class="ativo" href="${pageContext.request.contextPath}/admin/administradores"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-shield-check.svg" alt="">Administrador</a>
     <!-- Perfil -->
     <div class="rodapeSidebar">
       <img class="linhaPerfilSidebar" src="${pageContext.request.contextPath}/assets/profile-line.svg" alt="">
@@ -71,7 +71,7 @@
     <c:if test="${not empty administradores}">
       <!-- Pesquisa -->
       <div class="pesquisa">
-        <form action="${pageContext.request.contextPath}/administradores" method="get">
+        <form action="${pageContext.request.contextPath}/admin/administradores" method="get">
           <input type="text" name="pesquisa" placeholder="Procurar" value="${param.pesquisa}">
           <button type="submit" class="botaoPesquisar">Pesquisar</button>
           <button type="button" class="botaoFiltro" aria-label="Aplicar filtro de pesquisa" onclick="abrirPopupFiltro()">
@@ -92,7 +92,7 @@
             <h2 id="tituloPopupFiltro">Filtros</h2>
             <button type="button" class="botaoFecharPopupFiltro" aria-label="Fechar filtros" onclick="fecharPopupFiltro()">&times;</button>
           </div>
-          <form action="${pageContext.request.contextPath}/administradores" method="get">
+          <form action="${pageContext.request.contextPath}/admin/administradores" method="get">
             <div class="camposPopupFiltro">
           <div class="campoPopupFiltro">
             <span>id</span>
@@ -160,7 +160,7 @@
                   <button type="button" class="botaoBloquear" title="Ocultar dados da linha" aria-label="Ocultar dados da linha" aria-pressed="false" onclick="alternarDadosLinha(this)">
                     <img src="<c:url value='/assets/fi-br-eye.svg'/>" alt="" aria-hidden="true">
                   </button>
-                  <button type="button" class="botaoEditar" title="Editar administrador" aria-label="Editar administrador" data-id="${administrador.id}" data-nome="${fn:escapeXml(administrador.nome)}" data-telefone="${fn:escapeXml(administrador.telefone)}" data-email="${fn:escapeXml(administrador.email)}" data-senha="${fn:escapeXml(administrador.senha)}" data-foto="${fn:escapeXml(administrador.urlFoto)}" onclick="abrirPopupEdicaoAdministrador(this)">
+                  <button type="button" class="botaoEditar" title="Editar administrador" aria-label="Editar administrador" data-id="${administrador.id}" data-nome="${fn:escapeXml(administrador.nome)}" data-telefone="${fn:escapeXml(administrador.telefone)}" data-email="${fn:escapeXml(administrador.email)}" data-senha="" data-foto="${fn:escapeXml(administrador.urlFoto)}" onclick="abrirPopupEdicaoAdministrador(this)">
                     <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                   </button>
                   <button type="button" class="botaoExcluir" title="Excluir administrador" aria-label="Excluir administrador" onclick="abrirPopupExclusaoAdministrador('${administrador.id}')">
@@ -181,7 +181,7 @@
     <div class="barraPopupFormulario"></div>
     <div class="conteudoPopupFormulario">
       <h2><span>Editar</span> administrador</h2>
-      <form action="${pageContext.request.contextPath}/administradores/atualizar" method="post" enctype="multipart/form-data">
+      <form action="${pageContext.request.contextPath}/admin/administradores/editar" method="post" enctype="multipart/form-data">
         <input type="hidden" id="idAdministradorEdicao" name="id">
         <div class="edicaoFotoAdministrador">
           <label for="arquivoFotoAdministrador">
@@ -203,7 +203,7 @@
           <div class="campoPopupAdmin campoSenhaAdministrador">
             <label for="senhaAdministradorEdicao">senha</label>
             <span class="entradaSenhaAdministrador">
-              <input id="senhaAdministradorEdicao" name="senha" type="password" required>
+              <input id="senhaAdministradorEdicao" name="senha" type="password" autocomplete="new-password">
               <button type="button" class="botaoMostrarSenha" aria-label="Mostrar senha" aria-pressed="false" onclick="alternarVisibilidadeSenha(this)">
                 <img src="<c:url value='/assets/fi-br-eye-crossed.svg'/>" alt="" aria-hidden="true">
               </button>
@@ -225,7 +225,7 @@
       <h2><span>Excluir</span> administrador</h2>
       <p>Tem certeza de que deseja <strong>excluir</strong> este item?
       <br>Essa ação não poderá ser desfeita.</p>
-      <form action="${pageContext.request.contextPath}/administradores/deletar" method="post">
+      <form action="${pageContext.request.contextPath}/admin/administradores/deletar" method="post">
         <input type="hidden" id="idAdministradorExclusao" name="id">
         <div class="acoesPopupExclusao">
           <button type="button" class="botaoCancelarExclusao" onclick="fecharPopupExclusao()">cancelar</button>
@@ -239,3 +239,4 @@
   <script src="${pageContext.request.contextPath}/JS/views.js"></script>
 </body>
 </html>
+

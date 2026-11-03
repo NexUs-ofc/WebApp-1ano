@@ -76,7 +76,7 @@ public class ServletCriarEmpresa extends HttpServlet {
             // Verifica se o ID do endereço é válido
             if (idEnderecoConvertido <= 0) {
                 request.setAttribute("erro", "Endereço inválido.");
-                request.getRequestDispatcher("WEB-INF/errorpage.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
                 return;
             }
 

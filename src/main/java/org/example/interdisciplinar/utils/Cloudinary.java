@@ -1,3 +1,4 @@
+
 package org.example.interdisciplinar.utils;
 
 import com.cloudinary.utils.ObjectUtils;
@@ -7,39 +8,96 @@ import jakarta.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.UUID;
 
-// Classe responsável por enviar as imagens do sistema para o Cloudinary
 public class Cloudinary {
 
-    // Carrega as configurações do arquivo .env ou das variáveis do ambiente
     private static final Dotenv dotenv = Dotenv.configure()
             .ignoreIfMissing()
             .load();
 
-    // Cria a conexão com o Cloudinary usando as credenciais do projeto
-    private static final com.cloudinary.Cloudinary cloudinary = new com.cloudinary.Cloudinary(
-            ObjectUtils.asMap(
-                    "cloud_name", obterConfiguracao("CLOUDINARY_CLOUD_NAME"),
-                    "api_key", obterConfiguracao("CLOUDINARY_API_KEY"),
-                    "api_secret", obterConfiguracao("CLOUDINARY_API_SECRET"),
-                    "secure", true
-            )
-    );
+    private static final com.cloudinary.Cloudinary cloudinary =
+            new com.cloudinary.Cloudinary(
+                    ObjectUtils.asMap(
+                            "cloud_name", obterConfiguracao("CLOUDINARY_CLOUD_NAME"),
+                            "api_key", obterConfiguracao("CLOUDINARY_API_KEY"),
+                            "api_secret", obterConfiguracao("CLOUDINARY_API_SECRET"),
+                            "secure", true
+                    )
+            );
 
-    // Impede a criação de objetos, pois todos os métodos desta classe são estáticos
     private Cloudinary() {
     }
 
-    // Envia a foto para a pasta administradores e retorna a URL segura gerada
-    public static String enviarFotoAdministrador(Part arquivo, int idAdministrador) throws IOException {
+    // Envia uma nova foto ao Cloudinary.
+    public static String enviarFotoAdministrador(Part arquivo) throws IOException {
 
-        // Converte o arquivo recebido pelo servlet nos bytes enviados ao Cloudinary
+        if (arquivo == null || arquivo.getSize() == 0) {
+            return null;
+        }
+
+        if (arquivo.getSize() > 5 * 1024 * 1024) {
+            throw new IOException("A imagem deve ter no máximo 5 MB.");
+        }
+
+        String tipo = arquivo.getContentType();
+
+        if (!"image/jpeg".equalsIgnoreCase(tipo)
+                && !"image/png".equalsIgnoreCase(tipo)
+                && !"image/webp".equalsIgnoreCase(tipo)) {
+            throw new IOException("Formato de imagem inválido.");
+        }
+
         byte[] conteudoDaImagem;
+
         try (InputStream entradaDaImagem = arquivo.getInputStream()) {
             conteudoDaImagem = entradaDaImagem.readAllBytes();
         }
 
-        // Usa o id do administrador para substituir a foto anterior em vez de criar duplicatas
+        Map<?, ?> resultado = cloudinary.uploader().upload(
+                conteudoDaImagem,
+                ObjectUtils.asMap(
+                        "folder", "administradores",
+                        "public_id", UUID.randomUUID().toString(),
+                        "resource_type", "image"
+                )
+        );
+
+        Object urlSegura = resultado.get("secure_url");
+
+        if (urlSegura == null) {
+            throw new IOException("O Cloudinary não retornou a URL da imagem.");
+        }
+
+        return urlSegura.toString();
+    }
+
+    // Mantém o método original que utiliza o ID do administrador.
+    public static String enviarFotoAdministrador(Part arquivo, int idAdministrador)
+            throws IOException {
+
+        if (arquivo == null || arquivo.getSize() == 0) {
+            return null;
+        }
+
+        if (arquivo.getSize() > 5 * 1024 * 1024) {
+            throw new IOException("A imagem deve ter no máximo 5 MB.");
+        }
+
+        String tipo = arquivo.getContentType();
+
+        if (!"image/jpeg".equalsIgnoreCase(tipo)
+                && !"image/png".equalsIgnoreCase(tipo)
+                && !"image/webp".equalsIgnoreCase(tipo)) {
+            throw new IOException("Formato de imagem inválido.");
+        }
+
+        byte[] conteudoDaImagem;
+
+        try (InputStream entradaDaImagem = arquivo.getInputStream()) {
+            conteudoDaImagem = entradaDaImagem.readAllBytes();
+        }
+
         Map<?, ?> resultado = cloudinary.uploader().upload(
                 conteudoDaImagem,
                 ObjectUtils.asMap(
@@ -51,8 +109,8 @@ public class Cloudinary {
                 )
         );
 
-        // O secure_url é o endereço HTTPS que será armazenado no banco de dados
         Object urlSegura = resultado.get("secure_url");
+
         if (urlSegura == null) {
             throw new IOException("O Cloudinary não retornou a URL da imagem.");
         }
@@ -60,7 +118,6 @@ public class Cloudinary {
         return urlSegura.toString();
     }
 
-    // Busca primeiro no .env e depois nas variáveis configuradas no servidor
     private static String obterConfiguracao(String nome) {
         String valor = dotenv.get(nome, System.getenv(nome));
 

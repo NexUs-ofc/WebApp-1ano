@@ -37,7 +37,7 @@ public class ServletDeletarAdministrador extends HttpServlet {
 
         // Verifica se existe um administrador autenticado
         if (sessao == null || sessao.getAttribute("administrador") == null) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/restricao.html");
             return;
         }
 
