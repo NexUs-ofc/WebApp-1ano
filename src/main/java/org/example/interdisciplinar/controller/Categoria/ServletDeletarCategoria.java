@@ -1,6 +1,6 @@
 package org.example.interdisciplinar.controller.Categoria;
 
-// Todos os imports necessários
+// Importa as bibliotecas e classes necessárias para o funcionamento do Servlet
 import org.example.interdisciplinar.dao.CategoriaDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,7 +12,8 @@ import org.example.interdisciplinar.exception.FalhaConexaoException;
 
 import java.io.IOException;
 
-@WebServlet(name = "DeletarCategoria", value = "/categorias/deletar")
+// Define o endereço responsável pela exclusão das categorias
+@WebServlet(name = "DeletarCategoria", value = "/admin/categorias/deletar")
 public class ServletDeletarCategoria extends HttpServlet {
 
     private CategoriaDAO categoriaDAO;
@@ -23,17 +24,17 @@ public class ServletDeletarCategoria extends HttpServlet {
         categoriaDAO = new CategoriaDAO();
     }
 
-    // Método que recebe a solicitação de exclusão
+    // Método que recebe o ID e realiza a exclusão de uma categoria
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Recupera o ID da categoria
+        // Recupera o ID da categoria enviado pelo formulário
         String idParametro = request.getParameter("id");
 
         // Verifica se o ID foi informado
         if (idParametro == null || idParametro.isBlank()) {
-            response.sendRedirect(request.getContextPath() + "/categorias");
+            response.sendRedirect(request.getContextPath() + "/admin/categorias");
             return;
         }
 
@@ -43,27 +44,31 @@ public class ServletDeletarCategoria extends HttpServlet {
 
             // Verifica se o ID é válido
             if (id <= 0) {
-                response.sendRedirect(request.getContextPath() + "/categorias");
+                response.sendRedirect(request.getContextPath() + "/admin/categorias");
                 return;
             }
 
-            // Realiza a exclusão da categoria
+            // Envia o ID para a DAO realizar a exclusão
             categoriaDAO.deletar(id);
 
-            // Retorna para a listagem
-            response.sendRedirect(request.getContextPath() + "/categorias");
+            // Redireciona para a listagem após a exclusão
+            response.sendRedirect(request.getContextPath() + "/admin/categorias");
 
         } catch (NumberFormatException e) {
             // Trata IDs que não possuem formato numérico
-            response.sendRedirect(request.getContextPath() + "/categorias");
+            response.sendRedirect(request.getContextPath() + "/admin/categorias");
 
         } catch (FalhaConexaoException e) {
+            // Registra os detalhes do erro de conexão no log
             getServletContext().log("Falha na conexão com o banco", e);
             request.setAttribute("erro", "Não foi possível estabelecer conexão com o banco.");
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
+            // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro ao deletar categoria", e);
             request.setAttribute("erro", "Não foi possível deletar a categoria.");
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

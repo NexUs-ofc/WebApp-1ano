@@ -38,7 +38,7 @@
 </head>
 <body>
   <main class="Errorpage">
-    <a class="logoErrorpage" href="${pageContext.request.contextPath}/index.jsp" aria-label="Voltar ao início">
+    <a class="logoErrorpage" href="${pageContext.request.contextPath}/admin/analises" aria-label="Voltar ao início">
       <img src="${pageContext.request.contextPath}/assets/errorpage-logo-symbol.svg" alt="" width="36" height="36">
       <span>Ceris</span>
     </a>
@@ -69,7 +69,7 @@
             <span>Tentar novamente</span>
           </button>
 
-          <a class="botaoErrorpage botaoVoltarInicioErrorpage" href="${pageContext.request.contextPath}/index.jsp">
+          <a class="botaoErrorpage botaoVoltarInicioErrorpage" href="${pageContext.request.contextPath}/admin/analises">
             <img src="${pageContext.request.contextPath}/assets/errorpage-home.svg" alt="" width="23" height="23">
             <span>Voltar ao início</span>
           </a>

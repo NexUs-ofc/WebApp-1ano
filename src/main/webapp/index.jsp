@@ -4,7 +4,7 @@
 
 <%-- Busca os dados do Servlet mesmo quando a index.jsp é acessada diretamente. --%>
 <c:if test="${not requestScope.analisesCarregadas}">
-    <jsp:forward page="/analises"/>
+    <jsp:forward page="/admin/analises"/>
 </c:if>
 
 <!DOCTYPE html>
@@ -30,14 +30,14 @@
           <span class="nomeLogo">Ceris</span>
           <img class="linhaLogo" src="${pageContext.request.contextPath}/assets/logo-underline.svg" alt="">
         </div>
-            <a class="ativo" href="${pageContext.request.contextPath}/analises"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-chart-histogram.svg" alt="">Análise</a>
-            <a href="${pageContext.request.contextPath}/enderecos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-marker.svg" alt="">Endereço</a>
-            <a href="${pageContext.request.contextPath}/usuarios"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="">Usuário</a>
-            <a href="${pageContext.request.contextPath}/alimentos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-utensils.svg" alt="">Alimento</a>
-            <a href="${pageContext.request.contextPath}/categorias"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-apps.svg" alt="">Categoria</a>
-            <a href="${pageContext.request.contextPath}/itensDespensa"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-bread-slice.svg" alt="">Item_despensa</a>
-            <a href="${pageContext.request.contextPath}/empresas"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-enterprise.svg" alt="">Empresas</a>
-            <a href="${pageContext.request.contextPath}/administradores"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-shield-check.svg" alt="">Administrador</a>
+        <a class="ativo" href="${pageContext.request.contextPath}/admin/analises"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-chart-histogram.svg" alt="">Análise</a>
+        <a href="${pageContext.request.contextPath}/admin/enderecos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-marker.svg" alt="">Endereço</a>
+        <a href="${pageContext.request.contextPath}/admin/usuarios"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="">Usuário</a>
+        <a href="${pageContext.request.contextPath}/admin/alimentos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-utensils.svg" alt="">Alimento</a>
+        <a href="${pageContext.request.contextPath}/admin/categorias"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-apps.svg" alt="">Categoria</a>
+        <a href="${pageContext.request.contextPath}/admin/itens"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-bread-slice.svg" alt="">Item_despensa</a>
+        <a href="${pageContext.request.contextPath}/admin/empresas"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-enterprise.svg" alt="">Empresas</a>
+        <a href="${pageContext.request.contextPath}/admin/administradores"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-shield-check.svg" alt="">Administrador</a>
 
         <!-- Perfil -->
         <div class="rodapeSidebar">

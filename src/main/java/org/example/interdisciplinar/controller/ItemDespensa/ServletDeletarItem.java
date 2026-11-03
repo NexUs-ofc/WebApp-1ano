@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "DeletarItemDespensa", value = "/itensDespensa/deletar")
+@WebServlet(name = "DeletarItemDespensa", value = "/admin/itens/deletar")
 public class ServletDeletarItem extends HttpServlet {
 
     private ItemDespensaDAO itemDespensaDAO;
@@ -30,7 +30,7 @@ public class ServletDeletarItem extends HttpServlet {
 
         if (idParametro == null || idParametro.isBlank()) {
             request.setAttribute("erro", "ID do item da despensa não informado.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
             return;
         }
 
@@ -39,14 +39,14 @@ public class ServletDeletarItem extends HttpServlet {
 
             if (id <= 0) {
                 request.setAttribute("erro", "ID do item da despensa inválido.");
-                request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
                 return;
             }
 
             boolean deletado = itemDespensaDAO.deletar(id);
 
             if (deletado) {
-                response.sendRedirect(request.getContextPath() + "/itensDespensa");
+                response.sendRedirect(request.getContextPath() + "/admin/itens");
             } else {
                 response.sendError(
                         HttpServletResponse.SC_NOT_FOUND,
@@ -56,17 +56,17 @@ public class ServletDeletarItem extends HttpServlet {
 
         } catch (NumberFormatException e) {
             request.setAttribute("erro", "ID do item da despensa inválido.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
             getServletContext().log("Falha na conexão com o banco de dados.", e);
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             getServletContext().log("Erro ao deletar item da despensa.", e);
             request.setAttribute("erro", "Não foi possível deletar o item da despensa.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

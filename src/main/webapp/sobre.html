@@ -7,6 +7,120 @@
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/sobre.css">
     <link rel="stylesheet" href="css/equipe.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <style>
+        /* ===== MENU HAMBÚRGUER (só celular) =====
+           Use em TODAS as páginas: index, planos, sobre, login...
+           <link rel="stylesheet" href="css/menu.css">  (por ÚLTIMO, depois dos outros css) */
+
+        .menu-toggle { display: none; }
+
+        @keyframes menuEntrar {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: none; }
+        }
+
+        @media (max-width: 800px) {
+            header { z-index: 1000; }
+
+            header .container-header {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                height: auto !important;
+                min-height: 60px;
+                padding: 10px 20px !important;
+                gap: 0 !important;
+                overflow: visible !important;
+            }
+
+            /* botão hambúrguer (sempre visível no celular) */
+            header .menu-toggle {
+                display: flex !important;
+                flex-direction: column;
+                justify-content: center;
+                gap: 5px;
+                flex: none;
+                width: 44px;
+                height: 44px;
+                padding: 10px;
+                margin-left: auto;
+                background: none;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: transparent;
+            }
+            header .menu-toggle span {
+                display: block !important;
+                width: 100%;
+                height: 3px;
+                background: var(--roxo, #522080);
+                border-radius: 3px;
+                transition: transform .18s ease, opacity .18s ease;
+            }
+            /* vira "X" quando aberto */
+            header .menu-toggle.aberto span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+            header .menu-toggle.aberto span:nth-child(2) { opacity: 0; }
+            header .menu-toggle.aberto span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+            /* links: escondidos até abrir */
+            header .container-header nav {
+                display: none !important;
+                position: static !important;
+                left: auto !important;
+                transform: none !important;
+                order: 3;
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                justify-content: flex-start;
+                gap: 0 !important;
+                margin-top: 10px;
+                padding-top: 0 !important;
+                border-top: 1px solid #f0eaff;
+            }
+            header .container-header nav a {
+                padding: 14px 4px;
+                font-size: 16px;
+                border-bottom: 1px solid #f6f0fc;
+                touch-action: manipulation;
+            }
+
+            /* Entrar / Cadastrar: também dentro do menu */
+            header .container-header .acoes {
+                display: none !important;
+                order: 4;
+                width: 100%;
+                margin-left: 0 !important;
+                gap: 12px !important;
+                padding: 16px 0 6px;
+            }
+            header .container-header .acoes a {
+                flex: 1;
+                text-align: center;
+                padding: 12px;
+                border-radius: 8px;
+            }
+            header .container-header .entrar { border: 1.5px solid var(--roxo, #522080); }
+
+            /* menu aberto */
+            header .container-header.menu-aberto nav,
+            header .container-header.menu-aberto .acoes {
+                display: flex !important;
+                animation: menuEntrar .18s ease-out;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            header .menu-toggle span,
+            header .container-header.menu-aberto nav,
+            header .container-header.menu-aberto .acoes { transition: none; animation: none; }
+        }
+
+    </style>
 </head>
 <body>
 
@@ -17,7 +131,7 @@
             <span>Ceris</span>
         </a>
 
-        <nav>
+        <nav id="menu-nav">
             <a href="index.html">Início</a>
             <a href="index.html#plataforma">Plataforma</a>
             <a href="planos.html">Planos</a>
@@ -28,6 +142,11 @@
             <a class="entrar" href="login.html">Entrar</a>
             <a class="cadastrar" href="login.html">Cadastrar</a>
         </div>
+
+        <button class="menu-toggle" id="menu-toggle" type="button"
+                aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-nav">
+            <span></span><span></span><span></span>
+        </button>
     </div>
 </header>
 
@@ -205,7 +324,7 @@
         <div class="rodape-links">
             <strong>Links Rápidos</strong>
             <a href="index.html">Início</a>
-            <a href="#plataforma">Plataforma</a>
+            <a href="index.html#plataforma">Plataforma</a>
             <a href="planos.html">Planos</a>
             <a href="sobre.html">Sobre Nós</a>
         </div>
@@ -220,7 +339,31 @@
     </div>
 </footer>
 
+<script>
+    // Menu hambúrguer (celular)
+    (() => {
+        const box = document.querySelector('.container-header');
+        const btn = document.getElementById('menu-toggle');
+        if (!box || !btn) return;
+
+        function setMenu(aberto) {
+            box.classList.toggle('menu-aberto', aberto);
+            btn.classList.toggle('aberto', aberto);
+            btn.setAttribute('aria-expanded', aberto);
+            btn.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
+        }
+
+        btn.addEventListener('click', () => setMenu(!box.classList.contains('menu-aberto')));
+
+        // fecha ao clicar em um link (importante pros links de âncora, como #plataforma)
+        box.querySelectorAll('nav a, .acoes a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+
+        // fecha com ESC e ao voltar pra tela grande
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+        window.addEventListener('resize', () => { if (window.innerWidth > 800) setMenu(false); });
+    })();
+
+</script>
 <script src="JS/equipe.js"></script>
 </body>
 </html>
-

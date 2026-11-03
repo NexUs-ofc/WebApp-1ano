@@ -1,5 +1,7 @@
+
 package org.example.interdisciplinar.controller.Administrador;
 
+// Todos os imports necessários
 import org.example.interdisciplinar.dao.AdministradorDAO;
 import org.example.interdisciplinar.model.Administrador;
 import org.example.interdisciplinar.exception.ErroPersistenciaException;
@@ -14,96 +16,87 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebServlet(
-        name = "DeletarAdministrador",
-        value = {"/administradores/excluir", "/admin/administradores/excluir"}
-)
+@WebServlet(name = "DeletarAdministrador", value = "/admin/administradores/deletar")
 public class ServletDeletarAdministrador extends HttpServlet {
 
     private AdministradorDAO administradorDAO;
 
+    // Método que inicializa a DAO
     @Override
     public void init() {
         administradorDAO = new AdministradorDAO();
     }
 
+    // Método que recebe a solicitação de exclusão
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        request.setCharacterEncoding("UTF-8");
-
+        // Recupera a sessão atual
         HttpSession sessao = request.getSession(false);
 
-        // Verifica se existe um administrador autenticado.
-        if (sessao == null ||
-                !(sessao.getAttribute("administrador") instanceof Administrador)) {
-
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+        // Verifica se existe um administrador autenticado
+        if (sessao == null || sessao.getAttribute("administrador") == null) {
+            response.sendRedirect(request.getContextPath() + "/restricao.html");
             return;
         }
 
+        // Recupera o administrador autenticado
         Administrador administradorLogado =
                 (Administrador) sessao.getAttribute("administrador");
 
+        // Recupera o ID enviado pelo formulário
         String idParametro = request.getParameter("id");
 
+        // Verifica se o ID foi informado
         if (idParametro == null || idParametro.isBlank()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                    "Administrador inválido.");
+            request.setAttribute("erro", "Administrador inválido.");
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
             return;
         }
 
         try {
+            // Converte o ID para inteiro
             int id = Integer.parseInt(idParametro);
 
+            // Verifica se o ID é válido
             if (id <= 0) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                        "ID do administrador inválido.");
+                request.setAttribute("erro", "Administrador inválido.");
+                request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
                 return;
             }
 
-            // Impede que o administrador exclua sua própria conta.
+            // Impede que o administrador exclua a própria conta
             if (id == administradorLogado.getId()) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                        "Você não pode excluir sua própria conta.");
+                request.setAttribute("erro", "Você não pode excluir sua própria conta.");
+                request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
                 return;
             }
 
-            // Verifica se o administrador existe.
-            Administrador administrador = administradorDAO.buscarporId(id);
+            // Realiza a exclusão do administrador
+            administradorDAO.deletar(id);
 
-            if (administrador == null) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND,
-                        "Administrador não encontrado.");
-                return;
-            }
-
-            // Exclui o administrador do banco de dados.
-            if (!administradorDAO.deletar(id)) {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                        "Não foi possível excluir o administrador.");
-                return;
-            }
-
-            // Retorna à listagem de administradores.
-            response.sendRedirect(request.getContextPath() + "/administradores");
+            // Redireciona após a exclusão
+            response.sendRedirect(request.getContextPath() + "/admin/administradores");
 
         } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                    "ID do administrador inválido.");
+            // Trata IDs que não possuem formato numérico
+            request.setAttribute("erro", "ID do administrador inválido.");
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
+            // Registra problemas de conexão com o banco
             getServletContext().log("Falha na conexão com o banco de dados", e);
 
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Não foi possível conectar ao banco de dados.");
+            request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
+            // Registra falhas durante a exclusão
             getServletContext().log("Erro ao deletar administrador", e);
 
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Não foi possível deletar o administrador.");
+            request.setAttribute("erro", "Não foi possível deletar o administrador.");
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

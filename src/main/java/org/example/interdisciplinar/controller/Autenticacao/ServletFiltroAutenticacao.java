@@ -34,7 +34,7 @@ public class ServletFiltroAutenticacao implements Filter {
 
             // Redireciona para o login
             resposta.sendRedirect(
-                    requisicao.getContextPath() + "/login.jsp"
+                    requisicao.getContextPath() + "/restricao.html"
             );
         }
     }

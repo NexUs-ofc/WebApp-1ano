@@ -1,114 +1,98 @@
 package org.example.interdisciplinar.controller.Analise;
 
+// Importa as bibliotecas e classes necessárias para o funcionamento do Servlet
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import org.example.interdisciplinar.dao.AnaliseDAO;
 import org.example.interdisciplinar.dto.CadastroMensal;
 import org.example.interdisciplinar.dto.CategoriaPopular;
 import org.example.interdisciplinar.dto.EmpresaRecente;
 import org.example.interdisciplinar.exception.ErroPersistenciaException;
-import org.example.interdisciplinar.exception.FalhaConexaoException;
-
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
-@WebServlet(name = "MostrarAnalises", value = "/analises")
+// Define o endereço responsável por exibir as análises
+@WebServlet(name = "MostrarAnalises", value = "/admin/analises")
 public class ServletMostrarAnalises extends HttpServlet {
 
+    // Instância responsável pelas consultas de análise no banco
     private AnaliseDAO analiseDAO;
 
+    // Método que inicializa a DAO
     @Override
     public void init() {
         analiseDAO = new AnaliseDAO();
     }
 
+    // Método que busca as análises e encaminha os resultados para a JSP
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        // A mesma identificação de sessão utilizada no ServletLogin.
-        HttpSession sessao = request.getSession(false);
-
-        if (sessao == null ||
-                !(sessao.getAttribute("administradorId") instanceof Integer)) {
-
-            response.sendRedirect(request.getContextPath() + "/login.html");
-            return;
-        }
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-            List<CadastroMensal> cadastrosMensais =
-                    analiseDAO.buscarCadastrosPorMes();
 
-            int novosCadastrosMes =
-                    analiseDAO.contarNovosCadastrosMes();
+            // Busca a quantidade de cadastros realizados em cada mês
+            List<CadastroMensal> cadastrosMensais = analiseDAO.buscarCadastrosPorMes();
 
-            int cadastrosMesAnterior =
-                    analiseDAO.contarCadastrosMesAnterior();
+            // Busca os totais de cada tipo de registro
+            int totalAdministradores = analiseDAO.contarAdministradores();
+            int totalItens = analiseDAO.contarTotalItens();
+            int itensProximosVencimento = analiseDAO.contarItensProximosVencimento();
+            int totalUsuarios = analiseDAO.contarUsuarios();
+            int totalEmpresas = analiseDAO.contarEmpresas();
 
-            int totalAdministradores =
-                    analiseDAO.contarAdministradores();
+            // Busca as informações mais relevantes
+            CategoriaPopular categoriaPopular = analiseDAO.buscarCategoriaMaisPopular();
+            EmpresaRecente empresaRecente = analiseDAO.buscarEmpresaMaisRecente();
 
-            int totalItens =
-                    analiseDAO.contarTotalItens();
-
-            int itensProximosVencimento =
-                    analiseDAO.contarItensProximosVencimento();
-
-            int totalUsuarios =
-                    analiseDAO.contarUsuarios();
-
-            int totalEmpresas =
-                    analiseDAO.contarEmpresas();
-
-            int empresasSemData =
-                    analiseDAO.contarEmpresasSemData();
-
-            CategoriaPopular categoriaPopular =
-                    analiseDAO.buscarCategoriaMaisPopular();
-
-            EmpresaRecente empresaRecente =
-                    analiseDAO.buscarEmpresaMaisRecente();
-
-            // Calcula a variação dos cadastros em relação ao mês anterior.
+            int mesAtual = LocalDate.now().getMonthValue();
+            int mesAnterior = mesAtual == 1 ? 12 : mesAtual - 1;
+            int novosCadastrosMes = cadastrosMensais.stream()
+                    .filter(cadastro -> cadastro.mes() == mesAtual)
+                    .mapToInt(CadastroMensal::total)
+                    .findFirst()
+                    .orElse(0);
+            int cadastrosMesAnterior = cadastrosMensais.stream()
+                    .filter(cadastro -> cadastro.mes() == mesAnterior)
+                    .mapToInt(CadastroMensal::total)
+                    .findFirst()
+                    .orElse(0);
             Integer variacaoCadastros = cadastrosMesAnterior == 0
                     ? null
                     : Math.round((novosCadastrosMes - cadastrosMesAnterior)
                     * 100f / cadastrosMesAnterior);
 
-            // Envia todos os dados para a JSP.
+            // Envia os resultados das consultas para a JSP
             request.setAttribute("cadastrosMensais", cadastrosMensais);
-            request.setAttribute("novosCadastrosMes", novosCadastrosMes);
-            request.setAttribute("cadastrosMesAnterior", cadastrosMesAnterior);
-            request.setAttribute("variacaoCadastros", variacaoCadastros);
             request.setAttribute("totalAdministradores", totalAdministradores);
             request.setAttribute("totalItens", totalItens);
             request.setAttribute("itensProximosVencimento", itensProximosVencimento);
             request.setAttribute("totalUsuarios", totalUsuarios);
             request.setAttribute("totalEmpresas", totalEmpresas);
-            request.setAttribute("empresasSemData", empresasSemData);
             request.setAttribute("categoriaPopular", categoriaPopular);
             request.setAttribute("empresaRecente", empresaRecente);
+            request.setAttribute("novosCadastrosMes", novosCadastrosMes);
+            request.setAttribute("cadastrosMesAnterior", cadastrosMesAnterior);
+            request.setAttribute("variacaoCadastros", variacaoCadastros);
+            request.setAttribute("empresasSemData", 0);
             request.setAttribute("analisesCarregadas", true);
 
-            // Encaminha para a index.jsp com os dados carregados.
-            request.getRequestDispatcher("/index.jsp")
-                    .forward(request, response);
+            // Encaminha para a página de análises
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
 
-        } catch (FalhaConexaoException | ErroPersistenciaException e) {
+        } catch (ErroPersistenciaException e) {
 
+            // Registra os detalhes do erro no log do servidor
             getServletContext().log("Erro ao carregar as análises.", e);
 
-            request.setAttribute("erro",
-                    "Não foi possível carregar as análises.");
+            // Informa que não foi possível carregar os dados
+            request.setAttribute("erro", "Não foi possível carregar as análises.");
 
-            request.getRequestDispatcher("/WEB-INF/errorpage.jsp")
-                    .forward(request, response);
+            // Encaminha para a página de erro
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

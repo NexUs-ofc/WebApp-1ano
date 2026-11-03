@@ -1,11 +1,11 @@
 package org.example.interdisciplinar.controller.ItemDespensa;
 
+// Importa as bibliotecas e classes necessárias para o funcionamento do Servlet
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import org.example.interdisciplinar.dao.ItemDespensaDAO;
 import org.example.interdisciplinar.dto.ItemDespensaView;
 import org.example.interdisciplinar.exception.ErroPersistenciaException;
@@ -16,28 +16,33 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
-@WebServlet(name = "ListarItens", value = "/itensDespensa")
+// Define o endereço responsável pela listagem dos itens da despensa
+@WebServlet(name = "ListarItens", value = "/admin/itens")
 public class ServletListarItem extends HttpServlet {
 
     private ItemDespensaDAO itemDispensaDAO;
 
+    // Método que inicializa a DAO
     @Override
-    public void init() {
+    public void init(){
         itemDispensaDAO = new ItemDespensaDAO();
     }
 
+    // Método que recebe os filtros e lista os itens da despensa
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
+        // Inicializa os filtros como nulos caso não sejam informados
+        Integer idInicio = null;
+        Integer idFim = null;
+        Integer qtdMinima = null;
+        Integer qtdMaxima = null;
+        LocalDate dataInicio = null;
+        LocalDate dataFim = null;
 
         try {
-            Integer idInicio = null;
-            Integer idFim = null;
-            Integer qtdMinima = null;
-            Integer qtdMaxima = null;
-            LocalDate dataInicio = null;
-            LocalDate dataFim = null;
 
+            // Recupera os filtros enviados pela página
             String idInicioTexto = request.getParameter("idInicio");
             String idFimTexto = request.getParameter("idFim");
             String qtdMinimaTexto = request.getParameter("qtdMinima");
@@ -46,30 +51,53 @@ public class ServletListarItem extends HttpServlet {
             String dataFimTexto = request.getParameter("dataFim");
             String ordenar = request.getParameter("ordenar");
 
-            if (idInicioTexto != null && !idInicioTexto.isBlank()) {
-                idInicio = Integer.parseInt(idInicioTexto);
+            // Converte o ID inicial para inteiro, caso tenha sido informado
+            if(idInicioTexto != null && !idInicioTexto.isBlank()){
+                idInicio = Integer.parseInt(idInicioTexto.trim());
             }
 
-            if (idFimTexto != null && !idFimTexto.isBlank()) {
-                idFim = Integer.parseInt(idFimTexto);
+            // Converte o ID final para inteiro, caso tenha sido informado
+            if(idFimTexto != null && !idFimTexto.isBlank()){
+                idFim = Integer.parseInt(idFimTexto.trim());
             }
 
-            if (qtdMinimaTexto != null && !qtdMinimaTexto.isBlank()) {
-                qtdMinima = Integer.parseInt(qtdMinimaTexto);
+            // Converte a quantidade mínima para inteiro
+            if(qtdMinimaTexto != null && !qtdMinimaTexto.isBlank()){
+                qtdMinima = Integer.parseInt(qtdMinimaTexto.trim());
             }
 
-            if (qtdMaximaTexto != null && !qtdMaximaTexto.isBlank()) {
-                qtdMaxima = Integer.parseInt(qtdMaximaTexto);
+            // Converte a quantidade máxima para inteiro
+            if(qtdMaximaTexto != null && !qtdMaximaTexto.isBlank()){
+                qtdMaxima = Integer.parseInt(qtdMaximaTexto.trim());
             }
 
-            if (dataInicioTexto != null && !dataInicioTexto.isBlank()) {
-                dataInicio = LocalDate.parse(dataInicioTexto);
+            // Converte a data inicial para LocalDate
+            if(dataInicioTexto != null && !dataInicioTexto.isBlank()){
+                dataInicio = LocalDate.parse(dataInicioTexto.trim());
             }
 
-            if (dataFimTexto != null && !dataFimTexto.isBlank()) {
-                dataFim = LocalDate.parse(dataFimTexto);
+            // Converte a data final para LocalDate
+            if(dataFimTexto != null && !dataFimTexto.isBlank()){
+                dataFim = LocalDate.parse(dataFimTexto.trim());
             }
 
+            // Verifica se os IDs informados são válidos
+            if ((idInicio != null && idInicio <= 0) ||
+                    (idFim != null && idFim <= 0)) {
+
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
+
+            // Verifica se as quantidades informadas são válidas
+            if ((qtdMinima != null && qtdMinima < 0) ||
+                    (qtdMaxima != null && qtdMaxima < 0)) {
+
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
+
+            // Verifica se o ID inicial é maior que o ID final
             if (idInicio != null && idFim != null && idInicio > idFim) {
                 response.sendError(
                         HttpServletResponse.SC_BAD_REQUEST,
@@ -78,6 +106,7 @@ public class ServletListarItem extends HttpServlet {
                 return;
             }
 
+            // Verifica se a quantidade mínima é maior que a máxima
             if (qtdMinima != null && qtdMaxima != null && qtdMinima > qtdMaxima) {
                 response.sendError(
                         HttpServletResponse.SC_BAD_REQUEST,
@@ -86,6 +115,7 @@ public class ServletListarItem extends HttpServlet {
                 return;
             }
 
+            // Verifica se a data inicial é posterior à data final
             if (dataInicio != null && dataFim != null && dataInicio.isAfter(dataFim)) {
                 response.sendError(
                         HttpServletResponse.SC_BAD_REQUEST,
@@ -94,6 +124,12 @@ public class ServletListarItem extends HttpServlet {
                 return;
             }
 
+            // Define uma ordenação padrão caso nenhuma seja informada
+            if (ordenar == null || ordenar.isBlank()) {
+                ordenar = "id";
+            }
+
+            // Busca os itens de acordo com os filtros informados
             List<ItemDespensaView> itens = itemDispensaDAO.listarFiltrado(
                     idInicio,
                     idFim,
@@ -104,31 +140,53 @@ public class ServletListarItem extends HttpServlet {
                     ordenar
             );
 
-            request.setAttribute("itensDispensa", itens);
-            request.getRequestDispatcher("/WEB-INF/Views/itensDespensa.jsp")
-                    .forward(request, response);
+            // Envia a lista de itens para a página
+            request.setAttribute("itens", itens);
 
-        } catch (NumberFormatException e) {
-            response.sendError(
-                    HttpServletResponse.SC_BAD_REQUEST,
-                    "Os IDs e as quantidades devem ser números inteiros."
-            );
+            // Encaminha para a página de listagem
+            request.getRequestDispatcher("/WEB-INF/Views/itensDespensa.jsp").forward(request, response);
+
+        } catch (NumberFormatException e){
+
+            // Registra o erro de conversão no log do servidor
+            getServletContext().log("Erro ao formatar os números", e);
+
+            request.setAttribute("erro", "Os IDs e as quantidades precisam ser números inteiros");
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (DateTimeParseException e) {
-            response.sendError(
-                    HttpServletResponse.SC_BAD_REQUEST,
-                    "Formato de data inválido."
-            );
+
+            // Registra o erro de conversão da data no log
+            getServletContext().log("Erro ao formatar as datas", e);
+
+            request.setAttribute("erro", "Uma ou mais datas possuem formato inválido");
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
-            getServletContext().log("Falha ao conectar ao banco de dados.", e);
-            request.setAttribute("erro", "Não foi possível estabelecer conexão com o banco de dados.");
-            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+
+            // Registra os detalhes da falha de conexão no log
+            getServletContext().log("Falha ao conectar ao banco de dados", e);
+
+            request.setAttribute(
+                    "erro",
+                    "Não foi possível estabelecer conexão com o banco de dados."
+            );
+
+            // Encaminha para a página de erro
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
-            getServletContext().log("Erro ao listar os itens da despensa.", e);
-            request.setAttribute("erro", "Ocorreu um erro ao listar os itens.");
-            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+
+            // Registra os detalhes do erro de persistência no log
+            getServletContext().log("Erro ao listar os itens", e);
+
+            request.setAttribute(
+                    "erro",
+                    "Ocorreu um erro ao listar os itens."
+            );
+
+            // Encaminha para a página de erro
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

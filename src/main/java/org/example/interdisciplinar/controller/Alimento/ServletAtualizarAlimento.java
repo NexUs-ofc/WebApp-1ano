@@ -6,7 +6,6 @@ import org.example.interdisciplinar.dao.AlimentoDAO;
 import org.example.interdisciplinar.model.Alimento;
 import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.exception.FalhaConexaoException;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "AtualizarAlimento", value = "/alimentos/atualizar")
+@WebServlet(name = "AtualizarAlimento", value = "/admin/alimentos/atualizar")
 public class ServletAtualizarAlimento extends HttpServlet {
 
     private AlimentoDAO alimentoDAO;
@@ -44,7 +43,7 @@ public class ServletAtualizarAlimento extends HttpServlet {
                 || idCategoriaParametro == null || idCategoriaParametro.isBlank()) {
 
             request.setAttribute("erro", "Preencha todos os campos.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
             return;
         }
 
@@ -55,7 +54,7 @@ public class ServletAtualizarAlimento extends HttpServlet {
             // Verifica se o ID da categoria é válido
             if (idCategoria <= 0) {
                 request.setAttribute("erro", "Categoria inválida.");
-                request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
                 return;
             }
 
@@ -70,26 +69,25 @@ public class ServletAtualizarAlimento extends HttpServlet {
             alimentoDAO.atualizar(alimento);
 
             // Redireciona após a atualização
-            response.sendRedirect(request.getContextPath() + "/alimentos");
+            response.sendRedirect(request.getContextPath() + "/admin/alimentos");
 
         } catch (NumberFormatException e) {
             // Trata IDs de categoria que não possuem formato numérico
             request.setAttribute("erro", "ID da categoria inválido.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
             // Registra problemas de conexão com o banco
             getServletContext().log("Falha na conexão com o banco de dados", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra falhas durante a atualização
             getServletContext().log("Erro ao atualizar alimento", e);
-
             request.setAttribute("erro", "Não foi possível atualizar o alimento.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

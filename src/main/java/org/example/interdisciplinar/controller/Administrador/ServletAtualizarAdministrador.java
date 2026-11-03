@@ -1,46 +1,41 @@
-
 package org.example.interdisciplinar.controller.Administrador;
 
+// Importa as bibliotecas e classes necessárias para o funcionamento do Servlet
 import org.example.interdisciplinar.dao.AdministradorDAO;
 import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.exception.FalhaConexaoException;
 import org.example.interdisciplinar.model.Administrador;
 import org.example.interdisciplinar.utils.Regex;
 import org.example.interdisciplinar.utils.Criptografia;
-import org.example.interdisciplinar.utils.Cloudinary;
-
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.Part;
-
 import java.io.IOException;
+import java.net.URI;
 
-@WebServlet(
-        name = "AtualizarAdministrador",
-        value = {"/administradores/atualizar", "/admin/administradores/editar"}
-)
-@MultipartConfig(maxFileSize = 5242880, maxRequestSize = 6291456)
+// Define o endereço responsável pela atualização dos administradores
+@WebServlet(name = "AtualizarAdministrador", value = "/admin/administradores/editar")
 public class ServletAtualizarAdministrador extends HttpServlet {
 
+    // Instância responsável pelas operações no banco de dados
     private AdministradorDAO administradorDAO;
 
+    // Método que inicializa a DAO
     @Override
     public void init() {
         administradorDAO = new AdministradorDAO();
     }
 
+    // Método que busca os dados do administrador para preencher o formulário de edição
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
             String idTexto = request.getParameter("id");
 
+            // Verifica se o ID foi informado
             if (idTexto == null || idTexto.isBlank()) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
@@ -48,127 +43,152 @@ public class ServletAtualizarAdministrador extends HttpServlet {
 
             int id = Integer.parseInt(idTexto);
 
+            // Verifica se o ID é válido
             if (id <= 0) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
 
+            // Busca o administrador pelo ID
             Administrador administrador = administradorDAO.buscarporId(id);
 
+            // Verifica se o administrador foi encontrado
             if (administrador == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
 
+            // Envia o administrador encontrado para a página
             request.setAttribute("administrador", administrador);
 
-            request.getRequestDispatcher("/administradores")
-                    .forward(request, response);
+            // Encaminha para a página de administradores
+            request.getRequestDispatcher("/admin/administradores").forward(request, response);
 
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
-        } catch (FalhaConexaoException | ErroPersistenciaException e) {
-            getServletContext().log("Erro ao buscar administrador", e);
+        } catch (FalhaConexaoException e) {
+            // Registra o erro de conexão no log do servidor
+            getServletContext().log("Erro de conexão com o banco", e);
 
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Não foi possível buscar o administrador.");
+            // Envia uma mensagem amigável para a página de erro
+            request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
+
+        } catch (ErroPersistenciaException e) {
+            // Registra o erro de persistência no log do servidor
+            getServletContext().log("Erro de persistência", e);
+
+            // Informa que não foi possível buscar o administrador
+            request.setAttribute("erro", "Não foi possível buscar o administrador pelo ID.");
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 
+    // Método que recebe os dados do formulário e atualiza o administrador
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
         try {
+            // Recebe os dados enviados pelo formulário
             String idTexto = request.getParameter("id");
             String nome = request.getParameter("nome");
             String email = request.getParameter("email");
             String senha = request.getParameter("senha");
-            String ddd = request.getParameter("ddd");
             String telefone = request.getParameter("telefone");
+            String urlFoto = request.getParameter("urlFoto");
 
-            // Nome original do campo de arquivo na JSP.
-            Part arquivo = request.getPart("fotoPerfilArquivo");
+            // Verifica se os campos obrigatórios foram preenchidos
+            if (idTexto == null || idTexto.isBlank() ||
+                    nome == null || nome.isBlank() ||
+                    email == null || email.isBlank() ||
+                    telefone == null || telefone.isBlank()) {
 
-            if (idTexto == null || idTexto.isBlank()
-                    || nome == null || nome.isBlank()
-                    || email == null || email.isBlank()) {
-
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                        "Preencha todos os campos obrigatórios.");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Preencha todos os campos obrigatórios");
                 return;
             }
 
             int id = Integer.parseInt(idTexto.trim());
 
+            // Verifica se o ID é válido
             if (id <= 0) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                        "ID do administrador inválido.");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
 
-            Administrador administradorExistente =
-                    administradorDAO.buscarporId(id);
+            // Busca o administrador que será atualizado
+            Administrador administradorExistente = administradorDAO.buscarporId(id);
 
+            // Verifica se o administrador existe no banco
             if (administradorExistente == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
 
+            // Remove espaços desnecessários dos campos
             nome = nome.trim();
             email = email.trim();
+            telefone = telefone.trim();
+            urlFoto = urlFoto == null ? "" : urlFoto.trim();
 
-            // Junta o DDD e o telefone, quando ambos são informados.
-            if (ddd != null && !ddd.isBlank()
-                    && telefone != null && !telefone.isBlank()) {
-
-                telefone = ddd.trim() + telefone.trim();
-            }
-
-            // Mantém o telefone anterior se o formulário não o informar.
-            if (telefone == null || telefone.isBlank()) {
-                telefone = administradorExistente.getTelefone();
-            }
-
-            if (!Regex.validarEmail(email)
-                    || telefone == null
-                    || !Regex.validarTelefone(telefone)) {
+            // Valida os campos utilizando os métodos da classe Regex
+            if (!Regex.validarTelefone(telefone) ||
+                    !Regex.validarEmail(email)) {
 
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                        "E-mail ou telefone inválido.");
+                        "Um ou mais campos possuem valores inválidos");
                 return;
             }
 
-            // A senha só será alterada quando uma nova for informada.
-            String senhaCriptografada = administradorExistente.getSenha();
+            // Valida a URL da foto, caso tenha sido informada
+            if (!urlFoto.isBlank()) {
+                try {
+                    URI uri = URI.create(urlFoto);
 
-            if (senha != null && !senha.isBlank()) {
+                    // Verifica se a URL possui um endereço e protocolo válidos
+                    if (!uri.isAbsolute() ||
+                            uri.getHost() == null ||
+                            (!"https".equalsIgnoreCase(uri.getScheme()) &&
+                                    !"http".equalsIgnoreCase(uri.getScheme()))) {
 
-                if (!Regex.validarSenha(senha)) {
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                                "URL da foto inválida");
+                        return;
+                    }
+
+                } catch (IllegalArgumentException e) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                            "A senha não atende aos requisitos.");
+                            "URL da foto inválida");
                     return;
                 }
 
+            } else {
+                // Mantém a foto antiga caso nenhuma nova seja informada
+                urlFoto = administradorExistente.getUrlFoto();
+            }
+
+            // Mantém a senha atual caso uma nova não seja informada
+            String senhaCriptografada = administradorExistente.getSenha();
+
+            // Verifica se uma nova senha foi informada
+            if (senha != null && !senha.isBlank()) {
+
+                // Valida os requisitos da nova senha
+                if (!Regex.validarSenha(senha)) {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                            "A senha não atende aos requisitos");
+                    return;
+                }
+
+                // Criptografa a nova senha antes de armazená-la
                 senhaCriptografada = Criptografia.criptografar(senha);
             }
 
-            // Preserva a foto anterior quando não existe um novo arquivo.
-            String urlFoto = administradorExistente.getUrlFoto();
-
-            if (arquivo != null
-                    && arquivo.getSize() > 0
-                    && arquivo.getSubmittedFileName() != null
-                    && !arquivo.getSubmittedFileName().isBlank()) {
-
-                urlFoto = Cloudinary.enviarFotoAdministrador(arquivo);
-            }
-
+            // Cria um objeto com os novos dados do administrador
             Administrador administrador = new Administrador();
 
+            // Preenche os atributos do administrador
             administrador.setId(id);
             administrador.setNome(nome);
             administrador.setEmail(email);
@@ -176,52 +196,30 @@ public class ServletAtualizarAdministrador extends HttpServlet {
             administrador.setTelefone(telefone);
             administrador.setUrlFoto(urlFoto);
 
-            if (!administradorDAO.atualizar(administrador)) {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                        "Não foi possível atualizar o administrador.");
-                return;
-            }
+            // Envia os novos dados para a DAO atualizar no banco
+            administradorDAO.atualizar(administrador);
 
-            // Atualiza a sessão se a conta editada for a conta logada.
-            HttpSession sessao = request.getSession(false);
-
-            if (sessao != null) {
-                Object administradorLogado =
-                        sessao.getAttribute("administrador");
-
-                if (administradorLogado instanceof Administrador
-                        && ((Administrador) administradorLogado).getId() == id) {
-
-                    sessao.setAttribute("administrador", administrador);
-                    sessao.setAttribute("administradorNome", nome);
-                    sessao.setAttribute("administradorFoto", urlFoto);
-                }
-            }
-
-            response.sendRedirect(request.getContextPath()
-                    + "/administradores");
+            // Redireciona para a página de administradores após a atualização
+            response.sendRedirect(request.getContextPath() + "/admin/administradores");
 
         } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                    "ID do administrador inválido.");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
-        } catch (FalhaConexaoException | ErroPersistenciaException e) {
-            getServletContext().log("Erro ao atualizar administrador", e);
+        } catch (FalhaConexaoException e) {
+            // Registra o erro de conexão no log do servidor
+            getServletContext().log("Erro de conexão com o banco", e);
 
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Não foi possível atualizar o administrador.");
+            // Envia uma mensagem amigável para a página de erro
+            request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
-        } catch (IllegalStateException e) {
-            getServletContext().log("Erro no tamanho do arquivo", e);
+        } catch (ErroPersistenciaException e) {
+            // Registra o erro de persistência no log do servidor
+            getServletContext().log("Erro de persistência", e);
 
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                    "A imagem excede o tamanho permitido.");
-
-        } catch (IOException | ServletException e) {
-            getServletContext().log("Erro ao enviar a foto", e);
-
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Não foi possível processar a fotografia.");
+            // Informa que não foi possível atualizar o administrador
+            request.setAttribute("erro", "Não foi possível atualizar o administrador.");
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

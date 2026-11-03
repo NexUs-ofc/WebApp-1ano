@@ -21,14 +21,14 @@
       <span class="nomeLogo">Ceris</span>
       <img class="linhaLogo" src="${pageContext.request.contextPath}/assets/logo-underline.svg" alt="">
     </div>
-        <a href="${pageContext.request.contextPath}/index.jsp"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-chart-histogram.svg" alt="">Análise</a>
-        <a href="${pageContext.request.contextPath}/enderecos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-marker.svg" alt="">Endereço</a>
-        <a href="${pageContext.request.contextPath}/usuarios"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="">Usuário</a>
-        <a href="${pageContext.request.contextPath}/alimentos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-utensils.svg" alt="">Alimento</a>
-        <a class="ativo" href="${pageContext.request.contextPath}/categorias"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-apps.svg" alt="">Categoria</a>
-        <a href="${pageContext.request.contextPath}/itensDespensa"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-bread-slice.svg" alt="">Item_despensa</a>
-        <a href="${pageContext.request.contextPath}/empresas"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-enterprise.svg" alt="">Empresas</a>
-        <a href="${pageContext.request.contextPath}/administradores"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-shield-check.svg" alt="">Administrador</a>
+        <a href="${pageContext.request.contextPath}/admin/analises"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-chart-histogram.svg" alt="">Análise</a>
+        <a href="${pageContext.request.contextPath}/admin/enderecos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-marker.svg" alt="">Endereço</a>
+        <a href="${pageContext.request.contextPath}/admin/usuarios"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-user.svg" alt="">Usuário</a>
+        <a href="${pageContext.request.contextPath}/admin/alimentos"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-utensils.svg" alt="">Alimento</a>
+        <a class="ativo" href="${pageContext.request.contextPath}/admin/categorias"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-apps.svg" alt="">Categoria</a>
+        <a href="${pageContext.request.contextPath}/admin/itens"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-bread-slice.svg" alt="">Item_despensa</a>
+        <a href="${pageContext.request.contextPath}/admin/empresas"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-enterprise.svg" alt="">Empresas</a>
+        <a href="${pageContext.request.contextPath}/admin/administradores"><img class="iconeSidebar" src="${pageContext.request.contextPath}/assets/fi-br-shield-check.svg" alt="">Administrador</a>
     <!-- Perfil -->
     <div class="rodapeSidebar">
       <img class="linhaPerfilSidebar" src="${pageContext.request.contextPath}/assets/profile-line.svg" alt="">
@@ -70,7 +70,7 @@
     <c:if test="${not empty categorias}">
       <!-- Pesquisa -->
       <div class="pesquisa">
-        <form action="${pageContext.request.contextPath}/categorias" method="get">
+        <form action="${pageContext.request.contextPath}/admin/categorias" method="get">
           <input type="text" name="pesquisa" placeholder="Procurar" value="${param.pesquisa}">
           <button type="submit" class="botaoPesquisar">Pesquisar</button>
           <button type="button" class="botaoFiltro" aria-label="Aplicar filtro de pesquisa" onclick="abrirPopupFiltro()">
@@ -91,7 +91,7 @@
             <h2 id="tituloPopupFiltro">Filtros</h2>
             <button type="button" class="botaoFecharPopupFiltro" aria-label="Fechar filtros" onclick="fecharPopupFiltro()">&times;</button>
           </div>
-          <form action="${pageContext.request.contextPath}/categorias" method="get">
+          <form action="${pageContext.request.contextPath}/admin/categorias" method="get">
             <div class="camposPopupFiltro">
           <div class="campoPopupFiltro">
             <span>id</span>
@@ -127,7 +127,7 @@
         <div class="barraPopupFormulario"></div>
         <div class="conteudoPopupFormulario">
         <h2><span>Criar</span> categoria</h2>
-        <form action="${pageContext.request.contextPath}/categorias/insert" method="post">
+        <form action="${pageContext.request.contextPath}/admin/categorias/insert" method="post">
         <div class="gradeCamposPopup">
           <label class="campoPopup" for="nomeCategoria">Nome<input id="nomeCategoria" name="nomeCategoria" type="text" required></label>
           <label class="campoPopup" for="descricaoCategoria">Descrição<input id="descricaoCategoria" name="descricaoCategoria" type="text" required></label>
@@ -181,7 +181,7 @@
     <div class="barraPopupFormulario"></div>
     <div class="conteudoPopupFormulario">
       <h2><span>Editar</span> categoria</h2>
-      <form action="${pageContext.request.contextPath}/categorias/atualizar" method="post">
+      <form action="${pageContext.request.contextPath}/admin/categorias/editar" method="post">
         <input type="hidden" id="idCategoriaEdicao" name="id">
         <div class="gradeCamposPopup">
           <label class="campoPopup" for="nomeCategoriaEdicao">Nome<input id="nomeCategoriaEdicao" name="nome" type="text" required></label>
@@ -202,7 +202,7 @@
       <h2><span>Excluir</span> categoria</h2>
       <p>Tem certeza de que deseja <strong>excluir</strong> este item?
       <br>Essa ação não poderá ser desfeita.</p>
-      <form action="${pageContext.request.contextPath}/categorias/deletar" method="post">
+      <form action="${pageContext.request.contextPath}/admin/categorias/deletar" method="post">
         <input type="hidden" id="idCategoriaExclusao" name="id">
         <div class="acoesPopupExclusao">
           <button type="button" class="botaoCancelarExclusao" onclick="fecharPopupExclusao()">cancelar</button>
