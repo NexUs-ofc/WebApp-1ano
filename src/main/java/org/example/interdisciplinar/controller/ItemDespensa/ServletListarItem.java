@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import org.example.interdisciplinar.dao.ItemDespensaDAO;
 import org.example.interdisciplinar.dto.ItemDespensaView;
 import org.example.interdisciplinar.exception.ErroPersistenciaException;
@@ -12,22 +13,24 @@ import org.example.interdisciplinar.exception.FalhaConexaoException;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
-@WebServlet(name = "ListarItens", value = "/itensDispensa")
+@WebServlet(name = "ListarItens", value = "/itensDespensa")
 public class ServletListarItem extends HttpServlet {
+
     private ItemDespensaDAO itemDispensaDAO;
 
     @Override
-    public void init(){
+    public void init() {
         itemDispensaDAO = new ItemDespensaDAO();
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         try {
-
-
             Integer idInicio = null;
             Integer idFim = null;
             Integer qtdMinima = null;
@@ -43,22 +46,27 @@ public class ServletListarItem extends HttpServlet {
             String dataFimTexto = request.getParameter("dataFim");
             String ordenar = request.getParameter("ordenar");
 
-            if(idInicioTexto != null && !idInicioTexto.isBlank()){
+            if (idInicioTexto != null && !idInicioTexto.isBlank()) {
                 idInicio = Integer.parseInt(idInicioTexto);
             }
-            if(idFimTexto != null && !idFimTexto.isBlank()){
+
+            if (idFimTexto != null && !idFimTexto.isBlank()) {
                 idFim = Integer.parseInt(idFimTexto);
             }
-            if(qtdMinimaTexto != null && !qtdMinimaTexto.isBlank()){
+
+            if (qtdMinimaTexto != null && !qtdMinimaTexto.isBlank()) {
                 qtdMinima = Integer.parseInt(qtdMinimaTexto);
             }
-            if(qtdMaximaTexto != null && !qtdMaximaTexto.isBlank()){
+
+            if (qtdMaximaTexto != null && !qtdMaximaTexto.isBlank()) {
                 qtdMaxima = Integer.parseInt(qtdMaximaTexto);
             }
-            if(dataInicioTexto != null && !dataInicioTexto.isBlank()){
+
+            if (dataInicioTexto != null && !dataInicioTexto.isBlank()) {
                 dataInicio = LocalDate.parse(dataInicioTexto);
             }
-            if(dataFimTexto != null && !dataFimTexto.isBlank()){
+
+            if (dataFimTexto != null && !dataFimTexto.isBlank()) {
                 dataFim = LocalDate.parse(dataFimTexto);
             }
 
@@ -81,49 +89,46 @@ public class ServletListarItem extends HttpServlet {
             if (dataInicio != null && dataFim != null && dataInicio.isAfter(dataFim)) {
                 response.sendError(
                         HttpServletResponse.SC_BAD_REQUEST,
-                        "A data de início não pode ser maior que a data de fim"
+                        "A data de início não pode ser maior que a data de fim."
                 );
                 return;
             }
 
-            List<ItemDespensaView> itens = itemDispensaDAO.listarFiltrado(idInicio, idFim, qtdMinima, qtdMaxima, dataInicio, dataFim, ordenar);
-            request.setAttribute("itens", itens);
-            request.getRequestDispatcher("/WEB-INF/Views/itensDespensa.jsp").forward(request, response);
+            List<ItemDespensaView> itens = itemDispensaDAO.listarFiltrado(
+                    idInicio,
+                    idFim,
+                    qtdMinima,
+                    qtdMaxima,
+                    dataInicio,
+                    dataFim,
+                    ordenar
+            );
 
-        } catch (NumberFormatException nfe){
-            getServletContext().log("Erro ao formatar o número.", nfe);
-            request.setAttribute("erro", "O ID dos itens precisa ser um número inteiro");
-            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+            request.setAttribute("itensDispensa", itens);
+            request.getRequestDispatcher("/WEB-INF/Views/itensDespensa.jsp")
+                    .forward(request, response);
+
+        } catch (NumberFormatException e) {
+            response.sendError(
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    "Os IDs e as quantidades devem ser números inteiros."
+            );
+
+        } catch (DateTimeParseException e) {
+            response.sendError(
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    "Formato de data inválido."
+            );
 
         } catch (FalhaConexaoException e) {
-
-            // Registra os detalhes técnicos da falha de conexão.
             getServletContext().log("Falha ao conectar ao banco de dados.", e);
-
-            // Define uma mensagem compreensível para o administrador.
-            request.setAttribute(
-                    "erro",
-                    "Não foi possível estabelecer conexão com o banco de dados."
-            );
-
-            // Encaminha para a página de erro
+            request.setAttribute("erro", "Não foi possível estabelecer conexão com o banco de dados.");
             request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
-
 
         } catch (ErroPersistenciaException e) {
-
-            // Registra os detalhes técnicos do erro de persistência.
-            getServletContext().log("Erro ao listar os itens", e);
-
-            // Define uma mensagem compreensível para o administrador.
-            request.setAttribute(
-                    "erro",
-                    "Ocorreu um erro ao listar os itens."
-            );
-
-            // Encaminha para a página de erro.
+            getServletContext().log("Erro ao listar os itens da despensa.", e);
+            request.setAttribute("erro", "Ocorreu um erro ao listar os itens.");
             request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
-
         }
     }
 }

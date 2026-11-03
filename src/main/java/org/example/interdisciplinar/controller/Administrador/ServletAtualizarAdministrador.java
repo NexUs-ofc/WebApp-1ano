@@ -1,3 +1,4 @@
+
 package org.example.interdisciplinar.controller.Administrador;
 
 import org.example.interdisciplinar.dao.AdministradorDAO;
@@ -6,15 +7,24 @@ import org.example.interdisciplinar.exception.FalhaConexaoException;
 import org.example.interdisciplinar.model.Administrador;
 import org.example.interdisciplinar.utils.Regex;
 import org.example.interdisciplinar.utils.Criptografia;
+import org.example.interdisciplinar.utils.Cloudinary;
+
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.net.URI;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
-@WebServlet(name = "AtualizarAdministrador", value = "/admin/administradores/editar")
+import java.io.IOException;
+
+@WebServlet(
+        name = "AtualizarAdministrador",
+        value = {"/administradores/atualizar", "/admin/administradores/editar"}
+)
+@MultipartConfig(maxFileSize = 5242880, maxRequestSize = 6291456)
 public class ServletAtualizarAdministrador extends HttpServlet {
 
     private AdministradorDAO administradorDAO;
@@ -25,7 +35,8 @@ public class ServletAtualizarAdministrador extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
         try {
             String idTexto = request.getParameter("id");
@@ -51,27 +62,24 @@ public class ServletAtualizarAdministrador extends HttpServlet {
 
             request.setAttribute("administrador", administrador);
 
-            request.getRequestDispatcher("/admin/administradores").forward(request, response);
+            request.getRequestDispatcher("/administradores")
+                    .forward(request, response);
 
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
-        } catch (FalhaConexaoException e) {
-            getServletContext().log("Erro de conexão com o banco", e);
+        } catch (FalhaConexaoException | ErroPersistenciaException e) {
+            getServletContext().log("Erro ao buscar administrador", e);
 
-            request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
-
-        } catch (ErroPersistenciaException e) {
-            getServletContext().log("Erro de persistência", e);
-
-            request.setAttribute("erro", "Não foi possível buscar o administrador pelo ID.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Não foi possível buscar o administrador.");
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         request.setCharacterEncoding("UTF-8");
 
         try {
@@ -79,27 +87,32 @@ public class ServletAtualizarAdministrador extends HttpServlet {
             String nome = request.getParameter("nome");
             String email = request.getParameter("email");
             String senha = request.getParameter("senha");
+            String ddd = request.getParameter("ddd");
             String telefone = request.getParameter("telefone");
-            String cpf = request.getParameter("cpf");
-            String urlFoto = request.getParameter("urlFoto");
 
-            if (idTexto == null || idTexto.isBlank() ||
-                    nome == null || nome.isBlank() ||
-                    email == null || email.isBlank() ||
-                    telefone == null || telefone.isBlank() ||
-                    cpf == null || cpf.isBlank()) {
+            // Nome original do campo de arquivo na JSP.
+            Part arquivo = request.getPart("fotoPerfilArquivo");
 
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Preencha todos os campos obrigatórios");
+            if (idTexto == null || idTexto.isBlank()
+                    || nome == null || nome.isBlank()
+                    || email == null || email.isBlank()) {
+
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                        "Preencha todos os campos obrigatórios.");
                 return;
             }
 
             int id = Integer.parseInt(idTexto.trim());
+
             if (id <= 0) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                        "ID do administrador inválido.");
                 return;
             }
 
-            Administrador administradorExistente = administradorDAO.buscarporId(id);
+            Administrador administradorExistente =
+                    administradorDAO.buscarporId(id);
+
             if (administradorExistente == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -107,54 +120,51 @@ public class ServletAtualizarAdministrador extends HttpServlet {
 
             nome = nome.trim();
             email = email.trim();
-            telefone = telefone.trim();
-            cpf = cpf.trim();
-            urlFoto = urlFoto == null ? "" : urlFoto.trim();
 
-            if (!Regex.validarTelefone(telefone) ||
-                    !Regex.validarEmail(email) ||
-                    !Regex.validarCpf(cpf)) {
+            // Junta o DDD e o telefone, quando ambos são informados.
+            if (ddd != null && !ddd.isBlank()
+                    && telefone != null && !telefone.isBlank()) {
+
+                telefone = ddd.trim() + telefone.trim();
+            }
+
+            // Mantém o telefone anterior se o formulário não o informar.
+            if (telefone == null || telefone.isBlank()) {
+                telefone = administradorExistente.getTelefone();
+            }
+
+            if (!Regex.validarEmail(email)
+                    || telefone == null
+                    || !Regex.validarTelefone(telefone)) {
 
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                        "Um ou mais campos possuem valores inválidos");
+                        "E-mail ou telefone inválido.");
                 return;
             }
 
-
-            if (!urlFoto.isBlank()) {
-                try {
-                    URI uri = URI.create(urlFoto);
-
-                    if (!uri.isAbsolute() ||
-                            uri.getHost() == null ||
-                            (!"https".equalsIgnoreCase(uri.getScheme()) &&
-                                    !"http".equalsIgnoreCase(uri.getScheme()))) {
-
-                        response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                "URL da foto inválida");
-                        return;
-                    }
-
-                } catch (IllegalArgumentException e) {
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                            "URL da foto inválida");
-                    return;
-                }
-            } else {
-                urlFoto = administradorExistente.getUrlFoto();
-            }
-
+            // A senha só será alterada quando uma nova for informada.
             String senhaCriptografada = administradorExistente.getSenha();
 
             if (senha != null && !senha.isBlank()) {
 
                 if (!Regex.validarSenha(senha)) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                            "A senha não atende aos requisitos");
+                            "A senha não atende aos requisitos.");
                     return;
                 }
 
                 senhaCriptografada = Criptografia.criptografar(senha);
+            }
+
+            // Preserva a foto anterior quando não existe um novo arquivo.
+            String urlFoto = administradorExistente.getUrlFoto();
+
+            if (arquivo != null
+                    && arquivo.getSize() > 0
+                    && arquivo.getSubmittedFileName() != null
+                    && !arquivo.getSubmittedFileName().isBlank()) {
+
+                urlFoto = Cloudinary.enviarFotoAdministrador(arquivo);
             }
 
             Administrador administrador = new Administrador();
@@ -164,27 +174,54 @@ public class ServletAtualizarAdministrador extends HttpServlet {
             administrador.setEmail(email);
             administrador.setSenha(senhaCriptografada);
             administrador.setTelefone(telefone);
-            administrador.setCpf(cpf);
             administrador.setUrlFoto(urlFoto);
 
-            administradorDAO.atualizar(administrador);
+            if (!administradorDAO.atualizar(administrador)) {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                        "Não foi possível atualizar o administrador.");
+                return;
+            }
 
-            response.sendRedirect(request.getContextPath() + "/admin/administradores");
+            // Atualiza a sessão se a conta editada for a conta logada.
+            HttpSession sessao = request.getSession(false);
+
+            if (sessao != null) {
+                Object administradorLogado =
+                        sessao.getAttribute("administrador");
+
+                if (administradorLogado instanceof Administrador
+                        && ((Administrador) administradorLogado).getId() == id) {
+
+                    sessao.setAttribute("administrador", administrador);
+                    sessao.setAttribute("administradorNome", nome);
+                    sessao.setAttribute("administradorFoto", urlFoto);
+                }
+            }
+
+            response.sendRedirect(request.getContextPath()
+                    + "/administradores");
 
         } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "ID do administrador inválido.");
 
-        } catch (FalhaConexaoException e) {
-            getServletContext().log("Erro de conexão com o banco", e);
+        } catch (FalhaConexaoException | ErroPersistenciaException e) {
+            getServletContext().log("Erro ao atualizar administrador", e);
 
-            request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Não foi possível atualizar o administrador.");
 
-        } catch (ErroPersistenciaException e) {
-            getServletContext().log("Erro de persistência", e);
+        } catch (IllegalStateException e) {
+            getServletContext().log("Erro no tamanho do arquivo", e);
 
-            request.setAttribute("erro", "Não foi possível atualizar o administrador.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "A imagem excede o tamanho permitido.");
+
+        } catch (IOException | ServletException e) {
+            getServletContext().log("Erro ao enviar a foto", e);
+
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Não foi possível processar a fotografia.");
         }
     }
 }

@@ -5,14 +5,16 @@ import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.exception.FalhaConexaoException;
 import org.example.interdisciplinar.model.Empresa;
 import org.example.interdisciplinar.utils.Regex;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
-@WebServlet(name = "AtualizarEmpresa", value = "/admin/empresas/editar")
+@WebServlet(name = "AtualizarEmpresa", value = "/empresas/editar")
 public class ServletAtualizarEmpresa extends HttpServlet {
 
     private EmpresaDAO empresaDAO;
@@ -23,7 +25,9 @@ public class ServletAtualizarEmpresa extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         try {
             String idParametro = request.getParameter("id");
 
@@ -47,25 +51,27 @@ public class ServletAtualizarEmpresa extends HttpServlet {
             }
 
             request.setAttribute("empresa", empresa);
-            request.getRequestDispatcher("/admin/empresas").forward(request, response);
+            request.getRequestDispatcher("/empresas").forward(request, response);
 
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
         } catch (FalhaConexaoException e) {
-            getServletContext().log("Erro de conexão com o banco", e);
+            getServletContext().log("Erro de conexão com o banco.", e);
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
             request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
-            getServletContext().log("Erro de persistência", e);
+            getServletContext().log("Erro de persistência.", e);
             request.setAttribute("erro", "Não foi possível buscar a empresa.");
             request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         request.setCharacterEncoding("UTF-8");
 
         try {
@@ -102,13 +108,15 @@ public class ServletAtualizarEmpresa extends HttpServlet {
                 return;
             }
 
-
             nome = nome.trim();
             cnpj = cnpj.trim();
             email = email.trim();
             telefone = telefone.trim();
 
-            if (!Regex.validarCnpj(cnpj) || !Regex.validarEmail(email) || !Regex.validarTelefone(telefone)) {
+            if (!Regex.validarCnpj(cnpj)
+                    || !Regex.validarEmail(email)
+                    || !Regex.validarTelefone(telefone)) {
+
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
@@ -119,20 +127,27 @@ public class ServletAtualizarEmpresa extends HttpServlet {
             empresaExistente.setEmail(email);
             empresaExistente.setTelefone(telefone);
 
-            empresaDAO.atualizar(empresaExistente);
+            boolean atualizado = empresaDAO.atualizar(empresaExistente);
 
-            response.sendRedirect(request.getContextPath() + "/admin/empresas");
+            if (atualizado) {
+                response.sendRedirect(request.getContextPath() + "/empresas");
+            } else {
+                response.sendError(
+                        HttpServletResponse.SC_NOT_FOUND,
+                        "Empresa não encontrada para atualização."
+                );
+            }
 
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
         } catch (FalhaConexaoException e) {
-            getServletContext().log("Erro de conexão com o banco", e);
+            getServletContext().log("Erro de conexão com o banco.", e);
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
             request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
-            getServletContext().log("Erro de persistência", e);
+            getServletContext().log("Erro de persistência.", e);
             request.setAttribute("erro", "Não foi possível atualizar a empresa.");
             request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
         }

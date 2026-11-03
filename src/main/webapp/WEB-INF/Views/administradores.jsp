@@ -160,7 +160,7 @@
                   <button type="button" class="botaoBloquear" title="Ocultar dados da linha" aria-label="Ocultar dados da linha" aria-pressed="false" onclick="alternarDadosLinha(this)">
                     <img src="<c:url value='/assets/fi-br-eye.svg'/>" alt="" aria-hidden="true">
                   </button>
-                  <button type="button" class="botaoEditar" title="Editar administrador" aria-label="Editar administrador" data-id="${administrador.id}" data-nome="${fn:escapeXml(administrador.nome)}" data-telefone="${fn:escapeXml(administrador.telefone)}" data-email="${fn:escapeXml(administrador.email)}" data-senha="${fn:escapeXml(administrador.senha)}" data-foto="${fn:escapeXml(administrador.urlFoto)}" onclick="abrirPopupEdicaoAdministrador(this)">
+                  <button type="button" class="botaoEditar" title="Editar administrador" aria-label="Editar administrador" data-id="${administrador.id}" data-nome="${fn:escapeXml(administrador.nome)}" data-telefone="${fn:escapeXml(administrador.telefone)}" data-email="${fn:escapeXml(administrador.email)}" data-senha="" data-foto="${fn:escapeXml(administrador.urlFoto)}" onclick="abrirPopupEdicaoAdministrador(this)">
                     <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                   </button>
                   <button type="button" class="botaoExcluir" title="Excluir administrador" aria-label="Excluir administrador" onclick="abrirPopupExclusaoAdministrador('${administrador.id}')">
@@ -203,7 +203,7 @@
           <div class="campoPopupAdmin campoSenhaAdministrador">
             <label for="senhaAdministradorEdicao">senha</label>
             <span class="entradaSenhaAdministrador">
-              <input id="senhaAdministradorEdicao" name="senha" type="password" required>
+              <input id="senhaAdministradorEdicao" name="senha" type="password" autocomplete="new-password">
               <button type="button" class="botaoMostrarSenha" aria-label="Mostrar senha" aria-pressed="false" onclick="alternarVisibilidadeSenha(this)">
                 <img src="<c:url value='/assets/fi-br-eye-crossed.svg'/>" alt="" aria-hidden="true">
               </button>
@@ -225,7 +225,7 @@
       <h2><span>Excluir</span> administrador</h2>
       <p>Tem certeza de que deseja <strong>excluir</strong> este item?
       <br>Essa ação não poderá ser desfeita.</p>
-      <form action="${pageContext.request.contextPath}/administradores/deletar" method="post">
+      <form action="${pageContext.request.contextPath}/admin/administradores/excluir" method="post">
         <input type="hidden" id="idAdministradorExclusao" name="id">
         <div class="acoesPopupExclusao">
           <button type="button" class="botaoCancelarExclusao" onclick="fecharPopupExclusao()">cancelar</button>
@@ -239,3 +239,4 @@
   <script src="${pageContext.request.contextPath}/JS/views.js"></script>
 </body>
 </html>
+

@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name="AtualizarEndereco", value="admin/enderecos/editar")
+@WebServlet(name="AtualizarEndereco", value="/admin/enderecos/editar")
 public class ServletAtualizarEndereco extends HttpServlet {
 
     private EnderecoDAO enderecoDAO;

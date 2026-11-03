@@ -5,27 +5,28 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dao.EmpresaDAO;
 import org.example.interdisciplinar.dto.EmpresaView;
 import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.exception.FalhaConexaoException;
-import org.example.interdisciplinar.model.Categoria;
 
 import java.io.IOException;
 import java.util.List;
 
 @WebServlet(name = "ListarEmpresas", value = "/empresas")
 public class ServletListarEmpresa extends HttpServlet {
+
     private EmpresaDAO empresaDAO;
 
     @Override
-    public void init(){
+    public void init() {
         empresaDAO = new EmpresaDAO();
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         Integer idInicio = null;
         Integer idFim = null;
 
@@ -51,45 +52,29 @@ public class ServletListarEmpresa extends HttpServlet {
                 return;
             }
 
-            List<EmpresaView> empresas = empresaDAO.listarFiltrado(idInicio, idFim, nome, ordenar);
-            request.setAttribute("categorias", empresas);
-            request.getRequestDispatcher("/WEB-INF/Views/categorias.jsp").forward(request, response);
+            List<EmpresaView> empresas = empresaDAO.listarFiltrado(
+                    idInicio, idFim, nome, ordenar
+            );
 
-        } catch (NumberFormatException nfe){
-            getServletContext().log("Erro ao formatar o númeroa.", nfe);
-            request.setAttribute("erro", "O ID da categoria precisa ser um número inteiro");
-            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+            request.setAttribute("empresas", empresas);
+            request.getRequestDispatcher("/WEB-INF/Views/empresas.jsp")
+                    .forward(request, response);
+
+        } catch (NumberFormatException e) {
+            response.sendError(
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    "O ID da empresa precisa ser um número inteiro."
+            );
 
         } catch (FalhaConexaoException e) {
-
-            // Registra os detalhes técnicos da falha de conexão.
             getServletContext().log("Falha ao conectar ao banco de dados.", e);
-
-            // Define uma mensagem compreensível para o administrador.
-            request.setAttribute(
-                    "erro",
-                    "Não foi possível estabelecer conexão com o banco de dados."
-            );
-
-            // Encaminha para a página de erro
+            request.setAttribute("erro", "Não foi possível estabelecer conexão com o banco de dados.");
             request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
-
 
         } catch (ErroPersistenciaException e) {
-
-            // Registra os detalhes técnicos do erro de persistência.
-            getServletContext().log("Erro ao listar as categorias", e);
-
-            // Define uma mensagem compreensível para o administrador.
-            request.setAttribute(
-                    "erro",
-                    "Ocorreu um erro ao listar as categorias."
-            );
-
-            // Encaminha para a página de erro.
+            getServletContext().log("Erro ao listar empresas.", e);
+            request.setAttribute("erro", "Ocorreu um erro ao listar as empresas.");
             request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
-
         }
     }
-
 }

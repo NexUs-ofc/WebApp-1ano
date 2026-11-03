@@ -5,7 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.interdisciplinar.conexao.GerenteConexao;
+
 import org.example.interdisciplinar.dao.AdministradorDAO;
 import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.exception.FalhaConexaoException;
@@ -14,33 +14,38 @@ import org.example.interdisciplinar.model.Administrador;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "ListarAdministradores", value = "/administradores")
+@WebServlet(
+        name = "ListarAdministradores",
+        value = {"/administradores", "/admin/administradores"}
+)
 public class ServletListarAdministrador extends HttpServlet {
+
     private AdministradorDAO administradorDAO;
 
     @Override
-    public void init(){
+    public void init() {
         administradorDAO = new AdministradorDAO();
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         Integer idInicio = null;
         Integer idFim = null;
 
         try {
-
             String idInicioTexto = request.getParameter("idInicio");
             String idFimTexto = request.getParameter("idFim");
             String nome = request.getParameter("nome");
             String email = request.getParameter("email");
             String ordenar = request.getParameter("ordenar");
 
-            if(idInicioTexto != null && !idInicioTexto.isBlank()){
+            if (idInicioTexto != null && !idInicioTexto.isBlank()) {
                 idInicio = Integer.parseInt(idInicioTexto);
             }
 
-            if(idFimTexto != null && !idFimTexto.isBlank()){
+            if (idFimTexto != null && !idFimTexto.isBlank()) {
                 idFim = Integer.parseInt(idFimTexto);
             }
 
@@ -52,44 +57,42 @@ public class ServletListarAdministrador extends HttpServlet {
                 return;
             }
 
-            List<Administrador> administradores = administradorDAO.listarFiltrado(idInicio, idFim, nome, email, ordenar);
-            request.setAttribute("administradores", administradores);
-            request.getRequestDispatcher("/WEB-INF/Views/administradores.jsp").forward(request, response);
+            List<Administrador> administradores =
+                    administradorDAO.listarFiltrado(
+                            idInicio, idFim, nome, email, ordenar
+                    );
 
-        } catch (NumberFormatException nfe){
-            getServletContext().log("Erro ao formatar o número.", nfe);
-            request.setAttribute("erro", "O ID dos administradores precisa ser um número inteiro");
-            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
+            request.setAttribute("administradores", administradores);
+
+            request.getRequestDispatcher("/WEB-INF/Views/administradores.jsp")
+                    .forward(request, response);
+
+        } catch (NumberFormatException e) {
+            getServletContext().log("Erro ao formatar o número.", e);
+
+            request.setAttribute("erro",
+                    "O ID dos administradores precisa ser um número inteiro.");
+
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp")
+                    .forward(request, response);
 
         } catch (FalhaConexaoException e) {
-
-            // Registra os detalhes técnicos da falha de conexão.
             getServletContext().log("Falha ao conectar ao banco de dados.", e);
 
-            // Define uma mensagem compreensível para o administrador.
-            request.setAttribute(
-                    "erro",
-                    "Não foi possível estabelecer conexão com o banco de dados."
-            );
+            request.setAttribute("erro",
+                    "Não foi possível estabelecer conexão com o banco de dados.");
 
-            // Encaminha para a página de erro
-            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
-
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp")
+                    .forward(request, response);
 
         } catch (ErroPersistenciaException e) {
-
-            // Registra os detalhes técnicos do erro de persistência.
             getServletContext().log("Erro ao listar os administradores", e);
 
-            // Define uma mensagem compreensível para o administrador.
-            request.setAttribute(
-                    "erro",
-                    "Ocorreu um erro ao listar os administradores."
-            );
+            request.setAttribute("erro",
+                    "Ocorreu um erro ao listar os administradores.");
 
-            // Encaminha para a página de erro.
-            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
-
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp")
+                    .forward(request, response);
         }
     }
 }
