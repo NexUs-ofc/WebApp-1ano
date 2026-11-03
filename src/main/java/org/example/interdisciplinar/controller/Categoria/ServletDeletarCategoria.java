@@ -1,6 +1,6 @@
 package org.example.interdisciplinar.controller.Categoria;
 
-// Todos os imports necessários
+// Importa as bibliotecas e classes necessárias para o funcionamento do Servlet
 import org.example.interdisciplinar.dao.CategoriaDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,6 +12,7 @@ import org.example.interdisciplinar.exception.FalhaConexaoException;
 
 import java.io.IOException;
 
+// Define o endereço responsável pela exclusão das categorias
 @WebServlet(name = "DeletarCategoria", value = "/categorias/deletar")
 public class ServletDeletarCategoria extends HttpServlet {
 
@@ -23,12 +24,12 @@ public class ServletDeletarCategoria extends HttpServlet {
         categoriaDAO = new CategoriaDAO();
     }
 
-    // Método que recebe a solicitação de exclusão
+    // Método que recebe o ID e realiza a exclusão de uma categoria
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Recupera o ID da categoria
+        // Recupera o ID da categoria enviado pelo formulário
         String idParametro = request.getParameter("id");
 
         // Verifica se o ID foi informado
@@ -47,10 +48,10 @@ public class ServletDeletarCategoria extends HttpServlet {
                 return;
             }
 
-            // Realiza a exclusão da categoria
+            // Envia o ID para a DAO realizar a exclusão
             categoriaDAO.deletar(id);
 
-            // Retorna para a listagem
+            // Redireciona para a listagem após a exclusão
             response.sendRedirect(request.getContextPath() + "/categorias");
 
         } catch (NumberFormatException e) {
@@ -58,11 +59,15 @@ public class ServletDeletarCategoria extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/categorias");
 
         } catch (FalhaConexaoException e) {
+            // Registra os detalhes do erro de conexão no log
             getServletContext().log("Falha na conexão com o banco", e);
+
             request.setAttribute("erro", "Não foi possível estabelecer conexão com o banco.");
 
         } catch (ErroPersistenciaException e) {
+            // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro ao deletar categoria", e);
+
             request.setAttribute("erro", "Não foi possível deletar a categoria.");
         }
     }
