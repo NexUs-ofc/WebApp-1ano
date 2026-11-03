@@ -3,9 +3,7 @@ package org.example.interdisciplinar.dao;
 import org.example.interdisciplinar.conexao.GerenteConexao;
 import org.example.interdisciplinar.dto.UsuarioView;
 import org.example.interdisciplinar.exception.ErroPersistenciaException;
-import org.example.interdisciplinar.model.Alimento;
 import org.example.interdisciplinar.model.ConfiguracaoAlerta;
-import org.example.interdisciplinar.model.Endereco;
 import org.example.interdisciplinar.model.Usuario;
 import java.sql.*;
 import java.util.ArrayList;
@@ -165,11 +163,11 @@ public class UsuarioDAO {
     }
 
     public List<UsuarioView> listarFiltrado(
-          Integer idUsuarioInicio,
-          Integer idUsuarioFim,
-          String nome,
-          String email,
-          String ordenar
+            Integer idUsuarioInicio,
+            Integer idUsuarioFim,
+            String nome,
+            String email,
+            String ordenar
     ){
         StringBuilder sql = new StringBuilder("SELECT id_usuario, nome, email, preferencias_consumo, telefone, configuracao_alerta FROM tb_usuario WHERE 1=1");
         List<Object> parametrosDoFiltro = new ArrayList<>();
