@@ -1,7 +1,6 @@
-
 package org.example.interdisciplinar.controller.Empresa;
 
-// Todos os imports necessários
+// Importa as bibliotecas e classes necessárias para o funcionamento do Servlet
 import org.example.interdisciplinar.dao.EmpresaDAO;
 import org.example.interdisciplinar.model.Empresa;
 import org.example.interdisciplinar.utils.Regex;
@@ -12,8 +11,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
+// Define o endereço responsável pelo cadastro das empresas
 @WebServlet(name = "CriarEmpresa", value = "/empresas/criar")
 public class ServletCriarEmpresa extends HttpServlet {
 
@@ -25,10 +26,12 @@ public class ServletCriarEmpresa extends HttpServlet {
         empresaDAO = new EmpresaDAO();
     }
 
-    // Método que recebe a solicitação de cadastro
+    // Método que recebe os dados do formulário e cadastra uma empresa
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        request.setCharacterEncoding("UTF-8");
 
         // Recupera os parâmetros enviados pelo formulário
         String nome = request.getParameter("nome");
@@ -49,7 +52,14 @@ public class ServletCriarEmpresa extends HttpServlet {
             return;
         }
 
-        // Valida os campos utilizando Regex
+        // Remove espaços desnecessários dos campos
+        nome = nome.trim();
+        cnpj = cnpj.trim();
+        idEndereco = idEndereco.trim();
+        email = email.trim();
+        telefone = telefone.trim();
+
+        // Valida os campos utilizando os métodos da classe Regex
         if (!Regex.validarCnpj(cnpj)
                 || !Regex.validarEmail(email)
                 || !Regex.validarTelefone(telefone)) {
@@ -70,35 +80,46 @@ public class ServletCriarEmpresa extends HttpServlet {
                 return;
             }
 
-            // Cria o objeto empresa com os dados informados
+            // Cria o objeto empresa com os dados recebidos
             Empresa empresa = new Empresa();
+
             empresa.setNome(nome);
             empresa.setCnpj(cnpj);
             empresa.setIdEndereco(idEnderecoConvertido);
             empresa.setEmail(email);
             empresa.setTelefone(telefone);
 
-            // Realiza o cadastro da empresa
-            empresaDAO.inserir(empresa);
+            // Envia a empresa para ser cadastrada no banco
+            boolean inserido = empresaDAO.inserir(empresa);
 
-            // Redireciona após o cadastro
-            response.sendRedirect(request.getContextPath() + "/empresas");
+            // Verifica se o cadastro foi realizado
+            if (inserido) {
+
+                // Redireciona para a listagem após o cadastro
+                response.sendRedirect(request.getContextPath() + "/empresas");
+
+            } else {
+                request.setAttribute("erro", "Não foi possível cadastrar a empresa.");
+                request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            }
 
         } catch (NumberFormatException e) {
-            // Trata IDs que não possuem formato numérico
+            // Registra o erro de conversão no log
+            getServletContext().log("Erro ao converter o ID do endereço", e);
+
             request.setAttribute("erro", "ID do endereço inválido.");
             request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
-            // Registra problemas de conexão com o banco
+            // Registra os detalhes da falha de conexão no log
             getServletContext().log("Falha na conexão com o banco de dados", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
             request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
-            // Registra falhas durante o cadastro
-            getServletContext().log("Erro ao criar empresa", e);
+            // Registra os detalhes do erro de persistência no log
+            getServletContext().log("Erro ao cadastrar empresa", e);
 
             request.setAttribute("erro", "Não foi possível cadastrar a empresa.");
             request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);

@@ -1,6 +1,6 @@
 package org.example.interdisciplinar.controller.Empresa;
 
-// Todos os imports necessários
+// Importa as bibliotecas e classes necessárias para o funcionamento do Servlet
 import org.example.interdisciplinar.dao.EmpresaDAO;
 import org.example.interdisciplinar.exception.ErroPersistenciaException;
 import org.example.interdisciplinar.exception.FalhaConexaoException;
@@ -9,8 +9,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
+// Define o endereço responsável pela exclusão das empresas
 @WebServlet(name = "DeletarEmpresa", value = "/empresas/deletar")
 public class ServletDeletarEmpresa extends HttpServlet {
 
@@ -22,7 +24,7 @@ public class ServletDeletarEmpresa extends HttpServlet {
         empresaDAO = new EmpresaDAO();
     }
 
-    // Método que recebe a solicitação de exclusão
+    // Método que recebe o ID e realiza a exclusão de uma empresa
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -39,7 +41,7 @@ public class ServletDeletarEmpresa extends HttpServlet {
 
         try {
             // Converte o ID para inteiro
-            int id = Integer.parseInt(idParametro);
+            int id = Integer.parseInt(idParametro.trim());
 
             // Verifica se o ID é válido
             if (id <= 0) {
@@ -48,26 +50,37 @@ public class ServletDeletarEmpresa extends HttpServlet {
                 return;
             }
 
-            // Realiza a exclusão da empresa
-            empresaDAO.deletar(id);
+            // Envia o ID para a DAO realizar a exclusão
+            boolean deletado = empresaDAO.deletar(id);
 
-            // Redireciona após a exclusão
+            // Verifica se a empresa foi encontrada e excluída
+            if (!deletado) {
+                response.sendError(
+                        HttpServletResponse.SC_NOT_FOUND,
+                        "Empresa não encontrada."
+                );
+                return;
+            }
+
+            // Redireciona para a listagem após a exclusão
             response.sendRedirect(request.getContextPath() + "/empresas");
 
         } catch (NumberFormatException e) {
-            // Trata IDs que não possuem formato numérico
+            // Registra o erro de conversão no log
+            getServletContext().log("Erro ao converter o ID da empresa", e);
+
             request.setAttribute("erro", "ID da empresa inválido.");
             request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
-            // Registra problemas de conexão com o banco
+            // Registra os detalhes da falha de conexão no log
             getServletContext().log("Falha na conexão com o banco de dados", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
             request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
-            // Registra falhas durante a exclusão
+            // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro ao deletar empresa", e);
 
             request.setAttribute("erro", "Não foi possível deletar a empresa.");
