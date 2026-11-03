@@ -665,240 +665,221 @@ footer { padding: 56px 112px 36px; background: #fff; }
     .depoimentos-lista { gap: 20px; }
     .depoimento { padding: 24px; }
 }
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-
-/* --------------------------------------------------------------------------
-   CELULAR / TABLET PEQUENO (até 800px)
-   -------------------------------------------------------------------------- */
+/* ===== CELULAR: espaço do botão + computador grande ===== */
 @media (max-width: 800px) {
 
-    /* ---------- base ---------- */
-    section[id] { scroll-margin-top: 120px; }
-    h1, h2, h3, p, strong, a, li { overflow-wrap: break-word; }
-    img, svg, video { max-width: 100%; }
-    /* os <br> dos títulos foram pensados para a linha larga do desktop */
-    .interfaces h2 br, .planos-banner h2 br, .equipe h2 br { display: none; }
+    /* mais espaço entre o botão "Comece já" e a imagem */
+    .hero { gap: 80px; }
 
-    /* ---------- header (todas as páginas, inclusive planos.html que tem CSS próprio) ---------- */
-    .container-header {
-        height: auto;
-        flex-wrap: wrap;
-        padding: 10px 16px;
-        gap: 6px 12px;
-    }
-    .marca span { font-size: 22px; }
-    .acoes { gap: 12px; }
-    .entrar { font-size: 14px; }
-    .cadastrar { padding: 9px 16px; font-size: 14px; }
-    nav {
-        position: static;
-        transform: none;
-        order: 3;
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 6px 18px;
-        padding-top: 4px;
-    }
-    nav a { font-size: 14px; padding: 4px 0; }
-
-    /* ---------- hero ---------- */
-    .hero { padding: 32px 20px 56px; gap: 32px; }
-    .hero h1 { font-size: 32px; line-height: 1.25; }
-    .hero p { margin-top: 16px; font-size: 16px; line-height: 1.4; max-width: none; }
-    .botao-comecar { margin-top: 24px; padding: 14px 32px; }
-    .hero-visual::before { left: 24px; right: 0; top: -24px; border-radius: 32px 0 0 0; }
-
-    /* ---------- duas interfaces ---------- */
-    section.interfaces .interfaces-cabecalho,
-    .interfaces-cabecalho { padding: 40px 20px 0; }
-    section.interfaces h2 { font-size: 28px; line-height: 1.25; }
-    .interfaces-botoes { gap: 10px; margin-top: 20px; }
-    .botao-interface {
-        flex: 1 1 140px;
-        justify-content: center;
-        padding: 12px 16px;
-        font-size: 14px;
-    }
-    .slide { padding: 24px 20px 48px; gap: 28px; }
-    section.interfaces h3 { font-size: 24px; line-height: 1.25; margin-bottom: 20px; }
-    .lista-interface li { margin-bottom: 18px; }
-    section.interfaces .lista-interface strong { font-size: 19px; }
-    section.interfaces .lista-interface p {
-        font-size: 15px;
-        line-height: 1.4;
-        margin-bottom: 0;
+    /* a área da imagem do mercado ocupa a tela inteira
+       (antes ela ficava com 50% de largura por causa da regra com id) */
+    #slide-mercado .interfaces-imagem {
+        width: calc(100% + 48px);   /* 48px = padding lateral do slide (24px de cada lado) */
         max-width: none;
+        margin: 0 -24px;
+        padding: 0;
+        justify-content: flex-start;
+        align-items: flex-start;
+        overflow: hidden;
     }
-    /* imagens: sem o deslocamento do desktop e sempre dentro da tela */
-    #imagem-cliente,
-    #imagem-mercado {
+
+    /* o computador: imagem ampliada, com o branco de cima e de baixo cortado */
+    #slide-mercado #imagem-mercado {
+        flex: none;
+        width: 190%;
+        max-width: none;
+        margin: -28% 0 -17% -3%;
         transform: none;
+    }
+}
+@media (max-width: 800px) {
+    .hero { gap: 80px; }
+
+    section.interfaces #slide-mercado .interfaces-imagem {
+        width: 100vw;
+        max-width: none;
+        margin: 0 0 0 calc(50% - 50vw);
+        padding: 0;
+        justify-content: flex-start;
+        align-items: flex-start;
+        overflow: hidden;
+    }
+    section.interfaces #slide-mercado #imagem-mercado {
+        flex: none;
+        width: 182%;
+        max-width: none;
+        height: auto;
+        transform: none;
+        margin: -29% 0 -11% -0.6%;
+    }
+}
+/* ===== NOTEBOOK DO MERCADO: inteiro, centralizado e responsivo ===== */
+
+/* DESKTOP */
+section.interfaces #slide-mercado .interfaces-imagem {
+    width: 50%;
+    min-width: 0;
+    margin: 0;
+    padding: 140px 0 0;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+}
+
+section.interfaces #slide-mercado #imagem-mercado {
+    flex: none;
+    display: block;
+    width: 100%;
+    max-width: 760px;   /* tamanho máximo em telas grandes */
+    height: auto;
+    margin: 0;
+    transform: none;
+    object-fit: contain;
+}
+
+/* NOTEBOOKS PEQUENOS / TABLET: mais espaço pro notebook */
+@media (min-width: 801px) and (max-width: 1100px) {
+    section.interfaces #slide-mercado .interfaces-texto { width: 42%; }
+    section.interfaces #slide-mercado .interfaces-imagem { width: 54%; }
+}
+
+/* CELULAR: empilha, sem zoom e sem corte */
+@media (max-width: 800px) {
+    section.interfaces #slide-mercado .interfaces-imagem {
         width: 100%;
+        margin: 0;
+        padding: 0;
+        justify-content: center;
+        align-items: center;
+        overflow: visible;
+    }
+
+    section.interfaces #slide-mercado #imagem-mercado {
+        width: 100%;
+        max-width: 560px;
         height: auto;
         margin: 0 auto;
+        transform: none;
     }
-    #imagem-cliente { max-width: min(100%, 300px); }
-    #imagem-mercado { max-width: min(100%, 480px); }
-    #slide-mercado .interfaces-imagem,
-    .interfaces-imagem { justify-content: center; padding: 0; overflow: visible; }
+}
+/* ===== NOTEBOOK DO MERCADO: MAIOR ===== */
 
-    /* ---------- depoimentos / dúvidas / chamada final ---------- */
-    .depoimentos, .duvidas, .chamada-final { padding: 48px 20px; }
-    .depoimentos h2, .duvidas h2 { font-size: 26px; line-height: 1.25; }
-    .depoimentos .subtitulo-secao,
-    .duvidas .subtitulo-secao { font-size: 15px; margin-bottom: 28px; }
-    .depoimento { padding: 22px 20px; }
-    .depoimento p { font-size: 15px; margin: 14px 0 20px; }
-    .depoimento-autor img { width: 42px; height: 42px; }
-    .depoimento-autor strong { font-size: 15px; }
-    .depoimento-autor span { font-size: 12px; }
-    .duvidas-lista { gap: 12px; }
-    .duvida-pergunta { font-size: 16px; padding: 16px; min-height: 48px; }
-    .chamada-final h2 { font-size: 28px; line-height: 1.25; }
-    .chamada-final p { font-size: 16px; margin: 16px auto 28px; }
-    .botao-cadastro { padding: 16px 28px; }
+/* DESKTOP */
+@media (min-width: 801px) {
+    section.interfaces #slide-mercado .interfaces-texto { width: 38%; }
 
-    /* ---------- banner de planos (home) ---------- */
-    .planos-banner { padding: 40px 20px; gap: 16px; }
-    .planos-mascote { width: 220px; height: 240px; }
-    .planos-banner h2 { font-size: 26px; line-height: 1.3; }
-    .planos-banner p { font-size: 16px; margin: 12px 0 20px; }
+    section.interfaces #slide-mercado .interfaces-imagem {
+        width: 60%;
+        padding: 120px 0 0;
+    }
 
-    /* ---------- página de planos ---------- */
-    .planos-cards { padding: 48px 20px; }
-    .planos-cards h2 { font-size: 26px; line-height: 1.3; margin-bottom: 32px; }
-    .plano { padding: 22px 20px 20px; }
-    .plano h3 { font-size: 24px; }
-    .plano-preco strong { font-size: 30px; }
-    .plano li { margin-bottom: 14px; }
+    section.interfaces #slide-mercado #imagem-mercado {
+        width: 100%;
+        max-width: 1000px;   /* sobe/desce esse valor pra ajustar o tamanho máximo */
+    }
+}
 
-    /* ---------- rodapé ---------- */
-    footer { padding: 40px 20px 24px; }
-    .rodape-sobre h3 { font-size: 28px; }
-    .rodape-sobre p { max-width: none; }
-    .rodape-links a { padding: 3px 0; }
-    .rodape-base { margin-top: 32px; }
+/* NOTEBOOKS PEQUENOS / TABLET */
+@media (min-width: 801px) and (max-width: 1100px) {
+    section.interfaces #slide-mercado .interfaces-texto { width: 36%; }
+    section.interfaces #slide-mercado .interfaces-imagem { width: 62%; }
+}
 
-    /* ---------- sobre nós ---------- */
-    .historia { padding: 32px 0 56px; }
-    .historia-titulo { gap: 16px; }
-    .historia-titulo h2 { font-size: 28px; }
-    .historia-texto { margin: 32px 20px 0; font-size: 17px; line-height: 1.4; }
-    .botao-instituto { padding: 14px 28px; font-size: 16px; }
-    .valores { padding: 48px 20px; }
-    .valores h2 { font-size: 28px; line-height: 1.25; }
-    .valores-sub { font-size: 16px; line-height: 1.4; }
-    .valores-cartao { margin-top: 32px; padding: 28px 20px; border-radius: 28px; }
-    .valores-coluna h3 { font-size: 26px; margin-bottom: 16px; }
-    .valores-coluna p { font-size: 16px; line-height: 1.45; }
-    .valores-lista { margin-top: 28px; font-size: 15px; line-height: 1.6; }
-    .equipe { padding: 48px 20px 64px; }
-    .equipe h2 { font-size: 26px; line-height: 1.3; }
-    .equipe-carrossel { margin-top: 32px; }
+/* CELULAR: de ponta a ponta da tela */
+@media (max-width: 800px) {
+    section.interfaces #slide-mercado .interfaces-imagem {
+        width: calc(100% + 48px);   /* 48px = padding lateral do slide */
+        margin: 0 -24px;
+        padding: 0;
+        overflow: visible;
+    }
 
-    /* ---------- login e acesso restrito ---------- */
-    .pagina-login { padding: 16px; align-items: flex-start; min-height: 100vh; min-height: 100dvh; }
-    .login-cartao { border-radius: 28px; }
-    .login-lateral {
+    section.interfaces #slide-mercado #imagem-mercado {
+        width: 100%;
+        max-width: none;
+        margin: -10% 0 -4%;         /* tira um pouco do branco de cima e de baixo da imagem */
+    }
+}
+/* ===== CELULAR: NOTEBOOK MAIS PRA CIMA ===== */
+@media (max-width: 800px) {
+    /* menos espaço entre o texto e o notebook */
+    #slide-mercado { gap: 0; }
+
+    section.interfaces #slide-mercado #imagem-mercado {
+        margin: -45px 0 -4%;   /* aumenta o negativo (ex: -28%) pra subir mais */
+    }
+}
+/* ===== HAMBÚRGUER (só celular) ===== */
+.menu-toggle { display: none; }
+
+@media (max-width: 800px) {
+    .container-header {
+        flex-wrap: wrap;
+        padding: 10px 20px;
+        gap: 0;
+    }
+
+    /* botão hambúrguer */
+    .menu-toggle {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-        min-height: 0;
-        padding: 24px;
+        justify-content: center;
+        gap: 5px;
+        width: 44px;
+        height: 44px;
+        padding: 10px;
+        background: none;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
     }
-    .login-marca { order: 1; gap: 14px; }
-    .login-icone { width: 56px; height: 56px; border-radius: 14px; }
-    .login-icone img { width: 28px; }
-    .login-nome { font-size: 24px; }
-    .login-frase { order: 2; margin-top: 0; max-width: 100%; font-size: 16px; }
-    /* "Sair" deixa de flutuar por cima da mascote */
-    .login-sair {
-        order: 3;
-        position: static;
+    .menu-toggle span {
+        display: block;
         width: 100%;
-        max-width: 240px;
+        height: 3px;
+        background: var(--roxo);
+        border-radius: 3px;
+        transition: transform .3s ease, opacity .3s ease;
     }
-    .login-sair:hover,
-    .login-sair:focus-visible,
-    .login-sair:active { transform: scale(1.03); }
-    .login-mascote {
+    /* vira "X" quando aberto */
+    .menu-toggle.aberto span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .menu-toggle.aberto span:nth-child(2) { opacity: 0; }
+    .menu-toggle.aberto span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    /* links: escondidos até abrir */
+    .container-header nav {
+        display: none;
+        order: 3;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        margin-top: 10px;
+        border-top: 1px solid #f0eaff;
+    }
+    .container-header nav a {
+        padding: 14px 4px;
+        font-size: 16px;
+        border-bottom: 1px solid #f6f0fc;
+    }
+
+    /* Entrar / Cadastrar: também dentro do menu */
+    .container-header .acoes {
+        display: none;
         order: 4;
-        position: static;
-        align-self: center;
-        height: 200px;
-        width: auto;
-        max-width: 100%;
-        margin-bottom: -24px;   /* encosta a mascote na borda de baixo do card */
+        width: 100%;
+        gap: 12px;
+        padding: 16px 0 6px;
     }
-    .login-form { padding: 32px 20px 36px; }
-    .login-form h1 { font-size: 28px; margin-bottom: 32px; }
-    .login-sub { font-size: 16px; margin: 8px 0 28px; }
-    .login-form input { height: 56px; padding: 0 20px; border-radius: 28px; }
-    .campo-senha input { padding-right: 56px; }
-    .botao-entrar { height: 56px; border-radius: 28px; }
-    .esqueci { margin: 12px 0 32px; }
-    .mensagem-erro { margin: -12px 0 16px; }
-}
+    .container-header .acoes a {
+        flex: 1;
+        text-align: center;
+        padding: 12px;
+        border-radius: 8px;
+    }
+    .container-header .entrar { border: 1.5px solid var(--roxo); }
 
-
-/* --------------------------------------------------------------------------
-   CELULARES PEQUENOS (até 480px)
-   -------------------------------------------------------------------------- */
-@media (max-width: 480px) {
-    .container-header { padding: 8px 14px; }
-    .hero { padding: 28px 16px 48px; }
-    .hero h1 { font-size: 28px; }
-    .botao-comecar { display: block; text-align: center; }
-
-    .interfaces-cabecalho { padding: 32px 16px 0; }
-    section.interfaces h2 { font-size: 25px; }
-    .slide { padding: 20px 16px 40px; }
-    section.interfaces h3 { font-size: 22px; }
-    .botao-interface { flex-basis: 100%; }
-
-    .depoimentos, .duvidas, .chamada-final { padding: 40px 16px; }
-    .depoimentos h2, .duvidas h2 { font-size: 24px; }
-    .planos-banner { padding: 32px 16px; }
-    .planos-banner h2 { font-size: 24px; }
-    .chamada-final h2 { font-size: 25px; }
-    .botao-cadastro { display: block; text-align: center; }
-    footer { padding: 32px 16px 20px; }
-
-    .planos-cards { padding: 40px 16px; }
-    .planos-cards h2 { font-size: 24px; }
-
-    .historia-titulo h2 { font-size: 24px; }
-    .barra-titulo { width: 56px; height: 24px; }
-    .historia-texto { margin: 24px 16px 0; font-size: 16px; }
-    .valores { padding: 40px 16px; }
-    .valores h2 { font-size: 24px; }
-    .valores-cartao { padding: 24px 16px; border-radius: 24px; }
-    .valores-coluna h3 { font-size: 23px; }
-    .equipe { padding: 40px 16px 48px; }
-    .equipe h2 { font-size: 23px; }
-    .equipe-nome { font-size: 14px; }
-    .equipe-cargo { font-size: 12px; }
-
-    .pagina-login { padding: 10px; }
-    .login-cartao { border-radius: 24px; }
-    .login-lateral { padding: 20px; }
-    .login-mascote { height: 170px; margin-bottom: -20px; }
-    .login-form { padding: 28px 16px 32px; }
-    .login-form h1 { font-size: 25px; }
-}
-
-
-/* --------------------------------------------------------------------------
-   MUITO PEQUENOS (até 360px)
-   -------------------------------------------------------------------------- */
-@media (max-width: 360px) {
-    .hero h1 { font-size: 25px; }
-    nav { gap: 4px 12px; }
-    nav a { font-size: 13px; }
-    .cadastrar { padding: 8px 12px; font-size: 13px; }
-    .planos-mascote { width: 190px; height: 210px; }
-    .plano-preco strong { font-size: 27px; }
-    .login-nome { font-size: 21px; }
+    /* menu aberto */
+    .container-header.menu-aberto nav   { display: flex; }
+    .container-header.menu-aberto .acoes { display: flex; }
 }

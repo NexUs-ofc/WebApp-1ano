@@ -6,6 +6,84 @@
     <title>Entrar | Ceris</title>
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/mobile.css">
+
+    <!-- CELULAR/TABLET: a Cerita (mascote) deixa de ficar na frente do texto.
+         Se preferir, mova este bloco para o final do css/login.css -->
+    <style>
+        @media (max-width: 1100px) {
+            /* card sempre empilhado (lado roxo em cima, formulário embaixo) */
+            body.pagina-login .login-cartao {
+                flex-direction: column !important;
+                min-height: 0 !important;
+                border-radius: 28px;
+            }
+            body.pagina-login .login-form { width: 100% !important; }
+
+            /* lado roxo vira uma coluna: logo, frase, Cerita e botão Sair, um embaixo do outro */
+            body.pagina-login .login-lateral {
+                display: flex !important;
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+                min-height: 0 !important;
+                padding: 24px;
+            }
+
+            body.pagina-login .login-marca { gap: 16px; }
+            body.pagina-login .login-icone { width: 56px; height: 56px; border-radius: 14px; }
+            body.pagina-login .login-icone img { width: 28px; }
+            body.pagina-login .login-nome { font-size: 28px; }
+
+            body.pagina-login .login-frase {
+                position: relative;
+                z-index: 2;
+                max-width: 100%;
+                margin-top: 20px;
+                font-size: 17px;
+                line-height: 1.25;
+            }
+
+            /* Cerita no fluxo normal da página (antes ficava absolute por cima do texto) */
+            body.pagina-login .login-mascote {
+                position: static !important;
+                display: block;
+                width: auto;
+                height: 230px !important;
+                max-width: 100%;
+                margin: 20px auto 0;
+            }
+
+            /* botão Sair embaixo da Cerita, sem encostar nela */
+            body.pagina-login .login-sair {
+                position: static !important;
+                width: 100%;
+                justify-content: center;
+                margin-top: 20px;
+            }
+            body.pagina-login .login-sair:hover,
+            body.pagina-login .login-sair:focus-visible,
+            body.pagina-login .login-sair:active { transform: scale(1.03); }
+
+            /* reforço: especificidade máxima, caso o mobile.css tente mandar a Cerita de volta pra cima do texto */
+            html body.pagina-login main.login-cartao aside.login-lateral img.login-mascote {
+                position: static !important;
+                left: auto !important;
+                bottom: auto !important;
+                display: block !important;
+                height: 230px !important;
+                width: auto !important;
+                margin: 20px auto 0 !important;
+            }
+            html body.pagina-login main.login-cartao aside.login-lateral a.login-sair {
+                position: static !important;
+                right: auto !important;
+                bottom: auto !important;
+                width: 100% !important;
+                margin-top: 20px !important;
+            }
+        }
+    </style>
 </head>
 <body class="pagina-login">
 

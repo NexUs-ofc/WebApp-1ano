@@ -29,7 +29,7 @@
         a { text-decoration: none; }
         h1, h2, h3, strong, button { font-family: 'Poppins', sans-serif; }
 
-        /* HEADER */
+        /* ================= HEADER ================= */
         header {
             position: sticky;
             top: 0;
@@ -68,7 +68,7 @@
             border-radius: 8px;
         }
 
-        /* ESTILOS DA PÁGINA DE PLANOS */
+        /* ================= PÁGINA DE PLANOS ================= */
         .planos-cards {
             position: relative;
             min-height: calc(100vh - 72px);
@@ -125,10 +125,7 @@
             line-height: 1.1;
             color: var(--roxo);
         }
-        .plano-preco span {
-            font-size: 12px;
-            color: #666;
-        }
+        .plano-preco span { font-size: 12px; color: #666; }
         .plano-descricao {
             font-size: 14px;
             line-height: 1.5;
@@ -203,17 +200,56 @@
         .direita-clara { right: 0; top: 0; width: 72px; height: 235px; background: var(--roxo-claro); border-radius: 0 0 36px 36px; }
         .direita-escura { right: 0; top: 0; width: 60px; height: 412px; background: var(--roxo); border-radius: 0 0 0 60px; z-index: 1; }
 
+        /* ================= RESPONSIVIDADE (TUDO AQUI DENTRO) ================= */
+
+        /* Notebooks menores */
         @media (max-width: 1100px) {
+            .container-header { padding: 0 48px; }
             .planos-cards { padding-left: 48px; padding-right: 48px; }
             .planos-lista { flex-wrap: wrap; }
         }
+
+        /* Tablets e Celulares Grandes */
+        @media (max-width: 950px) {
+            /* Arruma o Header para não encavalar */
+            .container-header {
+                height: auto;
+                flex-wrap: wrap;
+                padding: 16px 24px;
+                gap: 12px;
+            }
+            nav {
+                position: static;
+                transform: none;
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 10px 24px;
+                padding-top: 12px;
+                border-top: 1px solid #f0eaff;
+            }
+            .acoes {
+                margin-left: auto;
+            }
+            /* Esconde as abas roxas que ficam nas pontas */
+            .aba-plano { display: none; }
+        }
+
+        /* Celulares */
         @media (max-width: 800px) {
-            .planos-cards { padding: 60px 24px; }
-            .planos-cards h2 { font-size: 28px; margin-bottom: 40px; }
+            .container-header { padding: 12px 20px; }
+            .marca span { font-size: 22px; }
+            .logo { width: 22px; }
+            .acoes { gap: 12px; }
+            .entrar { font-size: 14px; }
+            .cadastrar { padding: 9px 16px; font-size: 14px; }
+
+            .planos-cards { padding: 40px 20px 60px; }
+            .planos-cards h2 { font-size: 28px; margin-bottom: 40px; line-height: 1.3; }
             .planos-lista { flex-direction: column; align-items: center; gap: 24px; }
             .plano { width: 100%; max-width: 400px; min-height: 0; }
             .plano ul { margin-bottom: 24px; }
-            .aba-plano { display: none; }
             .plano-destaque { transform: none; }
             .plano:hover, .plano:focus-within { transform: translateY(-6px); }
         }
