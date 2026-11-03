@@ -60,7 +60,7 @@ public class ServletCriarCategoria extends HttpServlet {
 
                 // Redireciona para a listagem de categorias
                 response.sendRedirect(
-                        request.getContextPath() + "/categorias"
+                        request.getContextPath() + "/admin/categorias"
                 );
 
             } else {
@@ -76,14 +76,14 @@ public class ServletCriarCategoria extends HttpServlet {
             getServletContext().log("Falha ao conectar ao banco de dados", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro ao cadastrar categoria", e);
 
             request.setAttribute("erro", "Não foi possível cadastrar a categoria.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

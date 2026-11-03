@@ -72,14 +72,14 @@ public class ServletAtualizarEndereco extends HttpServlet {
             getServletContext().log("Erro de conexão com o banco", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro de persistência", e);
 
             request.setAttribute("erro", "Não foi possível buscar o endereço.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 
@@ -149,7 +149,7 @@ public class ServletAtualizarEndereco extends HttpServlet {
             }
 
             // Redireciona para a listagem após a atualização
-            response.sendRedirect(request.getContextPath() + "/enderecos");
+            response.sendRedirect(request.getContextPath() + "/admin/enderecos");
 
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -157,16 +157,14 @@ public class ServletAtualizarEndereco extends HttpServlet {
         } catch (FalhaConexaoException e) {
             // Registra os detalhes do erro de conexão no log
             getServletContext().log("Erro de conexão com o banco", e);
-
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro de persistência", e);
-
             request.setAttribute("erro", "Não foi possível atualizar o endereço.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

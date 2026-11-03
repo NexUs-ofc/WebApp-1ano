@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 // Define o endereço responsável pelo cadastro das empresas
-@WebServlet(name = "CriarEmpresa", value = "/empresas/criar")
+@WebServlet(name = "CriarEmpresa", value = "/admin/empresas/criar")
 public class ServletCriarEmpresa extends HttpServlet {
 
     private EmpresaDAO empresaDAO;
@@ -48,7 +48,7 @@ public class ServletCriarEmpresa extends HttpServlet {
                 || telefone == null || telefone.isBlank()) {
 
             request.setAttribute("erro", "Preencha todos os campos.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
             return;
         }
 
@@ -65,7 +65,7 @@ public class ServletCriarEmpresa extends HttpServlet {
                 || !Regex.validarTelefone(telefone)) {
 
             request.setAttribute("erro", "Verifique os dados informados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
             return;
         }
 
@@ -76,7 +76,7 @@ public class ServletCriarEmpresa extends HttpServlet {
             // Verifica se o ID do endereço é válido
             if (idEnderecoConvertido <= 0) {
                 request.setAttribute("erro", "Endereço inválido.");
-                request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+                request.getRequestDispatcher("WEB-INF/errorpage.jsp").forward(request, response);
                 return;
             }
 
@@ -96,11 +96,11 @@ public class ServletCriarEmpresa extends HttpServlet {
             if (inserido) {
 
                 // Redireciona para a listagem após o cadastro
-                response.sendRedirect(request.getContextPath() + "/empresas");
+                response.sendRedirect(request.getContextPath() + "/admin/empresas");
 
             } else {
                 request.setAttribute("erro", "Não foi possível cadastrar a empresa.");
-                request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
             }
 
         } catch (NumberFormatException e) {
@@ -108,21 +108,21 @@ public class ServletCriarEmpresa extends HttpServlet {
             getServletContext().log("Erro ao converter o ID do endereço", e);
 
             request.setAttribute("erro", "ID do endereço inválido.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
             // Registra os detalhes da falha de conexão no log
             getServletContext().log("Falha na conexão com o banco de dados", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro ao cadastrar empresa", e);
 
             request.setAttribute("erro", "Não foi possível cadastrar a empresa.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 // Define o endereço responsável pela exclusão dos usuários
-@WebServlet(name = "DeletarUsuario", value = "/usuarios/deletar")
+@WebServlet(name = "DeletarUsuario", value = "/admin/usuarios/deletar")
 public class ServletDeletarUsuario extends HttpServlet {
 
     private UsuarioDAO usuarioDAO;
@@ -37,7 +37,7 @@ public class ServletDeletarUsuario extends HttpServlet {
         // Verifica se o ID foi informado
         if (idParametro == null || idParametro.isBlank()) {
             request.setAttribute("erro", "ID do usuário não informado.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
             return;
         }
 
@@ -48,7 +48,7 @@ public class ServletDeletarUsuario extends HttpServlet {
             // Verifica se o ID é válido
             if (id <= 0) {
                 request.setAttribute("erro", "ID do usuário inválido.");
-                request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
                 return;
             }
 
@@ -72,21 +72,21 @@ public class ServletDeletarUsuario extends HttpServlet {
             getServletContext().log("Erro ao converter o ID do usuário", e);
 
             request.setAttribute("erro", "ID do usuário inválido.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
             // Registra os detalhes da falha de conexão no log
             getServletContext().log("Falha na conexão com o banco de dados", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro ao deletar usuário", e);
 
             request.setAttribute("erro", "Não foi possível deletar o usuário.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

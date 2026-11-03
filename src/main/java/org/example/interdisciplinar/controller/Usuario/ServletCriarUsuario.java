@@ -17,7 +17,7 @@ import org.example.interdisciplinar.utils.Criptografia;
 import java.io.IOException;
 
 // Define o endereço responsável pelo cadastro dos usuários
-@WebServlet(name = "CriarUsuarios", value = "/usuarios/insert")
+@WebServlet(name = "CriarUsuarios", value = "/admin/usuarios/insert")
 public class ServletCriarUsuario extends HttpServlet {
 
     private UsuarioDAO usuarioDAO;
@@ -123,14 +123,14 @@ public class ServletCriarUsuario extends HttpServlet {
             getServletContext().log("Falha ao conectar ao banco de dados", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro ao cadastrar usuário", e);
 
             request.setAttribute("erro", "Não foi possível cadastrar o usuário.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

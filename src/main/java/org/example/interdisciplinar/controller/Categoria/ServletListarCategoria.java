@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 // Define o endereço responsável pela listagem das categorias
-@WebServlet(name = "ListarCategorias", value = "/categorias")
+@WebServlet(name = "ListarCategorias", value = "/admin/categorias")
 public class ServletListarCategoria extends HttpServlet {
 
     private CategoriaDAO categoriaDAO;

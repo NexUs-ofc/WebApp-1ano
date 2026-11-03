@@ -72,14 +72,14 @@ public class ServletAtualizarCategoria extends HttpServlet {
             getServletContext().log("Erro de conexão com o banco", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra o erro de persistência no log do servidor
             getServletContext().log("Erro de persistência", e);
 
             request.setAttribute("erro", "Não foi possível buscar a categoria.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 
@@ -137,16 +137,14 @@ public class ServletAtualizarCategoria extends HttpServlet {
         } catch (FalhaConexaoException e) {
             // Registra o erro de conexão no log do servidor
             getServletContext().log("Erro de conexão com o banco", e);
-
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra o erro de persistência no log do servidor
             getServletContext().log("Erro de persistência", e);
-
             request.setAttribute("erro", "Não foi possível atualizar a categoria.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

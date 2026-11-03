@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 // Define o endereço responsável pela listagem das empresas
-@WebServlet(name = "ListarEmpresas", value = "/empresas")
+@WebServlet(name = "ListarEmpresas", value = "/admin/empresas")
 public class ServletListarEmpresa extends HttpServlet {
 
     private EmpresaDAO empresaDAO;
@@ -86,9 +86,8 @@ public class ServletListarEmpresa extends HttpServlet {
 
             // Registra o erro de conversão no log do servidor
             getServletContext().log("Erro ao formatar o número", e);
-
             request.setAttribute("erro", "O ID da empresa precisa ser um número inteiro");
-            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
 
@@ -101,7 +100,7 @@ public class ServletListarEmpresa extends HttpServlet {
             );
 
             // Encaminha para a página de erro
-            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
 
@@ -114,7 +113,7 @@ public class ServletListarEmpresa extends HttpServlet {
             );
 
             // Encaminha para a página de erro
-            request.getRequestDispatcher("/WEB-INF/erro.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

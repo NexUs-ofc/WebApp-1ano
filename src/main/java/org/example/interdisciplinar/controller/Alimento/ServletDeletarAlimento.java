@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 // Define o endereço responsável pela exclusão dos alimentos
-@WebServlet(name = "DeletarAlimento", value = "/alimentos/deletar")
+@WebServlet(name = "DeletarAlimento", value = "/admin/alimentos/deletar")
 public class ServletDeletarAlimento extends HttpServlet {
 
     // Instância responsável pelas operações no banco de dados
@@ -36,7 +36,7 @@ public class ServletDeletarAlimento extends HttpServlet {
         // Verifica se o ID foi informado
         if (idParametro == null || idParametro.isBlank()) {
             request.setAttribute("erro", "ID do alimento não informado.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
             return;
         }
 
@@ -47,7 +47,7 @@ public class ServletDeletarAlimento extends HttpServlet {
             // Verifica se o ID é válido
             if (id <= 0) {
                 request.setAttribute("erro", "ID do alimento inválido.");
-                request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
                 return;
             }
 
@@ -55,28 +55,28 @@ public class ServletDeletarAlimento extends HttpServlet {
             alimentoDAO.deletar(id);
 
             // Redireciona para a listagem após a exclusão
-            response.sendRedirect(request.getContextPath() + "/alimentos");
+            response.sendRedirect(request.getContextPath() + "/admin/alimentos");
 
         } catch (NumberFormatException e) {
             // Registra o erro de conversão no log
             getServletContext().log("Erro ao converter o ID do alimento", e);
 
             request.setAttribute("erro", "ID do alimento inválido.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
             // Registra os detalhes da falha de conexão no log
             getServletContext().log("Falha na conexão com o banco de dados", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro ao deletar alimento", e);
 
             request.setAttribute("erro", "Não foi possível deletar o alimento.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

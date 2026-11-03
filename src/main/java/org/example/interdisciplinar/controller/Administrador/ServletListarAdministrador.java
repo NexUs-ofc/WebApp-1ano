@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 // Define o endereço responsável pela listagem dos administradores
-@WebServlet(name = "ListarAdministradores", value = "/administradores")
+@WebServlet(name = "ListarAdministradores", value = "/admin/administradores")
 public class ServletListarAdministrador extends HttpServlet {
 
     // Instância responsável pelas operações no banco de dados

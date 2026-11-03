@@ -14,7 +14,7 @@ import org.example.interdisciplinar.exception.FalhaConexaoException;
 import java.io.IOException;
 
 // Define o endereço responsável pelo cadastro de alimentos
-@WebServlet(name = "CriarAlimentos", value = "/alimentos/insert")
+@WebServlet(name = "CriarAlimentos", value = "/admin/alimentos/insert")
 public class ServletCriarAlimento extends HttpServlet {
 
     private AlimentoDAO alimentoDAO;
@@ -67,7 +67,7 @@ public class ServletCriarAlimento extends HttpServlet {
 
                 // Redireciona para a listagem de alimentos
                 response.sendRedirect(
-                        request.getContextPath() + "/alimentos"
+                        request.getContextPath() + "/admin/alimentos"
                 );
 
             } else {
@@ -88,14 +88,14 @@ public class ServletCriarAlimento extends HttpServlet {
             getServletContext().log("Falha ao conectar ao banco de dados", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro ao cadastrar alimento", e);
 
             request.setAttribute("erro", "Não foi possível cadastrar o alimento.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 // Define o endereço responsável pelo cadastro dos itens da despensa
-@WebServlet(name = "CriarItem", value = "/itens/insert")
+@WebServlet(name = "CriarItem", value = "/admin/itens/insert")
 public class ServletCriarItem extends HttpServlet {
 
     private ItemDespensaDAO itemDespensaDAO;
@@ -82,7 +82,7 @@ public class ServletCriarItem extends HttpServlet {
 
                 // Redireciona para a listagem após o cadastro
                 response.sendRedirect(
-                        request.getContextPath() + "/itens"
+                        request.getContextPath() + "/admin/itens"
                 );
 
             } else {
@@ -100,6 +100,7 @@ public class ServletCriarItem extends HttpServlet {
                     HttpServletResponse.SC_BAD_REQUEST,
                     "Os IDs e a quantidade precisam ser números inteiros"
             );
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (DateTimeParseException e) {
             // Registra o erro de conversão da data no log
@@ -109,20 +110,21 @@ public class ServletCriarItem extends HttpServlet {
                     HttpServletResponse.SC_BAD_REQUEST,
                     "Formato de validade inválido"
             );
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
             // Registra os detalhes da falha de conexão no log
             getServletContext().log("Falha ao conectar ao banco de dados", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro ao cadastrar item da despensa", e);
 
             request.setAttribute("erro", "Não foi possível cadastrar o item da despensa.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

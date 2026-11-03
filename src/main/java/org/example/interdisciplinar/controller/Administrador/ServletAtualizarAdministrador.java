@@ -73,7 +73,7 @@ public class ServletAtualizarAdministrador extends HttpServlet {
 
             // Envia uma mensagem amigável para a página de erro
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra o erro de persistência no log do servidor
@@ -81,7 +81,7 @@ public class ServletAtualizarAdministrador extends HttpServlet {
 
             // Informa que não foi possível buscar o administrador
             request.setAttribute("erro", "Não foi possível buscar o administrador pelo ID.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 
@@ -97,15 +97,13 @@ public class ServletAtualizarAdministrador extends HttpServlet {
             String email = request.getParameter("email");
             String senha = request.getParameter("senha");
             String telefone = request.getParameter("telefone");
-            String cpf = request.getParameter("cpf");
             String urlFoto = request.getParameter("urlFoto");
 
             // Verifica se os campos obrigatórios foram preenchidos
             if (idTexto == null || idTexto.isBlank() ||
                     nome == null || nome.isBlank() ||
                     email == null || email.isBlank() ||
-                    telefone == null || telefone.isBlank() ||
-                    cpf == null || cpf.isBlank()) {
+                    telefone == null || telefone.isBlank()) {
 
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Preencha todos os campos obrigatórios");
                 return;
@@ -132,13 +130,11 @@ public class ServletAtualizarAdministrador extends HttpServlet {
             nome = nome.trim();
             email = email.trim();
             telefone = telefone.trim();
-            cpf = cpf.trim();
             urlFoto = urlFoto == null ? "" : urlFoto.trim();
 
             // Valida os campos utilizando os métodos da classe Regex
             if (!Regex.validarTelefone(telefone) ||
-                    !Regex.validarEmail(email) ||
-                    !Regex.validarCpf(cpf)) {
+                    !Regex.validarEmail(email)) {
 
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                         "Um ou mais campos possuem valores inválidos");
@@ -198,7 +194,6 @@ public class ServletAtualizarAdministrador extends HttpServlet {
             administrador.setEmail(email);
             administrador.setSenha(senhaCriptografada);
             administrador.setTelefone(telefone);
-            administrador.setCpf(cpf);
             administrador.setUrlFoto(urlFoto);
 
             // Envia os novos dados para a DAO atualizar no banco
@@ -216,7 +211,7 @@ public class ServletAtualizarAdministrador extends HttpServlet {
 
             // Envia uma mensagem amigável para a página de erro
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra o erro de persistência no log do servidor
@@ -224,7 +219,7 @@ public class ServletAtualizarAdministrador extends HttpServlet {
 
             // Informa que não foi possível atualizar o administrador
             request.setAttribute("erro", "Não foi possível atualizar o administrador.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

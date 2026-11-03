@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 // Define o endereço responsável por exibir as análises
-@WebServlet(name = "MostrarAnalises", value = "/analises")
+@WebServlet(name = "MostrarAnalises", value = "/admin/analises")
 public class ServletMostrarAnalises extends HttpServlet {
 
     // Instância responsável pelas consultas de análise no banco
@@ -58,7 +58,7 @@ public class ServletMostrarAnalises extends HttpServlet {
             request.setAttribute("empresaRecente", empresaRecente);
 
             // Encaminha para a página de análises
-            request.getRequestDispatcher("/analises.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/Views/analises.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
 
@@ -69,7 +69,7 @@ public class ServletMostrarAnalises extends HttpServlet {
             request.setAttribute("erro", "Não foi possível carregar as análises.");
 
             // Encaminha para a página de erro
-            request.getRequestDispatcher("/erro.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 // Define o endereço responsável pela listagem dos endereços
-@WebServlet(name = "ListarEnderecos", value = "/enderecos")
+@WebServlet(name = "ListarEnderecos", value = "/admin/enderecos")
 public class ServletListarEndereco extends HttpServlet {
 
     private EnderecoDAO enderecoDAO;

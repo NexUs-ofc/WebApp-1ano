@@ -38,29 +38,26 @@ public class ServletCriarAdministrador extends HttpServlet {
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
         String telefone = request.getParameter("telefone");
-        String cpf = request.getParameter("cpf");
         String urlFoto = request.getParameter("urlFoto");
 
         // Verifica se os campos obrigatórios foram preenchidos
         if (nome == null || nome.isBlank()
                 || email == null || email.isBlank()
                 || senha == null || senha.isBlank()
-                || telefone == null || telefone.isBlank()
-                || cpf == null || cpf.isBlank()) {
+                || telefone == null || telefone.isBlank()) {
 
             request.setAttribute("erro", "Preencha todos os campos obrigatórios.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
             return;
         }
 
         // Valida os campos utilizando Regex
         if (!Regex.validarEmail(email)
                 || !Regex.validarSenha(senha)
-                || !Regex.validarTelefone(telefone)
-                || !Regex.validarCpf(cpf)) {
+                || !Regex.validarTelefone(telefone)) {
 
             request.setAttribute("erro", "Verifique os dados informados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
             return;
         }
 
@@ -74,7 +71,6 @@ public class ServletCriarAdministrador extends HttpServlet {
             administrador.setEmail(email);
             administrador.setSenha(senhaCriptografada);
             administrador.setTelefone(telefone);
-            administrador.setCpf(cpf);
             administrador.setUrlFoto(urlFoto);
 
             // Realiza o cadastro do administrador
@@ -88,14 +84,14 @@ public class ServletCriarAdministrador extends HttpServlet {
             getServletContext().log("Falha na conexão com o banco de dados", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra falhas durante o cadastro
             getServletContext().log("Erro ao criar administrador", e);
 
             request.setAttribute("erro", "Não foi possível cadastrar o administrador.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

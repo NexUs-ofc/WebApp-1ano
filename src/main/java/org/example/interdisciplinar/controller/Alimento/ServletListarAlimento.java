@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 // Define o endereço responsável pela listagem dos alimentos
-@WebServlet(name = "ListarAlimentos", value = "/alimentos")
+@WebServlet(name = "ListarAlimentos", value = "/admin/alimentos")
 public class ServletListarAlimento extends HttpServlet {
 
     private AlimentoDAO alimentoDAO;

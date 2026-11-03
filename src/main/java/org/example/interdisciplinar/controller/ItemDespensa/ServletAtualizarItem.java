@@ -71,16 +71,14 @@ public class ServletAtualizarItem extends HttpServlet {
         } catch (FalhaConexaoException e) {
             // Registra os detalhes do erro de conexão no log
             getServletContext().log("Erro de conexão com o banco", e);
-
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro ao buscar item da despensa", e);
-
             request.setAttribute("erro", "Não foi possível buscar o item pelo ID.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 
@@ -165,14 +163,13 @@ public class ServletAtualizarItem extends HttpServlet {
             getServletContext().log("Erro de conexão com o banco", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro ao atualizar item da despensa", e);
-
             request.setAttribute("erro", "Não foi possível atualizar o item da despensa.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

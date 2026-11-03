@@ -71,14 +71,14 @@ public class ServletAtualizarEmpresa extends HttpServlet {
             getServletContext().log("Erro de conexão com o banco", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro de persistência", e);
 
             request.setAttribute("erro", "Não foi possível buscar a empresa.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 
@@ -178,14 +178,13 @@ public class ServletAtualizarEmpresa extends HttpServlet {
             getServletContext().log("Erro de conexão com o banco", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro de persistência", e);
-
             request.setAttribute("erro", "Não foi possível atualizar a empresa.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

@@ -15,7 +15,7 @@ import org.example.interdisciplinar.exception.FalhaConexaoException;
 import java.io.IOException;
 
 // Define o endereço responsável pelo cadastro dos endereços
-@WebServlet(name = "CriarEnderecos", value = "/enderecos/insert")
+@WebServlet(name = "CriarEnderecos", value = "/admin/enderecos/insert")
 public class ServletCriarEndereco extends HttpServlet {
 
     private EnderecoDAO enderecoDAO;
@@ -48,7 +48,7 @@ public class ServletCriarEndereco extends HttpServlet {
                 || estado == null || estado.isBlank()) {
 
             request.setAttribute("erro", "Preencha todos os campos");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
             return;
         }
 
@@ -63,7 +63,7 @@ public class ServletCriarEndereco extends HttpServlet {
         // Valida o CEP utilizando o método da classe Regex
         if (!Regex.validarCep(cep)){
             request.setAttribute("erro", "O formato do CEP está inválido");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
             return;
         }
 
@@ -79,27 +79,25 @@ public class ServletCriarEndereco extends HttpServlet {
 
                 // Redireciona para a listagem após o cadastro
                 response.sendRedirect(
-                        request.getContextPath() + "/enderecos"
+                        request.getContextPath() + "/admin/enderecos"
                 );
 
             } else {
                 request.setAttribute("erro", "Não foi possível cadastrar o endereço");
-                request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
             }
 
         } catch (FalhaConexaoException e) {
             // Registra os detalhes da falha de conexão no log
             getServletContext().log("Falha na conexão com o banco de dados", e);
-
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro ao cadastrar endereço", e);
-
             request.setAttribute("erro", "Não foi possível cadastrar o endereço.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

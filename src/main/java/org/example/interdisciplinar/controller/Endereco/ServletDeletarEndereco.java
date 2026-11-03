@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 // Define o endereço responsável pela exclusão dos endereços
-@WebServlet(name = "DeletarEndereco", value = "/enderecos/deletar")
+@WebServlet(name = "DeletarEndereco", value = "/admin/enderecos/deletar")
 public class ServletDeletarEndereco extends HttpServlet {
 
     private EnderecoDAO enderecoDAO;
@@ -34,7 +34,7 @@ public class ServletDeletarEndereco extends HttpServlet {
         // Verifica se o ID foi informado
         if (idParametro == null || idParametro.isBlank()) {
             request.setAttribute("erro", "ID do endereço não informado.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
             return;
         }
 
@@ -45,7 +45,7 @@ public class ServletDeletarEndereco extends HttpServlet {
             // Verifica se o ID é válido
             if (id <= 0) {
                 request.setAttribute("erro", "ID do endereço inválido.");
-                request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
                 return;
             }
 
@@ -62,28 +62,28 @@ public class ServletDeletarEndereco extends HttpServlet {
             }
 
             // Redireciona para a listagem após a exclusão
-            response.sendRedirect(request.getContextPath() + "/enderecos");
+            response.sendRedirect(request.getContextPath() + "/admin/enderecos");
 
         } catch (NumberFormatException e) {
             // Registra o erro de conversão no log
             getServletContext().log("Erro ao converter o ID do endereço", e);
 
             request.setAttribute("erro", "ID do endereço inválido.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
             // Registra os detalhes da falha de conexão no log
             getServletContext().log("Falha na conexão com o banco de dados", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro ao deletar endereço", e);
 
             request.setAttribute("erro", "Não foi possível deletar o endereço.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

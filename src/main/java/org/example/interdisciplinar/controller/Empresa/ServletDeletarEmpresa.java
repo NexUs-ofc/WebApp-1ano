@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 // Define o endereço responsável pela exclusão das empresas
-@WebServlet(name = "DeletarEmpresa", value = "/empresas/deletar")
+@WebServlet(name = "DeletarEmpresa", value = "/admin/empresas/deletar")
 public class ServletDeletarEmpresa extends HttpServlet {
 
     private EmpresaDAO empresaDAO;
@@ -35,7 +35,7 @@ public class ServletDeletarEmpresa extends HttpServlet {
         // Verifica se o ID foi informado
         if (idParametro == null || idParametro.isBlank()) {
             request.setAttribute("erro", "ID da empresa não informado.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
             return;
         }
 
@@ -46,7 +46,7 @@ public class ServletDeletarEmpresa extends HttpServlet {
             // Verifica se o ID é válido
             if (id <= 0) {
                 request.setAttribute("erro", "ID da empresa inválido.");
-                request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
                 return;
             }
 
@@ -63,28 +63,27 @@ public class ServletDeletarEmpresa extends HttpServlet {
             }
 
             // Redireciona para a listagem após a exclusão
-            response.sendRedirect(request.getContextPath() + "/empresas");
+            response.sendRedirect(request.getContextPath() + "/admin/empresas");
 
         } catch (NumberFormatException e) {
             // Registra o erro de conversão no log
             getServletContext().log("Erro ao converter o ID da empresa", e);
 
             request.setAttribute("erro", "ID da empresa inválido.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (FalhaConexaoException e) {
             // Registra os detalhes da falha de conexão no log
             getServletContext().log("Falha na conexão com o banco de dados", e);
 
             request.setAttribute("erro", "Não foi possível conectar ao banco de dados.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
 
         } catch (ErroPersistenciaException e) {
             // Registra os detalhes do erro de persistência no log
             getServletContext().log("Erro ao deletar empresa", e);
-
             request.setAttribute("erro", "Não foi possível deletar a empresa.");
-            request.getRequestDispatcher("/ErrorPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
         }
     }
 }

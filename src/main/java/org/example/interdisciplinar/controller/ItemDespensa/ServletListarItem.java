@@ -17,7 +17,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 
 // Define o endereço responsável pela listagem dos itens da despensa
-@WebServlet(name = "ListarItens", value = "/itensDispensa")
+@WebServlet(name = "ListarItens", value = "/admin/itens")
 public class ServletListarItem extends HttpServlet {
 
     private ItemDespensaDAO itemDispensaDAO;
