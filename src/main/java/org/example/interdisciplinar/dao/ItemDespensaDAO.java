@@ -54,37 +54,50 @@ public class ItemDespensaDAO {
     // Método que deleta um item da despensa pelo seu ID
     public boolean deletar(int idItem){
 
-        // Comando SQL para excluir um item
-        String sqlDelete = "DELETE FROM tb_item_despensa WHERE id_item=?";
+        String sqlDeleteAlertas = "DELETE FROM tb_alerta WHERE id_item=?";
+        String sqlDeleteItem = "DELETE FROM tb_item_despensa WHERE id_item=?";
 
-        // Abre a conexão e prepara o comando SQL
-        try (
-                Connection conn = GerenteConexao.conectar();
-                PreparedStatement pstmt = conn.prepareStatement(sqlDelete)
-        ) {
+        try (Connection conn = GerenteConexao.conectar()) {
+            conn.setAutoCommit(false);
 
-            // Informa o ID do item que será excluído
-            pstmt.setInt(1, idItem);
+            try (
+                    PreparedStatement pstmtAlertas = conn.prepareStatement(sqlDeleteAlertas);
+                    PreparedStatement pstmtItem = conn.prepareStatement(sqlDeleteItem)
+            ) {
+                pstmtAlertas.setInt(1, idItem);
+                pstmtAlertas.executeUpdate();
 
-            // Executa a exclusão e verifica se algum registro foi removido
-            int linhasAfetadas = pstmt.executeUpdate();
-            return linhasAfetadas > 0;
+                pstmtItem.setInt(1, idItem);
+                int linhasAfetadas = pstmtItem.executeUpdate();
+
+                conn.commit();
+                return linhasAfetadas > 0;
+
+            } catch (SQLException e) {
+                try {
+                    conn.rollback();
+                } catch (SQLException rollbackException) {
+                    e.addSuppressed(rollbackException);
+                }
+                throw e;
+            }
 
         } catch (SQLException e) {
-
-            // Lança uma exceção personalizada caso ocorra um erro no banco
             throw new ErroPersistenciaException(
                     "Erro ao deletar um item da despensa no banco de dados.",
                     e
             );
         }
     }
-
     // Método que lista todos os itens das despensas
     public List<ItemDespensaView> listar(){
 
         // Comando SQL para consultar todos os itens
-        String sqlSelect = "SELECT id_item, id_usuario, id_alimento, usuario, alimento, quantidade, data_validade FROM view_item_despensa";
+        String sqlSelect = "SELECT item.id_item, item.id_usuario, item.id_alimento, " +
+                "usuario.nome AS usuario, alimento.nome AS alimento, item.quantidade, item.data_validade " +
+                "FROM tb_item_despensa AS item " +
+                "JOIN tb_usuario AS usuario ON usuario.id_usuario = item.id_usuario " +
+                "JOIN tb_alimento AS alimento ON alimento.id_alimento = item.id_alimento";
 
         // Lista que vai armazenar os itens encontrados
         List<ItemDespensaView> itensDespensa = new ArrayList<>();
@@ -185,7 +198,12 @@ public class ItemDespensaDAO {
 
         // Monta a consulta SQL conforme os filtros recebidos
         StringBuilder sql = new StringBuilder(
-                "SELECT id_item, id_usuario, id_alimento, usuario, alimento, quantidade, data_validade FROM view_item_despensa WHERE 1=1"
+                "SELECT item.id_item, item.id_usuario, item.id_alimento, " +
+                        "usuario.nome AS usuario, alimento.nome AS alimento, item.quantidade, item.data_validade " +
+                        "FROM tb_item_despensa AS item " +
+                        "JOIN tb_usuario AS usuario ON usuario.id_usuario = item.id_usuario " +
+                        "JOIN tb_alimento AS alimento ON alimento.id_alimento = item.id_alimento " +
+                        "WHERE 1=1"
         );
 
         // Lista que armazena os valores utilizados nos filtros

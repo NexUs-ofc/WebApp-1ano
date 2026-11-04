@@ -141,9 +141,9 @@
       <div class="conteudoPopupFormulario">
       <h2><span>Criar</span> item_despensa</h2>
       <form action="${pageContext.request.contextPath}/admin/itens/insert" method="post">
-        <div class="gradeCamposPopup">
-          <label class="campoPopup" for="idUsuario">ID do usuário<input id="idUsuario" name="idUsuario" type="number" required></label>
-          <label class="campoPopup" for="idAlimento">ID do alimento<input id="idAlimento" name="idAlimento" type="number" required></label>
+        <div class="gradeCamposPopup">1z
+          <label class="campoPopup" for="idUsuario">ID do usuário<input id="idUsuario" name="idUsuario" type="number" min="1" required></label>
+          <label class="campoPopup" for="idAlimento">ID do alimento<input id="idAlimento" name="idAlimento" type="number" min="1" required></label>
           <label class="campoPopup" for="quantidade">Quantidade<input id="quantidade" name="quantidade" type="number" min="1" required></label>
           <label class="campoPopup" for="validade">Data de validade<input id="validade" name="validade" type="date" required></label>
         </div>
