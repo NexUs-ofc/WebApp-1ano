@@ -90,7 +90,7 @@ public class ServletAtualizarItem extends HttpServlet {
         try {
             // Recupera os dados enviados pelo formulário
             String idParametro = request.getParameter("id");
-            String idUsuarioTexto = request.getParameter("idCasa");
+            String idUsuarioTexto = request.getParameter("idUsuario");
             String idAlimentoTexto = request.getParameter("idAlimento");
             String quantidadeTexto = request.getParameter("quantidade");
             String validadeTexto = request.getParameter("validade");
