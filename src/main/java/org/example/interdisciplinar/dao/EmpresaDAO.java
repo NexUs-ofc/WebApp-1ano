@@ -156,6 +156,8 @@ public class EmpresaDAO {
             Integer idEmpresaInicio,
             Integer idEmpresaFim,
             String nome,
+            String cnpj,
+            String cep,
             String ordenar
     ) {
 
@@ -188,8 +190,21 @@ public class EmpresaDAO {
             parametrosDoFiltro.add("%" + nome + "%");
         }
 
+        // Filtra pelo CNPJ, caso tenha sido informado
+        if (cnpj != null && !cnpj.isBlank()) {
+            sql.append(" AND cnpj ILIKE ?");
+            parametrosDoFiltro.add("%" + cnpj + "%");
+        }
+
+        // Filtra pelo CEP, caso tenha sido informado
+        if (cep != null && !cep.isBlank()) {
+            sql.append(" AND cep ILIKE ?");
+            parametrosDoFiltro.add("%" + cep + "%");
+        }
+
         // Define a ordenação dos resultados
         switch (ordenar == null ? "" : ordenar) {
+            case "id":
             case "id_asc":
                 sql.append(" ORDER BY id_empresa ASC");
                 break;
@@ -198,12 +213,17 @@ public class EmpresaDAO {
                 sql.append(" ORDER BY id_empresa DESC");
                 break;
 
+            case "nome":
             case "nome_asc":
                 sql.append(" ORDER BY nome ASC");
                 break;
 
             case "nome_desc":
                 sql.append(" ORDER BY nome DESC");
+                break;
+
+            case "cnpj":
+                sql.append(" ORDER BY cnpj ASC");
                 break;
 
             default:

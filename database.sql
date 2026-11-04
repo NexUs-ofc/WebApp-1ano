@@ -33,7 +33,7 @@ CREATE TABLE tb_usuario_telefone (
     id_usuario INT NOT NULL,
     id_telefone INT NOT NULL,
     PRIMARY KEY (id_usuario, id_telefone),
-    FOREIGN KEY (id_usuario) REFERENCES tb_usuario(id_usuario),
+    FOREIGN KEY (id_usuario) REFERENCES tb_usuario(id_usuario) ON DELETE CASCADE,
     FOREIGN KEY (id_telefone) REFERENCES tb_telefone(id_telefone)
 );
 
@@ -41,7 +41,7 @@ CREATE TABLE tb_usuario_restricao (
     id_usuario INT NOT NULL,
     id_restricao INT NOT NULL,
     PRIMARY KEY (id_usuario, id_restricao),
-    FOREIGN KEY (id_usuario) REFERENCES tb_usuario(id_usuario),
+    FOREIGN KEY (id_usuario) REFERENCES tb_usuario(id_usuario) ON DELETE CASCADE,
     FOREIGN KEY (id_restricao) REFERENCES tb_restricao_alimentar(id_restricao)
 );
 
@@ -66,7 +66,7 @@ CREATE TABLE tb_item_despensa (
     id_alimento INT NOT NULL,
     quantidade INT NOT NULL DEFAULT 1,
     data_validade DATE,
-    FOREIGN KEY (id_usuario) REFERENCES tb_usuario(id_usuario),
+    FOREIGN KEY (id_usuario) REFERENCES tb_usuario(id_usuario) ON DELETE CASCADE,
     FOREIGN KEY (id_alimento) REFERENCES tb_alimento(id_alimento)
 );
 
@@ -76,7 +76,7 @@ CREATE TABLE tb_alerta (
         CHECK (tipo_notificacao IN ('Validade', 'Reposicao', 'Promocao')),
     envio TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     id_item INT NOT NULL,
-    FOREIGN KEY (id_item) REFERENCES tb_item_despensa(id_item)
+    FOREIGN KEY (id_item) REFERENCES tb_item_despensa(id_item) ON DELETE CASCADE
 );
 
 CREATE TABLE tb_lista_compra (
@@ -84,7 +84,7 @@ CREATE TABLE tb_lista_compra (
     nome VARCHAR(100) NOT NULL,
     data_criacao DATE NOT NULL DEFAULT CURRENT_DATE,
     id_usuario INT NOT NULL,
-    FOREIGN KEY (id_usuario) REFERENCES tb_usuario(id_usuario)
+    FOREIGN KEY (id_usuario) REFERENCES tb_usuario(id_usuario) ON DELETE CASCADE
 );
 
 CREATE TABLE tb_item_lista_compra (
@@ -92,7 +92,7 @@ CREATE TABLE tb_item_lista_compra (
     id_lista INT NOT NULL,
     id_alimento INT NOT NULL,
     quantidade INT NOT NULL DEFAULT 1,
-    FOREIGN KEY (id_lista) REFERENCES tb_lista_compra(id_lista),
+    FOREIGN KEY (id_lista) REFERENCES tb_lista_compra(id_lista) ON DELETE CASCADE,
     FOREIGN KEY (id_alimento) REFERENCES tb_alimento(id_alimento)
 );
 
