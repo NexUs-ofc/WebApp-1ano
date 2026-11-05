@@ -31,13 +31,15 @@ public class ServletAtualizarAlimento extends HttpServlet {
             throws ServletException, IOException {
 
         // Recupera os parâmetros enviados pelo formulário
+        String idParametro = request.getParameter("id");
         String codigoBarras = request.getParameter("codigoBarras");
         String nome = request.getParameter("nome");
         String marca = request.getParameter("marca");
         String idCategoriaParametro = request.getParameter("idCategoria");
 
         // Verifica se todos os campos foram preenchidos
-        if (codigoBarras == null || codigoBarras.isBlank()
+        if (idParametro == null || idParametro.isBlank()
+                || codigoBarras == null || codigoBarras.isBlank()
                 || nome == null || nome.isBlank()
                 || marca == null || marca.isBlank()
                 || idCategoriaParametro == null || idCategoriaParametro.isBlank()) {
@@ -49,10 +51,11 @@ public class ServletAtualizarAlimento extends HttpServlet {
 
         try {
             // Converte o ID da categoria para inteiro
+            int id = Integer.parseInt(idParametro);
             int idCategoria = Integer.parseInt(idCategoriaParametro);
 
             // Verifica se o ID da categoria é válido
-            if (idCategoria <= 0) {
+            if (id <= 0 || idCategoria <= 0) {
                 request.setAttribute("erro", "Categoria inválida.");
                 request.getRequestDispatcher("/WEB-INF/errorpage.jsp").forward(request, response);
                 return;
@@ -60,13 +63,19 @@ public class ServletAtualizarAlimento extends HttpServlet {
 
             // Cria o objeto alimento com os novos dados
             Alimento alimento = new Alimento();
+            alimento.setId(id);
             alimento.setCodigoBarras(codigoBarras);
             alimento.setNome(nome);
             alimento.setMarca(marca);
             alimento.setIdCategoria(idCategoria);
 
             // Realiza a atualização do alimento
-            alimentoDAO.atualizar(alimento);
+            boolean atualizado = alimentoDAO.atualizar(alimento);
+
+            if (!atualizado) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
 
             // Redireciona após a atualização
             response.sendRedirect(request.getContextPath() + "/admin/alimentos");

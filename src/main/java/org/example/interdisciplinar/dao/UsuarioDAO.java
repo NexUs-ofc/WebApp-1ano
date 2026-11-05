@@ -138,7 +138,7 @@ public class UsuarioDAO {
     }
 
     public boolean atualizar(Usuario usuario){
-        String sql = "UPDATE tb_usuario SET nome=?, email=?, preferencias_consumo=?, configuracao_alerta=?, senha=? WHERE id_usuario=?";
+        String sql = "UPDATE tb_usuario SET nome=?, email=?, preferencias_consumo=?, configuracao_alerta=?, telefone=?, senha=? WHERE id_usuario=?";
         try (
                 Connection conn = GerenteConexao.conectar();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -147,8 +147,9 @@ public class UsuarioDAO {
             pstmt.setString(2, usuario.getEmail());
             pstmt.setString(3, usuario.getPreferenciasConsumo());
             pstmt.setString(4, usuario.getConfiguracaoAlerta().name());
-            pstmt.setString(5, usuario.getSenha());
-            pstmt.setInt(6, usuario.getId());
+            pstmt.setString(5, usuario.getTelefone());
+            pstmt.setString(6, usuario.getSenha());
+            pstmt.setInt(7, usuario.getId());
             int linhasAfetadas = pstmt.executeUpdate();
             return linhasAfetadas > 0;
 

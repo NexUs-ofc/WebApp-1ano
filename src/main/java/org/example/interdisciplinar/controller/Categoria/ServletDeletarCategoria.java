@@ -49,7 +49,16 @@ public class ServletDeletarCategoria extends HttpServlet {
             }
 
             // Envia o ID para a DAO realizar a exclusão
-            categoriaDAO.deletar(id);
+            boolean deletado = categoriaDAO.deletar(id);
+
+            // Verifica se a categoria foi excluída
+            if (!deletado) {
+                response.sendError(
+                        HttpServletResponse.SC_NOT_FOUND,
+                        "Categoria não encontrada."
+                );
+                return;
+            }
 
             // Redireciona para a listagem após a exclusão
             response.sendRedirect(request.getContextPath() + "/admin/categorias");

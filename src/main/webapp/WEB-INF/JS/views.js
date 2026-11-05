@@ -243,7 +243,8 @@ function abrirPopupEdicao(botao) {
   document.getElementById("idEmpresaEdicao").value = botao.dataset.id;
   document.getElementById("nomeEmpresaEdicao").value = botao.dataset.nome;
   document.getElementById("cnpjEmpresaEdicao").value = botao.dataset.cnpj;
-  document.getElementById("cepEmpresaEdicao").value = botao.dataset.cep;
+  document.getElementById("idEnderecoEmpresaEdicao").value = botao.dataset.idEndereco;
+  document.getElementById("emailEmpresaEdicao").value = botao.dataset.email;
   document.getElementById("telefoneEmpresaEdicao").value = botao.dataset.telefone;
   document.getElementById("popupEdicao").showModal();
 }
@@ -340,6 +341,7 @@ function abrirPopupEdicaoUsuario(botao) {
   document.getElementById("idUsuarioEdicao").value = botao.dataset.id;
   document.getElementById("nomeUsuarioEdicao").value = botao.dataset.nome;
   document.getElementById("emailUsuarioEdicao").value = botao.dataset.email;
+  document.getElementById("telefoneUsuarioEdicao").value = botao.dataset.telefone;
   document.getElementById("preferenciasUsuarioEdicao").value = botao.dataset.preferencias;
   document.getElementById("alertaUsuarioEdicao").value = botao.dataset.alerta;
   document.getElementById("senhaUsuarioEdicao").value = "";

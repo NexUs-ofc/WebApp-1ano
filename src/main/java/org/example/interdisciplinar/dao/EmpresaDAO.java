@@ -79,7 +79,10 @@ public class EmpresaDAO {
     public List<EmpresaView> listar() {
 
         // Comando SQL para consultar as empresas
-        String sqlSelect = "SELECT id_empresa, nome, cnpj, cep, telefone FROM view_empresa";
+        String sqlSelect = "SELECT empresa.id_empresa, empresa.nome, empresa.cnpj, endereco.cep, " +
+                "empresa.id_endereco, empresa.email, empresa.telefone " +
+                "FROM tb_empresa AS empresa JOIN tb_endereco AS endereco " +
+                "ON endereco.id_endereco = empresa.id_endereco";
 
         // Lista que vai armazenar as empresas encontradas
         List<EmpresaView> empresas = new ArrayList<>();
@@ -98,6 +101,8 @@ public class EmpresaDAO {
                         rs.getString("nome"),
                         rs.getString("cnpj"),
                         rs.getString("cep"),
+                        rs.getInt("id_endereco"),
+                        rs.getString("email"),
                         rs.getString("telefone")
                 );
 
@@ -163,7 +168,10 @@ public class EmpresaDAO {
 
         // Monta a consulta SQL conforme os filtros recebidos
         StringBuilder sql = new StringBuilder(
-                "SELECT id_empresa, nome, cnpj, cep, telefone FROM view_empresa WHERE 1=1"
+                "SELECT empresa.id_empresa, empresa.nome, empresa.cnpj, endereco.cep, " +
+                        "empresa.id_endereco, empresa.email, empresa.telefone " +
+                        "FROM tb_empresa AS empresa JOIN tb_endereco AS endereco " +
+                        "ON endereco.id_endereco = empresa.id_endereco WHERE 1=1"
         );
 
         // Lista que armazena os valores utilizados nos filtros
@@ -250,9 +258,11 @@ public class EmpresaDAO {
                     EmpresaView empresaTemporaria = new EmpresaView(
                             rs.getInt("id_empresa"),
                             rs.getString("nome"),
-                            rs.getString("cnpj"),
-                            rs.getString("cep"),
-                            rs.getString("telefone")
+                        rs.getString("cnpj"),
+                        rs.getString("cep"),
+                        rs.getInt("id_endereco"),
+                        rs.getString("email"),
+                        rs.getString("telefone")
                     );
 
                     empresas.add(empresaTemporaria);

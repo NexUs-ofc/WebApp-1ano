@@ -176,7 +176,7 @@
                 <td><c:out value="${empresa.cep}"/></td>
                 <td><c:out value="${empresa.telefone}"/></td>
                 <td class="acoes">
-                  <button type="button" class="botaoEditar" title="Editar empresa" aria-label="Editar empresa" data-id="${empresa.id}" data-nome="${fn:escapeXml(empresa.nome)}" data-cnpj="${fn:escapeXml(empresa.cnpj)}" data-cep="" data-telefone="${fn:escapeXml(empresa.telefone)}" onclick="abrirPopupEdicao(this)">
+                  <button type="button" class="botaoEditar" title="Editar empresa" aria-label="Editar empresa" data-id="${empresa.id}" data-nome="${fn:escapeXml(empresa.nome)}" data-cnpj="${fn:escapeXml(empresa.cnpj)}" data-id-endereco="${empresa.idEndereco}" data-email="${fn:escapeXml(empresa.email)}" data-telefone="${fn:escapeXml(empresa.telefone)}" onclick="abrirPopupEdicao(this)">
                     <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                   </button>
                   <button type="button" class="botaoExcluir" title="Excluir empresa" aria-label="Excluir empresa" onclick="abrirPopupExclusao('${empresa.id}')">
@@ -202,7 +202,7 @@
         <div class="gradeCamposPopup">
           <label class="campoPopup" for="nomeEmpresaEdicao">Nome<input id="nomeEmpresaEdicao" name="nome" type="text" required></label>
           <label class="campoPopup" for="cnpjEmpresaEdicao">CNPJ<input id="cnpjEmpresaEdicao" name="cnpj" type="text" required></label>
-          <label class="campoPopup" for="cepEmpresaEdicao">ID do endereço<input id="cepEmpresaEdicao" name="idEndereco" type="number" required></label>
+          <label class="campoPopup" for="idEnderecoEmpresaEdicao">ID do endereço<input id="idEnderecoEmpresaEdicao" name="idEndereco" type="number" required></label>
           <label class="campoPopup" for="emailEmpresaEdicao">Email<input id="emailEmpresaEdicao" name="email" type="email" required></label>
           <label class="campoPopup" for="telefoneEmpresaEdicao">Telefone<input id="telefoneEmpresaEdicao" name="telefone" type="tel" required></label>
         </div>
