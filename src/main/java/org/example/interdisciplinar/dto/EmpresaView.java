@@ -6,5 +6,7 @@ public record EmpresaView(
    String nome,
    String cnpj,
    String cep,
+   int idEndereco,
+   String email,
    String telefone
 ) {}

@@ -872,7 +872,7 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
     font-weight: 600;
     line-height: 16px;
 }
-.campoPopup input, .campoPopupAdmin input {
+.campoPopup input, .campoPopup select, .campoPopupAdmin input {
     width: 100%;
     padding: 0 12px;
     color: #291f33;
@@ -881,7 +881,7 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
     font-weight: 400;
     outline: none;
 }
-.campoPopup input {
+.campoPopup input, .campoPopup select {
     height: 41px;
     border: 1px solid #e6d8f0;
     border-radius: 12px;
@@ -988,11 +988,13 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
     gap: 10px;
 }
 .campoSenhaUsuario {
-    grid-column: 1 / -1;
+    min-width: 0;
 }
 .entradaSenhaAdministrador, .entradaSenhaUsuario {
     position: relative;
     display: block;
+}
+.entradaSenhaAdministrador {
     margin-top: 2px;
 }
 .entradaSenhaAdministrador input, .entradaSenhaUsuario input {

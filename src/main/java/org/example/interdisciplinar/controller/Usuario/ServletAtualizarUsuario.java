@@ -104,7 +104,6 @@ public class ServletAtualizarUsuario extends HttpServlet {
             if (idTexto == null || idTexto.isBlank()
                     || nome == null || nome.isBlank()
                     || email == null || email.isBlank()
-                    || preferenciasConsumo == null || preferenciasConsumo.isBlank()
                     || configuracaoAlertaTexto == null || configuracaoAlertaTexto.isBlank()
                     || telefone == null || telefone.isBlank()) {
 
@@ -133,9 +132,9 @@ public class ServletAtualizarUsuario extends HttpServlet {
             // Remove espaços desnecessários dos campos
             nome = nome.trim();
             email = email.trim();
-            preferenciasConsumo = preferenciasConsumo.trim();
+            preferenciasConsumo = preferenciasConsumo == null ? "" : preferenciasConsumo.trim();
             configuracaoAlertaTexto = configuracaoAlertaTexto.trim();
-            telefone = telefone.trim();
+            telefone = telefone.replaceAll("\\D", "");
 
             // Valida o email e o telefone utilizando a classe Regex
             if (!Regex.validarEmail(email) || !Regex.validarTelefone(telefone)) {

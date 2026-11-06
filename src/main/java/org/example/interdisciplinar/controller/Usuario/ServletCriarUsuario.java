@@ -59,7 +59,7 @@ public class ServletCriarUsuario extends HttpServlet {
         // Remove espaços desnecessários dos campos de texto
         nome = nome.trim();
         email = email.trim();
-        telefone = telefone.trim();
+        telefone = telefone.replaceAll("\\D", "");
         preferencias = preferencias.trim();
         configAlerta = configAlerta.trim();
 

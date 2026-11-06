@@ -74,7 +74,16 @@ public class ServletDeletarAdministrador extends HttpServlet {
             }
 
             // Realiza a exclusão do administrador
-            administradorDAO.deletar(id);
+            boolean deletado = administradorDAO.deletar(id);
+
+            // Verifica se o administrador foi excluído
+            if (!deletado) {
+                response.sendError(
+                        HttpServletResponse.SC_NOT_FOUND,
+                        "Administrador não encontrado."
+                );
+                return;
+            }
 
             // Redireciona após a exclusão
             response.sendRedirect(request.getContextPath() + "/admin/administradores");

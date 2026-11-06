@@ -79,7 +79,10 @@ public class EmpresaDAO {
     public List<EmpresaView> listar() {
 
         // Comando SQL para consultar as empresas
-        String sqlSelect = "SELECT id_empresa, nome, cnpj, cep, telefone FROM view_empresa";
+        String sqlSelect = "SELECT empresa.id_empresa, empresa.nome, empresa.cnpj, endereco.cep, " +
+                "empresa.id_endereco, empresa.email, empresa.telefone " +
+                "FROM tb_empresa AS empresa JOIN tb_endereco AS endereco " +
+                "ON endereco.id_endereco = empresa.id_endereco";
 
         // Lista que vai armazenar as empresas encontradas
         List<EmpresaView> empresas = new ArrayList<>();
@@ -98,6 +101,8 @@ public class EmpresaDAO {
                         rs.getString("nome"),
                         rs.getString("cnpj"),
                         rs.getString("cep"),
+                        rs.getInt("id_endereco"),
+                        rs.getString("email"),
                         rs.getString("telefone")
                 );
 
@@ -156,12 +161,17 @@ public class EmpresaDAO {
             Integer idEmpresaInicio,
             Integer idEmpresaFim,
             String nome,
+            String cnpj,
+            String cep,
             String ordenar
     ) {
 
         // Monta a consulta SQL conforme os filtros recebidos
         StringBuilder sql = new StringBuilder(
-                "SELECT id_empresa, nome, cnpj, cep, telefone FROM view_empresa WHERE 1=1"
+                "SELECT empresa.id_empresa, empresa.nome, empresa.cnpj, endereco.cep, " +
+                        "empresa.id_endereco, empresa.email, empresa.telefone " +
+                        "FROM tb_empresa AS empresa JOIN tb_endereco AS endereco " +
+                        "ON endereco.id_endereco = empresa.id_endereco WHERE 1=1"
         );
 
         // Lista que armazena os valores utilizados nos filtros
@@ -188,8 +198,21 @@ public class EmpresaDAO {
             parametrosDoFiltro.add("%" + nome + "%");
         }
 
+        // Filtra pelo CNPJ, caso tenha sido informado
+        if (cnpj != null && !cnpj.isBlank()) {
+            sql.append(" AND cnpj ILIKE ?");
+            parametrosDoFiltro.add("%" + cnpj + "%");
+        }
+
+        // Filtra pelo CEP, caso tenha sido informado
+        if (cep != null && !cep.isBlank()) {
+            sql.append(" AND cep ILIKE ?");
+            parametrosDoFiltro.add("%" + cep + "%");
+        }
+
         // Define a ordenação dos resultados
         switch (ordenar == null ? "" : ordenar) {
+            case "id":
             case "id_asc":
                 sql.append(" ORDER BY id_empresa ASC");
                 break;
@@ -198,12 +221,17 @@ public class EmpresaDAO {
                 sql.append(" ORDER BY id_empresa DESC");
                 break;
 
+            case "nome":
             case "nome_asc":
                 sql.append(" ORDER BY nome ASC");
                 break;
 
             case "nome_desc":
                 sql.append(" ORDER BY nome DESC");
+                break;
+
+            case "cnpj":
+                sql.append(" ORDER BY cnpj ASC");
                 break;
 
             default:
@@ -230,9 +258,11 @@ public class EmpresaDAO {
                     EmpresaView empresaTemporaria = new EmpresaView(
                             rs.getInt("id_empresa"),
                             rs.getString("nome"),
-                            rs.getString("cnpj"),
-                            rs.getString("cep"),
-                            rs.getString("telefone")
+                        rs.getString("cnpj"),
+                        rs.getString("cep"),
+                        rs.getInt("id_endereco"),
+                        rs.getString("email"),
+                        rs.getString("telefone")
                     );
 
                     empresas.add(empresaTemporaria);

@@ -52,7 +52,13 @@ public class ServletDeletarAlimento extends HttpServlet {
             }
 
             // Envia o ID para a DAO realizar a exclusão
-            alimentoDAO.deletar(id);
+            boolean deletado = alimentoDAO.deletar(id);
+
+            // Verifica se o alimento foi excluído
+            if (!deletado) {
+                response.sendRedirect(request.getContextPath() + "/admin/alimentos");
+                return;
+            }
 
             // Redireciona para a listagem após a exclusão
             response.sendRedirect(request.getContextPath() + "/admin/alimentos");

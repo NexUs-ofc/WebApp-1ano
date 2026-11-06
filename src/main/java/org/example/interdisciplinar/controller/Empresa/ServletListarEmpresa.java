@@ -39,6 +39,8 @@ public class ServletListarEmpresa extends HttpServlet {
             String idInicioTexto = request.getParameter("idInicio");
             String idFimTexto = request.getParameter("idFim");
             String nome = request.getParameter("nome");
+            String cnpj = request.getParameter("cnpj");
+            String cep = request.getParameter("cep");
             String ordenar = request.getParameter("ordenar");
 
             // Converte o ID inicial para inteiro, caso tenha sido informado
@@ -74,7 +76,7 @@ public class ServletListarEmpresa extends HttpServlet {
             }
 
             // Busca as empresas de acordo com os filtros informados
-            List<EmpresaView> empresas = empresaDAO.listarFiltrado(idInicio, idFim, nome, ordenar);
+            List<EmpresaView> empresas = empresaDAO.listarFiltrado(idInicio, idFim, nome, cnpj, cep, ordenar);
 
             // Envia a lista de empresas para a página
             request.setAttribute("empresas", empresas);

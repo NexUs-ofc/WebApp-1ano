@@ -7,16 +7,19 @@ import org.example.interdisciplinar.exception.FalhaConexaoException;
 import org.example.interdisciplinar.model.Administrador;
 import org.example.interdisciplinar.utils.Regex;
 import org.example.interdisciplinar.utils.Criptografia;
+import org.example.interdisciplinar.utils.Cloudinary;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import java.io.IOException;
-import java.net.URI;
 
 // Define o endereço responsável pela atualização dos administradores
 @WebServlet(name = "AtualizarAdministrador", value = "/admin/administradores/editar")
+@MultipartConfig(maxFileSize = 5 * 1024 * 1024, maxRequestSize = 6 * 1024 * 1024)
 public class ServletAtualizarAdministrador extends HttpServlet {
 
     // Instância responsável pelas operações no banco de dados
@@ -96,14 +99,13 @@ public class ServletAtualizarAdministrador extends HttpServlet {
             String nome = request.getParameter("nome");
             String email = request.getParameter("email");
             String senha = request.getParameter("senha");
+            String ddd = request.getParameter("ddd");
             String telefone = request.getParameter("telefone");
-            String urlFoto = request.getParameter("urlFoto");
 
             // Verifica se os campos obrigatórios foram preenchidos
             if (idTexto == null || idTexto.isBlank() ||
                     nome == null || nome.isBlank() ||
-                    email == null || email.isBlank() ||
-                    telefone == null || telefone.isBlank()) {
+                    email == null || email.isBlank()) {
 
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Preencha todos os campos obrigatórios");
                 return;
@@ -129,11 +131,11 @@ public class ServletAtualizarAdministrador extends HttpServlet {
             // Remove espaços desnecessários dos campos
             nome = nome.trim();
             email = email.trim();
-            telefone = telefone.trim();
-            urlFoto = urlFoto == null ? "" : urlFoto.trim();
+            ddd = ddd == null ? "" : ddd.replaceAll("\\D", "");
+            telefone = telefone == null ? "" : ddd + telefone.replaceAll("\\D", "");
 
             // Valida os campos utilizando os métodos da classe Regex
-            if (!Regex.validarTelefone(telefone) ||
+            if ((!telefone.isBlank() && !Regex.validarTelefone(telefone)) ||
                     !Regex.validarEmail(email)) {
 
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
@@ -141,31 +143,12 @@ public class ServletAtualizarAdministrador extends HttpServlet {
                 return;
             }
 
-            // Valida a URL da foto, caso tenha sido informada
-            if (!urlFoto.isBlank()) {
-                try {
-                    URI uri = URI.create(urlFoto);
+            String urlFoto = administradorExistente.getUrlFoto();
+            Part arquivoFoto = request.getPart("fotoPerfilArquivo");
+            String novaUrlFoto = Cloudinary.enviarFotoAdministrador(arquivoFoto, id);
 
-                    // Verifica se a URL possui um endereço e protocolo válidos
-                    if (!uri.isAbsolute() ||
-                            uri.getHost() == null ||
-                            (!"https".equalsIgnoreCase(uri.getScheme()) &&
-                                    !"http".equalsIgnoreCase(uri.getScheme()))) {
-
-                        response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                "URL da foto inválida");
-                        return;
-                    }
-
-                } catch (IllegalArgumentException e) {
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                            "URL da foto inválida");
-                    return;
-                }
-
-            } else {
-                // Mantém a foto antiga caso nenhuma nova seja informada
-                urlFoto = administradorExistente.getUrlFoto();
+            if (novaUrlFoto != null) {
+                urlFoto = novaUrlFoto;
             }
 
             // Mantém a senha atual caso uma nova não seja informada
@@ -193,11 +176,20 @@ public class ServletAtualizarAdministrador extends HttpServlet {
             administrador.setNome(nome);
             administrador.setEmail(email);
             administrador.setSenha(senhaCriptografada);
-            administrador.setTelefone(telefone);
+            administrador.setTelefone(telefone.isBlank() ? null : telefone);
             administrador.setUrlFoto(urlFoto);
 
             // Envia os novos dados para a DAO atualizar no banco
-            administradorDAO.atualizar(administrador);
+            boolean atualizado = administradorDAO.atualizar(administrador);
+
+            // Verifica se o administrador foi atualizado
+            if (!atualizado) {
+                response.sendError(
+                        HttpServletResponse.SC_NOT_FOUND,
+                        "Administrador não encontrado."
+                );
+                return;
+            }
 
             // Redireciona para a página de administradores após a atualização
             response.sendRedirect(request.getContextPath() + "/admin/administradores");

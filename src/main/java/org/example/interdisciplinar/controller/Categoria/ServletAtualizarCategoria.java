@@ -126,7 +126,16 @@ public class ServletAtualizarCategoria extends HttpServlet {
             categoriaExistente.setDescricao(descricao.trim());
 
             // Envia a categoria para a DAO realizar a atualização
-            categoriaDAO.atualizar(categoriaExistente);
+            boolean atualizado = categoriaDAO.atualizar(categoriaExistente);
+
+            // Verifica se a categoria foi atualizada
+            if (!atualizado) {
+                response.sendError(
+                        HttpServletResponse.SC_NOT_FOUND,
+                        "Categoria não encontrada."
+                );
+                return;
+            }
 
             // Redireciona para a listagem após a atualização
             response.sendRedirect(request.getContextPath() + "/admin/categorias");

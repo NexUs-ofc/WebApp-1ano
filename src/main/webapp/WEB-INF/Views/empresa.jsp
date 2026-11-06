@@ -92,14 +92,14 @@
           <h2 id="tituloPopupFiltro">Filtros</h2>
           <button type="button" class="botaoFecharPopupFiltro" aria-label="Fechar filtros" onclick="fecharPopupFiltro()">&times;</button>
         </div>
-        <form onsubmit="event.preventDefault(); fecharPopupFiltro()">
+        <form action="${pageContext.request.contextPath}/admin/empresas" method="get">
           <div class="camposPopupFiltro">
             <div class="campoPopupFiltro">
               <span>id</span>
               <div class="intervaloPopupFiltro">
-                <input name="idMinimo" type="number" placeholder="M&iacute;nimo">
+                <input name="idInicio" type="number" placeholder="M&iacute;nimo">
                 <span aria-hidden="true">&ndash;</span>
-                <input name="idMaximo" type="number" placeholder="M&aacute;ximo">
+                <input name="idFim" type="number" placeholder="M&aacute;ximo">
               </div>
             </div>
             <label class="campoPopupFiltro">nome
@@ -136,11 +136,12 @@
       <div class="barraPopupFormulario"></div>
       <div class="conteudoPopupFormulario">
         <h2><span>Criar</span> empresa</h2>
-        <form onsubmit="event.preventDefault(); fecharPopupEmpresa()">
+        <form action="${pageContext.request.contextPath}/admin/empresas/criar" method="post">
           <div class="gradeCamposPopup">
             <label class="campoPopup" for="nomeEmpresa">Nome<input id="nomeEmpresa" name="nome" type="text" required></label>
             <label class="campoPopup" for="cnpjEmpresa">CNPJ<input id="cnpjEmpresa" name="cnpj" type="text" required></label>
-            <label class="campoPopup" for="cepEmpresa">CEP<input id="cepEmpresa" name="cep" type="text" required></label>
+            <label class="campoPopup" for="idEnderecoEmpresa">ID do endereço<input id="idEnderecoEmpresa" name="idEndereco" type="number" required></label>
+            <label class="campoPopup" for="emailEmpresa">Email<input id="emailEmpresa" name="email" type="email" required></label>
             <label class="campoPopup" for="telefoneEmpresa">Telefone<input id="telefoneEmpresa" name="telefone" type="tel" required></label>
           </div>
           <div class="acoesPopupFormulario">
@@ -167,18 +168,18 @@
         </thead>
         <tbody>
           <c:forEach var="empresa" items="${empresas}">
-            <c:if test="${empty param.pesquisa or empresa.id.toString() == param.pesquisa or fn:contains(fn:toLowerCase(empresa.nome), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(empresa.cnpj), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(empresa.cep), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(empresa.telefone), fn:toLowerCase(param.pesquisa))}">
+            <c:if test="${empty param.pesquisa or empresa.id().toString() == param.pesquisa or fn:contains(fn:toLowerCase(empresa.nome()), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(empresa.cnpj()), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(empresa.cep()), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(empresa.telefone()), fn:toLowerCase(param.pesquisa))}">
               <tr>
-                <td><c:out value="${empresa.id}"/></td>
-                <td><c:out value="${empresa.nome}"/></td>
-                <td><c:out value="${empresa.cnpj}"/></td>
-                <td><c:out value="${empresa.cep}"/></td>
-                <td><c:out value="${empresa.telefone}"/></td>
+                <td><c:out value="${empresa.id()}"/></td>
+                <td><c:out value="${empresa.nome()}"/></td>
+                <td><c:out value="${empresa.cnpj()}"/></td>
+                <td><c:out value="${empresa.cep()}"/></td>
+                <td><c:out value="${empresa.telefone()}"/></td>
                 <td class="acoes">
-                  <button type="button" class="botaoEditar" title="Editar empresa" aria-label="Editar empresa" data-id="${empresa.id}" data-nome="${fn:escapeXml(empresa.nome)}" data-cnpj="${fn:escapeXml(empresa.cnpj)}" data-cep="${fn:escapeXml(empresa.cep)}" data-telefone="${fn:escapeXml(empresa.telefone)}" onclick="abrirPopupEdicao(this)">
+                  <button type="button" class="botaoEditar" title="Editar empresa" aria-label="Editar empresa" data-id="${empresa.id()}" data-nome="${fn:escapeXml(empresa.nome())}" data-cnpj="${fn:escapeXml(empresa.cnpj())}" data-id-endereco="${empresa.idEndereco()}" data-email="${fn:escapeXml(empresa.email())}" data-telefone="${fn:escapeXml(empresa.telefone())}" onclick="abrirPopupEdicao(this)">
                     <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                   </button>
-                  <button type="button" class="botaoExcluir" title="Excluir empresa" aria-label="Excluir empresa" onclick="abrirPopupExclusao('${empresa.id}')">
+                  <button type="button" class="botaoExcluir" title="Excluir empresa" aria-label="Excluir empresa" onclick="abrirPopupExclusao('${empresa.id()}')">
                     <img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="" aria-hidden="true">
                   </button>
                 </td>
@@ -196,12 +197,13 @@
     <div class="barraPopupFormulario"></div>
     <div class="conteudoPopupFormulario">
       <h2><span>Editar</span> empresa</h2>
-      <form onsubmit="event.preventDefault(); fecharPopupEdicao()">
+      <form action="${pageContext.request.contextPath}/admin/empresas/editar" method="post">
         <input type="hidden" id="idEmpresaEdicao" name="id">
         <div class="gradeCamposPopup">
           <label class="campoPopup" for="nomeEmpresaEdicao">Nome<input id="nomeEmpresaEdicao" name="nome" type="text" required></label>
           <label class="campoPopup" for="cnpjEmpresaEdicao">CNPJ<input id="cnpjEmpresaEdicao" name="cnpj" type="text" required></label>
-          <label class="campoPopup" for="cepEmpresaEdicao">CEP<input id="cepEmpresaEdicao" name="cep" type="text" required></label>
+          <label class="campoPopup" for="idEnderecoEmpresaEdicao">ID do endereço<input id="idEnderecoEmpresaEdicao" name="idEndereco" type="number" required></label>
+          <label class="campoPopup" for="emailEmpresaEdicao">Email<input id="emailEmpresaEdicao" name="email" type="email" required></label>
           <label class="campoPopup" for="telefoneEmpresaEdicao">Telefone<input id="telefoneEmpresaEdicao" name="telefone" type="tel" required></label>
         </div>
         <div class="acoesPopupFormulario">
@@ -219,7 +221,7 @@
       <h2><span>Excluir</span> empresa</h2>
       <p>Tem certeza de que deseja <strong>excluir</strong> este item?
       <br>Essa ação não poderá ser desfeita.</p>
-      <form onsubmit="event.preventDefault(); fecharPopupExclusao()">
+      <form action="${pageContext.request.contextPath}/admin/empresas/deletar" method="post">
         <input type="hidden" id="idEmpresaExclusao" name="id">
         <div class="acoesPopupExclusao">
           <button type="button" class="botaoCancelarExclusao" onclick="fecharPopupExclusao()">cancelar</button>
