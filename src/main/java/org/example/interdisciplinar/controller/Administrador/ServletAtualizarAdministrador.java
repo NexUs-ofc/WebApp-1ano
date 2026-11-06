@@ -105,8 +105,7 @@ public class ServletAtualizarAdministrador extends HttpServlet {
             // Verifica se os campos obrigatórios foram preenchidos
             if (idTexto == null || idTexto.isBlank() ||
                     nome == null || nome.isBlank() ||
-                    email == null || email.isBlank() ||
-                    telefone == null || telefone.isBlank()) {
+                    email == null || email.isBlank()) {
 
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Preencha todos os campos obrigatórios");
                 return;
@@ -133,10 +132,10 @@ public class ServletAtualizarAdministrador extends HttpServlet {
             nome = nome.trim();
             email = email.trim();
             ddd = ddd == null ? "" : ddd.replaceAll("\\D", "");
-            telefone = ddd + telefone.replaceAll("\\D", "");
+            telefone = telefone == null ? "" : ddd + telefone.replaceAll("\\D", "");
 
             // Valida os campos utilizando os métodos da classe Regex
-            if (!Regex.validarTelefone(telefone) ||
+            if ((!telefone.isBlank() && !Regex.validarTelefone(telefone)) ||
                     !Regex.validarEmail(email)) {
 
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
@@ -177,7 +176,7 @@ public class ServletAtualizarAdministrador extends HttpServlet {
             administrador.setNome(nome);
             administrador.setEmail(email);
             administrador.setSenha(senhaCriptografada);
-            administrador.setTelefone(telefone);
+            administrador.setTelefone(telefone.isBlank() ? null : telefone);
             administrador.setUrlFoto(urlFoto);
 
             // Envia os novos dados para a DAO atualizar no banco

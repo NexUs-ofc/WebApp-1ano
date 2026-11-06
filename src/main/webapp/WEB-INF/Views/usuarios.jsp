@@ -136,9 +136,14 @@
             <div class="gradeCamposPopup">
               <label class="campoPopup" for="nome">Nome<input id="nome" name="nome" type="text" required></label>
               <label class="campoPopup" for="email">E-mail<input id="email" name="email" type="email" required></label>
-              <label class="campoPopup" for="telefone">Telefone<input id="telefone" name="telefone" type="tel" required></label>
+              <label class="campoPopup" for="telefone">Telefone<input id="telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(11) 91234-5678" required></label>
               <label class="campoPopup" for="preferenciasConsumo">Preferências<input id="preferenciasConsumo" name="preferenciasConsumo" type="text" required></label>
-              <label class="campoPopup" for="configuracaoAlerta">Alerta<input id="configuracaoAlerta" name="configuracaoAlerta" type="text" required></label>
+              <label class="campoPopup" for="configuracaoAlerta">Alerta
+                <select id="configuracaoAlerta" name="configuracaoAlerta" required>
+                  <option value="ATIVADO">ATIVADO</option>
+                  <option value="DESATIVADO">DESATIVADO</option>
+                </select>
+              </label>
               <div class="campoPopup campoSenhaUsuario">
                 <label for="senhaUsuarioCadastro">Senha</label>
                 <span class="entradaSenhaUsuario">
@@ -173,21 +178,21 @@
           </thead>
           <tbody>
             <c:forEach var="usuario" items="${usuarios}">
-              <c:if test="${empty param.pesquisa or fn:contains(fn:toLowerCase(usuario.nome), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(usuario.email), fn:toLowerCase(param.pesquisa)) or usuario.id.toString() == param.pesquisa or fn:toLowerCase(usuario.configuracaoAlerta) == fn:toLowerCase(param.pesquisa)}">
+              <c:if test="${empty param.pesquisa or fn:contains(fn:toLowerCase(usuario.nome()), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(usuario.email()), fn:toLowerCase(param.pesquisa)) or usuario.id().toString() == param.pesquisa or fn:toLowerCase(usuario.configuracaoAlerta()) == fn:toLowerCase(param.pesquisa)}">
                 <tr>
-                  <td><c:out value="${usuario.id}"/></td>
-                  <td><c:out value="${usuario.nome}"/></td>
-                  <td><c:out value="${usuario.email}"/></td>
-                  <td><c:out value="${usuario.telefone}"/></td>
-                  <td><c:out value="${usuario.configuracaoAlerta}"/></td>
+                  <td><c:out value="${usuario.id()}"/></td>
+                  <td><c:out value="${usuario.nome()}"/></td>
+                  <td><c:out value="${usuario.email()}"/></td>
+                  <td><c:out value="${usuario.telefone()}"/></td>
+                  <td><c:out value="${usuario.configuracaoAlerta()}"/></td>
                   <td class="acoes">
                     <button type="button" class="botaoBloquear" title="Ocultar dados da linha" aria-label="Ocultar dados da linha" aria-pressed="false" onclick="alternarDadosLinha(this)">
                       <img src="<c:url value='/assets/fi-br-eye.svg'/>" alt="" aria-hidden="true">
                     </button>
-                    <button type="button" class="botaoEditar" title="Editar usuário" aria-label="Editar usuário" data-id="${usuario.id}" data-nome="${fn:escapeXml(usuario.nome)}" data-email="${fn:escapeXml(usuario.email)}" data-telefone="${fn:escapeXml(usuario.telefone)}" data-preferencias="${fn:escapeXml(usuario.preferenciasConsumo)}" data-alerta="${fn:escapeXml(usuario.configuracaoAlerta)}" onclick="abrirPopupEdicaoUsuario(this)">
+                    <button type="button" class="botaoEditar" title="Editar usuário" aria-label="Editar usuário" data-id="${usuario.id()}" data-nome="${fn:escapeXml(usuario.nome())}" data-email="${fn:escapeXml(usuario.email())}" data-telefone="${fn:escapeXml(usuario.telefone())}" data-preferencias="${fn:escapeXml(usuario.preferenciasConsumo())}" data-alerta="${fn:escapeXml(usuario.configuracaoAlerta())}" onclick="abrirPopupEdicaoUsuario(this)">
                       <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                     </button>
-                    <button type="button" class="botaoExcluir" title="Excluir usuário" aria-label="Excluir usuário" onclick="abrirPopupExclusaoUsuario('${usuario.id}')"><img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="ícone de lixeira" aria-hidden="true"></button>
+                    <button type="button" class="botaoExcluir" title="Excluir usuário" aria-label="Excluir usuário" onclick="abrirPopupExclusaoUsuario('${usuario.id()}')"><img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="ícone de lixeira" aria-hidden="true"></button>
                   </td>
                 </tr>
               </c:if>
@@ -208,9 +213,14 @@
         <div class="gradeCamposPopup">
           <label class="campoPopup" for="nomeUsuarioEdicao">Nome<input id="nomeUsuarioEdicao" name="nome" type="text" required></label>
           <label class="campoPopup" for="emailUsuarioEdicao">E-mail<input id="emailUsuarioEdicao" class="textoHuninn" name="email" type="email" required></label>
-          <label class="campoPopup" for="telefoneUsuarioEdicao">Telefone<input id="telefoneUsuarioEdicao" name="telefone" type="tel" required></label>
+          <label class="campoPopup" for="telefoneUsuarioEdicao">Telefone<input id="telefoneUsuarioEdicao" name="telefone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(11) 91234-5678" required></label>
           <label class="campoPopup" for="preferenciasUsuarioEdicao">Preferências<input id="preferenciasUsuarioEdicao" name="preferenciasConsumo" type="text"></label>
-          <label class="campoPopup" for="alertaUsuarioEdicao">Alerta<input id="alertaUsuarioEdicao" name="configuracaoAlerta" type="text"></label>
+          <label class="campoPopup" for="alertaUsuarioEdicao">Alerta
+            <select id="alertaUsuarioEdicao" name="configuracaoAlerta" required>
+              <option value="ATIVADO">ATIVADO</option>
+              <option value="DESATIVADO">DESATIVADO</option>
+            </select>
+          </label>
           <div class="campoPopup campoSenhaUsuario">
             <label for="senhaUsuarioEdicao">Senha</label>
             <span class="entradaSenhaUsuario">

@@ -134,7 +134,7 @@ public class ServletAtualizarUsuario extends HttpServlet {
             email = email.trim();
             preferenciasConsumo = preferenciasConsumo == null ? "" : preferenciasConsumo.trim();
             configuracaoAlertaTexto = configuracaoAlertaTexto.trim();
-            telefone = telefone.trim();
+            telefone = telefone.replaceAll("\\D", "");
 
             // Valida o email e o telefone utilizando a classe Regex
             if (!Regex.validarEmail(email) || !Regex.validarTelefone(telefone)) {

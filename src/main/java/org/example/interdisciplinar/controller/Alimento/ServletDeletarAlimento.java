@@ -56,10 +56,7 @@ public class ServletDeletarAlimento extends HttpServlet {
 
             // Verifica se o alimento foi excluído
             if (!deletado) {
-                response.sendError(
-                        HttpServletResponse.SC_NOT_FOUND,
-                        "Alimento não encontrado."
-                );
+                response.sendRedirect(request.getContextPath() + "/admin/alimentos");
                 return;
             }
 

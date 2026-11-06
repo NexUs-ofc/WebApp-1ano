@@ -168,18 +168,18 @@
         </thead>
         <tbody>
           <c:forEach var="empresa" items="${empresas}">
-            <c:if test="${empty param.pesquisa or empresa.id.toString() == param.pesquisa or fn:contains(fn:toLowerCase(empresa.nome), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(empresa.cnpj), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(empresa.cep), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(empresa.telefone), fn:toLowerCase(param.pesquisa))}">
+            <c:if test="${empty param.pesquisa or empresa.id().toString() == param.pesquisa or fn:contains(fn:toLowerCase(empresa.nome()), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(empresa.cnpj()), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(empresa.cep()), fn:toLowerCase(param.pesquisa)) or fn:contains(fn:toLowerCase(empresa.telefone()), fn:toLowerCase(param.pesquisa))}">
               <tr>
-                <td><c:out value="${empresa.id}"/></td>
-                <td><c:out value="${empresa.nome}"/></td>
-                <td><c:out value="${empresa.cnpj}"/></td>
-                <td><c:out value="${empresa.cep}"/></td>
-                <td><c:out value="${empresa.telefone}"/></td>
+                <td><c:out value="${empresa.id()}"/></td>
+                <td><c:out value="${empresa.nome()}"/></td>
+                <td><c:out value="${empresa.cnpj()}"/></td>
+                <td><c:out value="${empresa.cep()}"/></td>
+                <td><c:out value="${empresa.telefone()}"/></td>
                 <td class="acoes">
-                  <button type="button" class="botaoEditar" title="Editar empresa" aria-label="Editar empresa" data-id="${empresa.id}" data-nome="${fn:escapeXml(empresa.nome)}" data-cnpj="${fn:escapeXml(empresa.cnpj)}" data-id-endereco="${empresa.idEndereco}" data-email="${fn:escapeXml(empresa.email)}" data-telefone="${fn:escapeXml(empresa.telefone)}" onclick="abrirPopupEdicao(this)">
+                  <button type="button" class="botaoEditar" title="Editar empresa" aria-label="Editar empresa" data-id="${empresa.id()}" data-nome="${fn:escapeXml(empresa.nome())}" data-cnpj="${fn:escapeXml(empresa.cnpj())}" data-id-endereco="${empresa.idEndereco()}" data-email="${fn:escapeXml(empresa.email())}" data-telefone="${fn:escapeXml(empresa.telefone())}" onclick="abrirPopupEdicao(this)">
                     <img src="<c:url value='/assets/fi-br-pencil.svg'/>" alt="" aria-hidden="true">
                   </button>
-                  <button type="button" class="botaoExcluir" title="Excluir empresa" aria-label="Excluir empresa" onclick="abrirPopupExclusao('${empresa.id}')">
+                  <button type="button" class="botaoExcluir" title="Excluir empresa" aria-label="Excluir empresa" onclick="abrirPopupExclusao('${empresa.id()}')">
                     <img src="<c:url value='/assets/fi-br-trash.svg'/>" alt="" aria-hidden="true">
                   </button>
                 </td>
